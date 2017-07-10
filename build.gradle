@@ -1,0 +1,106 @@
+group 'GuiZhou_OTN_Backend'
+version '0.1'
+
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'idea'
+apply plugin: 'eclipse-wtp'
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.5'
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+configurations {
+    mybatisGenerator
+}
+
+
+//统一编码为utf-8
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+dependencies {
+    testCompile 'com.jayway.restassured:rest-assured:2.9.0'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile 'org.springframework:spring-test:4.3.7.RELEASE'
+    testCompile 'org.hamcrest:hamcrest-core:1.3'
+    testCompile 'org.mockito:mockito-core:1.10.19'
+    testCompile 'com.jayway.restassured:json-schema-validator:2.9.0'
+    testCompile 'com.jayway.restassured:spring-mock-mvc:2.9.0'
+
+
+
+    //maven仓库中心没有的jar，则放入libs目录下
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile group: 'dom4j', name: 'dom4j', version: '1.6.1'
+
+    compile 'com.fasterxml.jackson.core:jackson-core:2.8.5'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.8.5'
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.8.5'
+    compile 'org.springframework:spring-webmvc:4.3.7.RELEASE'
+    compile 'org.springframework:spring-orm:4.3.7.RELEASE'
+    compile 'org.springframework:spring-context-support:4.3.7.RELEASE'
+    compile 'mysql:mysql-connector-java:5.1.38'
+    compile 'org.mybatis:mybatis:3.4.2'
+    compile 'org.mybatis:mybatis-spring:1.3.1'
+    compile 'com.github.pagehelper:pagehelper:5.0.0'
+    compile 'org.slf4j:slf4j-log4j12:1.7.25'
+    compile 'tk.mybatis:mapper:3.4.0'
+    compile 'com.alibaba:druid:1.0.31'
+
+    compile "io.springfox:springfox-swagger2:2.7.0"
+    compile 'io.springfox:springfox-swagger-ui:2.7.0'
+
+    providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
+
+    mybatisGenerator 'org.mybatis.generator:mybatis-generator-core:1.3.5'
+    mybatisGenerator 'mysql:mysql-connector-java:5.1.38'
+    mybatisGenerator 'tk.mybatis:mapper:3.4.0'
+}
+
+def getDbProperties = {
+    def properties = new Properties()
+    file("src/main/resources/jdbc.properties").withInputStream { inputStream ->
+        properties.load(inputStream)
+    }
+    properties
+}
+
+task mybatisGenerate  {
+    def properties = getDbProperties()
+    ant.properties['targetProject'] = projectDir.path
+    ant.properties['driverClass'] = properties.getProperty("jdbc_driver")
+    ant.properties['connectionURL'] = properties.getProperty("jdbc_url")
+    ant.properties['userId'] = properties.getProperty("jdbc_username")
+    ant.properties['password'] = properties.getProperty("jdbc_password")
+    ant.properties['src_main_java'] = sourceSets.main.java.srcDirs[0].path
+    ant.properties['modelPackage'] = properties.getProperty("model.package")
+    ant.properties['daoPackage'] = properties.getProperty("dao.package")
+    ant.properties['sqlMapperPackage'] = properties.getProperty("xml.mapper.package")
+    ant.taskdef(
+            name: 'mbgenerator',
+            classname: 'org.mybatis.generator.ant.GeneratorAntTask',
+            classpath: configurations.mybatisGenerator.asPath
+    )
+    ant.mbgenerator(overwrite: true,
+            configfile: 'src/main/resources/generatorConfig.xml', verbose: true) {
+        propertyset {
+            propertyref(name: 'targetProject')
+            propertyref(name: 'userId')
+            propertyref(name: 'driverClass')
+            propertyref(name: 'connectionURL')
+            propertyref(name: 'password')
+            propertyref(name: 'src_main_java')
+            propertyref(name: 'src_main_resources')
+            propertyref(name: 'modelPackage')
+            propertyref(name: 'daoPackage')
+            propertyref(name: 'sqlMapperPackage')
+        }
+    }
+
+
+
+}

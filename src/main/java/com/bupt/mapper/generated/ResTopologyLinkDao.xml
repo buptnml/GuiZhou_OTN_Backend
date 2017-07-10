@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bupt.mapper.generated.{0}Dao">
+  <resultMap id="BaseResultMap" type="com.bupt.entity.ResTopologyLink">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="link_id" jdbcType="VARCHAR" property="linkId" />
+    <result column="link_name" jdbcType="VARCHAR" property="linkName" />
+    <result column="link_name_full" jdbcType="VARCHAR" property="linkNameFull" />
+    <result column="link_rate" jdbcType="VARCHAR" property="linkRate" />
+    <result column="link_length" jdbcType="BIGINT" property="linkLength" />
+    <result column="link_sync_status" jdbcType="VARCHAR" property="linkSyncStatus" />
+    <result column="end_a_port_id" jdbcType="VARCHAR" property="endAPortId" />
+    <result column="end_z_port_id" jdbcType="VARCHAR" property="endZPortId" />
+    <result column="end_a_station_id" jdbcType="VARCHAR" property="endAStationId" />
+    <result column="end_z_station_id" jdbcType="VARCHAR" property="endZStationId" />
+    <result column="end_a_equip_id" jdbcType="VARCHAR" property="endAEquipId" />
+    <result column="end_z_equip_id" jdbcType="VARCHAR" property="endZEquipId" />
+    <result column="end_a_equip_system_name" jdbcType="VARCHAR" property="endAEquipSystemName" />
+    <result column="end_z_equip_system_name" jdbcType="VARCHAR" property="endZEquipSystemName" />
+    <result column="is_fault" jdbcType="TINYINT" property="isFault" />
+    <result column="is_deleted" jdbcType="TINYINT" property="isDeleted" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    link_id, link_name, link_name_full, link_rate, link_length, link_sync_status, end_a_port_id, 
+    end_z_port_id, end_a_station_id, end_z_station_id, end_a_equip_id, end_z_equip_id, 
+    end_a_equip_system_name, end_z_equip_system_name, is_fault, is_deleted, gmt_create, 
+    gmt_modified
+  </sql>
+</mapper>

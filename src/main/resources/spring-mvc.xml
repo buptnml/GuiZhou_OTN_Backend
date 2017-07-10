@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.2.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+        ">
+
+    <!-- 自动扫描 com.bupt.controller 下的带有Spring组件注解的类 -->
+    <context:component-scan base-package="com.bupt.controller">
+        <context:include-filter type="annotation"
+                                expression="org.springframework.stereotype.Controller" />
+        <context:include-filter type="annotation"
+                                expression="org.springframework.web.bind.annotation.RestController" />
+        <context:include-filter type="annotation"
+                                expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+    </context:component-scan>
+
+    <mvc:default-servlet-handler />
+
+    <mvc:annotation-driven >
+
+    </mvc:annotation-driven>
+
+
+    <bean class="com.bupt.util.tools.SwaggerConfig" />
+    <!--跨域访问配置-->
+    <mvc:cors>
+        <mvc:mapping path="/**" allowed-methods="*"/>
+    </mvc:cors>
+
+</beans>
