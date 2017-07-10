@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "sys_user")
 public class SysUser {
     /**
-     * id
+     * 用户id
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,15 +19,22 @@ public class SysUser {
     private String userName;
 
     /**
-     * 密码
+     * 用户密码
      */
-    private String password;
+    @Column(name = "pass_word")
+    private String passWord;
 
     /**
-     * 是否锁定
+     * 用户身份
      */
-    @Column(name = "is_locked")
-    private Byte isLocked;
+    @Column(name = "user_role")
+    private String userRole;
+
+    /**
+     * 用户所属组织
+     */
+    @Column(name = "user_group")
+    private String userGroup;
 
     /**
      * 创建时间
@@ -42,18 +49,18 @@ public class SysUser {
     private Date gmtModified;
 
     /**
-     * 获取id
+     * 获取用户id
      *
-     * @return id - id
+     * @return id - 用户id
      */
     public Long getId() {
         return id;
     }
 
     /**
-     * 设置id
+     * 设置用户id
      *
-     * @param id id
+     * @param id 用户id
      */
     public void setId(Long id) {
         this.id = id;
@@ -78,39 +85,57 @@ public class SysUser {
     }
 
     /**
-     * 获取密码
+     * 获取用户密码
      *
-     * @return password - 密码
+     * @return pass_word - 用户密码
      */
-    public String getPassword() {
-        return password;
+    public String getPassWord() {
+        return passWord;
     }
 
     /**
-     * 设置密码
+     * 设置用户密码
      *
-     * @param password 密码
+     * @param passWord 用户密码
      */
-    public void setPassword(String password) {
-        this.password = password == null ? null : password.trim();
+    public void setPassWord(String passWord) {
+        this.passWord = passWord == null ? null : passWord.trim();
     }
 
     /**
-     * 获取是否锁定
+     * 获取用户身份
      *
-     * @return is_locked - 是否锁定
+     * @return user_role - 用户身份
      */
-    public Byte getIsLocked() {
-        return isLocked;
+    public String getUserRole() {
+        return userRole;
     }
 
     /**
-     * 设置是否锁定
+     * 设置用户身份
      *
-     * @param isLocked 是否锁定
+     * @param userRole 用户身份
      */
-    public void setIsLocked(Byte isLocked) {
-        this.isLocked = isLocked;
+    public void setUserRole(String userRole) {
+        this.userRole = userRole == null ? null : userRole.trim();
+    }
+
+    /**
+     * 获取用户所属组织
+     *
+     * @return user_group - 用户所属组织
+     */
+    public String getUserGroup() {
+        return userGroup;
+    }
+
+    /**
+     * 设置用户所属组织
+     *
+     * @param userGroup 用户所属组织
+     */
+    public void setUserGroup(String userGroup) {
+        this.userGroup = userGroup == null ? null : userGroup.trim();
     }
 
     /**

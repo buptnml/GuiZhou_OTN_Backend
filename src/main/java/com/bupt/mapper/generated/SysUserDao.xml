@@ -7,8 +7,9 @@
     -->
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="is_locked" jdbcType="TINYINT" property="isLocked" />
+    <result column="pass_word" jdbcType="VARCHAR" property="passWord" />
+    <result column="user_role" jdbcType="VARCHAR" property="userRole" />
+    <result column="user_group" jdbcType="VARCHAR" property="userGroup" />
     <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
     <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
   </resultMap>
@@ -16,6 +17,6 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, user_name, password, is_locked, gmt_create, gmt_modified
+    id, user_name, pass_word, user_role, user_group, gmt_create, gmt_modified
   </sql>
 </mapper>
