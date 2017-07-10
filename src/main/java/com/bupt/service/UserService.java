@@ -19,11 +19,11 @@ public interface UserService {
     boolean saveUser(UserDTO userDTO);
     
     /**
-     * 删除用户
-     * @param userQuery
+     * 删除指定id的用户
+     * @param idList
      * @return
      */
-    boolean removeUser(UserQuery userQuery);
+    boolean ListRemoveUser(List<Long> idList);
     
     /**
      * 查询用户
