@@ -16,17 +16,17 @@ public interface UserService {
      * @param userDTO
      * @return
      */
-    boolean saveUser(UserDTO userDTO);
+    UserDTO saveUser(UserDTO userDTO);
     
     /**
-     * 删除用户
-     * @param userQuery
+     * 删除指定id的用户
+     * @param idList
      * @return
      */
-    boolean removeUser(UserQuery userQuery);
+    boolean listRemoveUser(List<Long> idList);
     
     /**
-     * 查询用户
+     * 查询用户，根据用户名和密码
      * @param userQuery
      * @return
      */
@@ -39,9 +39,10 @@ public interface UserService {
     List<UserDTO> listUser();
     
     /**
-     * 修改用户
+     * 根据id修改客户信息
+     * @param id
      * @param userDTO
      * @return
      */
-    boolean updateUser(UserDTO userDTO);
+    UserDTO updateUser(Long id,UserDTO userDTO);
 }

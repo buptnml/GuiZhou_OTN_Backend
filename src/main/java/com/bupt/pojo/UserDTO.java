@@ -49,4 +49,26 @@ public class UserDTO {
     public void setUserGroup(String userGroup) {
         this.userGroup = userGroup;
     }
+    
+    public UserDTO(Long id, String userName, String passWord, String userRole, String userGroup) {
+        this.id = id;
+        this.userName = userName;
+        this.passWord = passWord;
+        this.userRole = userRole;
+        this.userGroup = userGroup;
+    }
+    
+    public UserDTO() {
+    }
+    
+    @Override
+    public String toString() {
+        return "UserDTO{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", passWord='" + passWord + '\'' +
+                ", userRole='" + userRole + '\'' +
+                ", userGroup='" + userGroup + '\'' +
+                '}';
+    }
 }
