@@ -26,20 +26,20 @@ public class UserServiceImpl implements UserService {
     private SysUserDao sysUserDao;
     
     @Override
-    public boolean saveUser(UserDTO userDTO) {
+    public UserDTO saveUser(UserDTO userDTO) {
         userDTO.setId(null);
         if (sysUserDao.insertSelective(this.convertToSysUser(userDTO)) > 0) {
-            return true;
+            return this.getUser(new UserQuery(userDTO.getUserName(),userDTO.getPassWord()));
         }
-        return false;
+        return null;
     }
     
     @Override
     @Transactional(rollbackFor=NoneRemoveException.class)
-    public boolean ListRemoveUser(List<Long> idList) {
+    public boolean listRemoveUser(List<Long> idList) {
         Iterator<Long> idListIterator=idList.iterator();
         while(idListIterator.hasNext()){
-            if (sysUserDao.deleteByPrimaryKey(idListIterator.hasNext()) == 0) {
+            if (sysUserDao.deleteByPrimaryKey(idListIterator.next()) == 0) {
                 throw new NoneRemoveException();
             }
         }
@@ -68,13 +68,12 @@ public class UserServiceImpl implements UserService {
     }
     
     @Override
-    public boolean updateUser(UserDTO userDTO) {
-        Example example = new Example(SysUser.class);
-        userDTO.setId(null);
-        if (sysUserDao.updateByExampleSelective(this.convertToSysUser(userDTO), example) > 0) {
-            return true;
+    public UserDTO updateUser(Long id,UserDTO userDTO) {
+        userDTO.setId(id);
+        if (sysUserDao.updateByPrimaryKeySelective(this.convertToSysUser(userDTO)) > 0) {
+            return this.getUser(new UserQuery(userDTO.getUserName(),userDTO.getPassWord()));
         }
-        return false;
+        return null;
     }
     
     private Example getUserQueryExample(UserQuery userQuery) {

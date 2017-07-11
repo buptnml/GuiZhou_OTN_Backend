@@ -32,11 +32,12 @@ public class SwaggerConfig {
     private ApiInfo buildApiInf(){
         return new ApiInfoBuilder()
                 //页面标题
-                .title("基于SSM的RESTful-like后台框架")
+                .title("贵州OTN项目后台")
                 //创建人
-                .contact(new Contact("WInstonHan","https://github.com/WinstonHanxb/RESTful-like-SSM-Template","winstonhan@163.com"))
+                .contact(new Contact("北邮网管实验室研发组","https://github.com/buptnml/GuiZhou_OTN_Backend"," " +
+                        "buptnml@163.com"))
                 //版本号
-                .version("0.2")
+                .version("0.1")
                 //描述
                 .build();
 

@@ -30,7 +30,7 @@
     </mvc:annotation-driven>
 
 
-
+    <bean class="com.bupt.util.tools.SwaggerConfig" />
     <!--跨域访问配置-->
     <mvc:cors>
         <mvc:mapping path="/**" allowed-methods="*"/>
