@@ -2,6 +2,7 @@ package com.bupt.service;
 
 import com.bupt.pojo.UserDTO;
 import com.bupt.pojo.UserQuery;
+import com.bupt.pojo.UserCreateInfo;
 
 import java.util.List;
 
@@ -13,24 +14,30 @@ public interface UserService {
     
     /**
      * 创建用户
-     * @param userDTO
+     * @param userCreateInfo
      * @return
      */
-    UserDTO saveUser(UserDTO userDTO);
+    UserDTO saveUser(UserCreateInfo userCreateInfo);
     
     /**
-     * 删除指定id的用户
+     * 批量删除指定id的用户
      * @param idList
-     * @return
      */
-    boolean listRemoveUser(List<Long> idList);
+    void listRemoveUser(List<Long> idList);
     
     /**
      * 查询用户，根据用户名和密码
      * @param userQuery
      * @return
      */
-    UserDTO getUser(UserQuery userQuery);
+    UserDTO getUserByUserQuery(UserQuery userQuery);
+    
+    /**
+     * 根据用户id查询用户
+     * @param id
+     * @return
+     */
+    UserDTO getUserByUserId(Long id);
     
     /**
      * 查询所有用户
@@ -39,10 +46,9 @@ public interface UserService {
     List<UserDTO> listUser();
     
     /**
-     * 根据id修改客户信息
-     * @param id
-     * @param userDTO
+     * 更新用户信息
+     * @param userCreateInfo
      * @return
      */
-    UserDTO updateUser(Long id,UserDTO userDTO);
+    UserDTO updateUser(UserCreateInfo userCreateInfo);
 }

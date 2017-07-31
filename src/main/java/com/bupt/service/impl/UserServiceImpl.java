@@ -4,8 +4,12 @@ import com.bupt.dao.SysUserDao;
 import com.bupt.entity.SysUser;
 import com.bupt.pojo.UserDTO;
 import com.bupt.pojo.UserQuery;
+import com.bupt.pojo.UserCreateInfo;
 import com.bupt.service.UserService;
+import com.bupt.util.exception.controller.result.NoneGetException;
 import com.bupt.util.exception.controller.result.NoneRemoveException;
+import com.bupt.util.exception.controller.result.NoneSaveException;
+import com.bupt.util.exception.controller.result.NoneUpdateException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,35 +30,46 @@ public class UserServiceImpl implements UserService {
     private SysUserDao sysUserDao;
     
     @Override
-    public UserDTO saveUser(UserDTO userDTO) {
-        userDTO.setId(null);
-        if (sysUserDao.insertSelective(this.convertToSysUser(userDTO)) > 0) {
-            return this.getUser(new UserQuery(userDTO.getUserName(),userDTO.getPassWord()));
+    public UserDTO saveUser(UserCreateInfo userCreateInfo) {
+        if (sysUserDao.insertSelective(this.convertToSysUser(userCreateInfo)) > 0) {
+            return this.getUserByUserQuery(new UserQuery(userCreateInfo.getUserName(), userCreateInfo.getPassWord()));
         }
-        return null;
+        throw new NoneSaveException();
     }
     
     @Override
     @Transactional(rollbackFor=NoneRemoveException.class)
-    public boolean listRemoveUser(List<Long> idList) {
+    public void listRemoveUser(List<Long> idList) {
         Iterator<Long> idListIterator=idList.iterator();
         while(idListIterator.hasNext()){
             if (sysUserDao.deleteByPrimaryKey(idListIterator.next()) == 0) {
                 throw new NoneRemoveException();
             }
         }
-        return true;
     }
     
     
+    
     @Override
-    public UserDTO getUser(UserQuery userQuery) {
-        Example example = getUserQueryExample(userQuery);
+    public UserDTO getUserByUserQuery(UserQuery userQuery) {
+        Example example = new Example(SysUser.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("userName", userQuery.getUserName());
+        criteria.andEqualTo("passWord", userQuery.getPassWord());
         List<SysUser> sysUserList = sysUserDao.selectByExample(example);
         if (sysUserList.size() == 0 || sysUserList.size() > 1) {
-            return null;
+            throw new NoneGetException();
         }
         return this.convertToUserDTO(sysUserList.get(0));
+    }
+    
+    @Override
+    public UserDTO getUserByUserId(Long id) {
+        UserDTO userDTO= this.convertToUserDTO(sysUserDao.selectByPrimaryKey(id));
+        if(null==userDTO){
+            throw new NoneGetException();
+        }
+        return userDTO;
     }
     
     @Override
@@ -64,41 +79,40 @@ public class UserServiceImpl implements UserService {
         while (sysUserIterator.hasNext()) {
             resultList.add(this.convertToUserDTO(sysUserIterator.next()));
         }
+        if(resultList.size()==0||null==resultList){
+            throw new NoneGetException();
+        }
         return resultList;
     }
     
     @Override
-    public UserDTO updateUser(Long id,UserDTO userDTO) {
-        userDTO.setId(id);
-        if (sysUserDao.updateByPrimaryKeySelective(this.convertToSysUser(userDTO)) > 0) {
-            return this.getUser(new UserQuery(userDTO.getUserName(),userDTO.getPassWord()));
-        }
-        return null;
-    }
-    
-    private Example getUserQueryExample(UserQuery userQuery) {
+    public UserDTO updateUser(UserCreateInfo userCreateInfo) {
         Example example = new Example(SysUser.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("userName", userQuery.getUserName());
-        criteria.andEqualTo("passWord", userQuery.getPassWord());
-        return example;
+        criteria.andEqualTo("userName", userCreateInfo.getUserName());
+        if (sysUserDao.updateByExampleSelective(this.convertToSysUser(userCreateInfo),example) > 0) {
+            return this.getUserByUserQuery(new UserQuery(userCreateInfo.getUserName(), userCreateInfo.getPassWord()));
+        }
+        throw new NoneUpdateException();
     }
     
-    private UserDTO convertToUserDTO(SysUser sysUser) {
-        if (null == sysUser) {
+   
+    
+    private UserDTO convertToUserDTO(Object inputObject) {
+        if (null == inputObject) {
             return null;
         }
         UserDTO resultDTO = new UserDTO();
-        BeanUtils.copyProperties(sysUser, resultDTO);
+        BeanUtils.copyProperties(inputObject, resultDTO);
         return resultDTO;
     }
     
-    private SysUser convertToSysUser(UserDTO userDTO) {
-        if (null == userDTO) {
+    private SysUser convertToSysUser(Object inputObject) {
+        if (null == inputObject) {
             return null;
         }
         SysUser result = new SysUser();
-        BeanUtils.copyProperties(userDTO, result);
+        BeanUtils.copyProperties(inputObject, result);
         return result;
     }
 }

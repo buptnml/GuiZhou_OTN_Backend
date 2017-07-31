@@ -37,13 +37,13 @@ public class SysUser {
     private String userGroup;
 
     /**
-     * 创建时间
+     * 插入时间
      */
     @Column(name = "gmt_create")
     private Date gmtCreate;
 
     /**
-     * 最后更新时间
+     * 创建时间
      */
     @Column(name = "gmt_modified")
     private Date gmtModified;
@@ -139,36 +139,36 @@ public class SysUser {
     }
 
     /**
-     * 获取创建时间
+     * 获取插入时间
      *
-     * @return gmt_create - 创建时间
+     * @return gmt_create - 插入时间
      */
     public Date getGmtCreate() {
         return gmtCreate;
     }
 
     /**
-     * 设置创建时间
+     * 设置插入时间
      *
-     * @param gmtCreate 创建时间
+     * @param gmtCreate 插入时间
      */
     public void setGmtCreate(Date gmtCreate) {
         this.gmtCreate = gmtCreate;
     }
 
     /**
-     * 获取最后更新时间
+     * 获取创建时间
      *
-     * @return gmt_modified - 最后更新时间
+     * @return gmt_modified - 创建时间
      */
     public Date getGmtModified() {
         return gmtModified;
     }
 
     /**
-     * 设置最后更新时间
+     * 设置创建时间
      *
-     * @param gmtModified 最后更新时间
+     * @param gmtModified 创建时间
      */
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
