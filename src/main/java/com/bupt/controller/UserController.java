@@ -46,7 +46,7 @@ public class UserController {
     }
     
     
-    @ApiOperation(value = "创建新用户，会忽略掉id信息")
+    @ApiOperation(value = "创建新用户")
     @RequestMapping(value = "/", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public UserDTO saveUser(@RequestBody UserCreateInfo userCreateInfo) {
@@ -58,13 +58,13 @@ public class UserController {
     
     
     @ApiOperation(value = "更新用户")
-    @RequestMapping(value = "/", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/{userId}", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDTO updateUser(@RequestBody UserCreateInfo userCreateInfo) {
+    public UserDTO updateUser(@PathVariable Long userId,@RequestBody UserCreateInfo userCreateInfo) {
         
         this.checkUserDTO(new UserDTO(null, userCreateInfo.getUserName(), userCreateInfo.getPassWord(),
                 userCreateInfo.getUserRole(), userCreateInfo.getUserGroup()));
-        UserDTO resultDTO = this.userService.updateUser(userCreateInfo);
+        UserDTO resultDTO = this.userService.updateUser(userId,userCreateInfo);
         return resultDTO;
     }
     

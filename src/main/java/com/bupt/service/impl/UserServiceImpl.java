@@ -64,8 +64,8 @@ public class UserServiceImpl implements UserService {
     }
     
     @Override
-    public UserDTO getUserByUserId(Long id) {
-        UserDTO userDTO= this.convertToUserDTO(sysUserDao.selectByPrimaryKey(id));
+    public UserDTO getUserByUserId(Long userId) {
+        UserDTO userDTO= this.convertToUserDTO(sysUserDao.selectByPrimaryKey(userId));
         if(null==userDTO){
             throw new NoneGetException();
         }
@@ -95,9 +95,18 @@ public class UserServiceImpl implements UserService {
         }
         throw new NoneUpdateException();
     }
-    
-   
-    
+
+    @Override
+    public UserDTO updateUser(Long userId, UserCreateInfo userCreateInfo) {
+        SysUser DO = convertToSysUser(userCreateInfo);
+        DO.setUserId(userId);
+        if (sysUserDao.updateByPrimaryKeySelective(DO) > 0) {
+            return convertToUserDTO(sysUserDao.selectByPrimaryKey(userId));
+        }
+        throw new NoneUpdateException();
+    }
+
+
     private UserDTO convertToUserDTO(Object inputObject) {
         if (null == inputObject) {
             return null;

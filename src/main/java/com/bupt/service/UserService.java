@@ -21,9 +21,9 @@ public interface UserService {
     
     /**
      * 批量删除指定id的用户
-     * @param idList
+     * @param userIdList
      */
-    void listRemoveUser(List<Long> idList);
+    void listRemoveUser(List<Long> userIdList);
     
     /**
      * 查询用户，根据用户名和密码
@@ -34,10 +34,10 @@ public interface UserService {
     
     /**
      * 根据用户id查询用户
-     * @param id
+     * @param userId
      * @return
      */
-    UserDTO getUserByUserId(Long id);
+    UserDTO getUserByUserId(Long userId);
     
     /**
      * 查询所有用户
@@ -51,4 +51,13 @@ public interface UserService {
      * @return
      */
     UserDTO updateUser(UserCreateInfo userCreateInfo);
+
+
+    /**
+     * 更新用户信息（通过ID）
+     * @param userId
+     * @param userCreateInfo
+     * @return
+     */
+    UserDTO updateUser(Long userId,UserCreateInfo userCreateInfo);
 }
