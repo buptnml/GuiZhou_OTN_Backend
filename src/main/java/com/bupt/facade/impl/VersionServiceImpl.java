@@ -8,7 +8,10 @@ import com.bupt.pojo.VersionSetting;
 import com.bupt.facade.VersionService;
 import com.bupt.util.exception.controller.result.NoneGetException;
 import com.bupt.util.exception.controller.result.NoneRemoveException;
+import com.bupt.util.exception.controller.result.NoneSaveException;
 import com.bupt.util.exception.controller.result.NoneUpdateException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
@@ -24,22 +27,25 @@ public class VersionServiceImpl implements VersionService {
     @Resource
     private SysVersionDao sysVersionDao;
 
+    Logger logger= LoggerFactory.getLogger(VersionServiceImpl.class);
     @Override
     @Transactional
-    public VersionDTO saveVersion(VersionCreateInfo versionCreateInfo) throws IOException, ClassNotFoundException {
+    public VersionDTO saveVersion(VersionCreateInfo versionCreateInfo)  {
         SysVersion tempVersion = new SysVersion();
         tempVersion.setVersionSetting(toByteArray(versionCreateInfo.getVersionSetting()));
         tempVersion.setVersionName(versionCreateInfo.getVersionName());
-        sysVersionDao.insertSelective(tempVersion);
-        SysVersion newVersion = getVersionByName(versionCreateInfo.getVersionName());
-        batchCreate(versionCreateInfo.getVersionSetting(),
-                getVersionByName(versionCreateInfo.getBaseVersionName()).getVersionId(), newVersion.getVersionId());
-        return DOtoDTO(newVersion);
+        if ( sysVersionDao.insertSelective(tempVersion) > 0) {
+            SysVersion newVersion = getVersionByName(versionCreateInfo.getVersionName());
+            batchCreate(versionCreateInfo.getVersionSetting(),
+                    getVersionByName(versionCreateInfo.getBaseVersionName()).getVersionId(), newVersion.getVersionId());
+            return DOtoDTO(newVersion);
+        }
+        throw new NoneSaveException();
     }
 
     @Override
     @Transactional
-    public void listRemoveVersion(List<Long> versionIdList) throws IOException, ClassNotFoundException {
+    public void listRemoveVersion(List<Long> versionIdList) {
         Iterator<Long> versionIdListIterator = versionIdList.iterator();
         while (versionIdListIterator.hasNext()) {
             SysVersion temp = sysVersionDao.selectByPrimaryKey(versionIdListIterator.next());
@@ -52,7 +58,7 @@ public class VersionServiceImpl implements VersionService {
     }
 
     @Override
-    public List<VersionDTO> listVersion() throws IOException, ClassNotFoundException {
+    public List<VersionDTO> listVersion() {
         Iterator<SysVersion> sysVersionIterator = sysVersionDao.selectAll().iterator();
         List<VersionDTO> resultList = new ArrayList<>();
         while (sysVersionIterator.hasNext()) {
@@ -65,7 +71,7 @@ public class VersionServiceImpl implements VersionService {
     }
 
     @Override
-    public VersionDTO getVersion(Long versionId) throws IOException, ClassNotFoundException {
+    public VersionDTO getVersion(Long versionId) {
         SysVersion sysVersionDO = sysVersionDao.selectByPrimaryKey(versionId);
         if (null == sysVersionDO) {
             throw new NoneGetException();
@@ -73,14 +79,15 @@ public class VersionServiceImpl implements VersionService {
         return DOtoDTO(sysVersionDO);
     }
 
-
     @Override
-    public VersionDTO updateVersion(VersionDTO versionDTO) throws IOException, ClassNotFoundException {
+    public VersionDTO updateVersion(Long versionId, VersionDTO versionDTO) {
+        versionDTO.setVersionId(versionId);
         if (sysVersionDao.updateByPrimaryKeySelective(DTOtoDo(versionDTO)) == 0) {
             throw new NoneUpdateException();
         }
         return DOtoDTO(sysVersionDao.selectByPrimaryKey(versionDTO.getVersionId()));
     }
+
 
     /**
      * 根据版本设置信息批量创建所有需要的资源
@@ -88,22 +95,22 @@ public class VersionServiceImpl implements VersionService {
      */
     @Transactional
     public void batchCreate(VersionSetting vs, long baseOnId, long newId) {
-        if (vs.hasAmplifier()) {
+        if (vs.isAmplifier()) {
             //TODO
         }
-        if (vs.hasDisk()) {
+        if (vs.isDisk()) {
             //TODO
         }
-        if (vs.hasBussiness()) {
+        if (vs.isBussiness()) {
             //TODO
         }
-        if (vs.hasLink()) {
+        if (vs.isLink()) {
             //TODO
         }
-        if (vs.hasLinkType()) {
+        if (vs.isLinkType()) {
             //TODO
         }
-        if (vs.hasNetElement()) {
+        if (vs.isNetElement()) {
             //TODO
         }
     }
@@ -113,22 +120,22 @@ public class VersionServiceImpl implements VersionService {
      */
     @Transactional
     public void batchRemove(VersionSetting vs) {
-        if (vs.hasAmplifier()) {
+        if (vs.isAmplifier()) {
             //TODO
         }
-        if (vs.hasDisk()) {
+        if (vs.isDisk()) {
             //TODO
         }
-        if (vs.hasBussiness()) {
+        if (vs.isBussiness()) {
             //TODO
         }
-        if (vs.hasLink()) {
+        if (vs.isLink()) {
             //TODO
         }
-        if (vs.hasLinkType()) {
+        if (vs.isLinkType()) {
             //TODO
         }
-        if (vs.hasNetElement()) {
+        if (vs.isNetElement()) {
             //TODO
         }
     }
@@ -145,7 +152,7 @@ public class VersionServiceImpl implements VersionService {
     }
 
 
-    private VersionDTO DOtoDTO(SysVersion sysVersionDO) throws IOException, ClassNotFoundException {
+    private VersionDTO DOtoDTO(SysVersion sysVersionDO)  {
         if (null == sysVersionDO) {
             return null;
         }
@@ -156,7 +163,7 @@ public class VersionServiceImpl implements VersionService {
         return versionDTO;
     }
 
-    private SysVersion DTOtoDo(VersionDTO versionDTO) throws IOException {
+    private SysVersion DTOtoDo(VersionDTO versionDTO) {
         if (null == versionDTO) {
             return null;
         }
@@ -170,7 +177,7 @@ public class VersionServiceImpl implements VersionService {
     /**
      * VersionSetting 序列化
      */
-    private byte[] toByteArray(VersionSetting versionSetting) throws IOException {
+    private byte[] toByteArray(VersionSetting versionSetting){
         byte[] bytes = null;
         ByteArrayOutputStream bos = null;
         ObjectOutputStream oos = null;
@@ -179,12 +186,12 @@ public class VersionServiceImpl implements VersionService {
             oos = new ObjectOutputStream(bos);
             oos.writeObject(versionSetting);
             bytes = bos.toByteArray();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } finally {
             oos.flush();
             oos.close();
             bos.close();
+        } catch (IOException ex) {
+            logger.error(ex.getMessage());
+        } finally {
         }
         return bytes;
     }
@@ -192,7 +199,7 @@ public class VersionServiceImpl implements VersionService {
     /**
      * versionSetting 反序列化
      */
-    private VersionSetting toObject(byte[] bytes) throws IOException, ClassNotFoundException {
+    private VersionSetting toObject(byte[] bytes)  {
         VersionSetting versionSetting = null;
         ObjectInputStream ois = null;
         ByteArrayInputStream bis = null;
@@ -200,9 +207,13 @@ public class VersionServiceImpl implements VersionService {
             bis = new ByteArrayInputStream(bytes);
             ois = new ObjectInputStream(bis);
             versionSetting = (VersionSetting) ois.readObject();
-        } finally {
             bis.close();
             ois.close();
+        } catch (IOException ex){
+            logger.error(ex.getMessage());
+        }
+        catch (ClassNotFoundException ex){
+            logger.error(ex.getMessage());
         }
         return versionSetting;
     }

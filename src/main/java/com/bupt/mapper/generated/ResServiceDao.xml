@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bupt.mapper.generated.{0}Dao">
+  <resultMap id="BaseResultMap" type="com.bupt.entity.ResService">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="service_id" jdbcType="BIGINT" property="serviceId" />
+    <result column="service_name" jdbcType="VARCHAR" property="serviceName" />
+    <result column="route_main" jdbcType="VARCHAR" property="routeMain" />
+    <result column="route_spare" jdbcType="VARCHAR" property="routeSpare" />
+    <result column="main_channel_id" jdbcType="BIGINT" property="mainChannelId" />
+    <result column="spare_channel_id" jdbcType="BIGINT" property="spareChannelId" />
+    <result column="version_id" jdbcType="BIGINT" property="versionId" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    service_id, service_name, route_main, route_spare, main_channel_id, spare_channel_id, 
+    version_id, gmt_create, gmt_modified
+  </sql>
+</mapper>

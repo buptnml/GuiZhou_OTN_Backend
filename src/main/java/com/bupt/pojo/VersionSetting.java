@@ -1,9 +1,17 @@
 package com.bupt.pojo;
 
+import java.io.Serializable;
+
 /**
  * 版本配置信息
  */
-public class VersionSetting {
+public class VersionSetting implements Serializable{
+    /**
+     * 序列化ID
+     */
+    private static final long serialVersionUID = 1L;
+
+
     private boolean bussiness = false;//光通道表
     private boolean netElement = false;//网元表
     private boolean disk = false;//机盘表
@@ -18,7 +26,12 @@ public class VersionSetting {
 //    private LinkTypeDisplaySetting linkTypeDisplaySetting;//链路类型表显示设置
 //    private AmplifierDisplaySetting amplifierDisplaySetting;//放大器显示设置
 
-    public boolean hasBussiness() {
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public boolean isBussiness() {
         return bussiness;
     }
 
@@ -26,7 +39,7 @@ public class VersionSetting {
         this.bussiness = bussiness;
     }
 
-    public boolean hasNetElement() {
+    public boolean isNetElement() {
         return netElement;
     }
 
@@ -34,7 +47,7 @@ public class VersionSetting {
         this.netElement = netElement;
     }
 
-    public boolean hasDisk() {
+    public boolean isDisk() {
         return disk;
     }
 
@@ -42,7 +55,7 @@ public class VersionSetting {
         this.disk = disk;
     }
 
-    public boolean hasLink() {
+    public boolean isLink() {
         return link;
     }
 
@@ -50,7 +63,7 @@ public class VersionSetting {
         this.link = link;
     }
 
-    public boolean hasLinkType() {
+    public boolean isLinkType() {
         return linkType;
     }
 
@@ -58,7 +71,7 @@ public class VersionSetting {
         this.linkType = linkType;
     }
 
-    public boolean hasAmplifier() {
+    public boolean isAmplifier() {
         return amplifier;
     }
 

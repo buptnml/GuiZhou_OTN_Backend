@@ -17,7 +17,7 @@ import java.util.List;
  * 角色管理的Controller层
  */
 @RestController
-@Api(tags = "UserController", description = "角色相关操作")
+@Api(tags = "UserRole", description = "角色相关操作")
 @RequestMapping(value = "/userRoles")
 public class UserRoleController {
     @Resource

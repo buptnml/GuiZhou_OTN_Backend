@@ -16,31 +16,31 @@ public interface VersionService {
      * @param versionCreateInfo
      * @return
      */
-    VersionDTO saveVersion(VersionCreateInfo versionCreateInfo) throws IOException, ClassNotFoundException;
+    VersionDTO saveVersion(VersionCreateInfo versionCreateInfo);
 
     /**
      * 批量删除版本
      * @param versionIdList
      */
-    void listRemoveVersion(List<Long> versionIdList) throws IOException, ClassNotFoundException;
+    void listRemoveVersion(List<Long> versionIdList);
 
     /**
      * 获取所有版本
      * @return
      */
-    List<VersionDTO> listVersion() throws IOException, ClassNotFoundException;
+    List<VersionDTO> listVersion();
 
     /**
      * 根据版本Id打开新版本
      * @param versionId
      * @return
      */
-    VersionDTO getVersion(Long versionId) throws IOException, ClassNotFoundException;
+    VersionDTO getVersion(Long versionId);
 
     /**
      * 修改版本设置
      * @param versionDTO
      * @return
      */
-    VersionDTO updateVersion(VersionDTO versionDTO) throws IOException, ClassNotFoundException;
+    VersionDTO updateVersion(Long versionId,VersionDTO versionDTO);
 }

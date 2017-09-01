@@ -52,8 +52,7 @@ public class UserController {
     public UserDTO saveUser(@RequestBody UserCreateInfo userCreateInfo) {
         this.checkUserDTO(new UserDTO(null, userCreateInfo.getUserName(), userCreateInfo.getPassWord(),
                 userCreateInfo.getUserRole(), userCreateInfo.getUserGroup()));
-        UserDTO resultDTO = this.userService.saveUser(userCreateInfo);
-        return resultDTO;
+        return userService.saveUser(userCreateInfo);
     }
     
     
