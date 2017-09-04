@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO saveUser(UserCreateInfo userCreateInfo) {
         if (sysUserDao.insertSelective(this.convertToSysUser(userCreateInfo)) > 0) {
-            return this.getUserByUserQuery(new UserQuery(userCreateInfo.getUserName(), userCreateInfo.getPassWord()));
+            return this.getUserByUserQuery(new UserQuery(userCreateInfo.getUserName(), userCreateInfo.getPassword()));
         }
         throw new NoneSaveException();
     }
@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
         Example example = new Example(SysUser.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("userName", userQuery.getUserName());
-        criteria.andEqualTo("passWord", userQuery.getPassWord());
+        criteria.andEqualTo("password", userQuery.getPassword());
         List<SysUser> sysUserList = sysUserDao.selectByExample(example);
         if (sysUserList.size() == 0 || sysUserList.size() > 1) {
             throw new NoneGetException();
@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("userName", userCreateInfo.getUserName());
         if (sysUserDao.updateByExampleSelective(this.convertToSysUser(userCreateInfo),example) > 0) {
-            return this.getUserByUserQuery(new UserQuery(userCreateInfo.getUserName(), userCreateInfo.getPassWord()));
+            return this.getUserByUserQuery(new UserQuery(userCreateInfo.getUserName(), userCreateInfo.getPassword()));
         }
         throw new NoneUpdateException();
     }
