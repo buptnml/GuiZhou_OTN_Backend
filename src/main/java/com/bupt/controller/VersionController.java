@@ -1,9 +1,10 @@
 package com.bupt.controller;
 
-
 import com.bupt.facade.VersionService;
 import com.bupt.pojo.VersionCreateInfo;
 import com.bupt.pojo.VersionDTO;
+import com.bupt.pojo.VersionDTOLess;
+import com.bupt.util.exception.controller.input.IllegalArgumentException;
 import com.bupt.util.exception.controller.input.NullArgumentException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,9 +29,8 @@ public class VersionController {
     @ApiOperation(value = "查询所有版本")
     @RequestMapping(value = "/", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<VersionDTO> listUser() {
-        List<VersionDTO> listSysUserDTO = versionService.listVersion();
-        return listSysUserDTO;
+    public List<VersionDTOLess> listUser() {
+        return versionService.listVersion();
     }
 
     @ApiOperation(value = "创建新版本")
@@ -63,27 +63,30 @@ public class VersionController {
     @ApiOperation(value = "根据ID更新版本")
     @RequestMapping(value = "/{versionId}", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.CREATED)
-    public VersionDTO updateUser(@PathVariable Long versionId,@RequestBody VersionDTO versionDTO) {
-        if(null == versionDTO.getVersionSetting()){
+    public VersionDTO updateUser(@PathVariable Long versionId, @RequestBody VersionDTO versionDTO) {
+        if (null == versionDTO.getVersionSetting()) {
             throw new NullArgumentException("versionSetting");
         }
-        if(null == versionDTO.getVersionName() || versionDTO.getVersionName().trim().length() == 0){
+        if (null == versionDTO.getVersionName() || versionDTO.getVersionName().trim().length() == 0) {
             throw new NullArgumentException("versionName");
         }
-        return versionService.updateVersion(versionId,versionDTO);
+        return versionService.updateVersion(versionId, versionDTO);
     }
 
 
+    private void checkVersionCreateInfoLegal(VersionCreateInfo vfi) {
 
-    private void checkVersionCreateInfoLegal(VersionCreateInfo vfi){
-        if(null == vfi.getBaseVersionName() || vfi.getBaseVersionName().trim().length() == 0){
+        if (null == vfi.getBaseVersionName() || vfi.getBaseVersionName().trim().length() == 0) {
             throw new NullArgumentException("baseVersionName");
         }
-        if(null == vfi.getVersionSetting()){
+        if (null == vfi.getVersionSetting()) {
             throw new NullArgumentException("versionSetting");
         }
-        if(null == vfi.getVersionName() || vfi.getVersionName().trim().length() == 0){
+        if (null == vfi.getVersionName() || vfi.getVersionName().trim().length() == 0) {
             throw new NullArgumentException("versionName");
+        }
+        if (vfi.getVersionName().equals(vfi.getBaseVersionName())) {
+            throw new IllegalArgumentException("baseVersionName & versionName");
         }
     }
 }

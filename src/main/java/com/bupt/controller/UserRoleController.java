@@ -1,6 +1,4 @@
 package com.bupt.controller;
-
-import com.bupt.pojo.UserDTO;
 import com.bupt.pojo.UserRoleCreateInfo;
 import com.bupt.pojo.UserRoleDTO;
 import com.bupt.service.UserRoleService;

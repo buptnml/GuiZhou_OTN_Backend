@@ -3,6 +3,7 @@ package com.bupt.pojo;
 public class VersionDTO {
     private Long versionId;
     private String versionName;
+    private String versionDescription;
     private VersionSetting versionSetting;
 
     public Long getVersionId() {
@@ -15,6 +16,14 @@ public class VersionDTO {
 
     public String getVersionName() {
         return versionName;
+    }
+
+    public String getVersionDescription() {
+        return versionDescription;
+    }
+
+    public void setVersionDescription(String versionDescription) {
+        this.versionDescription = versionDescription;
     }
 
     public void setVersionName(String versionName) {

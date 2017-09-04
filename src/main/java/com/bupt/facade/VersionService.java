@@ -3,6 +3,7 @@ package com.bupt.facade;
 
 import com.bupt.pojo.VersionCreateInfo;
 import com.bupt.pojo.VersionDTO;
+import com.bupt.pojo.VersionDTOLess;
 
 import java.io.IOException;
 import java.util.List;
@@ -28,7 +29,7 @@ public interface VersionService {
      * 获取所有版本
      * @return
      */
-    List<VersionDTO> listVersion();
+    List<VersionDTOLess> listVersion();
 
     /**
      * 根据版本Id打开新版本

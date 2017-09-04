@@ -7,6 +7,7 @@
     -->
     <id column="version_id" jdbcType="BIGINT" property="versionId" />
     <result column="version_name" jdbcType="VARCHAR" property="versionName" />
+    <result column="version_description" jdbcType="VARCHAR" property="versionDescription" />
     <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
     <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
   </resultMap>
@@ -20,7 +21,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    version_id, version_name, gmt_create, gmt_modified
+    version_id, version_name, version_description, gmt_create, gmt_modified
   </sql>
   <sql id="Blob_Column_List">
     <!--

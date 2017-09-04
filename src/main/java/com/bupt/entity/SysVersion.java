@@ -19,6 +19,12 @@ public class SysVersion {
     private String versionName;
 
     /**
+     * 版本描述
+     */
+    @Column(name = "version_description")
+    private String versionDescription;
+
+    /**
      * 创建时间
      */
     @Column(name = "gmt_create")
@@ -70,6 +76,24 @@ public class SysVersion {
      */
     public void setVersionName(String versionName) {
         this.versionName = versionName == null ? null : versionName.trim();
+    }
+
+    /**
+     * 获取版本描述
+     *
+     * @return version_description - 版本描述
+     */
+    public String getVersionDescription() {
+        return versionDescription;
+    }
+
+    /**
+     * 设置版本描述
+     *
+     * @param versionDescription 版本描述
+     */
+    public void setVersionDescription(String versionDescription) {
+        this.versionDescription = versionDescription == null ? null : versionDescription.trim();
     }
 
     /**

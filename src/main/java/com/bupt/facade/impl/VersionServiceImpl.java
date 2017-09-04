@@ -4,8 +4,10 @@ import com.bupt.dao.SysVersionDao;
 import com.bupt.entity.SysVersion;
 import com.bupt.pojo.VersionCreateInfo;
 import com.bupt.pojo.VersionDTO;
+import com.bupt.pojo.VersionDTOLess;
 import com.bupt.pojo.VersionSetting;
 import com.bupt.facade.VersionService;
+import com.bupt.pojo.versionSettings.ResourceSetting;
 import com.bupt.util.exception.controller.result.NoneGetException;
 import com.bupt.util.exception.controller.result.NoneRemoveException;
 import com.bupt.util.exception.controller.result.NoneSaveException;
@@ -27,16 +29,20 @@ public class VersionServiceImpl implements VersionService {
     @Resource
     private SysVersionDao sysVersionDao;
 
-    Logger logger= LoggerFactory.getLogger(VersionServiceImpl.class);
+    Logger logger = LoggerFactory.getLogger(VersionServiceImpl.class);
+
     @Override
     @Transactional
-    public VersionDTO saveVersion(VersionCreateInfo versionCreateInfo)  {
+    public VersionDTO saveVersion(VersionCreateInfo versionCreateInfo) {
+
         SysVersion tempVersion = new SysVersion();
         tempVersion.setVersionSetting(toByteArray(versionCreateInfo.getVersionSetting()));
+        tempVersion.setVersionDescription(versionCreateInfo.getVersionDescription());
         tempVersion.setVersionName(versionCreateInfo.getVersionName());
-        if ( sysVersionDao.insertSelective(tempVersion) > 0) {
+
+        if (sysVersionDao.insertSelective(tempVersion) > 0) {
             SysVersion newVersion = getVersionByName(versionCreateInfo.getVersionName());
-            batchCreate(versionCreateInfo.getVersionSetting(),
+            batchCreate(versionCreateInfo.getVersionSetting().getResourceSetting(),
                     getVersionByName(versionCreateInfo.getBaseVersionName()).getVersionId(), newVersion.getVersionId());
             return DOtoDTO(newVersion);
         }
@@ -52,19 +58,19 @@ public class VersionServiceImpl implements VersionService {
             if (null == temp) {
                 throw new NoneRemoveException();
             }
-            batchRemove(toObject(temp.getVersionSetting()));
+            batchRemove(toObject(temp.getVersionSetting()).getResourceSetting());
             sysVersionDao.deleteByPrimaryKey(temp.getVersionId());
         }
     }
 
     @Override
-    public List<VersionDTO> listVersion() {
+    public List<VersionDTOLess> listVersion() {
         Iterator<SysVersion> sysVersionIterator = sysVersionDao.selectAll().iterator();
-        List<VersionDTO> resultList = new ArrayList<>();
+        List<VersionDTOLess> resultList = new ArrayList<VersionDTOLess>();
         while (sysVersionIterator.hasNext()) {
-            resultList.add(this.DOtoDTO(sysVersionIterator.next()));
+            resultList.add(this.DOtoDTOLess(sysVersionIterator.next()));
         }
-        if(resultList.size()==0||null==resultList){
+        if (resultList.size() == 0 || null == resultList) {
             throw new NoneGetException();
         }
         return resultList;
@@ -94,23 +100,23 @@ public class VersionServiceImpl implements VersionService {
      * 需要提供基于的版本Id
      */
     @Transactional
-    public void batchCreate(VersionSetting vs, long baseOnId, long newId) {
-        if (vs.isAmplifier()) {
+    public void batchCreate(ResourceSetting rs, long baseOnId, long newId) {
+        if (rs.isAmplifier()) {
             //TODO
         }
-        if (vs.isDisk()) {
+        if (rs.isDisk()) {
             //TODO
         }
-        if (vs.isBussiness()) {
+        if (rs.isBussiness()) {
             //TODO
         }
-        if (vs.isLink()) {
+        if (rs.isLink()) {
             //TODO
         }
-        if (vs.isLinkType()) {
+        if (rs.isLinkType()) {
             //TODO
         }
-        if (vs.isNetElement()) {
+        if (rs.isNetElement()) {
             //TODO
         }
     }
@@ -119,28 +125,29 @@ public class VersionServiceImpl implements VersionService {
      * 根据版本设置批量删除该版本所用资源
      */
     @Transactional
-    public void batchRemove(VersionSetting vs) {
-        if (vs.isAmplifier()) {
+    public void batchRemove(ResourceSetting rs) {
+        if (rs.isAmplifier()) {
             //TODO
         }
-        if (vs.isDisk()) {
+        if (rs.isDisk()) {
             //TODO
         }
-        if (vs.isBussiness()) {
+        if (rs.isBussiness()) {
             //TODO
         }
-        if (vs.isLink()) {
+        if (rs.isLink()) {
             //TODO
         }
-        if (vs.isLinkType()) {
+        if (rs.isLinkType()) {
             //TODO
         }
-        if (vs.isNetElement()) {
+        if (rs.isNetElement()) {
             //TODO
         }
     }
 
-    private SysVersion getVersionByName(String versionName) {
+    @Transactional
+    public SysVersion getVersionByName(String versionName) {
         Example example = new Example(SysVersion.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("versionName", versionName);
@@ -152,7 +159,7 @@ public class VersionServiceImpl implements VersionService {
     }
 
 
-    private VersionDTO DOtoDTO(SysVersion sysVersionDO)  {
+    private VersionDTO DOtoDTO(SysVersion sysVersionDO) {
         if (null == sysVersionDO) {
             return null;
         }
@@ -160,8 +167,21 @@ public class VersionServiceImpl implements VersionService {
         versionDTO.setVersionId(sysVersionDO.getVersionId());
         versionDTO.setVersionName(sysVersionDO.getVersionName());
         versionDTO.setVersionSetting(this.toObject(sysVersionDO.getVersionSetting()));
+        versionDTO.setVersionDescription(sysVersionDO.getVersionDescription());
         return versionDTO;
     }
+
+    private VersionDTOLess DOtoDTOLess(SysVersion sysVersionDO) {
+        if (null == sysVersionDO) {
+            return null;
+        }
+        VersionDTOLess versionDTOLess = new VersionDTOLess();
+        versionDTOLess.setVersionId(sysVersionDO.getVersionId());
+        versionDTOLess.setVersionName(sysVersionDO.getVersionName());
+        versionDTOLess.setVersionDescription(sysVersionDO.getVersionDescription());
+        return versionDTOLess;
+    }
+
 
     private SysVersion DTOtoDo(VersionDTO versionDTO) {
         if (null == versionDTO) {
@@ -177,7 +197,7 @@ public class VersionServiceImpl implements VersionService {
     /**
      * VersionSetting 序列化
      */
-    private byte[] toByteArray(VersionSetting versionSetting){
+    private byte[] toByteArray(VersionSetting versionSetting) {
         byte[] bytes = null;
         ByteArrayOutputStream bos = null;
         ObjectOutputStream oos = null;
@@ -199,7 +219,7 @@ public class VersionServiceImpl implements VersionService {
     /**
      * versionSetting 反序列化
      */
-    private VersionSetting toObject(byte[] bytes)  {
+    private VersionSetting toObject(byte[] bytes) {
         VersionSetting versionSetting = null;
         ObjectInputStream ois = null;
         ByteArrayInputStream bis = null;
@@ -209,10 +229,9 @@ public class VersionServiceImpl implements VersionService {
             versionSetting = (VersionSetting) ois.readObject();
             bis.close();
             ois.close();
-        } catch (IOException ex){
+        } catch (IOException ex) {
             logger.error(ex.getMessage());
-        }
-        catch (ClassNotFoundException ex){
+        } catch (ClassNotFoundException ex) {
             logger.error(ex.getMessage());
         }
         return versionSetting;
