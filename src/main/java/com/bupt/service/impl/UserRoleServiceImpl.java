@@ -1,6 +1,8 @@
 package com.bupt.service.impl;
 
+import com.bupt.dao.SysUserDao;
 import com.bupt.dao.SysUserRoleDao;
+import com.bupt.entity.SysUser;
 import com.bupt.entity.SysUserRole;
 import com.bupt.pojo.UserRoleCreateInfo;
 import com.bupt.pojo.UserRoleDTO;
@@ -17,10 +19,13 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 @Service("userRoleService")
-public class UserRoleServiceImpl implements UserRoleService{
+public class UserRoleServiceImpl implements UserRoleService {
     @Resource
     private SysUserRoleDao sysUserRoleDao;
+    @Resource
+    private SysUserDao sysUserDao;
 
     @Override
     public UserRoleDTO saveUserRole(UserRoleCreateInfo userRoleCreateInfo) {
@@ -37,12 +42,26 @@ public class UserRoleServiceImpl implements UserRoleService{
     @Override
     @Transactional
     public void listRemoveUserRole(List<Long> userRoleIdList) {
-        Iterator<Long> idListIterator=userRoleIdList.iterator();
-        while(idListIterator.hasNext()){
-            if (sysUserRoleDao.deleteByPrimaryKey(idListIterator.next()) == 0) {
+        Iterator<Long> idListIterator = userRoleIdList.iterator();
+        while (idListIterator.hasNext()) {
+            SysUserRole role = sysUserRoleDao.selectByPrimaryKey(idListIterator.next());
+            if (sysUserRoleDao.delete(role) == 0) {
                 throw new NoneRemoveException();
+            } else {
+                deleteUserByRole(role);
             }
         }
+    }
+
+    @Transactional
+    public void deleteUserByRole(SysUserRole role) {
+
+        Example example = new Example(SysUser.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("userRole", role.getRoleName());
+
+        sysUserDao.deleteByExample(example);
+
     }
 
     @Override
@@ -52,13 +71,13 @@ public class UserRoleServiceImpl implements UserRoleService{
         while (sysUserIterator.hasNext()) {
             resultList.add(this.DOtoDTO(sysUserIterator.next()));
         }
-        if(resultList.size()==0||null==resultList){
+        if (resultList.size() == 0 || null == resultList) {
             throw new NoneGetException();
         }
         return resultList;
     }
 
-    UserRoleDTO DOtoDTO(Object inputObject){
+    UserRoleDTO DOtoDTO(Object inputObject) {
         if (null == inputObject) {
             return null;
         }
@@ -67,7 +86,7 @@ public class UserRoleServiceImpl implements UserRoleService{
         return result;
     }
 
-    SysUserRole DTOtoDO(Object inputObject){
+    SysUserRole DTOtoDO(Object inputObject) {
         if (null == inputObject) {
             return null;
         }

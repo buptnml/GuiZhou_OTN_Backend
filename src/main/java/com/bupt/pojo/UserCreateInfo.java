@@ -6,7 +6,7 @@ package com.bupt.pojo;
  */
 public class UserCreateInfo {
     private String userName;
-    private String passWord;
+    private String password;
     private String userRole;
     private String userGroup;
     
@@ -18,12 +18,12 @@ public class UserCreateInfo {
         this.userName = userName;
     }
     
-    public String getPassWord() {
-        return passWord;
+    public String getPassword() {
+        return password;
     }
     
-    public void setPassWord(String passWord) {
-        this.passWord = passWord;
+    public void setPassword(String password) {
+        this.password = password;
     }
     
     public String getUserRole() {
@@ -42,9 +42,9 @@ public class UserCreateInfo {
         this.userGroup = userGroup;
     }
     
-    public UserCreateInfo(String userName, String passWord, String userRole, String userGroup) {
+    public UserCreateInfo(String userName, String password, String userRole, String userGroup) {
         this.userName = userName;
-        this.passWord = passWord;
+        this.password = password;
         this.userRole = userRole;
         this.userGroup = userGroup;
     }
