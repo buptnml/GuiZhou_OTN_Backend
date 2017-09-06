@@ -13,10 +13,16 @@ public class ResOsnrChannel {
     private Long channelId;
 
     /**
-     * 波道名
+     *  波道所在业务id
      */
-    @Column(name = "channel_name")
-    private String channelName;
+    @Column(name = "bussiness_id")
+    private Long bussinessId;
+
+    /**
+     * 是否是主波道
+     */
+    @Column(name = "is_main")
+    private Boolean isMain;
 
     /**
      * 波道速率
@@ -85,21 +91,39 @@ public class ResOsnrChannel {
     }
 
     /**
-     * 获取波道名
+     * 获取 波道所在业务id
      *
-     * @return channel_name - 波道名
+     * @return bussiness_id -  波道所在业务id
      */
-    public String getChannelName() {
-        return channelName;
+    public Long getBussinessId() {
+        return bussinessId;
     }
 
     /**
-     * 设置波道名
+     * 设置 波道所在业务id
      *
-     * @param channelName 波道名
+     * @param bussinessId  波道所在业务id
      */
-    public void setChannelName(String channelName) {
-        this.channelName = channelName == null ? null : channelName.trim();
+    public void setBussinessId(Long bussinessId) {
+        this.bussinessId = bussinessId;
+    }
+
+    /**
+     * 获取是否是主波道
+     *
+     * @return is_main - 是否是主波道
+     */
+    public Boolean getIsMain() {
+        return isMain;
+    }
+
+    /**
+     * 设置是否是主波道
+     *
+     * @param isMain 是否是主波道
+     */
+    public void setIsMain(Boolean isMain) {
+        this.isMain = isMain;
     }
 
     /**
