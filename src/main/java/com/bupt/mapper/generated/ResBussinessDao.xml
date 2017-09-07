@@ -9,10 +9,6 @@
     <result column="bussiness_name" jdbcType="VARCHAR" property="bussinessName" />
     <result column="main_route" jdbcType="VARCHAR" property="mainRoute" />
     <result column="spare_route" jdbcType="VARCHAR" property="spareRoute" />
-    <result column="main_channel_id" jdbcType="BIGINT" property="mainChannelId" />
-    <result column="main_channel_name" jdbcType="VARCHAR" property="mainChannelName" />
-    <result column="spare_channel_id" jdbcType="BIGINT" property="spareChannelId" />
-    <result column="spare_channel_name" jdbcType="VARCHAR" property="spareChannelName" />
     <result column="version_id" jdbcType="BIGINT" property="versionId" />
     <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
     <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
@@ -21,7 +17,6 @@
     <!--
       WARNING - @mbg.generated
     -->
-    bussiness_id, bussiness_name, main_route, spare_route, main_channel_id, main_channel_name, 
-    spare_channel_id, spare_channel_name, version_id, gmt_create, gmt_modified
+    bussiness_id, bussiness_name, main_route, spare_route, version_id, gmt_create, gmt_modified
   </sql>
 </mapper>

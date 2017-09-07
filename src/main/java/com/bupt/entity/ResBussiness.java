@@ -31,30 +31,6 @@ public class ResBussiness {
     private String spareRoute;
 
     /**
-     * 主波道id
-     */
-    @Column(name = "main_channel_id")
-    private Long mainChannelId;
-
-    /**
-     * 主波道名称
-     */
-    @Column(name = "main_channel_name")
-    private String mainChannelName;
-
-    /**
-     * 备用波道id
-     */
-    @Column(name = "spare_channel_id")
-    private Long spareChannelId;
-
-    /**
-     * 备用波道名称
-     */
-    @Column(name = "spare_channel_name")
-    private String spareChannelName;
-
-    /**
      * 条目所在版本ID
      */
     @Column(name = "version_id")
@@ -142,78 +118,6 @@ public class ResBussiness {
      */
     public void setSpareRoute(String spareRoute) {
         this.spareRoute = spareRoute == null ? null : spareRoute.trim();
-    }
-
-    /**
-     * 获取主波道id
-     *
-     * @return main_channel_id - 主波道id
-     */
-    public Long getMainChannelId() {
-        return mainChannelId;
-    }
-
-    /**
-     * 设置主波道id
-     *
-     * @param mainChannelId 主波道id
-     */
-    public void setMainChannelId(Long mainChannelId) {
-        this.mainChannelId = mainChannelId;
-    }
-
-    /**
-     * 获取主波道名称
-     *
-     * @return main_channel_name - 主波道名称
-     */
-    public String getMainChannelName() {
-        return mainChannelName;
-    }
-
-    /**
-     * 设置主波道名称
-     *
-     * @param mainChannelName 主波道名称
-     */
-    public void setMainChannelName(String mainChannelName) {
-        this.mainChannelName = mainChannelName == null ? null : mainChannelName.trim();
-    }
-
-    /**
-     * 获取备用波道id
-     *
-     * @return spare_channel_id - 备用波道id
-     */
-    public Long getSpareChannelId() {
-        return spareChannelId;
-    }
-
-    /**
-     * 设置备用波道id
-     *
-     * @param spareChannelId 备用波道id
-     */
-    public void setSpareChannelId(Long spareChannelId) {
-        this.spareChannelId = spareChannelId;
-    }
-
-    /**
-     * 获取备用波道名称
-     *
-     * @return spare_channel_name - 备用波道名称
-     */
-    public String getSpareChannelName() {
-        return spareChannelName;
-    }
-
-    /**
-     * 设置备用波道名称
-     *
-     * @param spareChannelName 备用波道名称
-     */
-    public void setSpareChannelName(String spareChannelName) {
-        this.spareChannelName = spareChannelName == null ? null : spareChannelName.trim();
     }
 
     /**
