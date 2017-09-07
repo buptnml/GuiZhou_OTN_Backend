@@ -1,14 +1,24 @@
 package com.bupt.pojo;
 
+import com.bupt.util.exception.controller.input.NullArgumentException;
+
 public class OsnrChannelDTO {
     Long channelId;
     Long bussinessId;
-    Boolean isMain;
+    boolean isMain;
     String channelRate;
     String channelFrequency;
     String inputPowers;
     String outputPowers;
 
+    public void checkChannelDTO(){
+        if(null == channelRate){
+            throw new NullArgumentException("channelRate");
+        }
+        if(null == channelFrequency){
+            throw new NullArgumentException("channelFrequency");
+        }
+    }
     public Long getBussinessId() {
         return bussinessId;
     }
@@ -17,11 +27,11 @@ public class OsnrChannelDTO {
         this.bussinessId = bussinessId;
     }
 
-    public Boolean getMain() {
+    public boolean isMain() {
         return isMain;
     }
 
-    public void setMain(Boolean main) {
+    public void setMain(boolean main) {
         isMain = main;
     }
 

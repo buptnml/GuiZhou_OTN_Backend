@@ -14,7 +14,7 @@ public interface OsnrChannelService {
     /**
      * 删除指定版本中指定光通道的业务
      */
-    void removeOsnrChannel(Long versionId, Long bussinessId);
+    void removeOsnrChannel(ChannelQuery channelQuery);
 
     /**
      * 创建新波道
@@ -24,7 +24,7 @@ public interface OsnrChannelService {
     /**
      * 修改波道信息
      */
-    OsnrChannelDTO updateOsnrChannel(ChannelQuery channelQuery, String route, OsnrChannelDTO osnrChannelDTO);
+    OsnrChannelDTO updateOsnrChannel(ChannelQuery channelQuery, String route, OsnrChannelCreateInfo osnrChannelCreateInfo);
 
     /**
      * 根据版本ID和光通道Id获取对应的波道信息

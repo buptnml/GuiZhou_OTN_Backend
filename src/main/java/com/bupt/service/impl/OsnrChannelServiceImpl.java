@@ -28,13 +28,9 @@ public class OsnrChannelServiceImpl implements OsnrChannelService {
     private ResOsnrChannelDao resOsnrChannelDao;
 
     @Override
-    public void removeOsnrChannel(Long versionId, Long bussinessId) {
-        Example example = new Example(ResOsnrChannel.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("versionId", versionId);
-        criteria.andEqualTo("bussinessId", bussinessId);
-
-        if (resOsnrChannelDao.deleteByExample(example) == 0) {
+    public void removeOsnrChannel(ChannelQuery channelQuery) {
+        //主波道必然存在，迂回波道不一定存在
+        if (resOsnrChannelDao.deleteByExample(getExample(channelQuery)) == 0 && channelQuery.isMain()) {
             throw new NoneRemoveException();
         }
     }
@@ -57,8 +53,8 @@ public class OsnrChannelServiceImpl implements OsnrChannelService {
     }
 
     @Override
-    public OsnrChannelDTO updateOsnrChannel(ChannelQuery channelQuery, String route, OsnrChannelDTO osnrChannelDTO) {
-        if (resOsnrChannelDao.updateByExampleSelective(createChannel(new ChannelQuery(),route, osnrChannelDTO), getExample(channelQuery)) > 0) {
+    public OsnrChannelDTO updateOsnrChannel(ChannelQuery channelQuery, String route, OsnrChannelCreateInfo osnrChannelCreateInfo) {
+        if (resOsnrChannelDao.updateByExampleSelective(createChannel(new ChannelQuery(),route, osnrChannelCreateInfo), getExample(channelQuery)) > 0) {
             return getOnsrChannel(channelQuery);
         }
         throw new NoneUpdateException();
@@ -69,7 +65,10 @@ public class OsnrChannelServiceImpl implements OsnrChannelService {
     public OsnrChannelDTO getOnsrChannel(ChannelQuery channelQuery) {
         List<ResOsnrChannel> channels = resOsnrChannelDao.selectByExample(getExample(channelQuery));
         if (channels.size() == 1) {
-            return DOtoDTO(channels.get(0));
+            OsnrChannelDTO result = DOtoDTO(channels.get(0));
+            //属性复制的过程中boolean类型会变成null
+            result.setMain(channels.get(0).getIsMain());
+            return result;
         }
         throw new NoneGetException();
     }
