@@ -29,14 +29,14 @@ public class VersionController {
     @ApiOperation(value = "查询所有版本")
     @RequestMapping(value = "/", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<VersionDTOLess> listUser() {
+    public List<VersionDTOLess> listVersion() {
         return versionService.listVersion();
     }
 
     @ApiOperation(value = "创建新版本")
     @RequestMapping(value = "/", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public VersionDTO saveUser(@RequestBody VersionCreateInfo versionCreateInfo) {
+    public VersionDTO saveVersion(@RequestBody VersionCreateInfo versionCreateInfo) {
         checkVersionCreateInfoLegal(versionCreateInfo);
         return versionService.saveVersion(versionCreateInfo);
     }
@@ -45,7 +45,7 @@ public class VersionController {
     @ApiOperation(value = "批量删除指定id的版本")
     @RequestMapping(value = "/", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void listRemoveUser(@RequestBody List<Long> versionIdList) {
+    public void listRemoveVersion(@RequestBody List<Long> versionIdList) {
         if (null == versionIdList || versionIdList.size() == 0) {
             throw new IllegalArgumentException("versionIdList");
         }
@@ -55,7 +55,7 @@ public class VersionController {
     @ApiOperation(value = "按id查询版本")
     @RequestMapping(value = "/{versionId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public VersionDTO getUserByUserQuery(@PathVariable Long versionId) {
+    public VersionDTO getVersion(@PathVariable Long versionId) {
         return versionService.getVersion(versionId);
     }
 
@@ -63,7 +63,7 @@ public class VersionController {
     @ApiOperation(value = "根据ID更新版本")
     @RequestMapping(value = "/{versionId}", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.CREATED)
-    public VersionDTO updateUser(@PathVariable Long versionId, @RequestBody VersionDTO versionDTO) {
+    public VersionDTO updateVersion(@PathVariable Long versionId, @RequestBody VersionDTO versionDTO) {
         if (null == versionDTO.getVersionSetting()) {
             throw new NullArgumentException("versionSetting");
         }

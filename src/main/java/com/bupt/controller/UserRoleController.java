@@ -43,7 +43,7 @@ public class UserRoleController {
     @ApiOperation(value = "批量删除指定角色")
     @RequestMapping(value = "/", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void listRemoveUser(@RequestBody List<Long> userRoleIdList) {
+    public void listRemoveUserRole(@RequestBody List<Long> userRoleIdList) {
         if (null == userRoleIdList || userRoleIdList.size() == 0) {
             throw new IllegalArgumentException("userRoleIdList");
         }
