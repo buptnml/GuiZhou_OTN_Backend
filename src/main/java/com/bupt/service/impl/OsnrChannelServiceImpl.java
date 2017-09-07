@@ -4,6 +4,7 @@ import com.bupt.dao.ResOsnrChannelDao;
 import com.bupt.entity.ResOsnrChannel;
 import com.bupt.pojo.OsnrChannelCreateInfo;
 import com.bupt.pojo.OsnrChannelDTO;
+import com.bupt.pojo.ChannelQuery;
 import com.bupt.service.OsnrChannelService;
 import com.bupt.util.exception.controller.result.NoneGetException;
 import com.bupt.util.exception.controller.result.NoneRemoveException;
@@ -39,33 +40,34 @@ public class OsnrChannelServiceImpl implements OsnrChannelService {
     }
 
     @Override
-    public OsnrChannelDTO saveOsnrChannel(Long versionId, Long bussinessId, boolean isMain, OsnrChannelCreateInfo osnrChannelCreateInfo) {
-        if (resOsnrChannelDao.insertSelective(createChannel(versionId, bussinessId, isMain, osnrChannelCreateInfo)) > 0) {
-            return getOnsrChannel(versionId, bussinessId, isMain);
+    public OsnrChannelDTO saveOsnrChannel(ChannelQuery channelQuery, String route, OsnrChannelCreateInfo osnrChannelCreateInfo) {
+        if (resOsnrChannelDao.insertSelective(createChannel(channelQuery,route, osnrChannelCreateInfo)) > 0) {
+            return getOnsrChannel(channelQuery);
         }
         throw new NoneSaveException();
     }
 
-    private Example getExample(Long versionId, Long bussinessId, boolean isMain) {
+    private Example getExample(ChannelQuery channelQuery) {
         Example example = new Example(ResOsnrChannel.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("versionId", versionId);
-        criteria.andEqualTo("bussinessId", bussinessId);
-        criteria.andEqualTo("isMain", isMain);
+        criteria.andEqualTo("versionId", channelQuery.getVersionId());
+        criteria.andEqualTo("bussinessId", channelQuery.getBussinessId());
+        criteria.andEqualTo("isMain", channelQuery.isMain());
         return example;
     }
 
     @Override
-    public OsnrChannelDTO updateOsnrChannel(Long versionId, Long bussinessId, boolean isMain, OsnrChannelCreateInfo osnrChannelCreateInfo) {
-        if (resOsnrChannelDao.updateByExampleSelective(createChannel(0L, 0L, null, osnrChannelCreateInfo), getExample(versionId, bussinessId, isMain)) > 0) {
-            return getOnsrChannel(versionId, bussinessId, isMain);
+    public OsnrChannelDTO updateOsnrChannel(ChannelQuery channelQuery, String route, OsnrChannelDTO osnrChannelDTO) {
+        if (resOsnrChannelDao.updateByExampleSelective(createChannel(new ChannelQuery(),route, osnrChannelDTO), getExample(channelQuery)) > 0) {
+            return getOnsrChannel(channelQuery);
         }
         throw new NoneUpdateException();
     }
 
+
     @Override
-    public OsnrChannelDTO getOnsrChannel(Long versionId, Long bussinessId, boolean isMain) {
-        List<ResOsnrChannel> channels = resOsnrChannelDao.selectByExample(getExample(versionId, bussinessId, isMain));
+    public OsnrChannelDTO getOnsrChannel(ChannelQuery channelQuery) {
+        List<ResOsnrChannel> channels = resOsnrChannelDao.selectByExample(getExample(channelQuery));
         if (channels.size() == 1) {
             return DOtoDTO(channels.get(0));
         }
@@ -73,7 +75,6 @@ public class OsnrChannelServiceImpl implements OsnrChannelService {
     }
 
     @Override
-    @Transactional
     public void batchRemove(Long versionId) {
         Example example = new Example(ResOsnrChannel.class);
         Example.Criteria criteria = example.createCriteria();
@@ -91,20 +92,22 @@ public class OsnrChannelServiceImpl implements OsnrChannelService {
         criteria.andEqualTo("versionId", baseVersionId);
         List<ResOsnrChannel> channels = resOsnrChannelDao.selectByExample(example);
         for (ResOsnrChannel oldChannel : channels) {
-            resOsnrChannelDao.insertSelective(createChannel(newVersionId, oldChannel.getBussinessId(), oldChannel.getIsMain(), oldChannel));
+            oldChannel.setChannelId(null);
+            oldChannel.setVersionId(newVersionId);
+            resOsnrChannelDao.insertSelective(oldChannel);
         }
     }
 
 
-    private ResOsnrChannel createChannel(Long versionId, Long bussinessId, Boolean isMain, Object inputInfo) {
+    private ResOsnrChannel createChannel(ChannelQuery channelQuery,String route, Object inputInfo) {
         if (null == inputInfo) {
             return null;
         }
         ResOsnrChannel channel = new ResOsnrChannel();
         BeanUtils.copyProperties(inputInfo, channel);
-        channel.setVersionId(versionId == 0 ? null : versionId);
-        channel.setBussinessId(bussinessId == 0 ? null : bussinessId);
-        channel.setIsMain(isMain);
+        channel.setVersionId(channelQuery.getVersionId());
+        channel.setBussinessId(channelQuery.getBussinessId());
+        channel.setIsMain(channelQuery.isMain());
         channel.setChannelId(null);
         //TODO 未来写完Osnr算法以后需要在这里补全输入输出计算结果
 

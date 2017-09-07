@@ -37,12 +37,6 @@ public class ResOsnrChannel {
     private String channelFrequency;
 
     /**
-     * 波道路由
-     */
-    @Column(name = "channel_route")
-    private String channelRoute;
-
-    /**
      * 波道路由上设备的输入功率
      */
     @Column(name = "input_powers")
@@ -160,24 +154,6 @@ public class ResOsnrChannel {
      */
     public void setChannelFrequency(String channelFrequency) {
         this.channelFrequency = channelFrequency == null ? null : channelFrequency.trim();
-    }
-
-    /**
-     * 获取波道路由
-     *
-     * @return channel_route - 波道路由
-     */
-    public String getChannelRoute() {
-        return channelRoute;
-    }
-
-    /**
-     * 设置波道路由
-     *
-     * @param channelRoute 波道路由
-     */
-    public void setChannelRoute(String channelRoute) {
-        this.channelRoute = channelRoute == null ? null : channelRoute.trim();
     }
 
     /**

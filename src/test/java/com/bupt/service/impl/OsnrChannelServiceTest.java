@@ -2,7 +2,7 @@ package com.bupt.service.impl;
 
 
 import com.bupt.pojo.OsnrChannelCreateInfo;
-import com.bupt.pojo.OsnrChannelDTO;
+import com.bupt.pojo.ChannelQuery;
 import com.bupt.service.OsnrChannelService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,14 +19,13 @@ public class OsnrChannelServiceTest {
     @Resource
     OsnrChannelService osnrChannelService;
 
-    @Test
-    public void saveOsnrChannel() throws Exception {
-        OsnrChannelCreateInfo osnrChannelCreateInfo = new OsnrChannelCreateInfo();
-        osnrChannelCreateInfo.setChannelFrequency("测试速率");
-        osnrChannelCreateInfo.setChannelRate("测试频率");
-        osnrChannelCreateInfo.setChannelRoute("测试路由");
-        osnrChannelService.saveOsnrChannel(100000000010L,02L,false,osnrChannelCreateInfo);
-    }
+//    @Test
+//    public void saveOsnrChannel() throws Exception {
+//        OsnrChannelCreateInfo osnrChannelCreateInfo = new OsnrChannelCreateInfo();
+//        osnrChannelCreateInfo.setChannelFrequency("测试速率");
+//        osnrChannelCreateInfo.setChannelRate("测试频率");
+//        osnrChannelService.saveOsnrChannel(new ChannelQuery(100000000010L, 02L, false),"测试路由", osnrChannelCreateInfo);
+//    }
 
 
     @Test

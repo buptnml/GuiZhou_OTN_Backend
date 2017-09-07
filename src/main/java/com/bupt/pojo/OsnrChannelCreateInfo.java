@@ -3,8 +3,6 @@ package com.bupt.pojo;
 public class OsnrChannelCreateInfo {
     String channelRate;
     String channelFrequency;
-    String channelRoute;
-
 
     public String getChannelRate() {
         return channelRate;
@@ -20,14 +18,6 @@ public class OsnrChannelCreateInfo {
 
     public void setChannelFrequency(String channelFrequency) {
         this.channelFrequency = channelFrequency;
-    }
-
-    public String getChannelRoute() {
-        return channelRoute;
-    }
-
-    public void setChannelRoute(String channelRoute) {
-        this.channelRoute = channelRoute;
     }
 
 }

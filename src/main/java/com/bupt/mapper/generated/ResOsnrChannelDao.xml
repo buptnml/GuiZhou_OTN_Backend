@@ -10,7 +10,6 @@
     <result column="is_main" jdbcType="BIT" property="isMain" />
     <result column="channel_rate" jdbcType="VARCHAR" property="channelRate" />
     <result column="channel_frequency" jdbcType="VARCHAR" property="channelFrequency" />
-    <result column="channel_route" jdbcType="VARCHAR" property="channelRoute" />
     <result column="input_powers" jdbcType="VARCHAR" property="inputPowers" />
     <result column="output_powers" jdbcType="VARCHAR" property="outputPowers" />
     <result column="version_id" jdbcType="BIGINT" property="versionId" />
@@ -21,7 +20,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    channel_id, bussiness_id, is_main, channel_rate, channel_frequency, channel_route, 
-    input_powers, output_powers, version_id, gmt_create, gmt_modified
+    channel_id, bussiness_id, is_main, channel_rate, channel_frequency, input_powers, 
+    output_powers, version_id, gmt_create, gmt_modified
   </sql>
 </mapper>

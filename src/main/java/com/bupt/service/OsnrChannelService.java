@@ -1,9 +1,9 @@
 package com.bupt.service;
 
+import com.bupt.pojo.ChannelQuery;
 import com.bupt.pojo.OsnrChannelCreateInfo;
 import com.bupt.pojo.OsnrChannelDTO;
 
-import java.util.List;
 
 /**
  * OSNR波道Service层
@@ -19,17 +19,17 @@ public interface OsnrChannelService {
     /**
      * 创建新波道
      */
-    OsnrChannelDTO saveOsnrChannel(Long versionId, Long bussinessId, boolean isMain, OsnrChannelCreateInfo osnrChannelCreateInfo);
+    OsnrChannelDTO saveOsnrChannel(ChannelQuery channelQuery, String route, OsnrChannelCreateInfo osnrChannelCreateInfo);
 
     /**
      * 修改波道信息
      */
-    OsnrChannelDTO updateOsnrChannel(Long versionId, Long bussinessId, boolean isMain, OsnrChannelCreateInfo osnrChannelCreateInfo);
+    OsnrChannelDTO updateOsnrChannel(ChannelQuery channelQuery, String route, OsnrChannelDTO osnrChannelDTO);
 
     /**
      * 根据版本ID和光通道Id获取对应的波道信息
      */
-    OsnrChannelDTO getOnsrChannel(Long versionId, Long bussinessId, boolean isMain);
+    OsnrChannelDTO getOnsrChannel(ChannelQuery channelQuery);
 
 
     /**

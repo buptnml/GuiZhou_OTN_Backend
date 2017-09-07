@@ -6,7 +6,6 @@ public class OsnrChannelDTO {
     Boolean isMain;
     String channelRate;
     String channelFrequency;
-    String channelRoute;
     String inputPowers;
     String outputPowers;
 
@@ -50,13 +49,6 @@ public class OsnrChannelDTO {
         this.channelFrequency = channelFrequency;
     }
 
-    public String getChannelRoute() {
-        return channelRoute;
-    }
-
-    public void setChannelRoute(String channelRoute) {
-        this.channelRoute = channelRoute;
-    }
 
     public String getInputPowers() {
         return inputPowers;
