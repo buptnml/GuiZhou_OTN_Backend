@@ -70,6 +70,7 @@ public class VersionController {
         if (null == versionDTO.getVersionName() || versionDTO.getVersionName().trim().length() == 0) {
             throw new NullArgumentException("versionName");
         }
+        versionDTO.setVersionId(versionId);
         return versionService.updateVersion(versionId, versionDTO);
     }
 

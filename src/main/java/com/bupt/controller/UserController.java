@@ -1,6 +1,7 @@
 package com.bupt.controller;
 
 
+import com.bupt.facade.VersionService;
 import com.bupt.pojo.UserCreateInfo;
 import com.bupt.pojo.UserDTO;
 import com.bupt.pojo.UserQuery;
@@ -66,7 +67,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public UserDTO updateUser(@PathVariable Long userId,@RequestBody UserCreateInfo userCreateInfo) {
         
-        this.checkUserDTO(new UserDTO(null, userCreateInfo.getUserName(), userCreateInfo.getPassword(),
+        this.checkUserDTO(new UserDTO(userId, userCreateInfo.getUserName(), userCreateInfo.getPassword(),
                 userCreateInfo.getUserRole(), userCreateInfo.getUserGroup()));
         UserDTO resultDTO = this.userService.updateUser(userId,userCreateInfo);
         return resultDTO;
