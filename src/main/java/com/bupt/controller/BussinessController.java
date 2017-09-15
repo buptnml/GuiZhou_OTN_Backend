@@ -1,11 +1,12 @@
 package com.bupt.controller;
 
 
-import com.bupt.facade.BussinessService;
+import com.bupt.service.BussinessService;
 import com.bupt.facade.VersionService;
 import com.bupt.pojo.BussinessCreateInfo;
 import com.bupt.pojo.BussinessDTO;
 import com.bupt.pojo.VersionDTO;
+import com.bupt.service.VersionDictService;
 import com.bupt.util.exception.controller.input.IllegalArgumentException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,6 +28,8 @@ public class BussinessController {
     private BussinessService bussinessService;
     @Resource
     private VersionService versionService;
+    @Resource
+    private VersionDictService versionDictService;
 
     @ApiOperation(value = "查询某个版本下的所有光通道信息")
     @RequestMapping(value = "/{versionId}", method = RequestMethod.GET)
@@ -68,8 +71,8 @@ public class BussinessController {
 
 
     private void checkVersionId(Long versionId){
-        VersionDTO versionDTO = versionService.getVersion(versionId);
-        if(!versionDTO.getVersionSetting().getResourceSetting().isBussiness()){
+        if(versionDictService.getVersionDictByName(versionService.getVersion(versionId).getVersionDictName())
+                .getHasBussiness() ){
             throw new IllegalArgumentException("versionId");
         }
     }

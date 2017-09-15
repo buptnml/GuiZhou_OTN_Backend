@@ -1,10 +1,10 @@
-package com.bupt.facade.impl;
+package com.bupt.service.impl;
 
 import com.bupt.dao.ResBussinessDao;
 import com.bupt.entity.ResBussiness;
 import com.bupt.pojo.BussinessCreateInfo;
 import com.bupt.pojo.BussinessDTO;
-import com.bupt.facade.BussinessService;
+import com.bupt.service.BussinessService;
 import com.bupt.pojo.ChannelQuery;
 import com.bupt.service.OsnrChannelService;
 import com.bupt.util.exception.controller.result.NoneRemoveException;
@@ -110,15 +110,12 @@ public class BussinessServiceImpl implements BussinessService {
     }
 
     @Override
-    @Transactional
     public void batchRemove(Long versionId) {
         osnrChannelService.batchRemove(versionId);
         Example example = new Example(ResBussiness.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("versionId", versionId);
-        if (resBussinessDao.deleteByExample(example) == 0) {
-            throw new NoneRemoveException();
-        }
+        resBussinessDao.deleteByExample(example);
     }
 
     @Override
