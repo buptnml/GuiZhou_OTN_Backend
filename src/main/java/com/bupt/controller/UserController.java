@@ -36,16 +36,15 @@ public class UserController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public List<UserDTO> listUser() {
-        List<UserDTO> listSysUserDTO = userService.listUser();
-        return listSysUserDTO;
+        return userService.listUser();
     }
     
     
     @ApiOperation(value = "按条件查询用户")
-    @RequestMapping(value = "/{userName}/{passWord}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{userName}/{password}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public UserDTO getUserByUserQuery(@PathVariable String userName, @PathVariable String passWord) {
-        UserQuery userQuery = new UserQuery(userName, passWord);
+    public UserDTO getUserByUserQuery(@PathVariable String userName, @PathVariable String password) {
+        UserQuery userQuery = new UserQuery(userName, password);
         this.checkUserQuery(userQuery);
         UserDTO resultDTO = userService.getUserByUserQuery(userQuery);
         return resultDTO;
@@ -86,7 +85,7 @@ public class UserController {
     
     private void checkUserDTO(UserDTO userDTO) {
         if (userDTO.getPassword() == null) {
-            throw new NullArgumentException("passWord");
+            throw new NullArgumentException("password");
         }
         if (userDTO.getUserName() == null) {
             throw new NullArgumentException("userName");
@@ -110,7 +109,7 @@ public class UserController {
     
     private void checkUserQuery(UserQuery userQuery) {
         if (userQuery.getPassword() == null) {
-            throw new NullArgumentException("passWord");
+            throw new NullArgumentException("password");
         }
         if (userQuery.getUserName() == null) {
             throw new NullArgumentException("userName");

@@ -60,4 +60,14 @@ public interface UserService {
      * @return
      */
     UserDTO updateUser(Long userId,UserCreateInfo userCreateInfo);
+
+
+    /**
+     * 查询所有用户名
+     * @return
+     */
+    List<String> listUserNames();
+
+
+
 }

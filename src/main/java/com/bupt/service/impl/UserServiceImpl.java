@@ -106,6 +106,16 @@ public class UserServiceImpl implements UserService {
         throw new NoneUpdateException();
     }
 
+    @Override
+    public List<String> listUserNames() {
+        List<UserDTO> userDTOS = listUser();
+        List<String> userNameList = new ArrayList<>();
+        for (UserDTO userDTO:userDTOS) {
+            userNameList.add(userDTO.getUserName());
+        }
+        return userNameList;
+    }
+
 
     private UserDTO convertToUserDTO(Object inputObject) {
         if (null == inputObject) {

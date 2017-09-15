@@ -78,9 +78,6 @@ public class OsnrChannelServiceImpl implements OsnrChannelService {
         Example example = new Example(ResOsnrChannel.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("versionId", versionId);
-        if (resOsnrChannelDao.deleteByExample(example) == 0) {
-            throw new NoneRemoveException();
-        }
     }
 
     @Override
