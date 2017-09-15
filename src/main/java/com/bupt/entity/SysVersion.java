@@ -19,6 +19,18 @@ public class SysVersion {
     private String versionName;
 
     /**
+     * 版本字典的名称
+     */
+    @Column(name = "version_dict_name")
+    private String versionDictName;
+
+    /**
+     * 创建者名称
+     */
+    @Column(name = "creator_name")
+    private String creatorName;
+
+    /**
      * 版本描述
      */
     @Column(name = "version_description")
@@ -76,6 +88,42 @@ public class SysVersion {
      */
     public void setVersionName(String versionName) {
         this.versionName = versionName == null ? null : versionName.trim();
+    }
+
+    /**
+     * 获取版本字典的名称
+     *
+     * @return version_dict_name - 版本字典的名称
+     */
+    public String getVersionDictName() {
+        return versionDictName;
+    }
+
+    /**
+     * 设置版本字典的名称
+     *
+     * @param versionDictName 版本字典的名称
+     */
+    public void setVersionDictName(String versionDictName) {
+        this.versionDictName = versionDictName == null ? null : versionDictName.trim();
+    }
+
+    /**
+     * 获取创建者名称
+     *
+     * @return creator_name - 创建者名称
+     */
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    /**
+     * 设置创建者名称
+     *
+     * @param creatorName 创建者名称
+     */
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName == null ? null : creatorName.trim();
     }
 
     /**

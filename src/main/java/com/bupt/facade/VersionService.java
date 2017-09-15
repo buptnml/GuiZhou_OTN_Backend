@@ -1,11 +1,9 @@
 package com.bupt.facade;
 
 
-import com.bupt.pojo.VersionCreateInfo;
+import com.bupt.pojo.VersionQuery;
 import com.bupt.pojo.VersionDTO;
-import com.bupt.pojo.VersionDTOLess;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,10 +12,10 @@ import java.util.List;
 public interface VersionService {
     /**
      * 创建新版本
-     * @param versionCreateInfo
+     * @param versionQuery
      * @return
      */
-    VersionDTO saveVersion(VersionCreateInfo versionCreateInfo);
+    VersionDTO saveVersion(VersionQuery versionQuery);
 
     /**
      * 批量删除版本
@@ -29,7 +27,7 @@ public interface VersionService {
      * 获取所有版本
      * @return
      */
-    List<VersionDTOLess> listVersion();
+    List<VersionDTO> listVersion();
 
     /**
      * 根据版本Id打开新版本
@@ -40,8 +38,15 @@ public interface VersionService {
 
     /**
      * 修改版本设置
-     * @param versionDTO
+     * @param versionQuery
      * @return
      */
-    VersionDTO updateVersion(Long versionId,VersionDTO versionDTO);
+    VersionDTO updateVersion(Long versionId,VersionQuery versionQuery);
+
+//    /**
+//     * 同步指定版本名的资源
+//     * @param fromVersionName
+//     */
+//    void dataSynchronize(Long versionId,String fromVersionName);
+
 }

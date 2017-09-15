@@ -1,9 +1,9 @@
 package com.bupt.controller;
 
 import com.bupt.facade.VersionService;
-import com.bupt.pojo.VersionCreateInfo;
+import com.bupt.pojo.VersionQuery;
 import com.bupt.pojo.VersionDTO;
-import com.bupt.pojo.VersionDTOLess;
+import com.bupt.service.VersionDictService;
 import com.bupt.util.exception.controller.input.IllegalArgumentException;
 import com.bupt.util.exception.controller.input.NullArgumentException;
 import io.swagger.annotations.Api;
@@ -24,21 +24,22 @@ import java.util.List;
 public class VersionController {
     @Resource
     private VersionService versionService;
-
+    @Resource
+    private VersionDictService versionDictService;
 
     @ApiOperation(value = "查询所有版本")
     @RequestMapping(value = "/", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<VersionDTOLess> listVersion() {
+    public List<VersionDTO> listVersion() {
         return versionService.listVersion();
     }
 
     @ApiOperation(value = "创建新版本")
     @RequestMapping(value = "/", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public VersionDTO saveVersion(@RequestBody VersionCreateInfo versionCreateInfo) {
-        checkVersionCreateInfoLegal(versionCreateInfo);
-        return versionService.saveVersion(versionCreateInfo);
+    public VersionDTO saveVersion(@RequestBody VersionQuery versionQuery) {
+        checkVersionQuery(versionQuery);
+        return versionService.saveVersion(versionQuery);
     }
 
 
@@ -48,6 +49,9 @@ public class VersionController {
     public void listRemoveVersion(@RequestBody List<Long> versionIdList) {
         if (null == versionIdList || versionIdList.size() == 0) {
             throw new IllegalArgumentException("versionIdList");
+        }
+        if(versionIdList.contains(100000000000L)){
+            throw new IllegalArgumentException("versionIdList contains 100000000000");
         }
         versionService.listRemoveVersion(versionIdList);
     }
@@ -60,34 +64,42 @@ public class VersionController {
     }
 
 
-    @ApiOperation(value = "根据ID更新版本")
+//    @ApiOperation(value = "根据版本Id进行数据同步的操作")
+//    @RequestMapping(value = "/{versionId}", method = RequestMethod.PUT)
+//    @ResponseStatus(HttpStatus.ACCEPTED)
+//    public void versionDataSynchronize(@PathVariable Long versionId, @RequestBody String fromVersionName) {
+//        if(null == fromVersionName){
+//            throw new NullArgumentException("fromVersionName");
+//        }
+//        versionService.dataSynchronize(versionId, fromVersionName);
+//    }
+
+    @ApiOperation(value = "")
     @RequestMapping(value = "/{versionId}", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.CREATED)
-    public VersionDTO updateVersion(@PathVariable Long versionId, @RequestBody VersionDTO versionDTO) {
-        if (null == versionDTO.getVersionSetting()) {
-            throw new NullArgumentException("versionSetting");
+    public VersionDTO updateVersion(@PathVariable Long versionId, @RequestBody VersionQuery versionQuery) {
+        if(versionId==100000000000L){
+            throw new IllegalArgumentException("versionIdList contains 100000000000");
         }
-        if (null == versionDTO.getVersionName() || versionDTO.getVersionName().trim().length() == 0) {
-            throw new NullArgumentException("versionName");
-        }
-        versionDTO.setVersionId(versionId);
-        return versionService.updateVersion(versionId, versionDTO);
+        return versionService.updateVersion(versionId, versionQuery);
     }
 
 
-    private void checkVersionCreateInfoLegal(VersionCreateInfo vfi) {
-
-        if (null == vfi.getBaseVersionName() || vfi.getBaseVersionName().trim().length() == 0) {
-            throw new NullArgumentException("baseVersionName");
-        }
-        if (null == vfi.getVersionSetting()) {
-            throw new NullArgumentException("versionSetting");
-        }
-        if (null == vfi.getVersionName() || vfi.getVersionName().trim().length() == 0) {
+    private void checkVersionQuery(VersionQuery versionQuery) {
+        if(null == versionQuery.getVersionName()){
             throw new NullArgumentException("versionName");
         }
-        if (vfi.getVersionName().equals(vfi.getBaseVersionName())) {
-            throw new IllegalArgumentException("baseVersionName & versionName");
+        if(null == versionQuery.getVersionDictName()){
+            throw new NullArgumentException("versionDictName");
+        }
+        if(null == versionQuery.getCreatorName()){
+            throw new NullArgumentException("creatorName");
+        }
+        if(null == versionDictService.getVersionDictByName(versionQuery.getVersionDictName())){
+            throw new IllegalArgumentException("versionDictName");
+        }
+        if(versionQuery.getVersionName().trim().equals("基础版本")){
+            throw new IllegalArgumentException("versionName==基础版本");
         }
     }
 }

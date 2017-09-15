@@ -2,18 +2,20 @@ package com.bupt.facade.impl;
 
 import com.bupt.dao.SysVersionDao;
 import com.bupt.entity.SysVersion;
-import com.bupt.pojo.VersionCreateInfo;
+import com.bupt.entity.SysVersionDict;
+import com.bupt.service.BussinessService;
+import com.bupt.pojo.VersionQuery;
 import com.bupt.pojo.VersionDTO;
-import com.bupt.pojo.VersionDTOLess;
 import com.bupt.pojo.VersionSetting;
 import com.bupt.facade.VersionService;
-import com.bupt.pojo.versionSettings.ResourceSetting;
+import com.bupt.service.VersionDictService;
 import com.bupt.util.exception.controller.result.NoneGetException;
 import com.bupt.util.exception.controller.result.NoneRemoveException;
 import com.bupt.util.exception.controller.result.NoneSaveException;
 import com.bupt.util.exception.controller.result.NoneUpdateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
@@ -28,22 +30,18 @@ import java.util.List;
 public class VersionServiceImpl implements VersionService {
     @Resource
     private SysVersionDao sysVersionDao;
+    @Resource
+    private BussinessService bussinessService;
+    @Resource
+    private VersionDictService versionDictService;
 
     Logger logger = LoggerFactory.getLogger(VersionServiceImpl.class);
 
     @Override
     @Transactional
-    public VersionDTO saveVersion(VersionCreateInfo versionCreateInfo) {
-
-        SysVersion tempVersion = new SysVersion();
-        tempVersion.setVersionSetting(toByteArray(versionCreateInfo.getVersionSetting()));
-        tempVersion.setVersionDescription(versionCreateInfo.getVersionDescription());
-        tempVersion.setVersionName(versionCreateInfo.getVersionName());
-
-        if (sysVersionDao.insertSelective(tempVersion) > 0) {
-            SysVersion newVersion = getVersionByName(versionCreateInfo.getVersionName());
-            batchCreate(versionCreateInfo.getVersionSetting().getResourceSetting(),
-                    getVersionByName(versionCreateInfo.getBaseVersionName()).getVersionId(), newVersion.getVersionId());
+    public VersionDTO saveVersion(VersionQuery versionQuery) {
+        if (sysVersionDao.insertSelective(convertToSysVersion(versionQuery)) > 0) {
+            SysVersion newVersion = getVersionByName(versionQuery.getVersionName());
             return DOtoDTO(newVersion);
         }
         throw new NoneSaveException();
@@ -58,17 +56,18 @@ public class VersionServiceImpl implements VersionService {
             if (null == temp) {
                 throw new NoneRemoveException();
             }
-            batchRemove(toObject(temp.getVersionSetting()).getResourceSetting());
+            batchRemove(temp.getVersionId());
             sysVersionDao.deleteByPrimaryKey(temp.getVersionId());
         }
     }
 
     @Override
-    public List<VersionDTOLess> listVersion() {
+    @Transactional
+    public List<VersionDTO> listVersion() {
         Iterator<SysVersion> sysVersionIterator = sysVersionDao.selectAll().iterator();
-        List<VersionDTOLess> resultList = new ArrayList<VersionDTOLess>();
+        List<VersionDTO> resultList = new ArrayList<VersionDTO>();
         while (sysVersionIterator.hasNext()) {
-            resultList.add(this.DOtoDTOLess(sysVersionIterator.next()));
+            resultList.add(DOtoDTO(sysVersionIterator.next()));
         }
         if (resultList.size() == 0 || null == resultList) {
             throw new NoneGetException();
@@ -86,76 +85,69 @@ public class VersionServiceImpl implements VersionService {
     }
 
     @Override
-    public VersionDTO updateVersion(Long versionId, VersionDTO versionDTO) {
-        versionDTO.setVersionId(versionId);
-        if (sysVersionDao.updateByPrimaryKeySelective(DTOtoDo(versionDTO)) == 0) {
+    public VersionDTO updateVersion(Long versionId, VersionQuery versionQuery) {
+        SysVersion updateInfo = convertToSysVersion(versionQuery);
+        updateInfo.setVersionId(versionId);
+
+        if (sysVersionDao.updateByPrimaryKeySelective(updateInfo) == 0) {
             throw new NoneUpdateException();
         }
-        return DOtoDTO(sysVersionDao.selectByPrimaryKey(versionDTO.getVersionId()));
+        return DOtoDTO(sysVersionDao.selectByPrimaryKey(versionId));
     }
+//
+//    @Override
+//    @Transactional
+//    public void dataSynchronize(Long versionId,String fromVersionName) {
+//        //首先想要拷贝的版本的源的信息
+//        SysVersion fromVersion = getVersionByName(fromVersionName);
+//        SysVersionDict fromVersionDict = versionDictService.getVersionDictByName(fromVersion.getVersionDictName());
+//        //首先拷贝目标的版本的信息
+//        SysVersion newVersion = sysVersionDao.selectByPrimaryKey(versionId);
+//        SysVersionDict newVersionDict = versionDictService.getVersionDictByName(newVersion.getVersionDictName());
+//
+//        //如果源没有但是目标有则出错。否则正常拷贝
+//        if(newVersionDict.getHasBussiness()){
+//            if(fromVersionDict.getHasBussiness()){
+//                bussinessService.batchCreate(fromVersion.getVersionId(),newVersion.getVersionId());
+//            }else{
+//                throw new RuntimeException();
+//            }
+//        }
+//    }
 
 
-    /**
-     * 根据版本设置信息批量创建所有需要的资源
-     * 需要提供基于的版本Id
-     */
-    @Transactional
-    public void batchCreate(ResourceSetting rs, long baseOnId, long newId) {
-        if (rs.isAmplifier()) {
-            //TODO
-        }
-        if (rs.isDisk()) {
-            //TODO
-        }
-        if (rs.isBussiness()) {
-            //TODO
-        }
-        if (rs.isLink()) {
-            //TODO
-        }
-        if (rs.isLinkType()) {
-            //TODO
-        }
-        if (rs.isNetElement()) {
-            //TODO
-        }
-    }
 
     /***
      * 根据版本设置批量删除该版本所用资源
      */
-    @Transactional
-    public void batchRemove(ResourceSetting rs) {
-        if (rs.isAmplifier()) {
-            //TODO
+    private void batchRemove(Long versionId) {
+
+        SysVersion Version = sysVersionDao.selectByPrimaryKey(versionId);
+        if (null == Version){
+            throw new NoneRemoveException();
         }
-        if (rs.isDisk()) {
-            //TODO
+
+        SysVersionDict versionDict = versionDictService.getVersionDictByName(Version.getVersionDictName());
+        if(versionDict.getHasBussiness()){
+            bussinessService.batchRemove(versionId);
         }
-        if (rs.isBussiness()) {
-            //TODO
-        }
-        if (rs.isLink()) {
-            //TODO
-        }
-        if (rs.isLinkType()) {
-            //TODO
-        }
-        if (rs.isNetElement()) {
-            //TODO
-        }
+        //TODO 等到未来其他资源补齐以后补充batchRemove内容
     }
 
     @Transactional
     public SysVersion getVersionByName(String versionName) {
-        Example example = new Example(SysVersion.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("versionName", versionName);
-        List<SysVersion> sysVersionList = sysVersionDao.selectByExample(example);
+        List<SysVersion> sysVersionList = sysVersionDao.selectByExample(getExample(versionName));
         if (sysVersionList.size() == 0 || sysVersionList.size() > 1) {
             throw new NoneGetException();
         }
         return sysVersionList.get(0);
+    }
+
+    private Example getExample(String versionName) {
+        Example example = new Example(SysVersion.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("versionName", versionName);
+        return example;
     }
 
 
@@ -163,36 +155,48 @@ public class VersionServiceImpl implements VersionService {
         if (null == sysVersionDO) {
             return null;
         }
-        VersionDTO versionDTO = new VersionDTO();
-        versionDTO.setVersionId(sysVersionDO.getVersionId());
-        versionDTO.setVersionName(sysVersionDO.getVersionName());
-        versionDTO.setVersionSetting(this.toObject(sysVersionDO.getVersionSetting()));
-        versionDTO.setVersionDescription(sysVersionDO.getVersionDescription());
-        return versionDTO;
+        VersionDTO result = new VersionDTO();
+//        result.setVersionSetting(this.toObject(sysVersionDO.getVersionSetting()));
+        sysVersionDO.setVersionSetting(null);
+        BeanUtils.copyProperties(sysVersionDO, result);
+        return result;
     }
 
-    private VersionDTOLess DOtoDTOLess(SysVersion sysVersionDO) {
-        if (null == sysVersionDO) {
+    private SysVersion convertToSysVersion(VersionQuery versionQuery) {
+        if (null == versionQuery) {
             return null;
         }
-        VersionDTOLess versionDTOLess = new VersionDTOLess();
-        versionDTOLess.setVersionId(sysVersionDO.getVersionId());
-        versionDTOLess.setVersionName(sysVersionDO.getVersionName());
-        versionDTOLess.setVersionDescription(sysVersionDO.getVersionDescription());
-        return versionDTOLess;
+        SysVersion result = new SysVersion();
+
+//        result.setVersionSetting(toByteArray(versionQuery.getVersionSetting()));
+//        versionQuery.setVersionSetting(null);
+
+        BeanUtils.copyProperties(versionQuery, result);
+        return result;
     }
 
+//    private VersionDTOLess DOtoDTOLess(SysVersion sysVersionDO) {
+//        if (null == sysVersionDO) {
+//            return null;
+//        }
+//        VersionDTOLess versionDTOLess = new VersionDTOLess();
+//        versionDTOLess.setVersionId(sysVersionDO.getVersionId());
+//        versionDTOLess.setVersionName(sysVersionDO.getVersionName());
+//        versionDTOLess.setVersionDescription(sysVersionDO.getVersionDescription());
+//        return versionDTOLess;
+//    }
 
-    private SysVersion DTOtoDo(VersionDTO versionDTO) {
-        if (null == versionDTO) {
-            return null;
-        }
-        SysVersion sysVersion = new SysVersion();
-        sysVersion.setVersionId(versionDTO.getVersionId());
-        sysVersion.setVersionName(versionDTO.getVersionName());
-        sysVersion.setVersionSetting(toByteArray(versionDTO.getVersionSetting()));
-        return sysVersion;
-    }
+
+//    private SysVersion DTOtoDo(VersionDTO versionDTO) {
+//        if (null == versionDTO) {
+//            return null;
+//        }
+//        SysVersion sysVersion = new SysVersion();
+//        sysVersion.setVersionId(versionDTO.getVersionId());
+//        sysVersion.setVersionName(versionDTO.getVersionName());
+//        sysVersion.setVersionSetting(toByteArray(versionDTO.getVersionSetting()));
+//        return sysVersion;
+//    }
 
     /**
      * VersionSetting 序列化
