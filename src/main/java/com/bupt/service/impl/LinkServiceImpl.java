@@ -47,15 +47,19 @@ public class LinkServiceImpl implements LinkService {
 
     @Override
     public ResLinkDTO updateResLink(Long versionId, Long linkId, LinkCreateInfo linkCreateInfo) {
-        ResLink resLink = convertToResLink(linkCreateInfo);
-        Example updateExample =new Example(ResLink.class);
+        ResLink updateInfo = convertToResLink(linkCreateInfo);
+        if (resLinkDao.updateByExampleSelective(convertToResLink(linkCreateInfo), getExample(versionId, linkId)) == 1) {
+            return convertToResLinkDTO(resLinkDao.selectOne(updateInfo));
+        }
+        throw new NoneUpdateException();
+    }
+
+    private Example getExample(Long versionId, Long linkId) {
+        Example updateExample = new Example(ResLink.class);
         Example.Criteria criteria = updateExample.createCriteria();
         criteria.andEqualTo("versionId", versionId);
         criteria.andEqualTo("linkId", linkId);
-        if (resLinkDao.updateByExampleSelective(resLink, updateExample) == 1) {
-            return convertToResLinkDTO(resLinkDao.selectOne(resLink));
-        }
-        throw new NoneUpdateException();
+        return updateExample;
     }
 
 
@@ -90,8 +94,8 @@ public class LinkServiceImpl implements LinkService {
         List<ResLink> resLinksList = resLinkDao.selectByExample(getExample(baseVersionId));
         for (ResLink link : resLinksList) {
             LinkCreateInfo newLink = new LinkCreateInfo();
-            BeanUtils.copyProperties(link,newLink);
-            saveResLink(newVersionId,newLink);
+            BeanUtils.copyProperties(link, newLink);
+            saveResLink(newVersionId, newLink);
         }
     }
 

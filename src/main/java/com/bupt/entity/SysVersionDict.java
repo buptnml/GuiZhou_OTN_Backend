@@ -266,7 +266,6 @@ public class SysVersionDict {
      *
      * @return gmt_create - 创建时间
      */
-    @JsonSerialize(using = CustomDateSerializer.class)
     public Date getGmtCreate() {
         return gmtCreate;
     }
@@ -276,7 +275,7 @@ public class SysVersionDict {
      *
      * @param gmtCreate 创建时间
      */
-
+    @JsonSerialize(using = CustomDateSerializer.class)
     public void setGmtCreate(Date gmtCreate) {
         this.gmtCreate = gmtCreate;
     }

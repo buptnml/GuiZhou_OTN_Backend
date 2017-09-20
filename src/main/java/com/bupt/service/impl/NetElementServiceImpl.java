@@ -7,6 +7,7 @@ import com.bupt.pojo.NetElementDTO;
 import com.bupt.service.NetElementService;
 import com.bupt.util.exception.controller.result.NoneGetException;
 import com.bupt.util.exception.controller.result.NoneRemoveException;
+import com.bupt.util.exception.controller.result.NoneSaveException;
 import com.bupt.util.exception.controller.result.NoneUpdateException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -30,15 +31,15 @@ public class NetElementServiceImpl implements NetElementService {
         if (resNetElementDao.insertSelective(saveInfo) > 0) {
             return convertToNetElementDTO(resNetElementDao.selectOne(saveInfo));
         }
-        return null;
+        throw new NoneSaveException();
     }
 
     @Override
     @Transactional
-    public void listRemoveNetElement(List<Long> netElementIdList) {
+    public void listRemoveNetElement(Long versionId, List<Long> netElementIdList) {
         Iterator<Long> idListIterator = netElementIdList.iterator();
         while (idListIterator.hasNext()) {
-            if (resNetElementDao.deleteByPrimaryKey(idListIterator.next()) == 0) {
+            if (resNetElementDao.deleteByExample(getExample(versionId, idListIterator.next())) == 0) {
                 throw new NoneRemoveException();
             }
         }
@@ -46,7 +47,6 @@ public class NetElementServiceImpl implements NetElementService {
 
     @Override
     public List<NetElementDTO> listNetElement(Long versionId) {
-        Example example = new Example(ResNetElement.class);
         List<ResNetElement> resNetElementsList = resNetElementDao.selectByExample(getExample(versionId));
         if (resNetElementsList.size() == 0) {
             throw new NoneGetException();
@@ -61,18 +61,20 @@ public class NetElementServiceImpl implements NetElementService {
 
     @Override
     public NetElementDTO updateNetElement(Long versionId, Long netElementId, NetElementCreateInfo netElementCreateInfo) {
-        ResNetElement resNetElement = this.convertToResNetElement(netElementCreateInfo);
-        Example updateExample = new Example(ResNetElement.class);
-        Example.Criteria criteria = updateExample.createCriteria();
-        criteria.andEqualTo("versionId", versionId);
-        criteria.andEqualTo("netElementId", netElementId);
-        if (resNetElementDao.updateByExampleSelective(resNetElement, updateExample) == 1) {
-            return convertToNetElementDTO(resNetElementDao.selectOne(resNetElement));
+        ResNetElement updateInfo = this.convertToResNetElement(netElementCreateInfo);
+        if (resNetElementDao.updateByExampleSelective(updateInfo, getExample(versionId, netElementId)) == 1) {
+            return convertToNetElementDTO(resNetElementDao.selectOne(updateInfo));
         }
         throw new NoneUpdateException();
     }
 
-
+    private Example getExample(Long versionId, Long netElementId) {
+        Example updateExample = new Example(ResNetElement.class);
+        Example.Criteria criteria = updateExample.createCriteria();
+        criteria.andEqualTo("versionId", versionId);
+        criteria.andEqualTo("netElementId", netElementId);
+        return updateExample;
+    }
 
 
     private Example getExample(Long versionId) {
@@ -84,14 +86,14 @@ public class NetElementServiceImpl implements NetElementService {
 
 
     @Override
-    public void batchRemove(long versiondId) {
-        resNetElementDao.deleteByExample(getExample(versiondId));
+    public void batchRemove(long versionId) {
+        resNetElementDao.deleteByExample(getExample(versionId));
     }
 
     @Override
-    public NetElementDTO getNetElement(long netElementId) {
-        if (null != resNetElementDao.selectByPrimaryKey(netElementId)) {
-            return convertToNetElementDTO(resNetElementDao.selectByPrimaryKey(netElementId));
+    public NetElementDTO getNetElement(Long versionId, long netElementId) {
+        if (null != resNetElementDao.selectByPrimaryKey(getExample(versionId, netElementId))) {
+            return convertToNetElementDTO(resNetElementDao.selectByExample(getExample(versionId, netElementId)));
         }
         throw new NoneGetException();
     }
@@ -99,10 +101,10 @@ public class NetElementServiceImpl implements NetElementService {
     @Override
     public void batchCreate(Long baseVersionId, Long newVersionId) {
         List<ResNetElement> baseVersionList = resNetElementDao.selectByExample(getExample(baseVersionId));
-        for(ResNetElement disk:baseVersionList){
-            NetElementCreateInfo newNetElement = new NetElementCreateInfo(disk.getCoordinateX(),disk.getCoordinateY()
-                    , disk.getNetElementName(),disk.getNetElementType());
-            saveNetElement(newVersionId,newNetElement);
+        for (ResNetElement disk : baseVersionList) {
+            NetElementCreateInfo newNetElement = new NetElementCreateInfo(disk.getCoordinateX(), disk.getCoordinateY()
+                    , disk.getNetElementName(), disk.getNetElementType());
+            saveNetElement(newVersionId, newNetElement);
         }
     }
 

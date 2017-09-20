@@ -38,6 +38,7 @@ public interface DiskService {
 
     /**
      * 批量删除指定版本指定网元中的机盘信息
+     *
      * @param versionId
      * @param netElementId
      * @param diskIdList
@@ -46,6 +47,7 @@ public interface DiskService {
 
     /**
      * 删除指定版本中的所有机盘信息
+     *
      * @param versionId
      */
     void batchRemove(Long versionId);

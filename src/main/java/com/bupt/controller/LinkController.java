@@ -48,7 +48,7 @@ public class LinkController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResLinkDTO saveResLink(@PathVariable Long versionId, @RequestBody LinkCreateInfo linkCreateInfo) {
         checkVersionId(versionId);
-        checkLinkCreateInfo(linkCreateInfo);
+        checkLinkCreateInfo(versionId,linkCreateInfo);
         return linkService.saveResLink(versionId, linkCreateInfo);
     }
 
@@ -58,7 +58,7 @@ public class LinkController {
     public ResLinkDTO updateResLink(@PathVariable Long versionId, @PathVariable Long linkId, @RequestBody LinkCreateInfo
             linkCreateInfo) {
         checkVersionId(versionId);
-        checkLinkCreateInfo(linkCreateInfo);
+        checkLinkCreateInfo(versionId,linkCreateInfo);
         return linkService.updateResLink(versionId, linkId, linkCreateInfo);
     }
 
@@ -74,7 +74,7 @@ public class LinkController {
         this.linkService.listRemoveResLink(versionId, linkIdList);
     }
 
-    private void checkLinkCreateInfo(LinkCreateInfo linkCreateInfo) {
+    private void checkLinkCreateInfo(Long versionId,LinkCreateInfo linkCreateInfo) {
         if(null == linkCreateInfo.getEndAId()){
             throw new NullArgumentException("endAId should not be NULL!");
         }
@@ -83,13 +83,13 @@ public class LinkController {
         }
         NetElementDTO endA = null;
         try {
-            endA = netElementService.getNetElement(linkCreateInfo.getEndAId());
+            endA = netElementService.getNetElement(versionId,linkCreateInfo.getEndAId());
         } catch (NoneGetException e) {
             throw new NoneGetException("endAId");
         }
         NetElementDTO endZ = null;
         try {
-            endZ = netElementService.getNetElement(linkCreateInfo.getEndZId());
+            endZ = netElementService.getNetElement(versionId,linkCreateInfo.getEndZId());
         } catch (Exception e) {
             throw new NoneGetException("endZId");
         }
@@ -111,7 +111,8 @@ public class LinkController {
 
     private void checkVersionId(Long versionID) {
         if (versionID == 100000000000L) {
-            throw new IllegalArgumentException("versionID不能为基础版本的ID，基础版本不允许任何方式的修改！");
+            throw new IllegalArgumentException("versionID should not be 100000000000, the base version " +
+                    "could not be altered in anyway！");
         }
     }
 }

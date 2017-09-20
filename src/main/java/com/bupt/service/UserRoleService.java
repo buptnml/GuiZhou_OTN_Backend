@@ -11,6 +11,7 @@ import java.util.List;
 public interface UserRoleService {
     /**
      * 创建新角色信息
+     *
      * @param userRoleCreateInfo
      * @return
      */
@@ -18,12 +19,14 @@ public interface UserRoleService {
 
     /**
      * 批量删除角色
+     *
      * @param userRoleIdList
      */
     void listRemoveUserRole(List<Long> userRoleIdList);
 
     /**
      * 获取所有角色
+     *
      * @return
      */
     List<UserRoleDTO> listUserRole();

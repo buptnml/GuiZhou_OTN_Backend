@@ -16,7 +16,6 @@ public interface LinkService {
     ResLinkDTO saveResLink(Long versionId, LinkCreateInfo linkCreateInfo);
 
 
-
     /**
      * 批量删除
      *

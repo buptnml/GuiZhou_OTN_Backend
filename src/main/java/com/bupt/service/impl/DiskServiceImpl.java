@@ -19,18 +19,18 @@ import java.util.Iterator;
 import java.util.List;
 
 @Service("diskService")
-public class DiskServiceImpl  implements DiskService{
+public class DiskServiceImpl implements DiskService {
     @Resource
     private ResDiskDao resDiskDao;
 
     @Override
     public List<DiskDTO> listDiskByNetElement(Long versionId, Long netElementId) {
-        Iterator<ResDisk> searchListIte = resDiskDao.selectByExample(getExample(versionId,netElementId)).iterator();
-        if(!searchListIte.hasNext()) {
+        Iterator<ResDisk> searchListIte = resDiskDao.selectByExample(getExample(versionId, netElementId)).iterator();
+        if (!searchListIte.hasNext()) {
             throw new NoneGetException();
         }
         List<DiskDTO> resultList = new ArrayList<>();
-        while(searchListIte.hasNext()){
+        while (searchListIte.hasNext()) {
             resultList.add(convertToDTO(searchListIte.next()));
         }
         return resultList;
@@ -41,33 +41,26 @@ public class DiskServiceImpl  implements DiskService{
         ResDisk insertInfo = createResDisk(diskCreateInfo);
         insertInfo.setVersionId(versionId);
         insertInfo.setNetElementId(netElementId);
-        if( resDiskDao.insertSelective(insertInfo)==0){
+        if (resDiskDao.insertSelective(insertInfo) == 0) {
             throw new NoneSaveException();
         }
-       return convertToDTO(resDiskDao.selectOne(insertInfo));
+        return convertToDTO(resDiskDao.selectOne(insertInfo));
     }
 
     @Override
     public DiskDTO updateDisk(Long versionId, Long netElementId, Long diskId, DiskCreateInfo diskCreateInfo) {
-        Example updateExample = new Example(ResDisk.class);
-        Example.Criteria criteria = updateExample.createCriteria();
-        criteria.andEqualTo("netElementId", netElementId);
-        criteria.andEqualTo("versionId", versionId);
-        criteria.andEqualTo("diskId", diskId);
-        if(resDiskDao.updateByExampleSelective(createResDisk(diskCreateInfo),updateExample)!=1){
+        if (resDiskDao.updateByExampleSelective(createResDisk(diskCreateInfo), getExample(versionId, netElementId,
+                diskId)) != 1) {
             throw new NoneUpdateException();
-        }
-        else return convertToDTO(resDiskDao.selectOne(createResDisk(diskCreateInfo)));
+        } else return convertToDTO(resDiskDao.selectOne(createResDisk(diskCreateInfo)));
     }
+
 
     @Override
     @Transactional
     public void listRemove(Long versionId, Long netElementId, List<Long> diskIdList) {
-        for(Long diskId:diskIdList){
-            Example removeExample = getExample(versionId,netElementId);
-            Example.Criteria criteria = removeExample.createCriteria();
-            criteria.andEqualTo("diskId", diskId);
-            if(resDiskDao.deleteByExample(removeExample)!=1){
+        for (Long diskId : diskIdList) {
+            if (resDiskDao.deleteByExample(getExample(versionId, netElementId, diskId)) != 1) {
                 throw new NoneUpdateException();
             }
         }
@@ -75,22 +68,35 @@ public class DiskServiceImpl  implements DiskService{
 
     @Override
     public void batchRemove(Long versionId) {
-        Example example = new Example(ResDisk.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("versionId", versionId);
+        Example example = getExample(versionId);
         resDiskDao.deleteByExample(example);
     }
 
     @Override
     public void batchCreate(Long baseVersionId, Long newVersionId) {
+        Example example = getExample(baseVersionId);
+        List<ResDisk> basicVersionList = resDiskDao.selectByExample(example);
+        for (ResDisk disk : basicVersionList) {
+            DiskCreateInfo newDisk = new DiskCreateInfo(disk.getDiskName(), disk.getDiskType());
+            saveDisk(newVersionId, disk.getNetElementId(), newDisk);
+        }
+    }
+
+
+    private Example getExample(Long versionId, Long netElementId, Long diskId) {
+        Example updateExample = new Example(ResDisk.class);
+        Example.Criteria criteria = updateExample.createCriteria();
+        criteria.andEqualTo("netElementId", netElementId);
+        criteria.andEqualTo("versionId", versionId);
+        criteria.andEqualTo("diskId", diskId);
+        return updateExample;
+    }
+
+    private Example getExample(Long baseVersionId) {
         Example example = new Example(ResDisk.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("versionId", baseVersionId);
-        List<ResDisk> basicVersionList = resDiskDao.selectByExample(example);
-        for(ResDisk disk:basicVersionList){
-            DiskCreateInfo newDisk = new DiskCreateInfo(disk.getDiskName(),disk.getDiskType());
-            saveDisk(newVersionId, disk.getNetElementId(),newDisk);
-        }
+        return example;
     }
 
 
@@ -102,7 +108,7 @@ public class DiskServiceImpl  implements DiskService{
         return example;
     }
 
-    private ResDisk createResDisk(Object inputObject){
+    private ResDisk createResDisk(Object inputObject) {
         if (null == inputObject) {
             return null;
         }
@@ -111,7 +117,7 @@ public class DiskServiceImpl  implements DiskService{
         return resDisk;
     }
 
-    private DiskDTO convertToDTO(Object inputObject){
+    private DiskDTO convertToDTO(Object inputObject) {
         if (null == inputObject) {
             return null;
         }

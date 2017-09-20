@@ -20,7 +20,7 @@ public interface NetElementService {
      *
      * @param netElementIdList
      */
-    void listRemoveNetElement(List<Long> netElementIdList);
+    void listRemoveNetElement(Long versionId, List<Long> netElementIdList);
 
     /**
      * 查询当前版本所有网元信息
@@ -49,11 +49,11 @@ public interface NetElementService {
 
     /**
      * 通过netElementId查询网元信息
+     *
      * @param netElementId
      * @return
      */
-    NetElementDTO getNetElement(long netElementId);
-
+    NetElementDTO getNetElement(Long versionId, long netElementId);
 
 
     /**

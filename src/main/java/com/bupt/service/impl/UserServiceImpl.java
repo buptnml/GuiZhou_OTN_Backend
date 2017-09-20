@@ -25,10 +25,10 @@ import java.util.List;
  */
 @Service("userService")
 public class UserServiceImpl implements UserService {
-    
+
     @Resource
     private SysUserDao sysUserDao;
-    
+
     @Override
     public UserDTO saveUser(UserCreateInfo userCreateInfo) {
         if (sysUserDao.insertSelective(this.convertToSysUser(userCreateInfo)) > 0) {
@@ -36,20 +36,19 @@ public class UserServiceImpl implements UserService {
         }
         throw new NoneSaveException();
     }
-    
+
     @Override
-    @Transactional(rollbackFor=NoneRemoveException.class)
+    @Transactional(rollbackFor = NoneRemoveException.class)
     public void listRemoveUser(List<Long> idList) {
-        Iterator<Long> idListIterator=idList.iterator();
-        while(idListIterator.hasNext()){
+        Iterator<Long> idListIterator = idList.iterator();
+        while (idListIterator.hasNext()) {
             if (sysUserDao.deleteByPrimaryKey(idListIterator.next()) == 0) {
                 throw new NoneRemoveException();
             }
         }
     }
-    
-    
-    
+
+
     @Override
     public UserDTO getUserByUserQuery(UserQuery userQuery) {
         Example example = new Example(SysUser.class);
@@ -62,16 +61,16 @@ public class UserServiceImpl implements UserService {
         }
         return this.convertToUserDTO(sysUserList.get(0));
     }
-    
+
     @Override
     public UserDTO getUserByUserId(Long userId) {
-        UserDTO userDTO= this.convertToUserDTO(sysUserDao.selectByPrimaryKey(userId));
-        if(null==userDTO){
+        UserDTO userDTO = this.convertToUserDTO(sysUserDao.selectByPrimaryKey(userId));
+        if (null == userDTO) {
             throw new NoneGetException();
         }
         return userDTO;
     }
-    
+
     @Override
     public List<UserDTO> listUser() {
         Iterator<SysUser> sysUserIterator = sysUserDao.selectAll().iterator();
@@ -79,18 +78,18 @@ public class UserServiceImpl implements UserService {
         while (sysUserIterator.hasNext()) {
             resultList.add(this.convertToUserDTO(sysUserIterator.next()));
         }
-        if(resultList.size()==0||null==resultList){
+        if (resultList.size() == 0 || null == resultList) {
             throw new NoneGetException();
         }
         return resultList;
     }
-    
+
     @Override
     public UserDTO updateUser(UserCreateInfo userCreateInfo) {
         Example example = new Example(SysUser.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("userName", userCreateInfo.getUserName());
-        if (sysUserDao.updateByExampleSelective(this.convertToSysUser(userCreateInfo),example) > 0) {
+        if (sysUserDao.updateByExampleSelective(this.convertToSysUser(userCreateInfo), example) > 0) {
             return this.getUserByUserQuery(new UserQuery(userCreateInfo.getUserName(), userCreateInfo.getPassword()));
         }
         throw new NoneUpdateException();
@@ -110,7 +109,7 @@ public class UserServiceImpl implements UserService {
     public List<String> listUserNames() {
         List<UserDTO> userDTOS = listUser();
         List<String> userNameList = new ArrayList<>();
-        for (UserDTO userDTO:userDTOS) {
+        for (UserDTO userDTO : userDTOS) {
             userNameList.add(userDTO.getUserName());
         }
         return userNameList;
@@ -125,7 +124,7 @@ public class UserServiceImpl implements UserService {
         BeanUtils.copyProperties(inputObject, resultDTO);
         return resultDTO;
     }
-    
+
     private SysUser convertToSysUser(Object inputObject) {
         if (null == inputObject) {
             return null;

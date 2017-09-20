@@ -82,28 +82,29 @@ public class NetElementController {
     public void listRemoveNetElement(@PathVariable Long versionId, @RequestBody List<Long> netElementIdList) {
         checkVersionId(versionId);
         if (netElementIdList == null || netElementIdList.size() == 0) {
-            throw new IllegalArgumentException("netElementIdList");
+            throw new IllegalArgumentException("netElementIdList should not be empty.");
         }
-        this.netElementService.listRemoveNetElement(netElementIdList);
+        this.netElementService.listRemoveNetElement(versionId,netElementIdList);
     }
 
 
     private void checkNetElementCreateInfo(NetElementCreateInfo netElementCreateInfo) {
         if (null == netElementCreateInfo.getNetElementName()) {
-            throw new NullArgumentException("netElementName不能为空");
+            throw new NullArgumentException("netElementName should not be empty.");
         } else if (netElementCreateInfo.getNetElementName().trim().equals("")) {
-            throw new IllegalArgumentException("netElementName不能为空");
+            throw new IllegalArgumentException("netElementName should not be empty.");
         }
         if (null == netElementCreateInfo.getNetElementType()) {
-            throw new NullArgumentException("netElementType不能为空");
+            throw new NullArgumentException("netElementType should not be null.");
         } else if (null == NetElementTypes.valueOf(netElementCreateInfo.getNetElementType())) {
-            throw new IllegalArgumentException("netElementType的值为不支持的类型");
+            throw new IllegalArgumentException("netElementType should not be null.");
         }
     }
 
     private void checkVersionId(Long versionID) {
         if (versionID == 100000000000L) {
-            throw new java.lang.IllegalArgumentException("versionID不能为基础版本的ID，基础版本不允许任何方式的修改！");
+            throw new java.lang.IllegalArgumentException("versionID should not be 100000000000, the base version " +
+                    "could not be altered in anyway！");
         }
     }
 

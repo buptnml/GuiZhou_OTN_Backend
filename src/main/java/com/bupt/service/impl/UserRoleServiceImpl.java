@@ -30,13 +30,18 @@ public class UserRoleServiceImpl implements UserRoleService {
     @Override
     public UserRoleDTO saveUserRole(UserRoleCreateInfo userRoleCreateInfo) {
         if (sysUserRoleDao.insertSelective(this.DTOtoDO(userRoleCreateInfo)) > 0) {
-            Example example = new Example(SysUserRole.class);
-            Example.Criteria criteria = example.createCriteria();
-            criteria.andEqualTo("roleName", userRoleCreateInfo.getRoleName());
+            Example example = getExample(userRoleCreateInfo);
             List<SysUserRole> SysUserRoleList = sysUserRoleDao.selectByExample(example);
             return DOtoDTO(SysUserRoleList.get(0));
         }
         throw new NoneSaveException();
+    }
+
+    private Example getExample(UserRoleCreateInfo userRoleCreateInfo) {
+        Example example = new Example(SysUserRole.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("roleName", userRoleCreateInfo.getRoleName());
+        return example;
     }
 
     @Override
@@ -55,13 +60,16 @@ public class UserRoleServiceImpl implements UserRoleService {
 
     @Transactional
     public void deleteUserByRole(SysUserRole role) {
+        Example example = getExample(role);
+        sysUserDao.deleteByExample(example);
 
+    }
+
+    private Example getExample(SysUserRole role) {
         Example example = new Example(SysUser.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("userRole", role.getRoleName());
-
-        sysUserDao.deleteByExample(example);
-
+        return example;
     }
 
     @Override

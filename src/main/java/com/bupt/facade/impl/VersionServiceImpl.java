@@ -104,26 +104,6 @@ public class VersionServiceImpl implements VersionService {
         }
         return DOtoDTO(sysVersionDao.selectByPrimaryKey(versionId));
     }
-//
-//    @Override
-//    @Transactional
-//    public void dataSynchronize(Long versionId,String fromVersionName) {
-//        //首先想要拷贝的版本的源的信息
-//        SysVersion fromVersion = getVersionByName(fromVersionName);
-//        SysVersionDict fromVersionDict = versionDictService.getVersionDictByName(fromVersion.getVersionDictName());
-//        //首先拷贝目标的版本的信息
-//        SysVersion newVersion = sysVersionDao.selectByPrimaryKey(versionId);
-//        SysVersionDict newVersionDict = versionDictService.getVersionDictByName(newVersion.getVersionDictName());
-//
-//        //如果源没有但是目标有则出错。否则正常拷贝
-//        if(newVersionDict.getHasBussiness()){
-//            if(fromVersionDict.getHasBussiness()){
-//                bussinessService.batchCreate(fromVersion.getVersionId(),newVersion.getVersionId());
-//            }else{
-//                throw new RuntimeException();
-//            }
-//        }
-//    }
 
     /**
      * 从基础版本中拷贝数据到新版本中
@@ -217,29 +197,6 @@ public class VersionServiceImpl implements VersionService {
         BeanUtils.copyProperties(versionQuery, result);
         return result;
     }
-
-//    private VersionDTOLess DOtoDTOLess(SysVersion sysVersionDO) {
-//        if (null == sysVersionDO) {
-//            return null;
-//        }
-//        VersionDTOLess versionDTOLess = new VersionDTOLess();
-//        versionDTOLess.setVersionId(sysVersionDO.getVersionId());
-//        versionDTOLess.setVersionName(sysVersionDO.getVersionName());
-//        versionDTOLess.setVersionDescription(sysVersionDO.getVersionDescription());
-//        return versionDTOLess;
-//    }
-
-
-//    private SysVersion DTOtoDo(VersionDTO versionDTO) {
-//        if (null == versionDTO) {
-//            return null;
-//        }
-//        SysVersion sysVersion = new SysVersion();
-//        sysVersion.setVersionId(versionDTO.getVersionId());
-//        sysVersion.setVersionName(versionDTO.getVersionName());
-//        sysVersion.setVersionSetting(toByteArray(versionDTO.getVersionSetting()));
-//        return sysVersion;
-//    }
 
     /**
      * VersionSetting 序列化

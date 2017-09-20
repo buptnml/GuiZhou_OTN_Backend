@@ -11,42 +11,48 @@ import java.util.List;
  * 用户Service层
  */
 public interface UserService {
-    
+
     /**
      * 创建用户
+     *
      * @param userCreateInfo
      * @return
      */
     UserDTO saveUser(UserCreateInfo userCreateInfo);
-    
+
     /**
      * 批量删除指定id的用户
+     *
      * @param userIdList
      */
     void listRemoveUser(List<Long> userIdList);
-    
+
     /**
      * 查询用户，根据用户名和密码
+     *
      * @param userQuery
      * @return
      */
     UserDTO getUserByUserQuery(UserQuery userQuery);
-    
+
     /**
      * 根据用户id查询用户
+     *
      * @param userId
      * @return
      */
     UserDTO getUserByUserId(Long userId);
-    
+
     /**
      * 查询所有用户
+     *
      * @return
      */
     List<UserDTO> listUser();
-    
+
     /**
      * 更新用户信息
+     *
      * @param userCreateInfo
      * @return
      */
@@ -55,19 +61,20 @@ public interface UserService {
 
     /**
      * 更新用户信息（通过ID）
+     *
      * @param userId
      * @param userCreateInfo
      * @return
      */
-    UserDTO updateUser(Long userId,UserCreateInfo userCreateInfo);
+    UserDTO updateUser(Long userId, UserCreateInfo userCreateInfo);
 
 
     /**
      * 查询所有用户名
+     *
      * @return
      */
     List<String> listUserNames();
-
 
 
 }
