@@ -22,7 +22,7 @@ public class ResOnsrLinkType {
      * 链路损耗，单位dB/km
      */
     @Column(name = "link_loss")
-    private Short linkLoss;
+    private Float linkLoss;
 
     /**
      * 链路速率
@@ -89,7 +89,7 @@ public class ResOnsrLinkType {
      *
      * @return link_loss - 链路损耗，单位dB/km
      */
-    public Short getLinkLoss() {
+    public Float getLinkLoss() {
         return linkLoss;
     }
 
@@ -98,7 +98,7 @@ public class ResOnsrLinkType {
      *
      * @param linkLoss 链路损耗，单位dB/km
      */
-    public void setLinkLoss(Short linkLoss) {
+    public void setLinkLoss(Float linkLoss) {
         this.linkLoss = linkLoss;
     }
 
