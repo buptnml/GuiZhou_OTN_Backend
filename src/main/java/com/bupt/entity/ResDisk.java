@@ -31,18 +31,6 @@ public class ResDisk {
     private Long netElementId;
 
     /**
-     * 机框ID
-     */
-    @Column(name = "frame_id")
-    private Long frameId;
-
-    /**
-     * 机槽ID
-     */
-    @Column(name = "slot_id")
-    private Long slotId;
-
-    /**
      * 条目所在版本ID
      */
     @Column(name = "version_id")
@@ -130,42 +118,6 @@ public class ResDisk {
      */
     public void setNetElementId(Long netElementId) {
         this.netElementId = netElementId;
-    }
-
-    /**
-     * 获取机框ID
-     *
-     * @return frame_id - 机框ID
-     */
-    public Long getFrameId() {
-        return frameId;
-    }
-
-    /**
-     * 设置机框ID
-     *
-     * @param frameId 机框ID
-     */
-    public void setFrameId(Long frameId) {
-        this.frameId = frameId;
-    }
-
-    /**
-     * 获取机槽ID
-     *
-     * @return slot_id - 机槽ID
-     */
-    public Long getSlotId() {
-        return slotId;
-    }
-
-    /**
-     * 设置机槽ID
-     *
-     * @param slotId 机槽ID
-     */
-    public void setSlotId(Long slotId) {
-        this.slotId = slotId;
     }
 
     /**
