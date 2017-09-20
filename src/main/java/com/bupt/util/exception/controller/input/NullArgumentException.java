@@ -6,10 +6,10 @@ package com.bupt.util.exception.controller.input;
  */
 public class NullArgumentException extends IllegalArgumentException {
     public NullArgumentException() {
-        super("参数为空。\n");
+        super("Null argument。\n");
     }
 
     public NullArgumentException(String message) {
-        super("参数为空："+ message + "\n");
+        super("Null argument："+ message + "\n");
 }
 }

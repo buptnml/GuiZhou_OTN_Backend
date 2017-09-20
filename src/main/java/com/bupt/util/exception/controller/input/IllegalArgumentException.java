@@ -8,10 +8,10 @@ import com.bupt.util.exception.controller.ControllerException;
  */
 public class IllegalArgumentException extends ControllerException {
     public IllegalArgumentException() {
-        super("参数不合法.\n");
+        super("Illegal argument.\n");
     }
 
     public IllegalArgumentException(String message) {
-        super("参数不合法："+ message + "\n");
+        super("Illegal argument："+ message + "\n");
     }
 }
