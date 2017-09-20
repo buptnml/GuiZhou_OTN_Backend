@@ -36,7 +36,7 @@ public class VersionDictServiceImpl implements VersionDictService {
 
     @Override
     public SysVersionDict updateVersionDict(long versionDictId, VersionDictInfo versionDictInfo) {
-        updateVersionInfo(versionDictId,versionDictInfo.getVersionDictName());
+        updateVersionInfo(versionDictId, versionDictInfo.getVersionDictName());
         SysVersionDict updateInfo = convertToDO(versionDictInfo);
         updateInfo.setVersionDictId(versionDictId);
         if (sysVersionDictDao.updateByPrimaryKeySelective(updateInfo) > 0) {
@@ -48,23 +48,23 @@ public class VersionDictServiceImpl implements VersionDictService {
     /**
      * 将旧版本字典名更新为新版本字典名
      */
-    private void updateVersionInfo(long versionDictId,String newName){
+    private void updateVersionInfo(long versionDictId, String newName) {
         SysVersionDict oldInfo = sysVersionDictDao.selectByPrimaryKey(versionDictId);
         Example example = new Example(SysVersion.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("versionDictName", oldInfo.getVersionDictName());
         SysVersion updateInfo = new SysVersion();
         updateInfo.setVersionDictName(newName);
-        sysVersionDao.updateByExampleSelective(updateInfo,example);
+        sysVersionDao.updateByExampleSelective(updateInfo, example);
     }
 
     @Override
     @Transactional
     public void listRemoveVersionDict(List<Long> versionDictIdList) {
-        Iterator<Long> idListIterator=versionDictIdList.iterator();
-        while(idListIterator.hasNext()){
+        Iterator<Long> idListIterator = versionDictIdList.iterator();
+        while (idListIterator.hasNext()) {
             long key = idListIterator.next();
-            updateVersionInfo(key,"基础字典");
+            updateVersionInfo(key, "基础字典");
             if (sysVersionDictDao.deleteByPrimaryKey(key) == 0) {
                 throw new NoneRemoveException();
             }
@@ -74,7 +74,7 @@ public class VersionDictServiceImpl implements VersionDictService {
     @Override
     public SysVersionDict getVersionDictByName(String versionDictName) {
         List<SysVersionDict> result = sysVersionDictDao.selectByExample(getExample(versionDictName));
-        if(result.size() == 0){
+        if (result.size() == 0) {
             throw new NoneGetException();
         }
         return result.get(0);
@@ -90,7 +90,7 @@ public class VersionDictServiceImpl implements VersionDictService {
     @Override
     public List<SysVersionDict> listVersionDict() {
         List<SysVersionDict> resultList = sysVersionDictDao.selectAll();
-        if(resultList.size()==0||null==resultList){
+        if (resultList.size() == 0 || null == resultList) {
             throw new NoneGetException();
         }
         return resultList;

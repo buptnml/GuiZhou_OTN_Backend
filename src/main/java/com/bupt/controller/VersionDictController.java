@@ -77,7 +77,7 @@ public class VersionDictController {
             throw new IllegalArgumentException("CreatorName");
         }
         if(versionDictInfo.getVersionDictName().trim().equals("基础字典")){
-            throw new IllegalArgumentException("versionDIctName == 基础字典");
+            throw new IllegalArgumentException("versionDIctName should not be the basic version name.");
         }
     }
 }

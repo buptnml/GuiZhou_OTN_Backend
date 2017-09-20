@@ -9,6 +9,7 @@ public interface VersionDictService {
 
     /**
      * 创建新版本字典
+     *
      * @param versionDictInfo
      * @return
      */
@@ -17,13 +18,15 @@ public interface VersionDictService {
 
     /**
      * 修改版本字典信息
+     *
      * @param versionDictInfo
      * @return
      */
-    SysVersionDict updateVersionDict(long versionDictId,VersionDictInfo versionDictInfo);
+    SysVersionDict updateVersionDict(long versionDictId, VersionDictInfo versionDictInfo);
 
     /**
      * 批量删除版本字典信息
+     *
      * @param versionDictIdList
      */
     void listRemoveVersionDict(List<Long> versionDictIdList);
@@ -35,10 +38,10 @@ public interface VersionDictService {
 
     /**
      * 获取全部版本字典信息
+     *
      * @return
      */
     List<SysVersionDict> listVersionDict();
-
 
 
 }
