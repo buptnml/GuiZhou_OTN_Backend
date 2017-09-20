@@ -3,12 +3,12 @@ package com.bupt.facade.impl;
 import com.bupt.dao.SysVersionDao;
 import com.bupt.entity.SysVersion;
 import com.bupt.entity.SysVersionDict;
-import com.bupt.service.BussinessService;
+import com.bupt.pojo.VersionDetail;
+import com.bupt.service.*;
 import com.bupt.pojo.VersionQuery;
 import com.bupt.pojo.VersionDTO;
 import com.bupt.pojo.VersionSetting;
 import com.bupt.facade.VersionService;
-import com.bupt.service.VersionDictService;
 import com.bupt.util.exception.controller.result.NoneGetException;
 import com.bupt.util.exception.controller.result.NoneRemoveException;
 import com.bupt.util.exception.controller.result.NoneSaveException;
@@ -31,9 +31,16 @@ public class VersionServiceImpl implements VersionService {
     @Resource
     private SysVersionDao sysVersionDao;
     @Resource
+    private VersionDictService versionDictService;
+
+    @Resource
     private BussinessService bussinessService;
     @Resource
-    private VersionDictService versionDictService;
+    private DiskService diskService;
+    @Resource
+    private LinkService linkService;
+    @Resource
+    private NetElementService netElementService;
 
     Logger logger = LoggerFactory.getLogger(VersionServiceImpl.class);
 
@@ -42,6 +49,7 @@ public class VersionServiceImpl implements VersionService {
     public VersionDTO saveVersion(VersionQuery versionQuery) {
         if (sysVersionDao.insertSelective(convertToSysVersion(versionQuery)) > 0) {
             SysVersion newVersion = getVersionByName(versionQuery.getVersionName());
+            batchCreate(newVersion.getVersionId());
             return DOtoDTO(newVersion);
         }
         throw new NoneSaveException();
@@ -76,12 +84,14 @@ public class VersionServiceImpl implements VersionService {
     }
 
     @Override
-    public VersionDTO getVersion(Long versionId) {
+    public VersionDetail getVersion(Long versionId) {
         SysVersion sysVersionDO = sysVersionDao.selectByPrimaryKey(versionId);
         if (null == sysVersionDO) {
             throw new NoneGetException();
         }
-        return DOtoDTO(sysVersionDO);
+        VersionDetail versionDetail = new VersionDetail(DOtoDTO(sysVersionDO));
+        versionDetail.setVersionDict(versionDictService.getVersionDictByName(sysVersionDO.getVersionDictName()));
+        return versionDetail;
     }
 
     @Override
@@ -115,7 +125,31 @@ public class VersionServiceImpl implements VersionService {
 //        }
 //    }
 
-
+    /**
+     * 从基础版本中拷贝数据到新版本中
+     *
+     * @param versionId
+     */
+    private void batchCreate(Long versionId) {
+        SysVersion Version = sysVersionDao.selectByPrimaryKey(versionId);
+        if (null == Version) {
+            throw new NoneRemoveException("Fail to create version!");
+        }
+        SysVersionDict dictSetting = versionDictService.getVersionDictByName(Version.getVersionDictName());
+        if (dictSetting.getHasBussiness()) {
+            bussinessService.batchCreate(100000000000L,versionId);
+        }
+        if (dictSetting.getHasDisk()) {
+            diskService.batchCreate(100000000000L,versionId);
+        }
+        if(dictSetting.getHasLink()){
+            linkService.batchCreate(100000000000L,versionId);
+        }
+        if(dictSetting.getHasNetElement()){
+            netElementService.batchCreate(100000000000L,versionId);
+        }
+        //TODO 等到未来其他资源补齐以后补充batchRemove内容
+    }
 
     /***
      * 根据版本设置批量删除该版本所用资源
@@ -123,13 +157,22 @@ public class VersionServiceImpl implements VersionService {
     private void batchRemove(Long versionId) {
 
         SysVersion Version = sysVersionDao.selectByPrimaryKey(versionId);
-        if (null == Version){
-            throw new NoneRemoveException();
+        if (null == Version) {
+            throw new NoneRemoveException("Fail to delete version info.");
         }
 
-        SysVersionDict versionDict = versionDictService.getVersionDictByName(Version.getVersionDictName());
-        if(versionDict.getHasBussiness()){
+        SysVersionDict dictSetting = versionDictService.getVersionDictByName(Version.getVersionDictName());
+        if (dictSetting.getHasBussiness()) {
             bussinessService.batchRemove(versionId);
+        }
+        if (dictSetting.getHasDisk()) {
+            diskService.batchRemove(versionId);
+        }
+        if(dictSetting.getHasLink()){
+            linkService.batchRemove(versionId);
+        }
+        if(dictSetting.getHasNetElement()){
+            netElementService.batchRemove(versionId);
         }
         //TODO 等到未来其他资源补齐以后补充batchRemove内容
     }

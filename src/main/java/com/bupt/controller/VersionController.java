@@ -1,6 +1,7 @@
 package com.bupt.controller;
 
 import com.bupt.facade.VersionService;
+import com.bupt.pojo.VersionDetail;
 import com.bupt.pojo.VersionQuery;
 import com.bupt.pojo.VersionDTO;
 import com.bupt.service.VersionDictService;
@@ -51,7 +52,8 @@ public class VersionController {
             throw new IllegalArgumentException("versionIdList");
         }
         if(versionIdList.contains(100000000000L)){
-            throw new IllegalArgumentException("versionIdList contains 100000000000");
+            throw new IllegalArgumentException("versionIdList contains basicVersion,the basic version should not be " +
+                    "altered!");
         }
         versionService.listRemoveVersion(versionIdList);
     }
@@ -59,7 +61,7 @@ public class VersionController {
     @ApiOperation(value = "按id查询版本")
     @RequestMapping(value = "/{versionId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public VersionDTO getVersion(@PathVariable Long versionId) {
+    public VersionDetail getVersion(@PathVariable Long versionId) {
         return versionService.getVersion(versionId);
     }
 
@@ -79,7 +81,7 @@ public class VersionController {
     @ResponseStatus(HttpStatus.CREATED)
     public VersionDTO updateVersion(@PathVariable Long versionId, @RequestBody VersionQuery versionQuery) {
         if(versionId==100000000000L){
-            throw new IllegalArgumentException("versionIdList contains 100000000000");
+            throw new IllegalArgumentException("the basic version should not be altered in anyway!");
         }
         return versionService.updateVersion(versionId, versionQuery);
     }

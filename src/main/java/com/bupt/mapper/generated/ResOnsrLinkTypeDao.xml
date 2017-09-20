@@ -7,7 +7,7 @@
     -->
     <id column="link_type_id" jdbcType="BIGINT" property="linkTypeId" />
     <result column="link_type" jdbcType="VARCHAR" property="linkType" />
-    <result column="link_loss" jdbcType="SMALLINT" property="linkLoss" />
+    <result column="link_loss" jdbcType="REAL" property="linkLoss" />
     <result column="link_rate" jdbcType="VARCHAR" property="linkRate" />
     <result column="version_id" jdbcType="BIGINT" property="versionId" />
     <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />

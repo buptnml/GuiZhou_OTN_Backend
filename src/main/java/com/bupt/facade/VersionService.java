@@ -1,6 +1,7 @@
 package com.bupt.facade;
 
 
+import com.bupt.pojo.VersionDetail;
 import com.bupt.pojo.VersionQuery;
 import com.bupt.pojo.VersionDTO;
 
@@ -30,11 +31,11 @@ public interface VersionService {
     List<VersionDTO> listVersion();
 
     /**
-     * 根据版本Id打开新版本
+     * 根据版本Id打开指定版本
      * @param versionId
      * @return
      */
-    VersionDTO getVersion(Long versionId);
+    VersionDetail getVersion(Long versionId);
 
     /**
      * 修改版本设置
