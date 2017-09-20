@@ -20,7 +20,10 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by 韩宪斌 on 2017/6/29.
- * Controller层异常处理类，负责处理所有Controller层上的异常，并返回合理的状态码
+ * Controller层异常处理类，负责：
+ * 处理所有Controller层上的异常
+ * 返回合理的状态码
+ * 在后台log中记录抛出的异常信息
  */
 @ControllerAdvice
 @RestController

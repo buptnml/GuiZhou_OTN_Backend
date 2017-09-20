@@ -1,15 +1,15 @@
 package com.bupt.pojo;
 
+import com.bupt.entity.ResBussiness;
 import com.bupt.util.exception.controller.input.NullArgumentException;
-import org.apache.ibatis.jdbc.Null;
 
 public class BussinessDTO {
     Long bussinessId;
     String bussinessName;
     String mainRoute;
     String spareRoute;
-    OsnrChannelDTO mainChannel;
-    OsnrChannelDTO spareChannel;
+    ChannelDetail mainChannel;
+    ChannelDetail spareChannel;
 
     public void checkBussinessDTO(){
         if(null == bussinessName){
@@ -31,20 +31,29 @@ public class BussinessDTO {
         }
     }
 
+    public BussinessDTO() {
+    }
 
-    public OsnrChannelDTO getMainChannel() {
+    public BussinessDTO(ResBussiness bussiness) {
+        this.bussinessId = bussiness.getBussinessId();
+        this.bussinessName = bussiness.getBussinessName();
+        this.mainRoute = bussiness.getMainRoute();
+        this.spareRoute = bussiness.getSpareRoute();
+    }
+
+    public ChannelDetail getMainChannel() {
         return mainChannel;
     }
 
-    public void setMainChannel(OsnrChannelDTO mainChannel) {
+    public void setMainChannel(ChannelDetail mainChannel) {
         this.mainChannel = mainChannel;
     }
 
-    public OsnrChannelDTO getSpareChannel() {
+    public ChannelDetail getSpareChannel() {
         return spareChannel;
     }
 
-    public void setSpareChannel(OsnrChannelDTO spareChannel) {
+    public void setSpareChannel(ChannelDetail spareChannel) {
         this.spareChannel = spareChannel;
     }
 

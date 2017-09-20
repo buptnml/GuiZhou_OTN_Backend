@@ -23,7 +23,7 @@ public interface BussinessService {
     /**
      * 修改已有业务
      */
-    BussinessDTO updateBussiness(Long versionId,Long bussinessId, BussinessCreateInfo bussinessCreateInfo);
+    BussinessDTO updateBussiness(Long versionId, Long bussinessId, BussinessCreateInfo bussinessCreateInfo);
 
     /**
      * 批量删除现有业务
@@ -39,4 +39,6 @@ public interface BussinessService {
      * 复制一个旧有版本Id中的内容，并将版本Id字段重命名为新Id
      */
     void batchCreate(Long baseVersionId, Long newVersionId);
+
+
 }

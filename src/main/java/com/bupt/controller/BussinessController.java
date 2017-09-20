@@ -28,8 +28,7 @@ public class BussinessController {
     private BussinessService bussinessService;
     @Resource
     private VersionService versionService;
-    @Resource
-    private VersionDictService versionDictService;
+
 
     @ApiOperation(value = "查询某个版本下的所有光通道信息")
     @RequestMapping(value = "/{versionId}", method = RequestMethod.GET)
@@ -71,9 +70,12 @@ public class BussinessController {
 
 
     private void checkVersionId(Long versionId){
-        if(versionDictService.getVersionDictByName(versionService.getVersion(versionId).getVersionDictName())
-                .getHasBussiness() ){
+        if(!versionService.getVersion(versionId).getVersionDict().getHasBussiness()){
             throw new IllegalArgumentException("versionId");
+        }
+        if (versionId == 100000000000L) {
+            throw new java.lang.IllegalArgumentException("versionID should not be 100000000000, the base version " +
+                    "could not be altered in anyway！");
         }
     }
 
