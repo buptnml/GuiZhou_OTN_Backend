@@ -9,5 +9,7 @@ public class NoneRemoveException extends RequestResultErrorException {
         super("Nothing removed from the database.\n");
     }
 
-
+    public NoneRemoveException(String message) {
+        super(message+"\n");
+    }
 }
