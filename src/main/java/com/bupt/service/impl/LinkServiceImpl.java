@@ -1,10 +1,13 @@
 package com.bupt.service.impl;
 
 import com.bupt.dao.ResLinkDao;
+import com.bupt.dao.ResNetElementDao;
 import com.bupt.entity.ResLink;
+import com.bupt.entity.ResNetElement;
 import com.bupt.pojo.LinkCreateInfo;
 import com.bupt.pojo.ResLinkDTO;
 import com.bupt.service.LinkService;
+import com.bupt.service.NetElementService;
 import com.bupt.util.exception.controller.result.NoneGetException;
 import com.bupt.util.exception.controller.result.NoneRemoveException;
 import com.bupt.util.exception.controller.result.NoneSaveException;
@@ -23,6 +26,8 @@ import java.util.List;
 public class LinkServiceImpl implements LinkService {
     @Resource
     private ResLinkDao resLinkDao;
+    @Resource
+    private NetElementService netElementService;
 
     @Override
     public ResLinkDTO saveResLink(Long versionId, LinkCreateInfo linkCreateInfo) {
@@ -91,10 +96,13 @@ public class LinkServiceImpl implements LinkService {
 
     @Override
     public void batchCreate(Long baseVersionId, Long newVersionId) {
+        //TODO 链路中的网元ID需要更新
         List<ResLink> resLinksList = resLinkDao.selectByExample(getExample(baseVersionId));
         for (ResLink link : resLinksList) {
             LinkCreateInfo newLink = new LinkCreateInfo();
             BeanUtils.copyProperties(link, newLink);
+            newLink.setEndAId(netElementService.getNewElementId(baseVersionId,newLink.getEndAId(),newVersionId));
+            newLink.setEndZId(netElementService.getNewElementId(baseVersionId,newLink.getEndZId(),newVersionId));
             saveResLink(newVersionId, newLink);
         }
     }

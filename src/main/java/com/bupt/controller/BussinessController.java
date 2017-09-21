@@ -44,33 +44,33 @@ public class BussinessController {
     public BussinessDTO saveBussiness(@PathVariable Long versionId, @RequestBody BussinessCreateInfo bussinessCreateInfo) {
         checkVersionId(versionId);
         bussinessCreateInfo.checkBussinessCreateInfoLegal();
-        return bussinessService.saveBussiness(versionId,bussinessCreateInfo);
+        return bussinessService.saveBussiness(versionId, bussinessCreateInfo);
     }
 
     @ApiOperation(value = "更新某个版本下的某光通道条目")
     @RequestMapping(value = "/{versionId}/{bussinessId}", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.CREATED)
-    public BussinessDTO updateBussiness(@PathVariable Long versionId,@PathVariable Long bussinessId,@RequestBody BussinessCreateInfo
-            bussinessCreateInfo) {
+    public BussinessDTO updateBussiness(@PathVariable Long versionId, @PathVariable Long bussinessId, @RequestBody
+            BussinessCreateInfo bussinessCreateInfo) {
         checkVersionId(versionId);
         bussinessCreateInfo.checkBussinessCreateInfoLegal();
-        return bussinessService.updateBussiness(versionId,bussinessId,bussinessCreateInfo);
+        return bussinessService.updateBussiness(versionId, bussinessId, bussinessCreateInfo);
     }
 
 
     @ApiOperation(value = "批量删除某版本下指定Id的光通道条目")
     @RequestMapping(value = "/{versionId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void listRemoveBussiness(@PathVariable Long versionId,@RequestBody List<Long> bussinessIdList) {
+    public void listRemoveBussiness(@PathVariable Long versionId, @RequestBody List<Long> bussinessIdList) {
         if (null == bussinessIdList || bussinessIdList.size() == 0) {
             throw new IllegalArgumentException("bussinessIdList");
         }
-        this.bussinessService.listRemove(versionId,bussinessIdList);
+        this.bussinessService.listRemove(versionId, bussinessIdList);
     }
 
 
-    private void checkVersionId(Long versionId){
-        if(!versionService.getVersion(versionId).getVersionDict().getHasBussiness()){
+    private void checkVersionId(Long versionId) {
+        if (!versionService.getVersion(versionId).getVersionDict().getHasBussiness()) {
             throw new IllegalArgumentException("versionId");
         }
         if (versionId == 100000000000L) {
@@ -78,7 +78,6 @@ public class BussinessController {
                     "could not be altered in anyway！");
         }
     }
-
 
 
 }

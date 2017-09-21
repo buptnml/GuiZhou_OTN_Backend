@@ -69,12 +69,21 @@ public class NetElementServiceImpl implements NetElementService {
     }
 
     private Example getExample(Long versionId, Long netElementId) {
-        Example updateExample = new Example(ResNetElement.class);
-        Example.Criteria criteria = updateExample.createCriteria();
+        Example example = new Example(ResNetElement.class);
+        Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("versionId", versionId);
         criteria.andEqualTo("netElementId", netElementId);
-        return updateExample;
+        return example;
     }
+
+    private Example getExample(Long versionId, String netElementName) {
+        Example example = new Example(ResNetElement.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("versionId", versionId);
+        criteria.andEqualTo("netElementName", netElementName);
+        return example;
+    }
+
 
 
     private Example getExample(Long versionId) {
@@ -106,6 +115,13 @@ public class NetElementServiceImpl implements NetElementService {
                     , disk.getNetElementName(), disk.getNetElementType());
             saveNetElement(newVersionId, newNetElement);
         }
+    }
+
+    @Override
+    public Long getNewElementId(Long oldVersionId, Long oldNetELementId, Long newVersionId) {
+        ResNetElement oldNetElement = resNetElementDao.selectByExample(getExample(oldVersionId,oldNetELementId)).get(0);
+        return resNetElementDao.selectByExample(getExample(newVersionId,oldNetElement.getNetElementName())).get(0)
+                .getNetElementId();
     }
 
 

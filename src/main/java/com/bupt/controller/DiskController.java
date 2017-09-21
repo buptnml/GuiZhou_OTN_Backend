@@ -79,7 +79,8 @@ public class DiskController {
 
     private void checkVersionId(Long versionID) {
         if (versionID == 100000000000L) {
-            throw new IllegalArgumentException("versionID不能为基础版本的ID，基础版本不允许任何方式的修改！");
+            throw new IllegalArgumentException("versionID should not be 100000000000, the base version could not be " +
+                    "altered in anyway！");
         }
     }
 }

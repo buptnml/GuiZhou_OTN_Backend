@@ -56,7 +56,8 @@ public class VersionDictController {
     @ResponseStatus(HttpStatus.CREATED)
     public SysVersionDict updateVersionDict(@PathVariable Long versionDictId,@RequestBody VersionDictInfo versionDictInfo) {
         if (versionDictId==100000000000L){
-            throw new IllegalArgumentException("versionDictIdList contains 100000000000");
+            throw new IllegalArgumentException("versionDictIdList contains 100000000000 which is the basic version " +
+                    "ID");
         }
         checkVersionDictInfo(versionDictInfo);
         return versionDictService.updateVersionDict(versionDictId,versionDictInfo);

@@ -94,18 +94,18 @@ public class LinkController {
             throw new NoneGetException("endZId");
         }
         if (null == endA) {
-            throw new NullArgumentException("不存在Id为endAId的网元");
+            throw new NullArgumentException("could not find endAId`s netElement");
         }
         if (null == endZ) {
-            throw new NullArgumentException("不存在Id为endZId的网元");
+            throw new NullArgumentException("could not find endZId`s netElement");
         }
         if (null == linkCreateInfo.getLinkType()) {
-            throw new NullArgumentException("linkType不能为空");
+            throw new NullArgumentException("linkType could not be null");
         } else if (null == LinkTypes.valueOf(linkCreateInfo.getLinkType())) {
-            throw new IllegalArgumentException("linkType的值为不支持的类型");
+            throw new IllegalArgumentException("linkType input is illegal");
         }
         if (null == linkCreateInfo.getLinkName()) {
-            throw new IllegalArgumentException("linkName不能为空");
+            throw new IllegalArgumentException("linkName could not be null");
         }
     }
 

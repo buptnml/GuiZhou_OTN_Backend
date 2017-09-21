@@ -1,10 +1,13 @@
 package com.bupt.service.impl;
 
 import com.bupt.dao.ResDiskDao;
+import com.bupt.dao.ResNetElementDao;
 import com.bupt.entity.DiskCreateInfo;
 import com.bupt.entity.ResDisk;
+import com.bupt.entity.ResNetElement;
 import com.bupt.pojo.DiskDTO;
 import com.bupt.service.DiskService;
+import com.bupt.service.NetElementService;
 import com.bupt.util.exception.controller.result.NoneGetException;
 import com.bupt.util.exception.controller.result.NoneSaveException;
 import com.bupt.util.exception.controller.result.NoneUpdateException;
@@ -22,6 +25,8 @@ import java.util.List;
 public class DiskServiceImpl implements DiskService {
     @Resource
     private ResDiskDao resDiskDao;
+    @Resource
+    private NetElementService netElementService;
 
     @Override
     public List<DiskDTO> listDiskByNetElement(Long versionId, Long netElementId) {
@@ -78,7 +83,8 @@ public class DiskServiceImpl implements DiskService {
         List<ResDisk> basicVersionList = resDiskDao.selectByExample(example);
         for (ResDisk disk : basicVersionList) {
             DiskCreateInfo newDisk = new DiskCreateInfo(disk.getDiskName(), disk.getDiskType());
-            saveDisk(newVersionId, disk.getNetElementId(), newDisk);
+            saveDisk(newVersionId,netElementService.getNewElementId(baseVersionId,disk.getNetElementId(),
+                    newVersionId),  newDisk);
         }
     }
 

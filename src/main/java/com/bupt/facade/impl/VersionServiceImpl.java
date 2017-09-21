@@ -116,6 +116,11 @@ public class VersionServiceImpl implements VersionService {
             throw new NoneRemoveException("Fail to create version!");
         }
         SysVersionDict dictSetting = versionDictService.getVersionDictByName(Version.getVersionDictName());
+
+        //创建的时候最先创建网元数据！！！重要！
+        if(dictSetting.getHasNetElement()){
+            netElementService.batchCreate(100000000000L,versionId);
+        }
         if (dictSetting.getHasBussiness()) {
             bussinessService.batchCreate(100000000000L,versionId);
         }
@@ -125,9 +130,7 @@ public class VersionServiceImpl implements VersionService {
         if(dictSetting.getHasLink()){
             linkService.batchCreate(100000000000L,versionId);
         }
-        if(dictSetting.getHasNetElement()){
-            netElementService.batchCreate(100000000000L,versionId);
-        }
+
         //TODO 等到未来其他资源补齐以后补充batchRemove内容
     }
 

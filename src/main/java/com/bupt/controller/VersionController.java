@@ -66,16 +66,6 @@ public class VersionController {
     }
 
 
-//    @ApiOperation(value = "根据版本Id进行数据同步的操作")
-//    @RequestMapping(value = "/{versionId}", method = RequestMethod.PUT)
-//    @ResponseStatus(HttpStatus.ACCEPTED)
-//    public void versionDataSynchronize(@PathVariable Long versionId, @RequestBody String fromVersionName) {
-//        if(null == fromVersionName){
-//            throw new NullArgumentException("fromVersionName");
-//        }
-//        versionService.dataSynchronize(versionId, fromVersionName);
-//    }
-
     @ApiOperation(value = "")
     @RequestMapping(value = "/{versionId}", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.CREATED)
