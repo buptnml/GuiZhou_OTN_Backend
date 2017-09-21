@@ -1,5 +1,5 @@
 group 'GuiZhou_OTN_Backend'
-version '0.1'
+version '0.1.2.1'
 
 apply plugin: 'java'
 apply plugin: 'war'
@@ -9,6 +9,7 @@ apply plugin: 'eclipse-wtp'
 task wrapper(type: Wrapper) {
     gradleVersion = '3.5'
 }
+
 
 repositories {
     mavenCentral()

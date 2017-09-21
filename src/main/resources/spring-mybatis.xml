@@ -24,7 +24,7 @@
         <property name="slowSqlMillis" value="10000" />
         <property name="logSlowSql" value="true" />
     </bean>
-    <!--配置druid日志输出拦截器-->
+    <!--&lt;!&ndash;配置druid日志输出拦截器&ndash;&gt;-->
     <bean id="log-filter" class="com.alibaba.druid.filter.logging.Log4jFilter">
         <!--<property name="resultSetLogEnabled" value="false" />-->
         <!--<property name="statementLogErrorEnabled" value="true"/>-->
