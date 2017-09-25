@@ -61,9 +61,7 @@ public class VersionDictServiceImpl implements VersionDictService {
     @Override
     @Transactional
     public void listRemoveVersionDict(List<Long> versionDictIdList) {
-        Iterator<Long> idListIterator = versionDictIdList.iterator();
-        while (idListIterator.hasNext()) {
-            long key = idListIterator.next();
+        for (Long key : versionDictIdList) {
             updateVersionInfo(key, "基础字典");
             if (sysVersionDictDao.deleteByPrimaryKey(key) == 0) {
                 throw new NoneRemoveException();
@@ -90,7 +88,7 @@ public class VersionDictServiceImpl implements VersionDictService {
     @Override
     public List<SysVersionDict> listVersionDict() {
         List<SysVersionDict> resultList = sysVersionDictDao.selectAll();
-        if (resultList.size() == 0 || null == resultList) {
+        if (resultList.size() == 0) {
             throw new NoneGetException();
         }
         return resultList;

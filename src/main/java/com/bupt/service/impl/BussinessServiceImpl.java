@@ -75,10 +75,10 @@ public class BussinessServiceImpl implements BussinessService {
     public void batchCreate(Long baseVersionId, Long newVersionId) {
         //TODO 机盘Id中网元Id需要更新
         List<ResBussiness> bussinessList = resBussinessDao.selectByExample(getExample(baseVersionId));
-        for (int i = 0; i < bussinessList.size(); i++) {
-            bussinessList.get(i).setVersionId(newVersionId);
-            bussinessList.get(i).setBussinessId(null);
-            resBussinessDao.insertSelective(bussinessList.get(i));
+        for (ResBussiness aBussinessList : bussinessList) {
+            aBussinessList.setVersionId(newVersionId);
+            aBussinessList.setBussinessId(null);
+            resBussinessDao.insertSelective(aBussinessList);
         }
     }
 
@@ -111,7 +111,7 @@ public class BussinessServiceImpl implements BussinessService {
         return example;
     }
 
-    BussinessDTO createBussinessDTO(ResBussiness bussiness) {
+    private BussinessDTO createBussinessDTO(ResBussiness bussiness) {
         if (null == bussiness) {
             return null;
         }

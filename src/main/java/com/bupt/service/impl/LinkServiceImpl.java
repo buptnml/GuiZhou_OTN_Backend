@@ -42,9 +42,8 @@ public class LinkServiceImpl implements LinkService {
     @Override
     @Transactional
     public void listRemoveResLink(Long versionId, List<Long> linkIdList) {
-        Iterator<Long> idListIterator = linkIdList.iterator();
-        while (idListIterator.hasNext()) {
-            if (resLinkDao.deleteByPrimaryKey(idListIterator.next()) == 0) {
+        for (Long aLinkIdList : linkIdList) {
+            if (resLinkDao.deleteByPrimaryKey(aLinkIdList) == 0) {
                 throw new NoneRemoveException();
             }
         }
@@ -83,8 +82,8 @@ public class LinkServiceImpl implements LinkService {
             throw new NoneGetException();
         }
         List<ResLinkDTO> resLinkDTOList = new ArrayList<>();
-        for (int i = 0; i < resLinksList.size(); i++) {
-            resLinkDTOList.add(this.convertToResLinkDTO(resLinksList.get(i)));
+        for (ResLink aResLinksList : resLinksList) {
+            resLinkDTOList.add(this.convertToResLinkDTO(aResLinksList));
         }
         return resLinkDTOList;
     }

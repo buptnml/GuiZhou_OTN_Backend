@@ -40,9 +40,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(rollbackFor = NoneRemoveException.class)
     public void listRemoveUser(List<Long> idList) {
-        Iterator<Long> idListIterator = idList.iterator();
-        while (idListIterator.hasNext()) {
-            if (sysUserDao.deleteByPrimaryKey(idListIterator.next()) == 0) {
+        for (Long anIdList : idList) {
+            if (sysUserDao.deleteByPrimaryKey(anIdList) == 0) {
                 throw new NoneRemoveException();
             }
         }
@@ -82,7 +81,7 @@ public class UserServiceImpl implements UserService {
         while (sysUserIterator.hasNext()) {
             resultList.add(this.convertToUserDTO(sysUserIterator.next()));
         }
-        if (resultList.size() == 0 || null == resultList) {
+        if (resultList.size() == 0 ) {
             throw new NoneGetException();
         }
         return resultList;
