@@ -3,7 +3,8 @@ package com.bupt.pojo;
 public class LinkCreateInfo {
     private String linkName;
     private String linkType;
-    private Short linkLength;
+    private Float linkLength;
+    private Float linkLoss;
     private Long endAId;
     private String endAName;
     private Long endZId;
@@ -25,12 +26,20 @@ public class LinkCreateInfo {
         this.linkType = linkType;
     }
 
-    public Short getLinkLength() {
+    public Float getLinkLength() {
         return linkLength;
     }
 
-    public void setLinkLength(Short linkLength) {
+    public void setLinkLength(Float linkLength) {
         this.linkLength = linkLength;
+    }
+
+    public Float getLinkLoss() {
+        return linkLoss;
+    }
+
+    public void setLinkLoss(Float linkLoss) {
+        this.linkLoss = linkLoss;
     }
 
     public Long getEndAId() {

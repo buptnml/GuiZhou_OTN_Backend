@@ -4,11 +4,28 @@ public class ResLinkDTO {
     private Long linkId;
     private String linkName;
     private String linkType;
-    private Short linkLength;
+    private Float linkLength;
+    private Float linkLoss;
     private Long endAId;
     private String endAName;
     private Long endZId;
     private String endZName;
+
+    public Float getLinkLength() {
+        return linkLength;
+    }
+
+    public void setLinkLength(Float linkLength) {
+        this.linkLength = linkLength;
+    }
+
+    public Float getLinkLoss() {
+        return linkLoss;
+    }
+
+    public void setLinkLoss(Float linkLoss) {
+        this.linkLoss = linkLoss;
+    }
 
     public Long getLinkId() {
         return linkId;
@@ -32,14 +49,6 @@ public class ResLinkDTO {
 
     public void setLinkType(String linkType) {
         this.linkType = linkType;
-    }
-
-    public Short getLinkLength() {
-        return linkLength;
-    }
-
-    public void setLinkLength(Short linkLength) {
-        this.linkLength = linkLength;
     }
 
     public Long getEndAId() {
