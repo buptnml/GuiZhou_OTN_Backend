@@ -1,7 +1,5 @@
 package com.bupt.entity;
 
-import com.bupt.pojo.OsnrChannelCreateInfo;
-
 import java.util.Date;
 import javax.persistence.*;
 

@@ -75,7 +75,7 @@ public class VersionDictServiceImpl implements VersionDictService {
     public SysVersionDict getVersionDictByName(String versionDictName) {
         List<SysVersionDict> result = sysVersionDictDao.selectByExample(getExample(versionDictName));
         if (result.size() == 0) {
-            throw new NoneGetException();
+            throw new NoneGetException("versionDictName");
         }
         return result.get(0);
     }
