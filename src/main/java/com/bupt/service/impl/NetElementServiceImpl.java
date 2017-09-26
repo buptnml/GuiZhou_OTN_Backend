@@ -37,9 +37,8 @@ public class NetElementServiceImpl implements NetElementService {
     @Override
     @Transactional
     public void listRemoveNetElement(Long versionId, List<Long> netElementIdList) {
-        Iterator<Long> idListIterator = netElementIdList.iterator();
-        while (idListIterator.hasNext()) {
-            if (resNetElementDao.deleteByExample(getExample(versionId, idListIterator.next())) == 0) {
+        for (Long aNetElementIdList : netElementIdList) {
+            if (resNetElementDao.deleteByExample(getExample(versionId, aNetElementIdList)) == 0) {
                 throw new NoneRemoveException();
             }
         }
@@ -53,8 +52,8 @@ public class NetElementServiceImpl implements NetElementService {
         }
 
         List<NetElementDTO> resultList = new ArrayList<>();
-        for (int j = 0; j < resNetElementsList.size(); j++) {
-            resultList.add(this.convertToNetElementDTO(resNetElementsList.get(j)));
+        for (ResNetElement aResNetElementsList : resNetElementsList) {
+            resultList.add(this.convertToNetElementDTO(aResNetElementsList));
         }
         return resultList;
     }
@@ -101,7 +100,7 @@ public class NetElementServiceImpl implements NetElementService {
 
     @Override
     public NetElementDTO getNetElement(Long versionId, long netElementId) {
-        if (null != resNetElementDao.selectByPrimaryKey(getExample(versionId, netElementId))) {
+        if (null != resNetElementDao.selectByExample(getExample(versionId, netElementId))) {
             return convertToNetElementDTO(resNetElementDao.selectByExample(getExample(versionId, netElementId)));
         }
         throw new NoneGetException();

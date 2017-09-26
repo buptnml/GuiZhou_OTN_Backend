@@ -1,10 +1,8 @@
 package com.bupt.service.impl;
 
 import com.bupt.dao.ResDiskDao;
-import com.bupt.dao.ResNetElementDao;
-import com.bupt.entity.DiskCreateInfo;
+import com.bupt.pojo.DiskCreateInfo;
 import com.bupt.entity.ResDisk;
-import com.bupt.entity.ResNetElement;
 import com.bupt.pojo.DiskDTO;
 import com.bupt.service.DiskService;
 import com.bupt.service.NetElementService;
@@ -82,9 +80,9 @@ public class DiskServiceImpl implements DiskService {
         Example example = getExample(baseVersionId);
         List<ResDisk> basicVersionList = resDiskDao.selectByExample(example);
         for (ResDisk disk : basicVersionList) {
-            DiskCreateInfo newDisk = new DiskCreateInfo(disk.getDiskName(), disk.getDiskType());
-            saveDisk(newVersionId,netElementService.getNewElementId(baseVersionId,disk.getNetElementId(),
-                    newVersionId),  newDisk);
+            DiskCreateInfo newDisk = new DiskCreateInfo(disk.getDiskName(), disk.getDiskType(), disk.getSlotId());
+            saveDisk(newVersionId, netElementService.getNewElementId(baseVersionId, disk.getNetElementId(),
+                    newVersionId), newDisk);
         }
     }
 

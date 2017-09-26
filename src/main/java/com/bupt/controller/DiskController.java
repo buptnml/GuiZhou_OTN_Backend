@@ -1,8 +1,9 @@
 package com.bupt.controller;
 
-import com.bupt.entity.DiskCreateInfo;
+import com.bupt.pojo.DiskCreateInfo;
 import com.bupt.pojo.DiskDTO;
 import com.bupt.service.DiskService;
+import com.bupt.service.NetElementService;
 import com.bupt.util.exception.controller.input.NullArgumentException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,6 +22,8 @@ import java.util.List;
 public class DiskController {
     @Resource
     private DiskService diskService;
+    @Resource
+    private NetElementService netElementService;
 
 
 
@@ -29,6 +32,7 @@ public class DiskController {
     @RequestMapping(value = "/{versionId}/{netElementId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public List<DiskDTO> listResLink(@PathVariable Long versionId,@PathVariable Long netElementId) {
+        checkNetElementId(versionId,netElementId);
         return diskService.listDiskByNetElement(versionId,netElementId);
     }
 
@@ -41,6 +45,7 @@ public class DiskController {
     public DiskDTO saveDisk(@PathVariable Long versionId, @PathVariable Long netElementId, @RequestBody
             DiskCreateInfo diskCreateInfo) {
         checkVersionId(versionId);
+        checkNetElementId(versionId,netElementId);
         checkDiskCreateInfo(diskCreateInfo);
         return diskService.saveDisk(versionId, netElementId, diskCreateInfo);
     }
@@ -51,6 +56,7 @@ public class DiskController {
     public DiskDTO updateDisk(@PathVariable Long versionId, @PathVariable Long netElementId, @PathVariable Long diskId,
                               @RequestBody DiskCreateInfo diskCreateInfo) {
         checkVersionId(versionId);
+        checkNetElementId(versionId,netElementId);
         checkDiskCreateInfo(diskCreateInfo);
         return diskService.updateDisk(versionId, netElementId, diskId, diskCreateInfo);
     }
@@ -64,6 +70,7 @@ public class DiskController {
             throw new IllegalArgumentException("diskIdList不能为空");
         }
         checkVersionId(versionId);
+        checkNetElementId(versionId,netElementId);
         this.diskService.listRemove(versionId, netElementId, diskIdList);
     }
 
@@ -73,6 +80,18 @@ public class DiskController {
             throw new NullArgumentException("diskName should not be null!");
         }if(null == diskCreateInfo.getDiskType()){
             throw new NullArgumentException("diskType should not be null");
+        }if(null == diskCreateInfo.getSlotId()){
+            throw new NullArgumentException("slotId should not be null");
+        }
+    }
+
+    /**
+     * 检查网元id输入的合法性
+     * @param netElementId
+     */
+    private void checkNetElementId(Long versionId, Long netElementId){
+        if(null == netElementService.getNetElement(versionId,netElementId)){
+            throw new NullArgumentException("could not find the netElement");
         }
     }
 
@@ -80,7 +99,7 @@ public class DiskController {
     private void checkVersionId(Long versionID) {
         if (versionID == 100000000000L) {
             throw new IllegalArgumentException("versionID should not be 100000000000, the base version could not be " +
-                    "altered in anyway！");
+                    "altered in anyway!");
         }
     }
 }

@@ -2,9 +2,18 @@ package com.bupt.pojo;
 
 public class DiskDTO {
     private Long diskId;
+    private Long slotId;
     private String diskName;
     private String diskType;
     private Long netElementId;
+
+    public Long getSlotId() {
+        return slotId;
+    }
+
+    public void setSlotId(Long slotId) {
+        this.slotId = slotId;
+    }
 
     public Long getDiskId() {
         return diskId;

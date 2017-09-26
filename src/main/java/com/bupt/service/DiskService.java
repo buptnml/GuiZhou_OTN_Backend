@@ -1,6 +1,6 @@
 package com.bupt.service;
 
-import com.bupt.entity.DiskCreateInfo;
+import com.bupt.pojo.DiskCreateInfo;
 import com.bupt.pojo.DiskDTO;
 
 import java.util.List;

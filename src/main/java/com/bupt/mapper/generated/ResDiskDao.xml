@@ -6,6 +6,7 @@
       WARNING - @mbg.generated
     -->
     <id column="disk_id" jdbcType="BIGINT" property="diskId" />
+    <result column="slot_id" jdbcType="BIGINT" property="slotId" />
     <result column="disk_name" jdbcType="VARCHAR" property="diskName" />
     <result column="disk_type" jdbcType="VARCHAR" property="diskType" />
     <result column="net_element_id" jdbcType="BIGINT" property="netElementId" />
@@ -17,6 +18,6 @@
     <!--
       WARNING - @mbg.generated
     -->
-    disk_id, disk_name, disk_type, net_element_id, version_id, gmt_create, gmt_modified
+    disk_id, slot_id, disk_name, disk_type, net_element_id, version_id, gmt_create, gmt_modified
   </sql>
 </mapper>
