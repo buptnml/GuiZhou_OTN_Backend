@@ -5,7 +5,7 @@ import com.bupt.dao.SysVersionDictDao;
 import com.bupt.entity.SysVersion;
 import com.bupt.entity.SysVersionDict;
 import com.bupt.pojo.VersionDictDTO;
-import com.bupt.pojo.VersionDictInfo;
+import com.bupt.pojo.VersionDictCreateInfo;
 import com.bupt.service.VersionDictService;
 import com.bupt.util.exception.controller.result.NoneGetException;
 import com.bupt.util.exception.controller.result.NoneRemoveException;
@@ -28,17 +28,17 @@ public class VersionDictServiceImpl implements VersionDictService {
     private SysVersionDao sysVersionDao;
 
     @Override
-    public VersionDictDTO saveVersionDict(VersionDictInfo versionDictInfo) {
-        if (sysVersionDictDao.insertSelective(convertToDO(versionDictInfo)) > 0) {
-            return this.getVersionDictByName(versionDictInfo.getVersionDictName());
+    public VersionDictDTO saveVersionDict(VersionDictCreateInfo versionDictCreateInfo) {
+        if (sysVersionDictDao.insertSelective(convertToDO(versionDictCreateInfo)) > 0) {
+            return this.getVersionDictByName(versionDictCreateInfo.getVersionDictName());
         }
         throw new NoneSaveException();
     }
 
     @Override
-    public VersionDictDTO updateVersionDict(long versionDictId, VersionDictInfo versionDictInfo) {
-        updateVersionInfo(versionDictId, versionDictInfo.getVersionDictName());
-        SysVersionDict updateInfo = convertToDO(versionDictInfo);
+    public VersionDictDTO updateVersionDict(long versionDictId, VersionDictCreateInfo versionDictCreateInfo) {
+        updateVersionInfo(versionDictId, versionDictCreateInfo.getVersionDictName());
+        SysVersionDict updateInfo = convertToDO(versionDictCreateInfo);
         updateInfo.setVersionDictId(versionDictId);
         if (sysVersionDictDao.updateByPrimaryKeySelective(updateInfo) > 0) {
             return convertToDTO(sysVersionDictDao.selectByPrimaryKey(versionDictId));

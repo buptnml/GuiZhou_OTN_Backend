@@ -3,6 +3,7 @@ package com.bupt.facade.impl;
 import com.bupt.dao.SysVersionDao;
 import com.bupt.entity.SysVersion;
 import com.bupt.pojo.*;
+import com.bupt.pojo.versionSettings.VersionSetting;
 import com.bupt.service.*;
 import com.bupt.facade.VersionService;
 import com.bupt.util.exception.controller.result.NoneGetException;
@@ -79,14 +80,14 @@ public class VersionServiceImpl implements VersionService {
     }
 
     @Override
-    public VersionDetail getVersion(Long versionId) {
+    public VersionDTOWithVersionDictDTO getVersion(Long versionId) {
         SysVersion sysVersionDO = sysVersionDao.selectByPrimaryKey(versionId);
         if (null == sysVersionDO) {
             throw new NoneGetException();
         }
-        VersionDetail versionDetail = new VersionDetail(DOtoDTO(sysVersionDO));
-        versionDetail.setVersionDict(versionDictService.getVersionDictByName(sysVersionDO.getVersionDictName()));
-        return versionDetail;
+        VersionDTOWithVersionDictDTO versionDTOWithVersionDictDTO = new VersionDTOWithVersionDictDTO(DOtoDTO(sysVersionDO));
+        versionDTOWithVersionDictDTO.setVersionDict(versionDictService.getVersionDictByName(sysVersionDO.getVersionDictName()));
+        return versionDTOWithVersionDictDTO;
     }
 
     @Override

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.Date;
 
-public class VersionDetail {
+public class VersionDTOWithVersionDictDTO {
     private Long versionId;
     private String versionName;
     private String versionDescription;
@@ -74,7 +74,7 @@ public class VersionDetail {
         this.versionName = versionName;
     }
 
-    public VersionDetail(VersionDTO versionDTO) {
+    public VersionDTOWithVersionDictDTO(VersionDTO versionDTO) {
         this.versionId = versionDTO.getVersionId();
         this.versionName = versionDTO.getVersionName();
         this.versionDescription = versionDTO.getVersionDescription();

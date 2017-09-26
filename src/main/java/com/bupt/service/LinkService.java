@@ -1,7 +1,7 @@
 package com.bupt.service;
 
 import com.bupt.pojo.LinkCreateInfo;
-import com.bupt.pojo.ResLinkDTO;
+import com.bupt.pojo.LinkDTO;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public interface LinkService {
      * @param linkCreateInfo
      * @return
      */
-    ResLinkDTO saveResLink(Long versionId, LinkCreateInfo linkCreateInfo);
+    LinkDTO saveResLink(Long versionId, LinkCreateInfo linkCreateInfo);
 
 
     /**
@@ -29,7 +29,7 @@ public interface LinkService {
      * @param linkCreateInfo
      * @return
      */
-    ResLinkDTO updateResLink(Long versionId, Long linkId, LinkCreateInfo linkCreateInfo);
+    LinkDTO updateResLink(Long versionId, Long linkId, LinkCreateInfo linkCreateInfo);
 
     /**
      * 获取当前版本所有链路
@@ -37,7 +37,7 @@ public interface LinkService {
      * @param versionId
      * @return
      */
-    List<ResLinkDTO> getResLink(Long versionId);
+    List<LinkDTO> getResLink(Long versionId);
 
     /**
      * 删除指定版本全本链路信息

@@ -1,6 +1,6 @@
 package com.bupt.pojo;
 
-public class VersionDictInfo {
+public class VersionDictCreateInfo {
     private String versionDictName;
     private String versionDictDescription;
     private String creatorName;

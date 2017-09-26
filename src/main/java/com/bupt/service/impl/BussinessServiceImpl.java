@@ -4,7 +4,7 @@ import com.bupt.dao.ResBussinessDao;
 import com.bupt.entity.ResBussiness;
 import com.bupt.pojo.BussinessCreateInfo;
 import com.bupt.pojo.BussinessDTO;
-import com.bupt.pojo.ChannelDetail;
+import com.bupt.pojo.ChannelDTO;
 import com.bupt.service.BussinessService;
 import com.bupt.util.exception.controller.result.NoneRemoveException;
 import com.bupt.util.exception.controller.result.NoneSaveException;
@@ -83,8 +83,8 @@ public class BussinessServiceImpl implements BussinessService {
     }
 
 
-    private ChannelDetail setChannelInfo(ResBussiness bussiness, boolean isMain) {
-        return new ChannelDetail(bussiness, isMain);
+    private ChannelDTO setChannelInfo(ResBussiness bussiness, boolean isMain) {
+        return new ChannelDTO(bussiness, isMain);
     }
 
 

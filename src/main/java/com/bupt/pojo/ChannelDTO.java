@@ -3,16 +3,16 @@ package com.bupt.pojo;
 import com.bupt.entity.ResBussiness;
 import com.bupt.util.exception.controller.input.NullArgumentException;
 
-public class ChannelDetail {
-    String channelRate;
-    String channelFrequency;
-    String inputPowers;
-    String outputPowers;
+public class ChannelDTO {
+    private String channelRate;
+    private String channelFrequency;
+    private String inputPowers;
+    private String outputPowers;
 
-    public ChannelDetail() {
+    public ChannelDTO() {
     }
 
-    public ChannelDetail(ResBussiness resBussiness, boolean isMain) {
+    public ChannelDTO(ResBussiness resBussiness, boolean isMain) {
         this.channelRate = isMain ? resBussiness.getMainRate() : resBussiness.getSpareRate();
         this.channelFrequency = isMain ? resBussiness.getMainFrequency() : resBussiness.getSpareFrequency();
         this.inputPowers = isMain ? resBussiness.getMainInputPowers() : resBussiness.getSpareInputPowers();

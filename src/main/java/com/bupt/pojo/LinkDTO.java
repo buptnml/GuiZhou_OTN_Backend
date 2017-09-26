@@ -1,6 +1,6 @@
 package com.bupt.pojo;
 
-public class ResLinkDTO {
+public class LinkDTO {
     private Long linkId;
     private String linkName;
     private String linkType;

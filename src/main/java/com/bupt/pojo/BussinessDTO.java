@@ -4,12 +4,12 @@ import com.bupt.entity.ResBussiness;
 import com.bupt.util.exception.controller.input.NullArgumentException;
 
 public class BussinessDTO {
-    Long bussinessId;
-    String bussinessName;
-    String mainRoute;
-    String spareRoute;
-    ChannelDetail mainChannel;
-    ChannelDetail spareChannel;
+    private Long bussinessId;
+    private String bussinessName;
+    private String mainRoute;
+    private String spareRoute;
+    private ChannelDTO mainChannel;
+    private ChannelDTO spareChannel;
 
     public void checkBussinessDTO(){
         if(null == bussinessName){
@@ -41,19 +41,19 @@ public class BussinessDTO {
         this.spareRoute = bussiness.getSpareRoute();
     }
 
-    public ChannelDetail getMainChannel() {
+    public ChannelDTO getMainChannel() {
         return mainChannel;
     }
 
-    public void setMainChannel(ChannelDetail mainChannel) {
+    public void setMainChannel(ChannelDTO mainChannel) {
         this.mainChannel = mainChannel;
     }
 
-    public ChannelDetail getSpareChannel() {
+    public ChannelDTO getSpareChannel() {
         return spareChannel;
     }
 
-    public void setSpareChannel(ChannelDetail spareChannel) {
+    public void setSpareChannel(ChannelDTO spareChannel) {
         this.spareChannel = spareChannel;
     }
 

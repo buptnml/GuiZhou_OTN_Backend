@@ -2,7 +2,7 @@ package com.bupt.service;
 
 
 import com.bupt.pojo.VersionDictDTO;
-import com.bupt.pojo.VersionDictInfo;
+import com.bupt.pojo.VersionDictCreateInfo;
 
 import java.util.List;
 
@@ -11,19 +11,19 @@ public interface VersionDictService {
     /**
      * 创建新版本字典
      *
-     * @param versionDictInfo
+     * @param versionDictCreateInfo
      * @return VersionDictDTO
      */
-    VersionDictDTO saveVersionDict(VersionDictInfo versionDictInfo);
+    VersionDictDTO saveVersionDict(VersionDictCreateInfo versionDictCreateInfo);
 
 
     /**
      * 修改版本字典信息
      *
-     * @param versionDictInfo
+     * @param versionDictCreateInfo
      * @return VersionDictDTO
      */
-    VersionDictDTO updateVersionDict(long versionDictId, VersionDictInfo versionDictInfo);
+    VersionDictDTO updateVersionDict(long versionDictId, VersionDictCreateInfo versionDictCreateInfo);
 
     /**
      * 批量删除版本字典信息

@@ -1,9 +1,6 @@
 package com.bupt.service.impl;
 
 import com.bupt.facade.VersionService;
-import com.bupt.pojo.VersionQuery;
-import com.bupt.pojo.VersionSetting;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;

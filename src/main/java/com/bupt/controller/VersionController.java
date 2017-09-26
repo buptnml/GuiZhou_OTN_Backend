@@ -1,7 +1,7 @@
 package com.bupt.controller;
 
 import com.bupt.facade.VersionService;
-import com.bupt.pojo.VersionDetail;
+import com.bupt.pojo.VersionDTOWithVersionDictDTO;
 import com.bupt.pojo.VersionQuery;
 import com.bupt.pojo.VersionDTO;
 import com.bupt.service.UserService;
@@ -64,7 +64,7 @@ public class VersionController {
     @ApiOperation(value = "按id查询版本")
     @RequestMapping(value = "/{versionId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public VersionDetail getVersion(@PathVariable Long versionId) {
+    public VersionDTOWithVersionDictDTO getVersion(@PathVariable Long versionId) {
         return versionService.getVersion(versionId);
     }
 

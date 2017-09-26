@@ -3,7 +3,7 @@ package com.bupt.controller;
 
 import com.bupt.pojo.NetElementDTO;
 import com.bupt.pojo.LinkCreateInfo;
-import com.bupt.pojo.ResLinkDTO;
+import com.bupt.pojo.LinkDTO;
 import com.bupt.service.NetElementService;
 import com.bupt.service.LinkService;
 import com.bupt.util.exception.controller.input.IllegalArgumentException;
@@ -38,7 +38,7 @@ public class LinkController {
     @ApiOperation(value = "查询某个版本下的所有链路信息")
     @RequestMapping(value = "/{versionId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<ResLinkDTO> listResLink(@PathVariable Long versionId) {
+    public List<LinkDTO> listResLink(@PathVariable Long versionId) {
         return linkService.getResLink(versionId);
     }
 
@@ -46,7 +46,7 @@ public class LinkController {
     @ApiOperation(value = "创建新链路")
     @RequestMapping(value = "/{versionId}", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResLinkDTO saveResLink(@PathVariable Long versionId, @RequestBody LinkCreateInfo linkCreateInfo) {
+    public LinkDTO saveResLink(@PathVariable Long versionId, @RequestBody LinkCreateInfo linkCreateInfo) {
         checkVersionId(versionId);
         checkLinkCreateInfo(versionId,linkCreateInfo);
         return linkService.saveResLink(versionId, linkCreateInfo);
@@ -55,7 +55,7 @@ public class LinkController {
     @ApiOperation(value = "更新某个版本下的某链路条目")
     @RequestMapping(value = "/{versionId}/{linkId}", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResLinkDTO updateResLink(@PathVariable Long versionId, @PathVariable Long linkId, @RequestBody LinkCreateInfo
+    public LinkDTO updateResLink(@PathVariable Long versionId, @PathVariable Long linkId, @RequestBody LinkCreateInfo
             linkCreateInfo) {
         checkVersionId(versionId);
         checkLinkCreateInfo(versionId,linkCreateInfo);
@@ -81,13 +81,13 @@ public class LinkController {
         if(null == linkCreateInfo.getEndZId()){
             throw new NullArgumentException("endZId should not be NULL!");
         }
-        NetElementDTO endA = null;
+        NetElementDTO endA;
         try {
             endA = netElementService.getNetElement(versionId,linkCreateInfo.getEndAId());
         } catch (NoneGetException e) {
             throw new NoneGetException("endAId");
         }
-        NetElementDTO endZ = null;
+        NetElementDTO endZ;
         try {
             endZ = netElementService.getNetElement(versionId,linkCreateInfo.getEndZId());
         } catch (Exception e) {

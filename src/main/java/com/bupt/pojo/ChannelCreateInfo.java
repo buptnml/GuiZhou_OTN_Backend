@@ -2,11 +2,11 @@ package com.bupt.pojo;
 
 import com.bupt.util.exception.controller.input.NullArgumentException;
 
-public class OsnrChannelCreateInfo {
-    String channelRate;
-    String channelFrequency;
+public class ChannelCreateInfo {
+    private String channelRate;
+    private String channelFrequency;
 
-    public void checkOsnrChannelCreateInfo(){
+    void checkOsnrChannelCreateInfo(){
         if(null == channelRate){
             throw new NullArgumentException("channelRate");
         }
