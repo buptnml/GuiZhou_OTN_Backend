@@ -1,8 +1,5 @@
 package com.bupt.entity;
 
-import com.bupt.util.tools.CustomDateSerializer;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 import java.util.Date;
 import javax.persistence.*;
 
@@ -275,7 +272,6 @@ public class SysVersionDict {
      *
      * @param gmtCreate 创建时间
      */
-    @JsonSerialize(using = CustomDateSerializer.class)
     public void setGmtCreate(Date gmtCreate) {
         this.gmtCreate = gmtCreate;
     }
@@ -285,7 +281,6 @@ public class SysVersionDict {
      *
      * @return gmt_modified - 最后修改时间
      */
-    @JsonSerialize(using = CustomDateSerializer.class)
     public Date getGmtModified() {
         return gmtModified;
     }

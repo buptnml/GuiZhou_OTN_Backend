@@ -1,8 +1,6 @@
 package com.bupt.controller;
 
-import com.bupt.entity.SysVersionDict;
-import com.bupt.pojo.UserCreateInfo;
-import com.bupt.pojo.UserDTO;
+import com.bupt.pojo.VersionDictDTO;
 import com.bupt.pojo.VersionDictInfo;
 import com.bupt.service.UserService;
 import com.bupt.service.VersionDictService;
@@ -32,7 +30,7 @@ public class VersionDictController {
     @ApiOperation(value = "查询全部版本字典信息")
     @RequestMapping(value = "/", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<SysVersionDict> listUser() {
+    public List<VersionDictDTO> listUser() {
         return versionDictService.listVersionDict();
     }
 
@@ -54,7 +52,7 @@ public class VersionDictController {
     @ApiOperation(value = "更新版本字典信息")
     @RequestMapping(value = "/{versionDictId}", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.CREATED)
-    public SysVersionDict updateVersionDict(@PathVariable Long versionDictId,@RequestBody VersionDictInfo versionDictInfo) {
+    public VersionDictDTO updateVersionDict(@PathVariable Long versionDictId, @RequestBody VersionDictInfo versionDictInfo) {
         if (versionDictId==100000000000L){
             throw new IllegalArgumentException("versionDictIdList contains 100000000000 which is the basic version " +
                     "ID");
@@ -66,14 +64,14 @@ public class VersionDictController {
     @ApiOperation(value = "创建新版本字典")
     @RequestMapping(value = "/", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public SysVersionDict saveVersionDict(@RequestBody VersionDictInfo versionDictInfo) {
+    public VersionDictDTO saveVersionDict(@RequestBody VersionDictInfo versionDictInfo) {
         checkVersionDictInfo(versionDictInfo);
         return versionDictService.saveVersionDict(versionDictInfo);
     }
 
 
 
-    void checkVersionDictInfo(VersionDictInfo versionDictInfo){
+    private void checkVersionDictInfo(VersionDictInfo versionDictInfo){
         if(!userService.listUserNames().contains(versionDictInfo.getCreatorName().trim())){
             throw new IllegalArgumentException("CreatorName");
         }

@@ -1,6 +1,6 @@
 package com.bupt.pojo;
 
-import com.bupt.entity.SysVersionDict;
+
 import com.bupt.util.tools.CustomDateSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -13,13 +13,13 @@ public class VersionDetail {
     private String creatorName;
     private Date gmtCreate;
     private Date gmtModified;
-    private SysVersionDict versionDict;
+    private VersionDictDTO versionDict;
 
-    public SysVersionDict getVersionDict() {
+    public VersionDictDTO getVersionDict() {
         return versionDict;
     }
 
-    public void setVersionDict(SysVersionDict versionDict) {
+    public void setVersionDict(VersionDictDTO versionDict) {
         this.versionDict = versionDict;
     }
 

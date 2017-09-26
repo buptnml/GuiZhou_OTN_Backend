@@ -2,12 +2,8 @@ package com.bupt.facade.impl;
 
 import com.bupt.dao.SysVersionDao;
 import com.bupt.entity.SysVersion;
-import com.bupt.entity.SysVersionDict;
-import com.bupt.pojo.VersionDetail;
+import com.bupt.pojo.*;
 import com.bupt.service.*;
-import com.bupt.pojo.VersionQuery;
-import com.bupt.pojo.VersionDTO;
-import com.bupt.pojo.VersionSetting;
 import com.bupt.facade.VersionService;
 import com.bupt.util.exception.controller.result.NoneGetException;
 import com.bupt.util.exception.controller.result.NoneRemoveException;
@@ -42,7 +38,7 @@ public class VersionServiceImpl implements VersionService {
     @Resource
     private NetElementService netElementService;
 
-    Logger logger = LoggerFactory.getLogger(VersionServiceImpl.class);
+    private Logger logger = LoggerFactory.getLogger(VersionServiceImpl.class);
 
     @Override
     @Transactional
@@ -58,9 +54,8 @@ public class VersionServiceImpl implements VersionService {
     @Override
     @Transactional
     public void listRemoveVersion(List<Long> versionIdList) {
-        Iterator<Long> versionIdListIterator = versionIdList.iterator();
-        while (versionIdListIterator.hasNext()) {
-            SysVersion temp = sysVersionDao.selectByPrimaryKey(versionIdListIterator.next());
+        for (Long aVersionIdList : versionIdList) {
+            SysVersion temp = sysVersionDao.selectByPrimaryKey(aVersionIdList);
             if (null == temp) {
                 throw new NoneRemoveException();
             }
@@ -73,11 +68,11 @@ public class VersionServiceImpl implements VersionService {
     @Transactional
     public List<VersionDTO> listVersion() {
         Iterator<SysVersion> sysVersionIterator = sysVersionDao.selectAll().iterator();
-        List<VersionDTO> resultList = new ArrayList<VersionDTO>();
+        List<VersionDTO> resultList = new ArrayList<>();
         while (sysVersionIterator.hasNext()) {
             resultList.add(DOtoDTO(sysVersionIterator.next()));
         }
-        if (resultList.size() == 0 || null == resultList) {
+        if (resultList.size() == 0) {
             throw new NoneGetException();
         }
         return resultList;
@@ -107,7 +102,6 @@ public class VersionServiceImpl implements VersionService {
 
     /**
      * 从基础版本中拷贝数据到新版本中
-     *
      * @param versionId
      */
     private void batchCreate(Long versionId) {
@@ -115,7 +109,7 @@ public class VersionServiceImpl implements VersionService {
         if (null == Version) {
             throw new NoneRemoveException("Fail to create version!");
         }
-        SysVersionDict dictSetting = versionDictService.getVersionDictByName(Version.getVersionDictName());
+        VersionDictDTO dictSetting = versionDictService.getVersionDictByName(Version.getVersionDictName());
 
         //创建的时候最先创建网元数据！！！重要！
         if(dictSetting.getHasNetElement()){
@@ -144,7 +138,7 @@ public class VersionServiceImpl implements VersionService {
             throw new NoneRemoveException("Fail to delete version info.");
         }
 
-        SysVersionDict dictSetting = versionDictService.getVersionDictByName(Version.getVersionDictName());
+        VersionDictDTO dictSetting = versionDictService.getVersionDictByName(Version.getVersionDictName());
         if (dictSetting.getHasBussiness()) {
             bussinessService.batchRemove(versionId);
         }
@@ -206,8 +200,8 @@ public class VersionServiceImpl implements VersionService {
      */
     private byte[] toByteArray(VersionSetting versionSetting) {
         byte[] bytes = null;
-        ByteArrayOutputStream bos = null;
-        ObjectOutputStream oos = null;
+        ByteArrayOutputStream bos;
+        ObjectOutputStream oos;
         try {
             bos = new ByteArrayOutputStream();
             oos = new ObjectOutputStream(bos);
@@ -218,7 +212,6 @@ public class VersionServiceImpl implements VersionService {
             bos.close();
         } catch (IOException ex) {
             logger.error(ex.getMessage());
-        } finally {
         }
         return bytes;
     }
@@ -228,17 +221,15 @@ public class VersionServiceImpl implements VersionService {
      */
     private VersionSetting toObject(byte[] bytes) {
         VersionSetting versionSetting = null;
-        ObjectInputStream ois = null;
-        ByteArrayInputStream bis = null;
+        ObjectInputStream ois;
+        ByteArrayInputStream bis;
         try {
             bis = new ByteArrayInputStream(bytes);
             ois = new ObjectInputStream(bis);
             versionSetting = (VersionSetting) ois.readObject();
             bis.close();
             ois.close();
-        } catch (IOException ex) {
-            logger.error(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
+        } catch (IOException | ClassNotFoundException ex) {
             logger.error(ex.getMessage());
         }
         return versionSetting;
