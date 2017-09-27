@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> listUser() {
         Iterator<SysUser> sysUserIterator = sysUserDao.selectAll().iterator();
-        List<UserDTO> resultList = new ArrayList<>();
+        List<UserDTO> resultList = new ArrayList<UserDTO>();
         while (sysUserIterator.hasNext()) {
             resultList.add(this.convertToUserDTO(sysUserIterator.next()));
         }

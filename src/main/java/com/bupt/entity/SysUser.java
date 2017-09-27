@@ -9,8 +9,8 @@ public class SysUser {
      * 用户id
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "user_id")
+    private Long userId;
 
     /**
      * 用户名
@@ -21,8 +21,7 @@ public class SysUser {
     /**
      * 用户密码
      */
-    @Column(name = "pass_word")
-    private String passWord;
+    private String password;
 
     /**
      * 用户身份
@@ -43,27 +42,33 @@ public class SysUser {
     private Date gmtCreate;
 
     /**
-     * 最后更新时间
+     * 最后修改时间
      */
     @Column(name = "gmt_modified")
     private Date gmtModified;
 
     /**
+     * 用户的设置文件，Java的二进制流
+     */
+    @Column(name = "user_setting")
+    private byte[] userSetting;
+
+    /**
      * 获取用户id
      *
-     * @return id - 用户id
+     * @return user_id - 用户id
      */
-    public Long getId() {
-        return id;
+    public Long getUserId() {
+        return userId;
     }
 
     /**
      * 设置用户id
      *
-     * @param id 用户id
+     * @param userId 用户id
      */
-    public void setId(Long id) {
-        this.id = id;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     /**
@@ -87,19 +92,19 @@ public class SysUser {
     /**
      * 获取用户密码
      *
-     * @return pass_word - 用户密码
+     * @return password - 用户密码
      */
-    public String getPassWord() {
-        return passWord;
+    public String getPassword() {
+        return password;
     }
 
     /**
      * 设置用户密码
      *
-     * @param passWord 用户密码
+     * @param password 用户密码
      */
-    public void setPassWord(String passWord) {
-        this.passWord = passWord == null ? null : passWord.trim();
+    public void setPassword(String password) {
+        this.password = password == null ? null : password.trim();
     }
 
     /**
@@ -157,20 +162,38 @@ public class SysUser {
     }
 
     /**
-     * 获取最后更新时间
+     * 获取最后修改时间
      *
-     * @return gmt_modified - 最后更新时间
+     * @return gmt_modified - 最后修改时间
      */
     public Date getGmtModified() {
         return gmtModified;
     }
 
     /**
-     * 设置最后更新时间
+     * 设置最后修改时间
      *
-     * @param gmtModified 最后更新时间
+     * @param gmtModified 最后修改时间
      */
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    /**
+     * 获取用户的设置文件，Java的二进制流
+     *
+     * @return user_setting - 用户的设置文件，Java的二进制流
+     */
+    public byte[] getUserSetting() {
+        return userSetting;
+    }
+
+    /**
+     * 设置用户的设置文件，Java的二进制流
+     *
+     * @param userSetting 用户的设置文件，Java的二进制流
+     */
+    public void setUserSetting(byte[] userSetting) {
+        this.userSetting = userSetting;
     }
 }
