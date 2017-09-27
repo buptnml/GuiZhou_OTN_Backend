@@ -101,5 +101,6 @@ task mybatisGenerate  {
             propertyref(name: 'sqlMapperPackage')
         }
     }
+
 }
 

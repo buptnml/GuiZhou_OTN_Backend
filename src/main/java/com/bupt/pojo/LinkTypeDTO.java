@@ -9,7 +9,7 @@ public class LinkTypeDTO{
     String  linkRate;//链路速率
     String  linkType;//链路类型
     Long    linkTypeId;//链路类型ID
-    Long    versionId;//条目所在版本ID
+    //Long    versionId;//条目所在版本ID
 
 
     public Float getLinkLoss() {
@@ -44,13 +44,14 @@ public class LinkTypeDTO{
         this.linkTypeId = linkTypeId;
     }
 
-    public Long getVersionId() {
-        return versionId;
-    }
+//    public Long getVersionId() {
+//        return versionId;
+//    }
+//
+//    public void setVersionId(Long versionId) {
+//        this.versionId = versionId;
+//    }
 
-    public void setVersionId(Long versionId) {
-        this.versionId = versionId;
-    }
 
     @Override
     public String toString() {
@@ -59,7 +60,6 @@ public class LinkTypeDTO{
                 ", linkRate='" + linkRate + '\'' +
                 ", linkType='" + linkType + '\'' +
                 ", linkTypeId=" + linkTypeId +
-                ", versionId=" + versionId +
                 '}';
     }
 }

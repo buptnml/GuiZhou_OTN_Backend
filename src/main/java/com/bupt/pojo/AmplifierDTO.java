@@ -25,7 +25,7 @@ public class AmplifierDTO {
 
 
 
-    private Long versionId;
+   // ?
 
 
     public void setAmplifierID(Long amplifierID) {
@@ -72,22 +72,23 @@ public class AmplifierDTO {
         this.maximumOutputPower = maximumOutputPower;
     }
 
-    public Long getVersionId() {
-        return versionId;
-    }
-    public void setVersionId(Long versionId) {
-        this.versionId = versionId;
-    }
+//    public Long getVersionId() {
+//        return versionId;
+//    }
+//    public void setVersionId(Long versionId) {
+//        this.versionId = versionId;
+//    }
+
 
     @Override
-    public String toString(){
-        StringBuilder sb=new StringBuilder();
-        sb.append("AmplifierDTO{");
-        sb.append("amplifierName='"+amplifierName+"',");
-        sb.append("gain='"+gain+"',");
-        sb.append("minimumInputPower='"+minimumInputPower+"',");
-        sb.append("maximumInputPower='"+maximumInputPower+"',");
-        sb.append("maximumOutputPower='"+maximumOutputPower+"',");
-        return sb.toString();
+    public String toString() {
+        return "AmplifierDTO{" +
+                "amplifierID=" + amplifierID +
+                ", amplifierName='" + amplifierName + '\'' +
+                ", gain=" + gain +
+                ", minimumInputPower=" + minimumInputPower +
+                ", maximumInputPower=" + maximumInputPower +
+                ", maximumOutputPower=" + maximumOutputPower +
+                '}';
     }
 }

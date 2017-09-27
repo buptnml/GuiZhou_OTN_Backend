@@ -8,7 +8,6 @@ import com.bupt.util.exception.controller.result.NoneGetException;
 import com.bupt.util.exception.controller.result.NoneRemoveException;
 import com.bupt.util.exception.controller.result.NoneSaveException;
 import com.bupt.util.exception.controller.result.NoneUpdateException;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,7 +52,7 @@ public class AmplifierServiceImpl implements AmplifierService {
                 result.setMaximumInputPower(roa.getMaximumInputPower());
                 result.setMaximumOutputPower(roa.getMaximumOutputPower());
                 result.setMinimumInputPower(roa.getMinimumInputPower());
-                result.setVersionId(roa.getVersionId());
+                //result.setVersionId(roa.getVersionId());
                 return result;
             }else{
                 throw  new NoneUpdateException();
@@ -94,9 +93,15 @@ public class AmplifierServiceImpl implements AmplifierService {
     @Override
     public AmplifierDTO insertAmplifier(Long versionId,AmplifierDTO amplifer) {
         //dto传输输入给dao
-        amplifer.setVersionId(versionId);
+        //amplifer.setVersionId(versionId);
         ResOsnrAmplifier roa=new ResOsnrAmplifier();
-        BeanUtils.copyProperties(amplifer,roa);
+        //BeanUtils.copyProperties(amplifer,roa);
+        roa.setAmplifierName(amplifer.getAmplifierName());
+        roa.setGain(amplifer.getGain());
+        roa.setMaximumInputPower(amplifer.getMaximumInputPower());
+        roa.setMaximumOutputPower(amplifer.getMaximumOutputPower());
+        roa.setMinimumInputPower(amplifer.getMinimumInputPower());
+        roa.setVersionId(versionId);
         if(resOsnrAmplifierDao.insertSelective(roa)<0){
             throw  new NoneSaveException();
         }else{

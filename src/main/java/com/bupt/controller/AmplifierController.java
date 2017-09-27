@@ -63,7 +63,7 @@ public class AmplifierController {
         @RequestMapping(value = "/{versionId}",method = RequestMethod.POST)
         @ResponseStatus(HttpStatus.CREATED)
         public AmplifierDTO insertAmplifier(@PathVariable Long versionId,@RequestBody AmplifierDTO amplifer){
-            amplifer.setVersionId(versionId);
+//            amplifer.setVersionId(versionId);
             AmplifierDTO result=amplifierService.insertAmplifier(versionId,amplifer);
             if(result==null)
                 throw new NoneSaveException();

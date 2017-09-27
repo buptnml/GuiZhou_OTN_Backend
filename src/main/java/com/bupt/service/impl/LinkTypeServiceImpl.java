@@ -36,7 +36,7 @@ public class LinkTypeServiceImpl implements LinkTypeService {
         if(resOsnrLinkTypeDao.updateByPrimaryKeySelective(rolt)==0)
             throw new NoneSaveException();
         else{
-            linkTypeDTO.setVersionId(linkTypeId);
+            //linkTypeDTO.setVersionId(linkTypeId);
             return linkTypeDTO;
         }
         //return null;
@@ -80,7 +80,7 @@ public class LinkTypeServiceImpl implements LinkTypeService {
         resOnsrLinkType.setVersionId(versionId);
         if(resOsnrLinkTypeDao.insertSelective(resOnsrLinkType)==0)
             throw new NoneSaveException();
-        linkTypeDTO.setVersionId(versionId);
+        //linkTypeDTO.setVersionId(versionId);
         //获取linkTypeId
         Example condition=new Example(ResOnsrLinkType.class);
         Example.Criteria criteria=condition.createCriteria();
