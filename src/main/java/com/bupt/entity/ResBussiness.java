@@ -1,5 +1,6 @@
 package com.bupt.entity;
 
+
 import java.util.Date;
 import javax.persistence.*;
 
