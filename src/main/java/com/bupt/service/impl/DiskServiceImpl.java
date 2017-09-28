@@ -109,6 +109,7 @@ public class DiskServiceImpl implements DiskService {
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("netElementId", netElementId);
         criteria.andEqualTo("versionId", versionId);
+        example.orderBy("slotId");
         return example;
     }
 

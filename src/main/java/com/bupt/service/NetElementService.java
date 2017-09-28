@@ -55,6 +55,14 @@ public interface NetElementService {
      */
     NetElementDTO getNetElement(Long versionId, long netElementId);
 
+    /**
+     * 通过netElementName查询网元信息
+     *
+     * @param netElementName
+     * @return
+     */
+    NetElementDTO getNetElement(Long versionId, String netElementName);
+
 
     /**
      * 复制一个旧有版本Id中的内容，并将版本Id字段重命名为新Id
@@ -69,7 +77,7 @@ public interface NetElementService {
      * @param newVersionId
      * @return
      */
-    Long getNewElementId(Long oldVersionId,Long oldNetELementId, Long newVersionId);
+    Long getNewElementId(Long oldVersionId,Long oldNetElement, Long newVersionId);
 }
 
 

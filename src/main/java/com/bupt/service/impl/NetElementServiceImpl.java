@@ -107,6 +107,15 @@ public class NetElementServiceImpl implements NetElementService {
     }
 
     @Override
+    public NetElementDTO getNetElement(Long versionId, String netElementName) {
+        ResNetElement result = resNetElementDao.selectByExample(getExample(versionId,netElementName)).get(0);
+        if(null != result){
+            return convertToNetElementDTO(result);
+        }
+        throw new NoneGetException();
+    }
+
+    @Override
     public void batchCreate(Long baseVersionId, Long newVersionId) {
         List<ResNetElement> baseVersionList = resNetElementDao.selectByExample(getExample(baseVersionId));
         for (ResNetElement disk : baseVersionList) {

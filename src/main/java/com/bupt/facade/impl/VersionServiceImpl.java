@@ -177,7 +177,6 @@ public class VersionServiceImpl implements VersionService {
             return null;
         }
         VersionDTO result = new VersionDTO();
-//        result.setVersionSetting(this.toObject(sysVersionDO.getVersionSetting()));
         sysVersionDO.setVersionSetting(null);
         BeanUtils.copyProperties(sysVersionDO, result);
         return result;
@@ -188,10 +187,6 @@ public class VersionServiceImpl implements VersionService {
             return null;
         }
         SysVersion result = new SysVersion();
-
-//        result.setVersionSetting(toByteArray(versionQuery.getVersionSetting()));
-//        versionQuery.setVersionSetting(null);
-
         BeanUtils.copyProperties(versionQuery, result);
         return result;
     }
