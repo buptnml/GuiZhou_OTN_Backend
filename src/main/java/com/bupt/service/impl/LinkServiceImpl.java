@@ -1,11 +1,9 @@
 package com.bupt.service.impl;
 
 import com.bupt.dao.ResLinkDao;
-import com.bupt.dao.ResNetElementDao;
 import com.bupt.entity.ResLink;
-import com.bupt.entity.ResNetElement;
 import com.bupt.pojo.LinkCreateInfo;
-import com.bupt.pojo.ResLinkDTO;
+import com.bupt.pojo.LinkDTO;
 import com.bupt.service.LinkService;
 import com.bupt.service.NetElementService;
 import com.bupt.util.exception.controller.result.NoneGetException;
@@ -19,7 +17,6 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Service("linkService")
@@ -30,7 +27,7 @@ public class LinkServiceImpl implements LinkService {
     private NetElementService netElementService;
 
     @Override
-    public ResLinkDTO saveResLink(Long versionId, LinkCreateInfo linkCreateInfo) {
+    public LinkDTO saveResLink(Long versionId, LinkCreateInfo linkCreateInfo) {
         ResLink insertInfo = convertToResLink(linkCreateInfo);
         insertInfo.setVersionId(versionId);
         if (resLinkDao.insertSelective(insertInfo) > 0) {
@@ -42,16 +39,15 @@ public class LinkServiceImpl implements LinkService {
     @Override
     @Transactional
     public void listRemoveResLink(Long versionId, List<Long> linkIdList) {
-        Iterator<Long> idListIterator = linkIdList.iterator();
-        while (idListIterator.hasNext()) {
-            if (resLinkDao.deleteByPrimaryKey(idListIterator.next()) == 0) {
+        for (Long aLinkIdList : linkIdList) {
+            if (resLinkDao.deleteByPrimaryKey(aLinkIdList) == 0) {
                 throw new NoneRemoveException();
             }
         }
     }
 
     @Override
-    public ResLinkDTO updateResLink(Long versionId, Long linkId, LinkCreateInfo linkCreateInfo) {
+    public LinkDTO updateResLink(Long versionId, Long linkId, LinkCreateInfo linkCreateInfo) {
         ResLink updateInfo = convertToResLink(linkCreateInfo);
         if (resLinkDao.updateByExampleSelective(convertToResLink(linkCreateInfo), getExample(versionId, linkId)) == 1) {
             return convertToResLinkDTO(resLinkDao.selectOne(updateInfo));
@@ -77,16 +73,16 @@ public class LinkServiceImpl implements LinkService {
 
 
     @Override
-    public List<ResLinkDTO> getResLink(Long versionId) {
+    public List<LinkDTO> getResLink(Long versionId) {
         List<ResLink> resLinksList = resLinkDao.selectByExample(getExample(versionId));
         if (resLinksList.size() == 0) {
             throw new NoneGetException();
         }
-        List<ResLinkDTO> resLinkDTOList = new ArrayList<>();
-        for (int i = 0; i < resLinksList.size(); i++) {
-            resLinkDTOList.add(this.convertToResLinkDTO(resLinksList.get(i)));
+        List<LinkDTO> linkDTOList = new ArrayList<>();
+        for (ResLink aResLinksList : resLinksList) {
+            linkDTOList.add(this.convertToResLinkDTO(aResLinksList));
         }
-        return resLinkDTOList;
+        return linkDTOList;
     }
 
     @Override
@@ -117,13 +113,13 @@ public class LinkServiceImpl implements LinkService {
         return resLink;
     }
 
-    private ResLinkDTO convertToResLinkDTO(Object inputObject) {
+    private LinkDTO convertToResLinkDTO(Object inputObject) {
         if (null == inputObject) {
             return null;
         }
-        ResLinkDTO resLinkDTO = new ResLinkDTO();
-        BeanUtils.copyProperties(inputObject, resLinkDTO);
-        return resLinkDTO;
+        LinkDTO linkDTO = new LinkDTO();
+        BeanUtils.copyProperties(inputObject, linkDTO);
+        return linkDTO;
     }
 
 }

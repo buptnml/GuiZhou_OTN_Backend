@@ -170,7 +170,6 @@ public class ResLink {
     }
 
     /**
-
      * 获取A端网元ID
      *
      * @return end_a_id - A端网元ID

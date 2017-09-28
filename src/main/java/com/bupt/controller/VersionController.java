@@ -1,9 +1,10 @@
 package com.bupt.controller;
 
 import com.bupt.facade.VersionService;
-import com.bupt.pojo.VersionDetail;
+import com.bupt.pojo.VersionDTOWithVersionDictDTO;
 import com.bupt.pojo.VersionQuery;
 import com.bupt.pojo.VersionDTO;
+import com.bupt.service.UserService;
 import com.bupt.service.VersionDictService;
 import com.bupt.util.exception.controller.input.IllegalArgumentException;
 import com.bupt.util.exception.controller.input.NullArgumentException;
@@ -27,6 +28,8 @@ public class VersionController {
     private VersionService versionService;
     @Resource
     private VersionDictService versionDictService;
+    @Resource
+    private UserService userService;
 
     @ApiOperation(value = "查询所有版本")
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -61,7 +64,7 @@ public class VersionController {
     @ApiOperation(value = "按id查询版本")
     @RequestMapping(value = "/{versionId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public VersionDetail getVersion(@PathVariable Long versionId) {
+    public VersionDTOWithVersionDictDTO getVersion(@PathVariable Long versionId) {
         return versionService.getVersion(versionId);
     }
 
@@ -86,6 +89,9 @@ public class VersionController {
         }
         if(null == versionQuery.getCreatorName()){
             throw new NullArgumentException("creatorName");
+        }
+        if(null == userService.getUserByName(versionQuery.getCreatorName().trim())){
+            throw new IllegalArgumentException("creatorName should not be empty");
         }
         if(null == versionDictService.getVersionDictByName(versionQuery.getVersionDictName())){
             throw new IllegalArgumentException("versionDictName");

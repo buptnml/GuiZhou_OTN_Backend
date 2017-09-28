@@ -4,7 +4,8 @@ import com.bupt.dao.SysVersionDao;
 import com.bupt.dao.SysVersionDictDao;
 import com.bupt.entity.SysVersion;
 import com.bupt.entity.SysVersionDict;
-import com.bupt.pojo.VersionDictInfo;
+import com.bupt.pojo.VersionDictDTO;
+import com.bupt.pojo.VersionDictCreateInfo;
 import com.bupt.service.VersionDictService;
 import com.bupt.util.exception.controller.result.NoneGetException;
 import com.bupt.util.exception.controller.result.NoneRemoveException;
@@ -16,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service("versionDictService")
@@ -27,20 +28,20 @@ public class VersionDictServiceImpl implements VersionDictService {
     private SysVersionDao sysVersionDao;
 
     @Override
-    public SysVersionDict saveVersionDict(VersionDictInfo versionDictInfo) {
-        if (sysVersionDictDao.insertSelective(convertToDO(versionDictInfo)) > 0) {
-            return this.getVersionDictByName(versionDictInfo.getVersionDictName());
+    public VersionDictDTO saveVersionDict(VersionDictCreateInfo versionDictCreateInfo) {
+        if (sysVersionDictDao.insertSelective(convertToDO(versionDictCreateInfo)) > 0) {
+            return this.getVersionDictByName(versionDictCreateInfo.getVersionDictName());
         }
         throw new NoneSaveException();
     }
 
     @Override
-    public SysVersionDict updateVersionDict(long versionDictId, VersionDictInfo versionDictInfo) {
-        updateVersionInfo(versionDictId, versionDictInfo.getVersionDictName());
-        SysVersionDict updateInfo = convertToDO(versionDictInfo);
+    public VersionDictDTO updateVersionDict(long versionDictId, VersionDictCreateInfo versionDictCreateInfo) {
+        updateVersionInfo(versionDictId, versionDictCreateInfo.getVersionDictName());
+        SysVersionDict updateInfo = convertToDO(versionDictCreateInfo);
         updateInfo.setVersionDictId(versionDictId);
         if (sysVersionDictDao.updateByPrimaryKeySelective(updateInfo) > 0) {
-            return sysVersionDictDao.selectByPrimaryKey(versionDictId);
+            return convertToDTO(sysVersionDictDao.selectByPrimaryKey(versionDictId));
         }
         throw new NoneUpdateException();
     }
@@ -61,9 +62,7 @@ public class VersionDictServiceImpl implements VersionDictService {
     @Override
     @Transactional
     public void listRemoveVersionDict(List<Long> versionDictIdList) {
-        Iterator<Long> idListIterator = versionDictIdList.iterator();
-        while (idListIterator.hasNext()) {
-            long key = idListIterator.next();
+        for (Long key : versionDictIdList) {
             updateVersionInfo(key, "基础字典");
             if (sysVersionDictDao.deleteByPrimaryKey(key) == 0) {
                 throw new NoneRemoveException();
@@ -72,12 +71,12 @@ public class VersionDictServiceImpl implements VersionDictService {
     }
 
     @Override
-    public SysVersionDict getVersionDictByName(String versionDictName) {
+    public VersionDictDTO getVersionDictByName(String versionDictName) {
         List<SysVersionDict> result = sysVersionDictDao.selectByExample(getExample(versionDictName));
         if (result.size() == 0) {
-            throw new NoneGetException();
+            throw new NoneGetException("versionDictName");
         }
-        return result.get(0);
+        return convertToDTO(result.get(0));
     }
 
     private Example getExample(String versionDictName) {
@@ -88,14 +87,26 @@ public class VersionDictServiceImpl implements VersionDictService {
     }
 
     @Override
-    public List<SysVersionDict> listVersionDict() {
-        List<SysVersionDict> resultList = sysVersionDictDao.selectAll();
-        if (resultList.size() == 0 || null == resultList) {
+    public List<VersionDictDTO> listVersionDict() {
+        List<VersionDictDTO> resultList = new ArrayList<>();
+        for(SysVersionDict versionDict:sysVersionDictDao.selectAll()){
+            resultList.add(convertToDTO(versionDict));
+        }
+        if (resultList.size() == 0) {
             throw new NoneGetException();
         }
         return resultList;
     }
 
+
+    private VersionDictDTO convertToDTO(Object inputObject) {
+        if (null == inputObject) {
+            return null;
+        }
+        VersionDictDTO result = new VersionDictDTO();
+        BeanUtils.copyProperties(inputObject, result);
+        return result;
+    }
 
     private SysVersionDict convertToDO(Object inputObject) {
         if (null == inputObject) {

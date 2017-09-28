@@ -76,5 +76,13 @@ public interface UserService {
      */
     List<String> listUserNames();
 
+    /**
+     * 通过用户名获取用户信息
+     * @param userName
+     * @return
+     */
+    UserDTO getUserByName(String userName);
+
+
 
 }

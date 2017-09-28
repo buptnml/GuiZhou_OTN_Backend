@@ -1,25 +1,25 @@
 package com.bupt.pojo;
 
-import com.bupt.entity.SysVersionDict;
+
 import com.bupt.util.tools.CustomDateSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.Date;
 
-public class VersionDetail {
+public class VersionDTOWithVersionDictDTO {
     private Long versionId;
     private String versionName;
     private String versionDescription;
     private String creatorName;
     private Date gmtCreate;
     private Date gmtModified;
-    private SysVersionDict versionDict;
+    private VersionDictDTO versionDict;
 
-    public SysVersionDict getVersionDict() {
+    public VersionDictDTO getVersionDict() {
         return versionDict;
     }
 
-    public void setVersionDict(SysVersionDict versionDict) {
+    public void setVersionDict(VersionDictDTO versionDict) {
         this.versionDict = versionDict;
     }
 
@@ -74,7 +74,7 @@ public class VersionDetail {
         this.versionName = versionName;
     }
 
-    public VersionDetail(VersionDTO versionDTO) {
+    public VersionDTOWithVersionDictDTO(VersionDTO versionDTO) {
         this.versionId = versionDTO.getVersionId();
         this.versionName = versionDTO.getVersionName();
         this.versionDescription = versionDTO.getVersionDescription();

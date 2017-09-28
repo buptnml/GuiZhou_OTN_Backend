@@ -40,9 +40,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(rollbackFor = NoneRemoveException.class)
     public void listRemoveUser(List<Long> idList) {
-        Iterator<Long> idListIterator = idList.iterator();
-        while (idListIterator.hasNext()) {
-            if (sysUserDao.deleteByPrimaryKey(idListIterator.next()) == 0) {
+        for (Long anIdList : idList) {
+            if (sysUserDao.deleteByPrimaryKey(anIdList) == 0) {
                 throw new NoneRemoveException();
             }
         }
@@ -51,15 +50,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUserByUserQuery(UserQuery userQuery) {
-        Example example = new Example(SysUser.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("userName", userQuery.getUserName());
-        criteria.andEqualTo("password", userQuery.getPassword());
-        List<SysUser> sysUserList = sysUserDao.selectByExample(example);
+        List<SysUser> sysUserList = sysUserDao.selectByExample(getExample(userQuery));
         if (sysUserList.size() == 0 || sysUserList.size() > 1) {
             throw new NoneGetException();
         }
         return this.convertToUserDTO(sysUserList.get(0));
+    }
+
+    private Example getExample(UserQuery userQuery) {
+        Example example = new Example(SysUser.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("userName", userQuery.getUserName());
+        criteria.andEqualTo("password", userQuery.getPassword());
+        return example;
     }
 
     @Override
@@ -78,7 +81,7 @@ public class UserServiceImpl implements UserService {
         while (sysUserIterator.hasNext()) {
             resultList.add(this.convertToUserDTO(sysUserIterator.next()));
         }
-        if (resultList.size() == 0 || null == resultList) {
+        if (resultList.size() == 0 ) {
             throw new NoneGetException();
         }
         return resultList;
@@ -86,13 +89,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO updateUser(UserCreateInfo userCreateInfo) {
-        Example example = new Example(SysUser.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("userName", userCreateInfo.getUserName());
-        if (sysUserDao.updateByExampleSelective(this.convertToSysUser(userCreateInfo), example) > 0) {
+        if (sysUserDao.updateByExampleSelective(this.convertToSysUser(userCreateInfo), getExample(userCreateInfo
+                .getUserName())) >
+                0) {
             return this.getUserByUserQuery(new UserQuery(userCreateInfo.getUserName(), userCreateInfo.getPassword()));
         }
         throw new NoneUpdateException();
+    }
+
+    private Example getExample(String userName) {
+        Example example = new Example(SysUser.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("userName",userName);
+        return example;
     }
 
     @Override
@@ -113,6 +122,15 @@ public class UserServiceImpl implements UserService {
             userNameList.add(userDTO.getUserName());
         }
         return userNameList;
+    }
+
+    @Override
+    public UserDTO getUserByName(String userName) {
+        List<SysUser> results = sysUserDao.selectByExample(getExample(userName));
+        if(results.size() == 0) {
+            throw new NoneGetException("userName/creatorName");
+        }
+        return convertToUserDTO(results.get(0) );
     }
 
 

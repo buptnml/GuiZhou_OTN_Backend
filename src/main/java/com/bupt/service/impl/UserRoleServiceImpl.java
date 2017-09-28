@@ -47,9 +47,8 @@ public class UserRoleServiceImpl implements UserRoleService {
     @Override
     @Transactional
     public void listRemoveUserRole(List<Long> userRoleIdList) {
-        Iterator<Long> idListIterator = userRoleIdList.iterator();
-        while (idListIterator.hasNext()) {
-            SysUserRole role = sysUserRoleDao.selectByPrimaryKey(idListIterator.next());
+        for (Long anUserRoleIdList : userRoleIdList) {
+            SysUserRole role = sysUserRoleDao.selectByPrimaryKey(anUserRoleIdList);
             if (sysUserRoleDao.delete(role) == 0) {
                 throw new NoneRemoveException();
             } else {
@@ -79,13 +78,13 @@ public class UserRoleServiceImpl implements UserRoleService {
         while (sysUserIterator.hasNext()) {
             resultList.add(this.DOtoDTO(sysUserIterator.next()));
         }
-        if (resultList.size() == 0 || null == resultList) {
+        if (resultList.size() == 0 ){
             throw new NoneGetException();
         }
         return resultList;
     }
 
-    UserRoleDTO DOtoDTO(Object inputObject) {
+    private UserRoleDTO DOtoDTO(Object inputObject) {
         if (null == inputObject) {
             return null;
         }
@@ -94,7 +93,7 @@ public class UserRoleServiceImpl implements UserRoleService {
         return result;
     }
 
-    SysUserRole DTOtoDO(Object inputObject) {
+    private SysUserRole DTOtoDO(Object inputObject) {
         if (null == inputObject) {
             return null;
         }

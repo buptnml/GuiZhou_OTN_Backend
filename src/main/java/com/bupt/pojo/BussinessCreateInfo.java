@@ -3,11 +3,11 @@ package com.bupt.pojo;
 import com.bupt.util.exception.controller.input.NullArgumentException;
 
 public class BussinessCreateInfo {
-    String bussinessName;
-    String mainRoute;
-    String spareRoute;
-    OsnrChannelCreateInfo mainChannelInfo;
-    OsnrChannelCreateInfo spareChannelInfo;
+    private String bussinessName;
+    private String mainRoute;
+    private String spareRoute;
+    private ChannelCreateInfo mainChannelInfo;
+    private ChannelCreateInfo spareChannelInfo;
 
     public void checkBussinessCreateInfoLegal(){
         if(mainRoute.equals("")){
@@ -61,19 +61,19 @@ public class BussinessCreateInfo {
         this.spareRoute = spareRoute;
     }
 
-    public OsnrChannelCreateInfo getMainChannelInfo() {
+    public ChannelCreateInfo getMainChannelInfo() {
         return mainChannelInfo;
     }
 
-    public void setMainChannelInfo(OsnrChannelCreateInfo mainChannelInfo) {
+    public void setMainChannelInfo(ChannelCreateInfo mainChannelInfo) {
         this.mainChannelInfo = mainChannelInfo;
     }
 
-    public OsnrChannelCreateInfo getSpareChannelInfo() {
+    public ChannelCreateInfo getSpareChannelInfo() {
         return spareChannelInfo;
     }
 
-    public void setSpareChannelInfo(OsnrChannelCreateInfo spareChannelInfo) {
+    public void setSpareChannelInfo(ChannelCreateInfo spareChannelInfo) {
         this.spareChannelInfo = spareChannelInfo;
     }
 }

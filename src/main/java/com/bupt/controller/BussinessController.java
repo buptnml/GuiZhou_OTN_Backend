@@ -34,7 +34,6 @@ public class BussinessController {
     @RequestMapping(value = "/{versionId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public List<BussinessDTO> listBussiness(@PathVariable Long versionId) {
-        checkVersionId(versionId);
         return bussinessService.listBussiness(versionId);
     }
 

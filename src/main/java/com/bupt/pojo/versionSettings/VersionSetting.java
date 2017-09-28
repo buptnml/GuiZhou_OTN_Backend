@@ -1,4 +1,4 @@
-package com.bupt.pojo;
+package com.bupt.pojo.versionSettings;
 
 import com.bupt.pojo.versionSettings.ResourceSetting;
 
