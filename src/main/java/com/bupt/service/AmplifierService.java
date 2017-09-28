@@ -1,5 +1,6 @@
 package com.bupt.service;
 
+import com.bupt.pojo.AmplifierCreateInfo;
 import com.bupt.pojo.AmplifierDTO;
 
 import java.util.List;
@@ -12,10 +13,10 @@ public interface AmplifierService {
     /**
      * 修改放大器: 根据  放大器id
      * 请求路径:/amplifiers/:versionId/:amplifierId
-     * @param amplifer 放大器
+     * @param amplifierCreateInfo 放大器
      * @return
      */
-     AmplifierDTO updateAmplifiers(Long amplifierID,AmplifierDTO amplifer);
+     AmplifierDTO updateAmplifiers(Long versionId,Long amplifierID,AmplifierCreateInfo amplifierCreateInfo);
 
 
     /**
@@ -29,10 +30,10 @@ public interface AmplifierService {
 
     /**
      * 添加放大器
-     * @param amplifer
+     * @param amplifierCreateInfo
      * @return
      */
-    AmplifierDTO insertAmplifier(Long versionId,AmplifierDTO amplifer);
+    AmplifierDTO insertAmplifier(Long versionId,AmplifierCreateInfo amplifierCreateInfo);
 
 
     /**
@@ -42,4 +43,16 @@ public interface AmplifierService {
      * @return
      */
     List<AmplifierDTO> selectAmplifiers(Long versionID);
+
+    /**
+     * 删除指定版本全本链路信息
+     *
+     * @param versionId
+     */
+    void batchRemove(Long versionId);
+
+    /**
+     * 复制一个旧有版本Id中的内容，并将版本Id字段重命名为新Id
+     */
+    void batchCreate(Long baseVersionId, Long newVersionId);
 }
