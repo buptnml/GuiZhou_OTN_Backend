@@ -16,24 +16,40 @@
     <!-- 自动扫描 com.bupt.controller 下的带有Spring组件注解的类 -->
     <context:component-scan base-package="com.bupt.controller">
         <context:include-filter type="annotation"
-                                expression="org.springframework.stereotype.Controller" />
+                                expression="org.springframework.stereotype.Controller"/>
         <context:include-filter type="annotation"
-                                expression="org.springframework.web.bind.annotation.RestController" />
+                                expression="org.springframework.web.bind.annotation.RestController"/>
         <context:include-filter type="annotation"
                                 expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
     </context:component-scan>
 
-    <mvc:default-servlet-handler />
+    <mvc:default-servlet-handler/>
 
-    <mvc:annotation-driven >
+    <mvc:annotation-driven>
 
     </mvc:annotation-driven>
 
 
-    <bean class="com.bupt.util.tools.SwaggerConfig" />
+
+
+
     <!--跨域访问配置-->
-    <mvc:cors>
-        <mvc:mapping path="/**" allowed-methods="*"/>
-    </mvc:cors>
+    <!--<mvc:cors>-->
+    <!--<mvc:mapping path="/**" allowed-methods="*"/>-->
+    <!--</mvc:cors>-->
+    <bean class="com.bupt.util.tools.SwaggerConfig"/>
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.bupt.util.tools.CommonInterceptor">
+                <property name="excludedUrls">
+                    <list>
+                        <value>/</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
 
 </beans>

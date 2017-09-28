@@ -5,7 +5,7 @@ package com.bupt.pojo;
  */
 public class UserQuery {
     private String userName;
-    private String passWord;
+    private String password;
     
     
     public String getUserName() {
@@ -16,17 +16,17 @@ public class UserQuery {
         this.userName = userName;
     }
     
-    public String getPassWord() {
-        return passWord;
+    public String getPassword() {
+        return password;
     }
     
-    public void setPassWord(String passWord) {
-        this.passWord = passWord;
+    public void setPassword(String password) {
+        this.password = password;
     }
     
-    public UserQuery(String userName, String passWord) {
+    public UserQuery(String userName, String password) {
         this.userName = userName;
-        this.passWord = passWord;
+        this.password = password;
     }
     
     public UserQuery() {

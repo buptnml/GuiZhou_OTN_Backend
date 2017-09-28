@@ -36,6 +36,7 @@ public class ResLink {
     @Column(name = "link_loss")
     private Float linkLoss;
 
+
     /**
      * A端网元ID
      */
@@ -169,6 +170,7 @@ public class ResLink {
     }
 
     /**
+
      * 获取A端网元ID
      *
      * @return end_a_id - A端网元ID

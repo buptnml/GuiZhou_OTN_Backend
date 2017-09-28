@@ -1,2 +1,0 @@
-## mapper.generated
-存放所有mybatisGenerator生成的Mapper文件
