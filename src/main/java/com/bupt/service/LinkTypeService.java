@@ -1,5 +1,6 @@
 package com.bupt.service;
 
+import com.bupt.pojo.LinkTypeCreateInfo;
 import com.bupt.pojo.LinkTypeDTO;
 
 import java.util.List;
@@ -11,33 +12,49 @@ public interface LinkTypeService {
 
     /**
      * 修改链路类型, 根据 链路类型ID, 请求路径:/linkTypes/:versionId/:linkTypeId
+     *
      * @param linkTypeId
-     * @param linkTypeDTO
+     * @param linkTypeCreateInfo
      * @return
      */
-    LinkTypeDTO updateByLinkTypeId(Long linkTypeId,LinkTypeDTO linkTypeDTO);
+    LinkTypeDTO updateByLinkTypeId(Long versionId, Long linkTypeId, LinkTypeCreateInfo linkTypeCreateInfo);
 
 
     /**
      * 批量删除链路类型, 根据 链路类型ID, 请求路径:/linkTypes/:versionId
+     *
      * @param linkTypeIds
      */
-    boolean deleteByLinkTypeId(Long versionId,List<Long> linkTypeIds);
+    boolean deleteByLinkTypeId(Long versionId, List<Long> linkTypeIds);
 
     /**
      * 添加链路类型 ,请求路径:/linkTypes/:versionId
+     *
      * @param versionId
-     * @param linkTypeDTO
+     * @param linkTypeCreateInfo
      * @return
      */
-    LinkTypeDTO createLinkType(Long versionId,LinkTypeDTO linkTypeDTO);
+    LinkTypeDTO createLinkType(Long versionId, LinkTypeCreateInfo linkTypeCreateInfo);
 
 
     /**
      * 获取所有链路类型信息 ,请求路径:/linkTypes/:versionId
-     *  @param versionId
+     *
+     * @param versionId
      * @return
      */
     List<LinkTypeDTO> selectLinkTypes(Long versionId);
 
+
+    /**
+     * 删除指定版本全本链路信息
+     *
+     * @param versionId
+     */
+    void batchRemove(Long versionId);
+
+    /**
+     * 复制一个旧有版本Id中的内容，并将版本Id字段重命名为新Id
+     */
+    void batchCreate(Long baseVersionId, Long newVersionId);
 }
