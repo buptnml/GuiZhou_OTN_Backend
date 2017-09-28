@@ -86,6 +86,7 @@ task mybatisGenerate  {
             classname: 'org.mybatis.generator.ant.GeneratorAntTask',
             classpath: configurations.mybatisGenerator.asPath
     )
+
     ant.mbgenerator(overwrite: true,
             configfile: 'src/main/resources/generatorConfig.xml', verbose: true) {
         propertyset {
@@ -102,6 +103,5 @@ task mybatisGenerate  {
         }
     }
 
-
-
 }
+

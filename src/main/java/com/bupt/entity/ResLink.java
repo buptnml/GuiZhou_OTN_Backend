@@ -28,7 +28,14 @@ public class ResLink {
      * 链路长度
      */
     @Column(name = "link_length")
-    private Short linkLength;
+    private Float linkLength;
+
+    /**
+     * 链路损耗，单位为dBm
+     */
+    @Column(name = "link_loss")
+    private Float linkLoss;
+
 
     /**
      * A端网元ID
@@ -131,7 +138,7 @@ public class ResLink {
      *
      * @return link_length - 链路长度
      */
-    public Short getLinkLength() {
+    public Float getLinkLength() {
         return linkLength;
     }
 
@@ -140,11 +147,30 @@ public class ResLink {
      *
      * @param linkLength 链路长度
      */
-    public void setLinkLength(Short linkLength) {
+    public void setLinkLength(Float linkLength) {
         this.linkLength = linkLength;
     }
 
     /**
+     * 获取链路损耗，单位为dBm
+     *
+     * @return link_loss - 链路损耗，单位为dBm
+     */
+    public Float getLinkLoss() {
+        return linkLoss;
+    }
+
+    /**
+     * 设置链路损耗，单位为dBm
+     *
+     * @param linkLoss 链路损耗，单位为dBm
+     */
+    public void setLinkLoss(Float linkLoss) {
+        this.linkLoss = linkLoss;
+    }
+
+    /**
+
      * 获取A端网元ID
      *
      * @return end_a_id - A端网元ID

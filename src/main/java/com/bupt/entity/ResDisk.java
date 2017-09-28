@@ -12,6 +12,9 @@ public class ResDisk {
     @Column(name = "disk_id")
     private Long diskId;
 
+    @Column(name = "slot_id")
+    private Long slotId;
+
     /**
      * 机盘名
      */
@@ -67,6 +70,21 @@ public class ResDisk {
     }
 
     /**
+     * @return slot_id
+     */
+    public Long getSlotId() {
+        return slotId;
+    }
+
+    /**
+     * @param slotId
+     */
+    public void setSlotId(Long slotId) {
+        this.slotId = slotId;
+    }
+
+    /**
+
      * 获取机盘名
      *
      * @return disk_name - 机盘名
