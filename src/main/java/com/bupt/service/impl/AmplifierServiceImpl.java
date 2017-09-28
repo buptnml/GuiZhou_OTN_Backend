@@ -34,25 +34,12 @@ public class AmplifierServiceImpl implements AmplifierService {
 
         if(resOsnrAmplifierDao.selectByExample(condition).size()>0){
             //dto转dao
-            ResOsnrAmplifier roa=new ResOsnrAmplifier();
-            //BeanUtils.copyProperties(amplifier,roa);
-            roa.setAmplifierName(amplifier.getAmplifierName());
-            roa.setGain(amplifier.getGain());
-            roa.setMaximumInputPower(amplifier.getMaximumInputPower());
-            roa.setMaximumOutputPower(amplifier.getMaximumOutputPower());
-            roa.setMinimumInputPower(amplifier.getMinimumInputPower());
+            ResOsnrAmplifier roa=amplifierDtoToDao(amplifier);
             roa.setAmplifierId(amplifierID);
-
             if(resOsnrAmplifierDao.updateByPrimaryKeySelective(roa)>0){
-                AmplifierDTO result=new AmplifierDTO();
                 roa=resOsnrAmplifierDao.selectByPrimaryKey(amplifierID);
-                result.setAmplifierID(roa.getAmplifierId());
-                result.setAmplifierName(roa.getAmplifierName());
-                result.setGain(roa.getGain());
-                result.setMaximumInputPower(roa.getMaximumInputPower());
-                result.setMaximumOutputPower(roa.getMaximumOutputPower());
-                result.setMinimumInputPower(roa.getMinimumInputPower());
-                //result.setVersionId(roa.getVersionId());
+                //dao转dto
+                AmplifierDTO result=amplifierDaoToDto(roa);
                 return result;
             }else{
                 throw  new NoneUpdateException();
@@ -63,22 +50,10 @@ public class AmplifierServiceImpl implements AmplifierService {
         //return null;
     }
 
-    @Override
-    public boolean deleteByVid(Long vid) {
-        Example condition=new Example(ResOsnrAmplifier.class);
-        Example.Criteria criteria=condition.createCriteria();
-
-        criteria.andEqualTo("versionId",vid);
-        if(resOsnrAmplifierDao.deleteByExample(condition)<0){
-            throw new  NoneRemoveException();
-        }
-        return true;
-        //return false;
-    }
 
     @Override
     @Transactional
-    public  boolean deleteByAmpid(List<Long> listAmpid){
+    public  boolean deleteByAmpid(Long versionId,List<Long> listAmpid){
         //只能按照迭代器方式删除,不能for删除
         Iterator<Long> list=listAmpid.listIterator();
         while (list.hasNext()){
@@ -91,17 +66,12 @@ public class AmplifierServiceImpl implements AmplifierService {
 
 
     @Override
+    @Transactional
     public AmplifierDTO insertAmplifier(Long versionId,AmplifierDTO amplifer) {
-        //dto传输输入给dao
-        //amplifer.setVersionId(versionId);
-        ResOsnrAmplifier roa=new ResOsnrAmplifier();
-        //BeanUtils.copyProperties(amplifer,roa);
-        roa.setAmplifierName(amplifer.getAmplifierName());
-        roa.setGain(amplifer.getGain());
-        roa.setMaximumInputPower(amplifer.getMaximumInputPower());
-        roa.setMaximumOutputPower(amplifer.getMaximumOutputPower());
-        roa.setMinimumInputPower(amplifer.getMinimumInputPower());
+        //dto转dao
+        ResOsnrAmplifier roa=amplifierDtoToDao(amplifer);
         roa.setVersionId(versionId);
+        //BeanUtils.copyProperties(amplifer,roa);
         if(resOsnrAmplifierDao.insertSelective(roa)<0){
             throw  new NoneSaveException();
         }else{
@@ -133,18 +103,46 @@ public class AmplifierServiceImpl implements AmplifierService {
         if(list.size()<=0){
             throw new NoneGetException();
         }
-        //dao传数据到dto
+        //dao转dto
         List<AmplifierDTO> result=new ArrayList<AmplifierDTO>();
         for(ResOsnrAmplifier i:list){
-            AmplifierDTO amplifierDTO=new AmplifierDTO();
-            amplifierDTO.setAmplifierID(i.getAmplifierId());
-            amplifierDTO.setAmplifierName(i.getAmplifierName());
-            amplifierDTO.setGain(i.getGain());
-            amplifierDTO.setMaximumInputPower(i.getMaximumInputPower());
-            amplifierDTO.setMaximumOutputPower(i.getMaximumOutputPower());
-            amplifierDTO.setMinimumInputPower(i.getMinimumInputPower());
+            AmplifierDTO amplifierDTO=amplifierDaoToDto(i);
             result.add(amplifierDTO);
         }
+        return result;
+    }
+
+    /**dto转为dao
+     * @param amplifierDTO
+     * @return
+     */
+    private ResOsnrAmplifier amplifierDtoToDao(AmplifierDTO amplifierDTO){
+        ResOsnrAmplifier result=new ResOsnrAmplifier();
+        if(amplifierDTO==null)
+            return result;
+        result.setAmplifierId(amplifierDTO.getAmplifierID());
+        result.setAmplifierName(amplifierDTO.getAmplifierName());
+        result.setGain(amplifierDTO.getGain());
+        result.setMinimumInputPower(amplifierDTO.getMinimumInputPower());
+        result.setMaximumOutputPower(amplifierDTO.getMaximumOutputPower());
+        result.setMaximumInputPower(amplifierDTO.getMaximumInputPower());
+        return result;
+    }
+
+    /**dao转为dto
+     * @param resOsnrAmplifier
+     * @return
+     */
+    private AmplifierDTO amplifierDaoToDto(ResOsnrAmplifier resOsnrAmplifier){
+        AmplifierDTO result=new AmplifierDTO();
+        if(resOsnrAmplifier==null)
+            return result;
+        result.setAmplifierID(resOsnrAmplifier.getAmplifierId());
+        result.setAmplifierName(resOsnrAmplifier.getAmplifierName());
+        result.setGain(resOsnrAmplifier.getGain());
+        result.setMaximumInputPower(resOsnrAmplifier.getMaximumInputPower());
+        result.setMaximumOutputPower(resOsnrAmplifier.getMaximumOutputPower());
+        result.setMinimumInputPower(resOsnrAmplifier.getMinimumInputPower());
         return result;
     }
 }

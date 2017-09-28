@@ -28,15 +28,12 @@ public class LinkTypeServiceImpl implements LinkTypeService {
     public LinkTypeDTO updateByLinkTypeId(Long linkTypeId,LinkTypeDTO linkTypeDTO) {
         if(resOsnrLinkTypeDao.selectByPrimaryKey(linkTypeId)==null)
             throw new NoneGetException();
-        ResOnsrLinkType rolt=new ResOnsrLinkType();
-        rolt.setLinkLoss(linkTypeDTO.getLinkLoss());
-        rolt.setLinkRate(linkTypeDTO.getLinkRate());
-        rolt.setLinkType(linkTypeDTO.getLinkType());
+        //dto转dao
+        ResOnsrLinkType rolt=resOnsrLinkTypeDtoToDao(linkTypeDTO);
         rolt.setLinkTypeId(linkTypeId);
         if(resOsnrLinkTypeDao.updateByPrimaryKeySelective(rolt)==0)
             throw new NoneSaveException();
         else{
-            //linkTypeDTO.setVersionId(linkTypeId);
             return linkTypeDTO;
         }
         //return null;
@@ -44,7 +41,7 @@ public class LinkTypeServiceImpl implements LinkTypeService {
 
     @Override
     @Transactional
-    public boolean deleteByLinkTypeId(List<Long> linkTypeIds) {
+    public boolean deleteByLinkTypeId(Long versionId,List<Long> linkTypeIds) {
         if(linkTypeIds.size()==0)
             return true;
         Iterator<Long> iterator=linkTypeIds.iterator();
@@ -57,30 +54,13 @@ public class LinkTypeServiceImpl implements LinkTypeService {
     }
 
     @Override
-    public boolean deleteByVersionId(Long versionId) {
-        //删除条件
-        Example condition=new Example(ResOnsrLinkType.class);
-        Example.Criteria criteria=condition.createCriteria();
-        criteria.andEqualTo("versionId",versionId);
-        //查找是否存在
-        if(resOsnrLinkTypeDao.selectByExample(condition).size()==0)
-            throw new NoneGetException();
-        //删除
-        if(resOsnrLinkTypeDao.deleteByExample(condition)==0)
-            return false;
-        return true;
-    }
-
-    @Override
+    @Transactional
     public LinkTypeDTO createLinkType(Long versionId,LinkTypeDTO linkTypeDTO) {
-        ResOnsrLinkType resOnsrLinkType=new ResOnsrLinkType();
-        resOnsrLinkType.setLinkLoss(linkTypeDTO.getLinkLoss());
-        resOnsrLinkType.setLinkRate(linkTypeDTO.getLinkRate());
-        resOnsrLinkType.setLinkType(linkTypeDTO.getLinkType());
+        //dto转dao
+        ResOnsrLinkType resOnsrLinkType=resOnsrLinkTypeDtoToDao(linkTypeDTO);
         resOnsrLinkType.setVersionId(versionId);
         if(resOsnrLinkTypeDao.insertSelective(resOnsrLinkType)==0)
             throw new NoneSaveException();
-        //linkTypeDTO.setVersionId(versionId);
         //获取linkTypeId
         Example condition=new Example(ResOnsrLinkType.class);
         Example.Criteria criteria=condition.createCriteria();
@@ -99,7 +79,7 @@ public class LinkTypeServiceImpl implements LinkTypeService {
     }
 
     @Override
-    public List<LinkTypeDTO> retrieveLinkTypes(Long versionId) {
+    public List<LinkTypeDTO> selectLinkTypes(Long versionId) {
         //查询条件
         List<LinkTypeDTO> result=new ArrayList<LinkTypeDTO>();
         Example condition=new Example(ResOnsrLinkType.class);
@@ -111,15 +91,45 @@ public class LinkTypeServiceImpl implements LinkTypeService {
             return null;
         Iterator<ResOnsrLinkType> iterator=tmp.iterator();
         while(iterator.hasNext()){
-            LinkTypeDTO re=new LinkTypeDTO();
             ResOnsrLinkType rolt=iterator.next();
-            re.setLinkLoss(rolt.getLinkLoss());
-            re.setLinkRate(rolt.getLinkRate());
-            re.setLinkType(rolt.getLinkType());
-            re.setLinkTypeId(rolt.getLinkTypeId());
+            //dao转dto
+            LinkTypeDTO re=linkTypeDaoToDto(rolt);
             result.add(re);
         }
         return result;
         //return null;
+    }
+
+    /**
+     * dto转dao
+     * @param linkTypeDTO
+     * @return
+     */
+    private ResOnsrLinkType resOnsrLinkTypeDtoToDao(LinkTypeDTO linkTypeDTO){
+        ResOnsrLinkType result=new ResOnsrLinkType();
+        if(linkTypeDTO==null)
+            return result;
+        result.setLinkLoss(linkTypeDTO.getLinkLoss());
+        result.setLinkRate(linkTypeDTO.getLinkRate());
+        result.setLinkType(linkTypeDTO.getLinkType());
+        if(linkTypeDTO.getLinkTypeId()!=null)
+            result.setLinkTypeId(linkTypeDTO.getLinkTypeId());
+        return result;
+    }
+
+    /**
+     * dao转dto
+     * @param resOnsrLinkType
+     * @return
+     */
+    private LinkTypeDTO linkTypeDaoToDto(ResOnsrLinkType resOnsrLinkType){
+        LinkTypeDTO result=new LinkTypeDTO();
+        if(resOnsrLinkType==null)
+            return result;
+        result.setLinkTypeId(resOnsrLinkType.getLinkTypeId());
+        result.setLinkType(resOnsrLinkType.getLinkType());
+        result.setLinkRate(resOnsrLinkType.getLinkRate());
+        result.setLinkLoss(resOnsrLinkType.getLinkLoss());
+        return result;
     }
 }

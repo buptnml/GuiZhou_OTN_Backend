@@ -22,13 +22,7 @@ public interface LinkTypeService {
      * 批量删除链路类型, 根据 链路类型ID, 请求路径:/linkTypes/:versionId
      * @param linkTypeIds
      */
-    boolean deleteByLinkTypeId(List<Long> linkTypeIds);
-
-    /**
-     * 批量删除链路类型, 根据 版本ID
-     * @param versionId
-     */
-    boolean deleteByVersionId(Long versionId);
+    boolean deleteByLinkTypeId(Long versionId,List<Long> linkTypeIds);
 
     /**
      * 添加链路类型 ,请求路径:/linkTypes/:versionId
@@ -44,6 +38,6 @@ public interface LinkTypeService {
      *  @param versionId
      * @return
      */
-    List<LinkTypeDTO> retrieveLinkTypes(Long versionId);
+    List<LinkTypeDTO> selectLinkTypes(Long versionId);
 
 }

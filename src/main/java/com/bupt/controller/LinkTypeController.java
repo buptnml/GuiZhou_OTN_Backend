@@ -26,7 +26,6 @@ public class LinkTypeController {
     @Autowired
     private LinkTypeService linkTypeService;
 
-
     /**修改链路类型, 根据 linkTypeId
      * @param linkTypeId
      * @param linkTypeDTO
@@ -44,27 +43,16 @@ public class LinkTypeController {
         return result;
     }
 
-    /**批量删除, 根据versionId
-     * @param versionId
-     */
-    @ApiOperation(value = "删除",notes = "批量删除,根据版本ID")
-    @RequestMapping(value = "/{versionId}",method = RequestMethod.DELETE)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteByVersionId(@PathVariable Long versionId){
-        if(linkTypeService.deleteByVersionId(versionId)==false)
-            throw new NoneRemoveException();
-    }
-
     /**批量删除, 根据linkTypeId
      * @param linkTypeId
      */
     @ApiOperation(value = "删除",notes="批量删除,根据linkTypeId")
-    @RequestMapping(value = "/",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{versionId}",method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteByLinkTypeId(@RequestBody List<Long> linkTypeId){
+    public void deleteByLinkTypeId(@PathVariable Long versionId,@RequestBody List<Long> linkTypeId){
         if(linkTypeId.size()==0)
             throw new IllegalArgumentException();
-        if(linkTypeService.deleteByLinkTypeId(linkTypeId)==false)
+        if(linkTypeService.deleteByLinkTypeId(versionId,linkTypeId)==false)
             throw new NoneRemoveException();
     }
 
@@ -88,11 +76,11 @@ public class LinkTypeController {
      * @param versionId
      * @return
      */
-    @ApiOperation(value="读取查询",notes="获取所有链路信息")
+    @ApiOperation(value="查询",notes="获取所有链路信息")
     @RequestMapping(value = "/{versionId}",method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     private List<LinkTypeDTO> retrieveLinkTypes(@PathVariable Long versionId){
-        List<LinkTypeDTO> result=linkTypeService.retrieveLinkTypes(versionId);
+        List<LinkTypeDTO> result=linkTypeService.selectLinkTypes(versionId);
         if(result.size()==0)
             throw new NoneGetException();
         return result;

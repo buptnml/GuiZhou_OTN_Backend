@@ -35,25 +35,16 @@ public class AmplifierController {
                 throw new NoneUpdateException();
             return result;
         }
-        //批量删除 /amplifiers/:versionId/
-        //根据versionID
-        @ApiOperation(value = "删除",notes = "批量删除放大器:根据versionId")
-        @RequestMapping(value = "/{versionId}",method = RequestMethod.DELETE)
-        @ResponseStatus(HttpStatus.NO_CONTENT)
-        public void deleteByVid(@PathVariable Long versionId){
-            boolean result=amplifierService.deleteByVid(versionId);
-            if(!result)
-                throw new NoneRemoveException();
-        }
+
         //根据amplifierID
         @ApiOperation(value = "删除",notes = "删除放大器:根据amplifierId")
-        @RequestMapping(value = "/",method = RequestMethod.DELETE)
+        @RequestMapping(value = "/{versionId}",method = RequestMethod.DELETE)
         @ResponseStatus(HttpStatus.NO_CONTENT)
-        public void deleteByAmpid(@RequestBody List<Long> amplifierId){
+        public void deleteByAmpid(@PathVariable Long versionId,@RequestBody List<Long> amplifierId){
             if(amplifierId==null || amplifierId.size()==0)
                throw new NegativeArraySizeException();
             else{
-                boolean result=amplifierService.deleteByAmpid(amplifierId);;
+                boolean result=amplifierService.deleteByAmpid(versionId,amplifierId);;
                 if(!result)
                     throw new NoneRemoveException();
             }
