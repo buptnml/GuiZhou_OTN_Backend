@@ -7,11 +7,8 @@ import com.bupt.util.exception.controller.input.IllegalArgumentException;
 import com.bupt.util.exception.controller.input.NullArgumentException;
 import com.bupt.util.exception.controller.result.NoneGetException;
 import com.bupt.util.exception.controller.result.NoneRemoveException;
-import com.bupt.util.exception.controller.result.NoneSaveException;
-import com.bupt.util.exception.controller.result.NoneUpdateException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,7 +45,7 @@ public class AmplifierController {
         if (amplifierId == null || amplifierId.size() == 0)
             throw new NegativeArraySizeException();
         else {
-            if (!amplifierService.deleteByAmpid(versionId, amplifierId)){
+            if (!amplifierService.deleteByAmpid(versionId, amplifierId)) {
                 throw new NoneRemoveException();
             }
         }
@@ -62,7 +59,7 @@ public class AmplifierController {
             amplifierCreateInfo) {
         checkAmplifierCreateInfo(amplifierCreateInfo);
         checkVersionId(versionId);
-        return  amplifierService.insertAmplifier(versionId, amplifierCreateInfo);
+        return amplifierService.insertAmplifier(versionId, amplifierCreateInfo);
     }
 
     //获取所有放大器 /amplifiers/:versionId
@@ -84,8 +81,8 @@ public class AmplifierController {
         }
     }
 
-    private void checkAmplifierCreateInfo(AmplifierCreateInfo amplifierCreateInfo){
-        if(null== amplifierCreateInfo.getAmplifierName()){
+    private void checkAmplifierCreateInfo(AmplifierCreateInfo amplifierCreateInfo) {
+        if (null == amplifierCreateInfo.getAmplifierName()) {
             throw new NullArgumentException("amplifierName");
         }
     }

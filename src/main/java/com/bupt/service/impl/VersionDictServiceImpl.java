@@ -4,8 +4,8 @@ import com.bupt.dao.SysVersionDao;
 import com.bupt.dao.SysVersionDictDao;
 import com.bupt.entity.SysVersion;
 import com.bupt.entity.SysVersionDict;
-import com.bupt.pojo.VersionDictDTO;
 import com.bupt.pojo.VersionDictCreateInfo;
+import com.bupt.pojo.VersionDictDTO;
 import com.bupt.service.VersionDictService;
 import com.bupt.util.exception.controller.result.NoneGetException;
 import com.bupt.util.exception.controller.result.NoneRemoveException;
@@ -89,7 +89,7 @@ public class VersionDictServiceImpl implements VersionDictService {
     @Override
     public List<VersionDictDTO> listVersionDict() {
         List<VersionDictDTO> resultList = new ArrayList<>();
-        for(SysVersionDict versionDict:sysVersionDictDao.selectAll()){
+        for (SysVersionDict versionDict : sysVersionDictDao.selectAll()) {
             resultList.add(convertToDTO(versionDict));
         }
         if (resultList.size() == 0) {

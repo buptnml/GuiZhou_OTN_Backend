@@ -2,7 +2,6 @@ package com.bupt.service.impl;
 
 import com.bupt.dao.ResOsnrLinkTypeDao;
 import com.bupt.entity.ResOnsrLinkType;
-import com.bupt.pojo.LinkCreateInfo;
 import com.bupt.pojo.LinkTypeCreateInfo;
 import com.bupt.pojo.LinkTypeDTO;
 import com.bupt.service.LinkTypeService;
@@ -10,14 +9,12 @@ import com.bupt.util.exception.controller.result.NoneGetException;
 import com.bupt.util.exception.controller.result.NoneRemoveException;
 import com.bupt.util.exception.controller.result.NoneSaveException;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**

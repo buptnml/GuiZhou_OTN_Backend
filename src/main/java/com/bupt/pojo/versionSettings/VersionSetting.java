@@ -1,7 +1,5 @@
 package com.bupt.pojo.versionSettings;
 
-import com.bupt.pojo.versionSettings.ResourceSetting;
-
 import java.io.Serializable;
 
 /**

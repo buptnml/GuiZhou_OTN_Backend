@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
-
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
@@ -132,7 +131,7 @@ public class BussinessServiceImpl implements BussinessService {
         result.setVersionId(versionId);
         result.setMainRate(bussinessCreateInfo.getMainChannelInfo().getChannelRate());
         result.setMainFrequency(bussinessCreateInfo.getMainChannelInfo().getChannelFrequency());
-        if(null!= bussinessCreateInfo.getSpareChannelInfo()){
+        if (null != bussinessCreateInfo.getSpareChannelInfo()) {
             result.setSpareRate(bussinessCreateInfo.getSpareChannelInfo().getChannelRate());
             result.setSpareFrequency(bussinessCreateInfo.getSpareChannelInfo().getChannelFrequency());
         }
@@ -140,8 +139,6 @@ public class BussinessServiceImpl implements BussinessService {
 
         return result;
     }
-
-
 
 
 }

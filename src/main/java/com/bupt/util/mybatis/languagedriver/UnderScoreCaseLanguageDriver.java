@@ -12,15 +12,15 @@ import java.util.regex.Pattern;
  */
 public class UnderScoreCaseLanguageDriver extends XMLLanguageDriver
         implements LanguageDriver {
-    
+
     //SQL正则,忽略大小写
-    private final Pattern SQLPattern = Pattern.compile("(select.*from)|(set.*(?=(where.*)))|(where.*)|(set.*$)", 0x02);
-    
+    private final Pattern SQLPattern = Pattern.compile("(select.*from)|(set.*(?=(where.*)))|(where.*)|(set.*$)", Pattern.CASE_INSENSITIVE);
+
     //变量正则
     private final Pattern camelCasePattern = Pattern.compile("([a-z]+([A-Z]{1}[a-z]+)+)|(\\#\\{([a-z]+([A-Z]{1}[a-z]+)+)\\})");
-    
+
     private final Pattern wordPattern = Pattern.compile("[A-Z]+");
-    
+
     public static void main(String args[]) {
         UnderScoreCaseLanguageDriver temp = new UnderScoreCaseLanguageDriver();
         System.out.println(temp.SQLPattern);
@@ -35,38 +35,37 @@ public class UnderScoreCaseLanguageDriver extends XMLLanguageDriver
             System.out.println("Result is: " + temp.SQLStringHandler(stringCase));
         }
     }
-    
-    
+
+
     private String SQLStringHandler(String SQLString) {
-        String result = new String(SQLString);
+        String result = SQLString;
         Matcher SQLMatcher = SQLPattern.matcher(SQLString);
         while (SQLMatcher.find()) {
             System.out.println("Match SQL part is: " + SQLMatcher.group());
             sentenceHandler(SQLMatcher.group());
         }
-        return result.toString();
+        return result;
     }
-    
+
     /**
      * 处理正则SQL筛选出的短句
      *
      * @param sentence
      * @return
      */
-    private String sentenceHandler(String sentence) {
-        String result = new String();
-        if (sentence.toLowerCase().indexOf("select") >= 0) {
+    private void sentenceHandler(String sentence) {
+        String result = "";
+        if (sentence.toLowerCase().contains("select")) {
             result = this.selectHandler(sentence);
         }
-        if (sentence.toLowerCase().indexOf("where") >= 0) {
+        if (sentence.toLowerCase().contains("where")) {
             result = this.whereHandler(sentence);
         }
-        if (sentence.toLowerCase().indexOf("set") >= 0) {
+        if (sentence.toLowerCase().contains("set")) {
             result = this.setHandler(sentence);
         }
-        return result;
     }
-    
+
     /**
      * select from类型短句处理
      *
@@ -76,16 +75,16 @@ public class UnderScoreCaseLanguageDriver extends XMLLanguageDriver
     private String selectHandler(String selectString) {
         StringBuilder result = new StringBuilder();
         Matcher wordMatcher = camelCasePattern.matcher(selectString);
-        int lastStart=0;
+        int lastStart = 0;
         while (wordMatcher.find()) {
-            result.append(selectString.substring(lastStart,wordMatcher.start()));
-            result.append(wordMatcher.group()+" as "+toUnderScoreCase(wordMatcher.group()));
-            lastStart=wordMatcher.end();
+            result.append(selectString.substring(lastStart, wordMatcher.start()));
+            result.append(wordMatcher.group()).append(" as ").append(toUnderScoreCase(wordMatcher.group()));
+            lastStart = wordMatcher.end();
         }
-        System.out.println("result: "+result);
+        System.out.println("result: " + result);
         return result.toString();
     }
-    
+
     /**
      * set类型短句处理
      *
@@ -93,14 +92,13 @@ public class UnderScoreCaseLanguageDriver extends XMLLanguageDriver
      * @return
      */
     private String setHandler(String setString) {
-        StringBuilder result = new StringBuilder(setString);
         Matcher wordMatcher = camelCasePattern.matcher(setString);
         while (wordMatcher.find()) {
             System.out.println(wordMatcher.group());
         }
-        return result.toString();
+        return setString;
     }
-    
+
     /**
      * where类型短句处理
      *
@@ -108,15 +106,14 @@ public class UnderScoreCaseLanguageDriver extends XMLLanguageDriver
      * @return
      */
     private String whereHandler(String whereString) {
-        StringBuilder result = new StringBuilder(whereString);
         Matcher wordMatcher = camelCasePattern.matcher(whereString);
         while (wordMatcher.find()) {
             System.out.println(wordMatcher.group());
         }
-        return result.toString();
+        return whereString;
     }
-    
-    
+
+
     /**
      * 将驼峰命名法转化为下划线命名
      *
@@ -154,5 +151,5 @@ public class UnderScoreCaseLanguageDriver extends XMLLanguageDriver
 //        String firstLetter=inputString.substring(0,1).toUpperCase();
 //        return firstLetter+inputString.substring(1);
 //    }
-    
+
 }

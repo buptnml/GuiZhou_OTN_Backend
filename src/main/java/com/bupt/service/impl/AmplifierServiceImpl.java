@@ -16,7 +16,6 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -29,10 +28,10 @@ public class AmplifierServiceImpl implements AmplifierService {
 
     @Override
     public AmplifierDTO updateAmplifiers(Long versionId, Long amplifierID, AmplifierCreateInfo amplifierCreateInfo) {
-        if (resOsnrAmplifierDao.selectByExample(getExample(versionId,amplifierID)).size() > 0) {
+        if (resOsnrAmplifierDao.selectByExample(getExample(versionId, amplifierID)).size() > 0) {
             ResOsnrAmplifier roa = amplifierDtoToDao(amplifierCreateInfo);
-            if (resOsnrAmplifierDao.updateByExampleSelective(roa,getExample(versionId,amplifierID)) > 0) {
-                roa = resOsnrAmplifierDao.selectByExample(getExample(versionId,amplifierID)).get(0);
+            if (resOsnrAmplifierDao.updateByExampleSelective(roa, getExample(versionId, amplifierID)) > 0) {
+                roa = resOsnrAmplifierDao.selectByExample(getExample(versionId, amplifierID)).get(0);
                 return amplifierDaoToDto(roa);
             } else {
                 throw new NoneUpdateException();
@@ -49,8 +48,16 @@ public class AmplifierServiceImpl implements AmplifierService {
         return condition;
     }
 
+    private Example getExample(Long versionId, String amplifierName) {
+        Example condition = new Example(ResOsnrAmplifier.class);
+        Example.Criteria criteria = condition.createCriteria();
+        criteria.andEqualTo("versionId", versionId);
+        criteria.andEqualTo("amplifierName", amplifierName);
+        return condition;
+    }
 
-    private Example getExample(Long amplifierID,Long versionId) {
+
+    private Example getExample(Long amplifierID, Long versionId) {
         Example condition = new Example(ResOsnrAmplifier.class);
         Example.Criteria criteria = condition.createCriteria();
         criteria.andEqualTo("amplifierId", amplifierID);
@@ -80,11 +87,16 @@ public class AmplifierServiceImpl implements AmplifierService {
             throw new NoneSaveException();
         } else {
             ResOsnrAmplifier result = resOsnrAmplifierDao.selectOne(roa);
-            if (null== result){
+            if (null == result) {
                 throw new NoneSaveException();
             }
             return amplifierDaoToDto(result);
         }
+    }
+
+    @Override
+    public AmplifierDTO getAmpByName(Long versionId, String ampType) {
+        return amplifierDaoToDto(resOsnrAmplifierDao.selectByExample(getExample(versionId, ampType)).get(0));
     }
 
     @Override

@@ -1,9 +1,9 @@
 package com.bupt.controller;
 
 import com.bupt.facade.VersionService;
+import com.bupt.pojo.VersionDTO;
 import com.bupt.pojo.VersionDTOWithVersionDictDTO;
 import com.bupt.pojo.VersionQuery;
-import com.bupt.pojo.VersionDTO;
 import com.bupt.service.UserService;
 import com.bupt.service.VersionDictService;
 import com.bupt.util.exception.controller.input.IllegalArgumentException;
@@ -54,7 +54,7 @@ public class VersionController {
         if (null == versionIdList || versionIdList.size() == 0) {
             throw new IllegalArgumentException("versionIdList");
         }
-        if(versionIdList.contains(100000000000L)){
+        if (versionIdList.contains(100000000000L)) {
             throw new IllegalArgumentException("versionIdList contains basicVersion,the basic version should not be " +
                     "altered!");
         }
@@ -73,7 +73,7 @@ public class VersionController {
     @RequestMapping(value = "/{versionId}", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.CREATED)
     public VersionDTO updateVersion(@PathVariable Long versionId, @RequestBody VersionQuery versionQuery) {
-        if(versionId==100000000000L){
+        if (versionId == 100000000000L) {
             throw new IllegalArgumentException("the basic version should not be altered in anyway!");
         }
         return versionService.updateVersion(versionId, versionQuery);
@@ -81,22 +81,22 @@ public class VersionController {
 
 
     private void checkVersionQuery(VersionQuery versionQuery) {
-        if(null == versionQuery.getVersionName()){
+        if (null == versionQuery.getVersionName()) {
             throw new NullArgumentException("versionName");
         }
-        if(null == versionQuery.getVersionDictName()){
+        if (null == versionQuery.getVersionDictName()) {
             throw new NullArgumentException("versionDictName");
         }
-        if(null == versionQuery.getCreatorName()){
+        if (null == versionQuery.getCreatorName()) {
             throw new NullArgumentException("creatorName");
         }
-        if(null == userService.getUserByName(versionQuery.getCreatorName().trim())){
+        if (null == userService.getUserByName(versionQuery.getCreatorName().trim())) {
             throw new IllegalArgumentException("creatorName should not be empty");
         }
-        if(null == versionDictService.getVersionDictByName(versionQuery.getVersionDictName())){
+        if (null == versionDictService.getVersionDictByName(versionQuery.getVersionDictName())) {
             throw new IllegalArgumentException("versionDictName");
         }
-        if(versionQuery.getVersionName().trim().equals("基础版本")){
+        if (versionQuery.getVersionName().trim().equals("基础版本")) {
             throw new IllegalArgumentException("versionName==基础版本");
         }
     }

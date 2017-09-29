@@ -10,6 +10,6 @@ public class ArgumentOutOfLimitsException extends IllegalArgumentException {
     }
 
     public ArgumentOutOfLimitsException(String message) {
-        super("Argument out of limit："+ message + "\n");
+        super("Argument out of limit：" + message + "\n");
     }
 }

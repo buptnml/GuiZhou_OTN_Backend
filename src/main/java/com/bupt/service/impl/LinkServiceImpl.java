@@ -97,8 +97,8 @@ public class LinkServiceImpl implements LinkService {
         for (ResLink link : resLinksList) {
             LinkCreateInfo newLink = new LinkCreateInfo();
             BeanUtils.copyProperties(link, newLink);
-            newLink.setEndAId(netElementService.getNewElementId(baseVersionId,newLink.getEndAId(),newVersionId));
-            newLink.setEndZId(netElementService.getNewElementId(baseVersionId,newLink.getEndZId(),newVersionId));
+            newLink.setEndAId(netElementService.getNewElementId(baseVersionId, newLink.getEndAId(), newVersionId));
+            newLink.setEndZId(netElementService.getNewElementId(baseVersionId, newLink.getEndZId(), newVersionId));
             saveResLink(newVersionId, newLink);
         }
     }

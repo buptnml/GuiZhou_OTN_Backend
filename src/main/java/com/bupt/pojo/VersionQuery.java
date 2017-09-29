@@ -4,7 +4,7 @@ public class VersionQuery {
     private String versionName;
     private String versionDictName;
     private String creatorName;
-//    private VersionSetting versionSetting;
+    //    private VersionSetting versionSetting;
     private String versionDescription;
 
     public String getVersionName() {

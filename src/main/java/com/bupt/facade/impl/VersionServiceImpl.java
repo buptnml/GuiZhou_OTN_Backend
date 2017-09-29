@@ -2,10 +2,13 @@ package com.bupt.facade.impl;
 
 import com.bupt.dao.SysVersionDao;
 import com.bupt.entity.SysVersion;
-import com.bupt.pojo.*;
+import com.bupt.facade.VersionService;
+import com.bupt.pojo.VersionDTO;
+import com.bupt.pojo.VersionDTOWithVersionDictDTO;
+import com.bupt.pojo.VersionDictDTO;
+import com.bupt.pojo.VersionQuery;
 import com.bupt.pojo.versionSettings.VersionSetting;
 import com.bupt.service.*;
-import com.bupt.facade.VersionService;
 import com.bupt.util.exception.controller.result.NoneGetException;
 import com.bupt.util.exception.controller.result.NoneRemoveException;
 import com.bupt.util.exception.controller.result.NoneSaveException;
@@ -29,6 +32,10 @@ public class VersionServiceImpl implements VersionService {
     private SysVersionDao sysVersionDao;
     @Resource
     private VersionDictService versionDictService;
+    @Resource
+    private AmplifierService amplifierService;
+    @Resource
+    private LinkTypeService linkTypeService;
 
     @Resource
     private BussinessService bussinessService;
@@ -103,6 +110,7 @@ public class VersionServiceImpl implements VersionService {
 
     /**
      * 从基础版本中拷贝数据到新版本中
+     *
      * @param versionId
      */
     private void batchCreate(Long versionId) {
@@ -113,17 +121,23 @@ public class VersionServiceImpl implements VersionService {
         VersionDictDTO dictSetting = versionDictService.getVersionDictByName(Version.getVersionDictName());
 
         //创建的时候最先创建网元数据！！！重要！
-        if(dictSetting.getHasNetElement()){
-            netElementService.batchCreate(100000000000L,versionId);
+        if (dictSetting.getHasNetElement()) {
+            netElementService.batchCreate(100000000000L, versionId);
         }
         if (dictSetting.getHasBussiness()) {
-            bussinessService.batchCreate(100000000000L,versionId);
+            bussinessService.batchCreate(100000000000L, versionId);
         }
         if (dictSetting.getHasDisk()) {
-            diskService.batchCreate(100000000000L,versionId);
+            diskService.batchCreate(100000000000L, versionId);
         }
-        if(dictSetting.getHasLink()){
-            linkService.batchCreate(100000000000L,versionId);
+        if (dictSetting.getHasLink()) {
+            linkService.batchCreate(100000000000L, versionId);
+        }
+        if (dictSetting.getHasAmplifier()) {
+            amplifierService.batchCreate(100000000000L, versionId);
+        }
+        if (dictSetting.getHasLinkType()) {
+            linkTypeService.batchCreate(100000000000L, versionId);
         }
 
         //TODO 等到未来其他资源补齐以后补充batchRemove内容
@@ -146,12 +160,19 @@ public class VersionServiceImpl implements VersionService {
         if (dictSetting.getHasDisk()) {
             diskService.batchRemove(versionId);
         }
-        if(dictSetting.getHasLink()){
+        if (dictSetting.getHasLink()) {
             linkService.batchRemove(versionId);
         }
-        if(dictSetting.getHasNetElement()){
+        if (dictSetting.getHasNetElement()) {
             netElementService.batchRemove(versionId);
         }
+        if (dictSetting.getHasAmplifier()) {
+            amplifierService.batchRemove(versionId);
+        }
+        if (dictSetting.getHasLinkType()) {
+            linkTypeService.batchRemove(versionId);
+        }
+
         //TODO 等到未来其他资源补齐以后补充batchRemove内容
     }
 

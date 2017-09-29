@@ -2,7 +2,7 @@ package com.bupt.pojo.versionSettings;
 
 import java.io.Serializable;
 
-public class BussinessDisplaySetting  implements Serializable {
+public class BussinessDisplaySetting implements Serializable {
     private boolean hasBussinessId;
     private boolean hasBussinessName;
     private boolean hasMainRoute;

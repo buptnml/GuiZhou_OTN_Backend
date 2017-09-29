@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bupt.mapper.generated.{0}Dao">
-  <resultMap id="BaseResultMap" type="com.bupt.entity.ResBussiness">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="bussiness_id" jdbcType="BIGINT" property="bussinessId" />
-    <result column="bussiness_name" jdbcType="VARCHAR" property="bussinessName" />
-    <result column="main_route" jdbcType="VARCHAR" property="mainRoute" />
-    <result column="main_rate" jdbcType="VARCHAR" property="mainRate" />
-    <result column="main_frequency" jdbcType="VARCHAR" property="mainFrequency" />
-    <result column="main_input_powers" jdbcType="VARCHAR" property="mainInputPowers" />
-    <result column="main_output_powers" jdbcType="VARCHAR" property="mainOutputPowers" />
-    <result column="spare_route" jdbcType="VARCHAR" property="spareRoute" />
-    <result column="spare_rate" jdbcType="VARCHAR" property="spareRate" />
-    <result column="spare_frequency" jdbcType="VARCHAR" property="spareFrequency" />
-    <result column="spare_input_powers" jdbcType="VARCHAR" property="spareInputPowers" />
-    <result column="spare_output_powers" jdbcType="VARCHAR" property="spareOutputPowers" />
-    <result column="version_id" jdbcType="BIGINT" property="versionId" />
-    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
-    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    bussiness_id, bussiness_name, main_route, main_rate, main_frequency, main_input_powers, 
-    main_output_powers, spare_route, spare_rate, spare_frequency, spare_input_powers, 
-    spare_output_powers, version_id, gmt_create, gmt_modified
-  </sql>
+    <resultMap id="BaseResultMap" type="com.bupt.entity.ResBussiness">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="bussiness_id" jdbcType="BIGINT" property="bussinessId"/>
+        <result column="bussiness_name" jdbcType="VARCHAR" property="bussinessName"/>
+        <result column="main_route" jdbcType="VARCHAR" property="mainRoute"/>
+        <result column="main_rate" jdbcType="VARCHAR" property="mainRate"/>
+        <result column="main_frequency" jdbcType="VARCHAR" property="mainFrequency"/>
+        <result column="main_input_powers" jdbcType="VARCHAR" property="mainInputPowers"/>
+        <result column="main_output_powers" jdbcType="VARCHAR" property="mainOutputPowers"/>
+        <result column="spare_route" jdbcType="VARCHAR" property="spareRoute"/>
+        <result column="spare_rate" jdbcType="VARCHAR" property="spareRate"/>
+        <result column="spare_frequency" jdbcType="VARCHAR" property="spareFrequency"/>
+        <result column="spare_input_powers" jdbcType="VARCHAR" property="spareInputPowers"/>
+        <result column="spare_output_powers" jdbcType="VARCHAR" property="spareOutputPowers"/>
+        <result column="version_id" jdbcType="BIGINT" property="versionId"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        bussiness_id, bussiness_name, main_route, main_rate, main_frequency, main_input_powers,
+        main_output_powers, spare_route, spare_rate, spare_frequency, spare_input_powers,
+        spare_output_powers, version_id, gmt_create, gmt_modified
+    </sql>
 </mapper>

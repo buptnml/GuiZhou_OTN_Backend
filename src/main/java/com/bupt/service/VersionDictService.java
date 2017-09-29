@@ -1,8 +1,8 @@
 package com.bupt.service;
 
 
-import com.bupt.pojo.VersionDictDTO;
 import com.bupt.pojo.VersionDictCreateInfo;
+import com.bupt.pojo.VersionDictDTO;
 
 import java.util.List;
 
@@ -27,6 +27,7 @@ public interface VersionDictService {
 
     /**
      * 批量删除版本字典信息
+     *
      * @param versionDictIdList
      */
     void listRemoveVersionDict(List<Long> versionDictIdList);
@@ -39,7 +40,7 @@ public interface VersionDictService {
     /**
      * 获取全部版本字典信息
      *
-     * @return  List<VersionDictDTO>
+     * @return List<VersionDictDTO>
      */
     List<VersionDictDTO> listVersionDict();
 

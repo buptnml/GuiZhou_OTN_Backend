@@ -1,7 +1,7 @@
 package com.bupt.pojo;
 
 public class NetElementCreateInfo {
-//    coordinateX		number
+    //    coordinateX		number
 //    coordinateY		number
 //    netElementName		string
 //    netElementType		string
@@ -9,6 +9,16 @@ public class NetElementCreateInfo {
     private short coordinateY;
     private String netElementName;
     private String netElementType;
+
+    public NetElementCreateInfo(short coordinateX, short coordinateY, String netElementName, String netElementType) {
+        this.coordinateX = coordinateX;
+        this.coordinateY = coordinateY;
+        this.netElementName = netElementName;
+        this.netElementType = netElementType;
+    }
+
+    public NetElementCreateInfo() {
+    }
 
     public short getCoordinateX() {
         return coordinateX;
@@ -40,16 +50,6 @@ public class NetElementCreateInfo {
 
     public void setNetElementType(String netElementType) {
         this.netElementType = netElementType;
-    }
-
-    public NetElementCreateInfo (short coordinateX , short coordinateY ,String netElementName ,String netElementType){
-        this.coordinateX = coordinateX;
-        this.coordinateY = coordinateY;
-        this.netElementName = netElementName;
-        this.netElementType = netElementType;
-    }
-
-    public NetElementCreateInfo(){
     }
 
 }

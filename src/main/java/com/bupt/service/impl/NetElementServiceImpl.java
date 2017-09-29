@@ -16,7 +16,6 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Service("netElementService")
@@ -84,7 +83,6 @@ public class NetElementServiceImpl implements NetElementService {
     }
 
 
-
     private Example getExample(Long versionId) {
         Example example = new Example(ResNetElement.class);
         Example.Criteria criteria = example.createCriteria();
@@ -108,8 +106,8 @@ public class NetElementServiceImpl implements NetElementService {
 
     @Override
     public NetElementDTO getNetElement(Long versionId, String netElementName) {
-        ResNetElement result = resNetElementDao.selectByExample(getExample(versionId,netElementName)).get(0);
-        if(null != result){
+        ResNetElement result = resNetElementDao.selectByExample(getExample(versionId, netElementName)).get(0);
+        if (null != result) {
             return convertToNetElementDTO(result);
         }
         throw new NoneGetException();
@@ -127,8 +125,8 @@ public class NetElementServiceImpl implements NetElementService {
 
     @Override
     public Long getNewElementId(Long oldVersionId, Long oldNetELementId, Long newVersionId) {
-        ResNetElement oldNetElement = resNetElementDao.selectByExample(getExample(oldVersionId,oldNetELementId)).get(0);
-        return resNetElementDao.selectByExample(getExample(newVersionId,oldNetElement.getNetElementName())).get(0)
+        ResNetElement oldNetElement = resNetElementDao.selectByExample(getExample(oldVersionId, oldNetELementId)).get(0);
+        return resNetElementDao.selectByExample(getExample(newVersionId, oldNetElement.getNetElementName())).get(0)
                 .getNetElementId();
     }
 

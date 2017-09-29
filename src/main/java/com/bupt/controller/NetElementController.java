@@ -23,12 +23,7 @@ import java.util.List;
 public class NetElementController {
 
     @Resource
-    public NetElementService netElementService;
-
-    //网元类型枚举
-    public enum NetElementTypes {
-        OTM, OLA
-    }
+    private NetElementService netElementService;
 
     /**
      * 查询所有网元
@@ -41,7 +36,6 @@ public class NetElementController {
     public List<NetElementDTO> listNetElement(@PathVariable Long versionId) {
         return netElementService.listNetElement(versionId);
     }
-
 
     /**
      * 创建新网元
@@ -84,9 +78,8 @@ public class NetElementController {
         if (netElementIdList == null || netElementIdList.size() == 0) {
             throw new IllegalArgumentException("netElementIdList should not be empty.");
         }
-        this.netElementService.listRemoveNetElement(versionId,netElementIdList);
+        this.netElementService.listRemoveNetElement(versionId, netElementIdList);
     }
-
 
     private void checkNetElementCreateInfo(NetElementCreateInfo netElementCreateInfo) {
         if (null == netElementCreateInfo.getNetElementName()) {
@@ -96,8 +89,6 @@ public class NetElementController {
         }
         if (null == netElementCreateInfo.getNetElementType()) {
             throw new NullArgumentException("netElementType should not be null.");
-        } else if (null == NetElementTypes.valueOf(netElementCreateInfo.getNetElementType())) {
-            throw new IllegalArgumentException("netElementType should not be null.");
         }
     }
 
@@ -106,6 +97,11 @@ public class NetElementController {
             throw new java.lang.IllegalArgumentException("versionID should not be 100000000000, the base version " +
                     "could not be altered in anyway！");
         }
+    }
+
+    //网元类型枚举
+    public enum NetElementTypes {
+        OTM, OLA
     }
 
 

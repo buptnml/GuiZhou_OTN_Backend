@@ -6,20 +6,19 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.io.Serializable;
 import java.util.Date;
 
-public class VersionDTO  implements Serializable {
-    private Long versionId;
-    private String versionName;
-    private String versionDictName;
-    private String versionDescription;
-//    private VersionSetting versionSetting;
-    private String creatorName;
-    private Date gmtCreate;
-    private Date gmtModified;
-
+public class VersionDTO implements Serializable {
     /**
      * 序列化ID
      */
     private static final long serialVersionUID = 1L;
+    private Long versionId;
+    private String versionName;
+    private String versionDictName;
+    private String versionDescription;
+    //    private VersionSetting versionSetting;
+    private String creatorName;
+    private Date gmtCreate;
+    private Date gmtModified;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -59,20 +58,20 @@ public class VersionDTO  implements Serializable {
         this.versionId = versionId;
     }
 
-    public String getVersionName() {
+    String getVersionName() {
         return versionName;
     }
 
-    public String getVersionDescription() {
+    public void setVersionName(String versionName) {
+        this.versionName = versionName;
+    }
+
+    String getVersionDescription() {
         return versionDescription;
     }
 
     public void setVersionDescription(String versionDescription) {
         this.versionDescription = versionDescription;
-    }
-
-    public void setVersionName(String versionName) {
-        this.versionName = versionName;
     }
 
 //    public VersionSetting getVersionSetting() {

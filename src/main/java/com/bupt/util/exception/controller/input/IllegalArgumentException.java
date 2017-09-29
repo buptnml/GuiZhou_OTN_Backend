@@ -12,6 +12,6 @@ public class IllegalArgumentException extends ControllerException {
     }
 
     public IllegalArgumentException(String message) {
-        super("Illegal argument："+ message + "\n");
+        super("Illegal argument：" + message + "\n");
     }
 }

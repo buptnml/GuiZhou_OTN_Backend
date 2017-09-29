@@ -1,7 +1,9 @@
 package com.bupt.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
-import javax.persistence.*;
 
 @Table(name = "res_osnr_channel")
 public class ResOsnrChannel {
@@ -13,7 +15,7 @@ public class ResOsnrChannel {
     private Long channelId;
 
     /**
-     *  波道所在业务id
+     * 波道所在业务id
      */
     @Column(name = "bussiness_id")
     private Long bussinessId;
@@ -96,7 +98,7 @@ public class ResOsnrChannel {
     /**
      * 设置 波道所在业务id
      *
-     * @param bussinessId  波道所在业务id
+     * @param bussinessId 波道所在业务id
      */
     public void setBussinessId(Long bussinessId) {
         this.bussinessId = bussinessId;

@@ -30,39 +30,39 @@ import javax.servlet.http.HttpServletRequest;
 @ApiIgnore
 @RequestMapping(produces = "application/json;charset=UTF-8")
 public class ExceptionHandlerController {
-    Logger logger= LoggerFactory.getLogger(ExceptionHandlerController.class);
+    private Logger logger = LoggerFactory.getLogger(ExceptionHandlerController.class);
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleHttpMessageNotReadableException(HttpServletRequest request,RuntimeException e) {
+    public String handleHttpMessageNotReadableException(HttpServletRequest request, RuntimeException e) {
         logger.warn("Request: " + request.getRequestURL() + " raised " + e);
         return e.getMessage();
     }
 
     @ExceptionHandler(NoneGetException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handleNoneGetException(HttpServletRequest request,RuntimeException e) {
+    public String handleNoneGetException(HttpServletRequest request, RuntimeException e) {
         logger.warn("Request: " + request.getRequestURL() + " raised " + e);
         return e.getMessage();
     }
 
     @ExceptionHandler(NoneRemoveException.class)
     @ResponseStatus(HttpStatus.GONE)
-    public String handleNoneRemoveException(HttpServletRequest request,RuntimeException e) {
+    public String handleNoneRemoveException(HttpServletRequest request, RuntimeException e) {
         logger.warn("Request: " + request.getRequestURL() + " raised " + e);
         return e.getMessage();
     }
 
     @ExceptionHandler(NoneSaveException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    public String handleNoneSaveException(HttpServletRequest request,RuntimeException e) {
+    public String handleNoneSaveException(HttpServletRequest request, RuntimeException e) {
         logger.warn("Request: " + request.getRequestURL() + " raised " + e);
         return e.getMessage();
     }
 
     @ExceptionHandler(NoneUpdateException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    public String handleNoneUpdateException(HttpServletRequest request,RuntimeException e) {
+    public String handleNoneUpdateException(HttpServletRequest request, RuntimeException e) {
         logger.warn("Request: " + request.getRequestURL() + " raised " + e);
         return e.getMessage();
     }
@@ -97,20 +97,19 @@ public class ExceptionHandlerController {
     }
 
 
-
-    @RequestMapping(value="/error_500")
-    public ResponseEntity<String> error_500(){
-        return new ResponseEntity<String>("INTERNAL_SERVER_ERROR",HttpStatus.INTERNAL_SERVER_ERROR);
+    @RequestMapping(value = "/error_500")
+    public ResponseEntity<String> error_500() {
+        return new ResponseEntity<>("INTERNAL_SERVER_ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @RequestMapping(value="/error_404")
-    public ResponseEntity<String> error_404(){
-        return new ResponseEntity<String>("REQUEST_URL_NOT_FOUND", HttpStatus.NOT_FOUND);
+    @RequestMapping(value = "/error_404")
+    public ResponseEntity<String> error_404() {
+        return new ResponseEntity<>("REQUEST_URL_NOT_FOUND", HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping(value="/error_405")
-    public ResponseEntity<String> error_405(){
-        return new ResponseEntity<String>("METHOD_NOT_ALLOWED", HttpStatus.METHOD_NOT_ALLOWED);
+    @RequestMapping(value = "/error_405")
+    public ResponseEntity<String> error_405() {
+        return new ResponseEntity<>("METHOD_NOT_ALLOWED", HttpStatus.METHOD_NOT_ALLOWED);
     }
 
 }

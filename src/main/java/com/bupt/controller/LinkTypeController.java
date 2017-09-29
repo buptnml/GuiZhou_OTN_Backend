@@ -5,13 +5,10 @@ import com.bupt.pojo.LinkTypeDTO;
 import com.bupt.service.LinkTypeService;
 import com.bupt.util.exception.controller.input.IllegalArgumentException;
 import com.bupt.util.exception.controller.input.NullArgumentException;
-import com.bupt.util.exception.controller.result.NoneGetException;
 import com.bupt.util.exception.controller.result.NoneRemoveException;
-import com.bupt.util.exception.controller.result.NoneSaveException;
 import com.bupt.util.exception.controller.result.NoneUpdateException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,7 +34,7 @@ public class LinkTypeController {
         checkVersionId(versionId);
         checkLinkTypeCreateInfo(linkTypeCreateInfo);
         LinkTypeDTO result = linkTypeService.updateByLinkTypeId(versionId, linkTypeId, linkTypeCreateInfo);
-        if (result == null){
+        if (result == null) {
             throw new NoneUpdateException();
         }
 

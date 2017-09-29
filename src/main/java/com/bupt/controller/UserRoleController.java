@@ -1,4 +1,5 @@
 package com.bupt.controller;
+
 import com.bupt.pojo.UserRoleCreateInfo;
 import com.bupt.pojo.UserRoleDTO;
 import com.bupt.service.UserRoleService;
@@ -25,19 +26,17 @@ public class UserRoleController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public List<UserRoleDTO> listUserRole() {
-        List<UserRoleDTO> listSysUserDTO = userRoleService.listUserRole();
-        return listSysUserDTO;
+        return userRoleService.listUserRole();
     }
 
     @ApiOperation(value = "创建新角色")
     @RequestMapping(value = "/", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public UserRoleDTO saveUserRole(@RequestBody UserRoleCreateInfo userRoleCreateInfo) {
-        if(userRoleCreateInfo.getRoleName()==null || userRoleCreateInfo.getRoleName().trim().length()==0){
+        if (userRoleCreateInfo.getRoleName() == null || userRoleCreateInfo.getRoleName().trim().length() == 0) {
             throw new NullArgumentException("roleName");
         }
-        UserRoleDTO UserRoleDTO = this.userRoleService.saveUserRole(userRoleCreateInfo);
-        return UserRoleDTO;
+        return this.userRoleService.saveUserRole(userRoleCreateInfo);
     }
 
     @ApiOperation(value = "批量删除指定角色")

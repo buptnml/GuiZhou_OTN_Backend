@@ -6,17 +6,17 @@ public class ChannelCreateInfo {
     private String channelRate;
     private String channelFrequency;
 
-    void checkOsnrChannelCreateInfo(){
-        if(null == channelRate){
+    void checkOsnrChannelCreateInfo() {
+        if (null == channelRate) {
             throw new NullArgumentException("channelRate");
         }
-        if(null == channelFrequency){
+        if (null == channelFrequency) {
             throw new NullArgumentException("channelFrequency");
         }
         if (channelRate.equals("")) {
             throw new IllegalArgumentException("channelRate");
         }
-        if(channelFrequency.equals("")){
+        if (channelFrequency.equals("")) {
             throw new IllegalArgumentException("channelFrequency");
         }
     }
