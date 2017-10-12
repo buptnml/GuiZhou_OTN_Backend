@@ -15,13 +15,44 @@ public class VersionDTO implements Serializable {
     private String versionName;
     private String versionDictName;
     private String versionDescription;
-    //    private VersionSetting versionSetting;
     private String creatorName;
     private Date gmtCreate;
     private Date gmtModified;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
+    }
+
+    public Long getVersionId() {
+        return versionId;
+    }
+
+    public void setVersionId(Long versionId) {
+        this.versionId = versionId;
+    }
+
+    public String getVersionName() {
+        return versionName;
+    }
+
+    public void setVersionName(String versionName) {
+        this.versionName = versionName;
+    }
+
+    public String getVersionDictName() {
+        return versionDictName;
+    }
+
+    public void setVersionDictName(String versionDictName) {
+        this.versionDictName = versionDictName;
+    }
+
+    public String getVersionDescription() {
+        return versionDescription;
+    }
+
+    public void setVersionDescription(String versionDescription) {
+        this.versionDescription = versionDescription;
     }
 
     public String getCreatorName() {
@@ -48,45 +79,5 @@ public class VersionDTO implements Serializable {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public Long getVersionId() {
-        return versionId;
-    }
-
-    public void setVersionId(Long versionId) {
-        this.versionId = versionId;
-    }
-
-    String getVersionName() {
-        return versionName;
-    }
-
-    public void setVersionName(String versionName) {
-        this.versionName = versionName;
-    }
-
-    String getVersionDescription() {
-        return versionDescription;
-    }
-
-    public void setVersionDescription(String versionDescription) {
-        this.versionDescription = versionDescription;
-    }
-
-//    public VersionSetting getVersionSetting() {
-//        return versionSetting;
-//    }
-//
-//    public void setVersionSetting(VersionSetting versionSetting) {
-//        this.versionSetting = versionSetting;
-//    }
-
-    public String getVersionDictName() {
-        return versionDictName;
-    }
-
-    public void setVersionDictName(String versionDictName) {
-        this.versionDictName = versionDictName;
     }
 }
