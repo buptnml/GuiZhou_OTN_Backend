@@ -82,6 +82,11 @@ public class LinkTypeServiceImpl implements LinkTypeService {
     }
 
     @Override
+    public LinkTypeDTO getLinkType(Long versionId, String linkType) {
+        return linkTypeDaoToDto(resOsnrLinkTypeDao.selectByExample(getExample(versionId, linkType)).get(0));
+    }
+
+    @Override
     public void batchRemove(Long versionId) {
         resOsnrLinkTypeDao.deleteByExample(getExample(versionId));
     }
@@ -98,6 +103,14 @@ public class LinkTypeServiceImpl implements LinkTypeService {
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("versionId", versionId);
         criteria.andEqualTo("linkTypeId", linkTypeId);
+        return example;
+    }
+
+    private Example getExample(Long versionId, String linkType) {
+        Example example = new Example(ResOnsrLinkType.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("versionId", versionId);
+        criteria.andEqualTo("linkType", linkType);
         return example;
     }
 

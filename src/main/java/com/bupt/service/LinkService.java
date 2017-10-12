@@ -51,4 +51,13 @@ public interface LinkService {
      */
     void batchCreate(Long baseVersionId, Long newVersionId);
 
+    /**
+     * 指定两点的网元，获取链路
+     * 如果两点之间存在多条的链路，会随机选择一条返回
+     *
+     * @param node1Name
+     * @param node2Name
+     * @return
+     */
+    LinkDTO getLinkByNodes(Long versionId, String node1Name, String node2Name);
 }

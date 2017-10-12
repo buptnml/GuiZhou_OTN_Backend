@@ -57,7 +57,7 @@ public class AmplifierServiceImpl implements AmplifierService {
     }
 
 
-    private Example getExample(Long amplifierID, Long versionId) {
+    private Example getExample(Long versionId, Long amplifierID) {
         Example condition = new Example(ResOsnrAmplifier.class);
         Example.Criteria criteria = condition.createCriteria();
         criteria.andEqualTo("amplifierId", amplifierID);

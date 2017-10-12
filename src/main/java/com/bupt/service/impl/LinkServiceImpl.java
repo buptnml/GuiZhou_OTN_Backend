@@ -18,6 +18,7 @@ import tk.mybatis.mapper.entity.Example;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service("linkService")
 public class LinkServiceImpl implements LinkService {
@@ -92,7 +93,6 @@ public class LinkServiceImpl implements LinkService {
 
     @Override
     public void batchCreate(Long baseVersionId, Long newVersionId) {
-        //TODO 链路中的网元ID需要更新
         List<ResLink> resLinksList = resLinkDao.selectByExample(getExample(baseVersionId));
         for (ResLink link : resLinksList) {
             LinkCreateInfo newLink = new LinkCreateInfo();
@@ -103,6 +103,27 @@ public class LinkServiceImpl implements LinkService {
         }
     }
 
+    @Override
+    public LinkDTO getLinkByNodes(Long versionId, String node1Name, String node2Name) {
+        /*Link是没有方向的，但是数据是有方向的，因此要考虑两个方向查询的结果*/
+        /*前向*/
+        List<ResLink> forthList = resLinkDao.selectByExample(getExample(versionId, node1Name, node2Name));
+        /*后向*/
+        List<ResLink> backList = resLinkDao.selectByExample(getExample(versionId, node2Name, node1Name));
+        /*在两个结果急中随机制定一个结果*/
+        int randomIndex = new Random().nextInt(forthList.size() + backList.size());
+        return convertToResLinkDTO(forthList.size() > randomIndex ? forthList.get(randomIndex) : backList.get
+                (randomIndex - forthList.size()));
+    }
+
+    private Example getExample(Long versionId, String node1Name, String node2Name) {
+        Example updateExample = new Example(ResLink.class);
+        Example.Criteria criteria = updateExample.createCriteria();
+        criteria.andEqualTo("versionId", versionId);
+        criteria.andEqualTo("endAName", node1Name);
+        criteria.andEqualTo("endZName", node2Name);
+        return updateExample;
+    }
 
     private ResLink convertToResLink(Object inputObject) {
         if (null == inputObject) {
