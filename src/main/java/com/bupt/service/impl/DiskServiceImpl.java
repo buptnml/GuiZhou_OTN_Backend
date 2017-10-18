@@ -1,11 +1,12 @@
 package com.bupt.service.impl;
 
 import com.bupt.dao.ResDiskDao;
+import com.bupt.dao.ResNetElementDao;
 import com.bupt.entity.ResDisk;
+import com.bupt.entity.ResNetElement;
 import com.bupt.pojo.DiskCreateInfo;
 import com.bupt.pojo.DiskDTO;
 import com.bupt.service.DiskService;
-import com.bupt.service.NetElementService;
 import com.bupt.util.exception.controller.result.NoneGetException;
 import com.bupt.util.exception.controller.result.NoneSaveException;
 import com.bupt.util.exception.controller.result.NoneUpdateException;
@@ -24,7 +25,7 @@ public class DiskServiceImpl implements DiskService {
     @Resource
     private ResDiskDao resDiskDao;
     @Resource
-    private NetElementService netElementService;
+    private ResNetElementDao resNetElementDao;
 
     @Override
     public List<DiskDTO> listDiskByNetElement(Long versionId, Long netElementId) {
@@ -81,11 +82,37 @@ public class DiskServiceImpl implements DiskService {
         List<ResDisk> basicVersionList = resDiskDao.selectByExample(example);
         for (ResDisk disk : basicVersionList) {
             DiskCreateInfo newDisk = new DiskCreateInfo(disk.getDiskName(), disk.getDiskType(), disk.getSlotId());
-            saveDisk(newVersionId, netElementService.getNewElementId(baseVersionId, disk.getNetElementId(),
+            saveDisk(newVersionId, getNewElementId(baseVersionId, disk.getNetElementId(),
                     newVersionId), newDisk);
         }
     }
 
+    /**
+     * 给定一个旧版本的网元ID和旧版本id
+     * 指定一个新版本Id，返回该版本新生成的网元id
+     */
+    private Long getNewElementId(Long oldVersionId, Long oldNetElementId, Long newVersionId) {
+        ResNetElement oldNetElement = resNetElementDao.selectByExample(getNetElementExample(oldVersionId,
+                oldNetElementId)).get(0);
+        return resNetElementDao.selectByExample(getNetElementExample(newVersionId, oldNetElement.getNetElementName())
+        ).get(0).getNetElementId();
+    }
+
+    private Example getNetElementExample(Long versionId, Long netElementId) {
+        Example example = new Example(ResNetElement.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("versionId", versionId);
+        criteria.andEqualTo("netElementId", netElementId);
+        return example;
+    }
+
+    private Example getNetElementExample(Long versionId, String netElementName) {
+        Example example = new Example(ResNetElement.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("versionId", versionId);
+        criteria.andEqualTo("netElementName", netElementName);
+        return example;
+    }
 
     private Example getExample(Long versionId, Long netElementId, Long diskId) {
         Example updateExample = new Example(ResDisk.class);
