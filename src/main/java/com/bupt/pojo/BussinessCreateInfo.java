@@ -6,6 +6,7 @@ public class BussinessCreateInfo {
     private String bussinessName;
     private String mainRoute;
     private String spareRoute;
+    private Long inputPower;
     private ChannelCreateInfo mainChannelInfo;
     private ChannelCreateInfo spareChannelInfo;
 
@@ -35,6 +36,16 @@ public class BussinessCreateInfo {
             }
         }
     }
+
+
+    public Long getInputPower() {
+        return inputPower;
+    }
+
+    public void setInputPower(Long inputPower) {
+        this.inputPower = inputPower;
+    }
+
 
 
     private String getBussinessName() {

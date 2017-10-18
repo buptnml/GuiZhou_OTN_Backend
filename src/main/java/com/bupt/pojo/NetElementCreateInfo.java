@@ -1,10 +1,6 @@
 package com.bupt.pojo;
 
 public class NetElementCreateInfo {
-    //    coordinateX		number
-//    coordinateY		number
-//    netElementName		string
-//    netElementType		string
     private short coordinateX;
     private short coordinateY;
     private String netElementName;
