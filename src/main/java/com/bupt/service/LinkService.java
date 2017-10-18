@@ -60,4 +60,5 @@ public interface LinkService {
      * @return
      */
     LinkDTO getLinkByNodes(Long versionId, String node1Name, String node2Name);
+
 }
