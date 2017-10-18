@@ -1,7 +1,5 @@
 package com.bupt.facade.OSNRCalculator;
 
-import com.bupt.facade.OSNRCalculator.impl.OSNRResult;
-
 import java.util.List;
 
 /**
@@ -32,6 +30,9 @@ public interface Calculable {
      * 获取计算完毕后的输出值字符串
      */
     String getOutputPowerString();
+
+
+    List<NodeOSNRDetail> getNodeResults();
 
 
 }

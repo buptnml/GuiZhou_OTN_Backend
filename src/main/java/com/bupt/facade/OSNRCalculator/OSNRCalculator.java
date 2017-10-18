@@ -1,7 +1,5 @@
-package com.bupt.facade.OSNRCalculator.impl;
+package com.bupt.facade.OSNRCalculator;
 
-import com.bupt.facade.OSNRCalculator.InputsOutputsCalculable;
-import com.bupt.facade.OSNRCalculator.OSNRResultsCalculable;
 import com.bupt.facade.OSNRCalculator.exceptions.OutOfInputLimitsException;
 import org.springframework.stereotype.Component;
 
@@ -16,16 +14,15 @@ import java.util.List;
 public class OSNRCalculator extends AbstractCalculator {
     @Resource
     private
-    InputsOutputsCalculable inputsOutputsCalculable;
+    InputsOutputsCalculable inputsOutputsCalculable = new InputsOutputsCalculator();
     @Resource
-    private
-    OSNRResultsCalculable osnrResultsCalculable;
+    private OSNRResultsCalculable osnrResultsCalculable = new OSNRResultsCalculator();
     private long versionId;
     private String routeString;
     private double[][] inputPowers;
     private double[][] outputPowers;
     private List<OSNRResult> results;
-
+    private List<NodeOSNRDetail> nodeResults;
     @Override
     /*
       所有的输入和输出要一一对应
@@ -58,12 +55,6 @@ public class OSNRCalculator extends AbstractCalculator {
     }
 
 
-    void init(double inputPowers, String routeString, long versionId) {
-        double[][] inputs = new double[1][1];
-        inputs[0][0] = inputPowers;
-        this.init(inputs, new double[0][0], routeString, versionId);
-    }
-
     @Override
     void inputsOutputsCalculate() throws OutOfInputLimitsException {
         inputsOutputsCalculable.calculate(routeString, inputPowers[0][0], versionId);
@@ -74,6 +65,7 @@ public class OSNRCalculator extends AbstractCalculator {
     @Override
     void OSNRCalculate() {
         results = osnrResultsCalculable.getResults(routeString, inputPowers, outputPowers);
+        nodeResults = osnrResultsCalculable.getDetail();
     }
 
     @Override
@@ -81,6 +73,9 @@ public class OSNRCalculator extends AbstractCalculator {
         return results;
     }
 
+    public List<NodeOSNRDetail> getNodeResults() {
+        return nodeResults;
+    }
     @Override
     public String getInputPowersString() {
         return Arrays.deepToString(inputPowers);

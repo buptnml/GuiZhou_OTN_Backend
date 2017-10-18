@@ -1,7 +1,6 @@
-package com.bupt.facade.OSNRCalculator.impl;
+package com.bupt.facade.OSNRCalculator;
 
 
-import com.bupt.facade.OSNRCalculator.LinkLossCalculator;
 import com.bupt.pojo.LinkDTO;
 import com.bupt.service.LinkService;
 import com.bupt.service.LinkTypeService;

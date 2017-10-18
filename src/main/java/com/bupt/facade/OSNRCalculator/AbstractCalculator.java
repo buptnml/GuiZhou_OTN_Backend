@@ -1,7 +1,6 @@
-package com.bupt.facade.OSNRCalculator.impl;
+package com.bupt.facade.OSNRCalculator;
 
 
-import com.bupt.facade.OSNRCalculator.Calculable;
 import com.bupt.facade.OSNRCalculator.exceptions.OutOfInputLimitsException;
 
 /**
@@ -43,6 +42,7 @@ abstract class AbstractCalculator implements Calculable {
      * 用来计算各个节点的OSNR值
      */
     abstract void OSNRCalculate();
+
 
     /**
      * 判断是否有OSNR计算需要的各个节点的输入和输出的函数

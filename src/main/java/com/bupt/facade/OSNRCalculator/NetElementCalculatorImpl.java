@@ -1,7 +1,5 @@
-package com.bupt.facade.OSNRCalculator.impl;
+package com.bupt.facade.OSNRCalculator;
 
-import com.bupt.facade.OSNRCalculator.DiskCalculator;
-import com.bupt.facade.OSNRCalculator.NetElementCalculator;
 import com.bupt.facade.OSNRCalculator.exceptions.OutOfInputLimitsException;
 import com.bupt.pojo.DiskDTO;
 import com.bupt.service.DiskService;
@@ -43,10 +41,13 @@ public class NetElementCalculatorImpl implements NetElementCalculator {
     public void calculate(String netElementName, long versionId, double firstInput) throws OutOfInputLimitsException {
         init(netElementName, versionId, firstInput);
         for (int i = 0; i < this.disks.size() - 1; i++) {
+            diskCalculator.calculate(this.disks.get(i), this.inputPowers[i], this.versionId);
             setPowers(i);
             //网元之间的机盘是没有功率损耗的，上一级的输出功率直接作为下一级的输入功率
             this.inputPowers[i + 1] = this.outputPowers[i];
         }
+        diskCalculator.calculate(this.disks.get(this.disks.size() - 1), this.inputPowers[this.disks.size() - 1],
+                this.versionId);
         setPowers(this.disks.size() - 1);
     }
 
@@ -61,7 +62,6 @@ public class NetElementCalculatorImpl implements NetElementCalculator {
 
 
     private void setPowers(int i) throws OutOfInputLimitsException {
-        diskCalculator.calculate(this.disks.get(i), this.inputPowers[i], this.versionId);
         /*考虑实际情况，输入功率可能会有所变动，需要重新赋值*/
         this.inputPowers[i] = diskCalculator.getInputPower();
         this.outputPowers[i] = diskCalculator.getOutputPower();

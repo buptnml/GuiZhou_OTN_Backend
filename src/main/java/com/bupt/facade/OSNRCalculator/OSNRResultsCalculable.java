@@ -1,7 +1,5 @@
 package com.bupt.facade.OSNRCalculator;
 
-import com.bupt.facade.OSNRCalculator.impl.OSNRResult;
-
 import java.util.List;
 
 /**
@@ -18,5 +16,14 @@ public interface OSNRResultsCalculable {
      * @return
      */
     List<OSNRResult> getResults(String routeString, double[][] inputPowers, double[][] outputPowers);
+
+    /**
+     * 获取各个节点的输入输出功率增益噪声等信息
+     *
+     * @return
+     */
+    List<NodeOSNRDetail> getDetail();
+
+
 
 }

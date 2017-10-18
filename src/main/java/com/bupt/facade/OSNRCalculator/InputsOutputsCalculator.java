@@ -1,9 +1,6 @@
-package com.bupt.facade.OSNRCalculator.impl;
+package com.bupt.facade.OSNRCalculator;
 
 
-import com.bupt.facade.OSNRCalculator.InputsOutputsCalculable;
-import com.bupt.facade.OSNRCalculator.LinkLossCalculator;
-import com.bupt.facade.OSNRCalculator.NetElementCalculator;
 import com.bupt.facade.OSNRCalculator.exceptions.OutOfInputLimitsException;
 import org.springframework.stereotype.Component;
 
@@ -24,8 +21,11 @@ public class InputsOutputsCalculator implements InputsOutputsCalculable {
     private double lastOutput;
     private double[][] inputPowers;
     private double[][] outputPowers;
+    /*size记录的是每一次计算的时候的输入输出功率对实际的长度，受各种原因影响，实际上可能会无法计算到所有节点的输入输出功率*/
+    private int size;
 
     private void init(String routeString, double firstInput) {
+        size = 0;
         this.nodes = routeString.split("-");
         this.firstInput = firstInput;
         inputPowers = new double[nodes.length][];
@@ -34,26 +34,43 @@ public class InputsOutputsCalculator implements InputsOutputsCalculable {
 
     @Override
     public double[][] getInputPowers() {
-        return inputPowers;
+        /*返回结果的时候要剔除实际为null的二维数组*/
+        double[][] results = new double[size][];
+        System.arraycopy(inputPowers, 0, results, 0, size);
+        return results;
     }
 
     @Override
     public double[][] getOutputPowers() {
-        return outputPowers;
+        /*返回结果的时候要剔除实际为null的二维数组*/
+        double[][] results = new double[size][];
+        System.arraycopy(outputPowers, 0, results, 0, size);
+        return results;
     }
 
-    public void calculate(String routeString, double firstInput, long versionId) throws OutOfInputLimitsException {
+    public void calculate(String routeString, double firstInput, long versionId) {
         init(routeString, firstInput);
         for (int i = 0; i < nodes.length - 1; i++) {
-            netElementCalculator.calculate(nodes[i], versionId, this.firstInput);
+            try {
+                netElementCalculator.calculate(nodes[i], versionId, this.firstInput);
+            } catch (OutOfInputLimitsException e) {
+                //如果捕捉到异常，说明这一点往后的输入输出功率均不需要继续计算
+                return;
+            }
             setPowers(i);
             this.firstInput = this.lastOutput - linkLossCalculator.getLinkLoss(versionId, nodes[i], nodes[i + 1]);
         }
-        netElementCalculator.calculate(nodes[nodes.length - 1], versionId, this.firstInput);
+        try {
+            netElementCalculator.calculate(nodes[nodes.length - 1], versionId, this.firstInput);
+        } catch (OutOfInputLimitsException e) {
+            //同上
+            return;
+        }
         setPowers(nodes.length - 1);
     }
 
     private void setPowers(int i) {
+        size++;
         this.inputPowers[i] = netElementCalculator.getInputPowers();
         this.outputPowers[i] = netElementCalculator.getOutputPowers();
         this.lastOutput = netElementCalculator.getLastOutput();

@@ -1,6 +1,5 @@
-package com.bupt.facade.OSNRCalculator.impl;
+package com.bupt.facade.OSNRCalculator;
 
-import com.bupt.facade.OSNRCalculator.OSNRResultsCalculable;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
@@ -11,16 +10,29 @@ public class OSNRResultsCalculator implements OSNRResultsCalculable {
     private double[][] inputPowers;
     private double[][] outputPowers;
     private double[] noisePowers;
+    private String[] nodes;
 
     @Override
     public List<OSNRResult> getResults(String routeString, double[][] inputPowers, double[][] outputPowers) {
         this.init(inputPowers, outputPowers);
         this.calculate();
         List<OSNRResult> results = new LinkedList<>();
-        String[] nodes = routeString.split("-");
+        nodes = routeString.split("-");
+
         for (int i = 0; i < noisePowers.length; i++) {
             double OSNR = this.outputPowers[i][outputPowers[i].length - 1] - noisePowers[i];
             results.add(new OSNRResult(nodes[i], OSNR));
+        }
+        return results;
+    }
+
+    @Override
+    public List<NodeOSNRDetail> getDetail() {
+        List<NodeOSNRDetail> results = new LinkedList<>();
+        for (int i = 0; i < noisePowers.length; i++) {
+            results.add(new NodeOSNRDetail(nodes[i], inputPowers[i][outputPowers[i].length - 1],
+                    outputPowers[i][outputPowers[i].length - 1], outputPowers[i][outputPowers[i].length -
+                    1] - inputPowers[i][outputPowers[i].length - 1], noisePowers[i]));
         }
         return results;
     }

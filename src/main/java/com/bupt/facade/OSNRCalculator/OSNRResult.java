@@ -1,4 +1,4 @@
-package com.bupt.facade.OSNRCalculator.impl;
+package com.bupt.facade.OSNRCalculator;
 
 /**
  * OSNR值的计算结果类
@@ -7,6 +7,7 @@ package com.bupt.facade.OSNRCalculator.impl;
  */
 final public class OSNRResult {
     private final String netElementName;
+
     private final Double result;
 
     OSNRResult(String netElementName, Double result) {
@@ -14,6 +15,12 @@ final public class OSNRResult {
         this.result = result;
     }
 
+    public String getNetElementName() {
+        return netElementName;
+    }
 
+    public Double getResult() {
+        return result;
+    }
 }
 
