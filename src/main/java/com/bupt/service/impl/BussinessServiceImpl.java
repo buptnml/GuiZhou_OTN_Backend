@@ -34,6 +34,11 @@ public class BussinessServiceImpl implements BussinessService {
     }
 
     @Override
+    public ResBussiness getBussiness(Long versionId, Long bussinessId) {
+        return resBussinessDao.selectByExample(getExample(versionId, bussinessId)).get(0);
+    }
+
+    @Override
     public BussinessDTO saveBussiness(Long versionId, BussinessCreateInfo bussinessCreateInfo) {
         ResBussiness insertInfo = createBussiness(versionId, bussinessCreateInfo);
         if (resBussinessDao.insertSelective(insertInfo) == 1) {
@@ -72,7 +77,6 @@ public class BussinessServiceImpl implements BussinessService {
     @Override
     @Transactional
     public void batchCreate(Long baseVersionId, Long newVersionId) {
-        //TODO 机盘Id中网元Id需要更新
         List<ResBussiness> bussinessList = resBussinessDao.selectByExample(getExample(baseVersionId));
         for (ResBussiness aBussinessList : bussinessList) {
             aBussinessList.setVersionId(newVersionId);

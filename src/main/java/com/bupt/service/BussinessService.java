@@ -1,6 +1,7 @@
 package com.bupt.service;
 
 
+import com.bupt.entity.ResBussiness;
 import com.bupt.pojo.BussinessCreateInfo;
 import com.bupt.pojo.BussinessDTO;
 
@@ -9,12 +10,21 @@ import java.util.List;
 /**
  * 光通道(业务）的Service层
  */
-public interface BussinessService {
+public interface
+BussinessService {
     /**
      * 获取所有业务
      */
     List<BussinessDTO> listBussiness(Long versionId);
 
+    /**
+     * 获取单个业务信息
+     *
+     * @param versionId
+     * @param bussinessId
+     * @return
+     */
+    ResBussiness getBussiness(Long versionId, Long bussinessId);
     /**
      * 创建新的业务
      */
