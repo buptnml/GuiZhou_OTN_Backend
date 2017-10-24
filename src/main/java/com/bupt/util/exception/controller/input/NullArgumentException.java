@@ -10,6 +10,6 @@ public class NullArgumentException extends IllegalArgumentException {
     }
 
     public NullArgumentException(String message) {
-        super("Null argument：" + message + "\n");
+        super(message + "\n");
     }
 }

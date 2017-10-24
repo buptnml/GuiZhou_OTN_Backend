@@ -35,7 +35,7 @@ public class SwaggerConfig {
                 .contact(new Contact("北邮网管实验室研发组", "https://github.com/buptnml/GuiZhou_OTN_Backend", " " +
                         "buptnml@163.com"))
                 //版本号
-                .version("0.0.8")
+                .version("0.0.9")
                 //描述
                 .build();
 
