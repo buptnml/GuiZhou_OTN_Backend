@@ -22,9 +22,15 @@ public class OsnrTest {
     public void nothing() {
         double[][] inputs = new double[1][1];
         inputs[0][0] = -10;
-        String routeString = "703_贵阳变-708_信息中心-705_中调";
-        osnrCalculator.calculate(inputs, null, routeString, 100000000000L);
+        String routeString = "905_两所屯变-904_安顺地调-903_安顺变-902_青岩变-901_中调";
+        try {
+            osnrCalculator.calculate(inputs, null, routeString, 100000000153L);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("***************************************************************************");
         System.out.println(osnrCalculator.getInputPowersString());
         System.out.println(osnrCalculator.getOutputPowerString());
+        System.out.println("***************************************************************************");
     }
 }

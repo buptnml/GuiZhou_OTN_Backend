@@ -21,16 +21,16 @@ public class ResBussiness {
     private String bussinessName;
 
     /**
+     * 主路由速率
+     */
+    @Column(name = "bussiness_rate")
+    private String bussinessRate;
+
+    /**
      * 主路由
      */
     @Column(name = "main_route")
     private String mainRoute;
-
-    /**
-     * 主路由速率
-     */
-    @Column(name = "main_rate")
-    private String mainRate;
 
     /**
      * 主路由频点
@@ -55,12 +55,6 @@ public class ResBussiness {
      */
     @Column(name = "spare_route")
     private String spareRoute;
-
-    /**
-     * 备用路由速率
-     */
-    @Column(name = "spare_rate")
-    private String spareRate;
 
     /**
      * 备用路由频点
@@ -135,6 +129,24 @@ public class ResBussiness {
     }
 
     /**
+     * 获取主路由速率
+     *
+     * @return bussiness_rate - 主路由速率
+     */
+    public String getBussinessRate() {
+        return bussinessRate;
+    }
+
+    /**
+     * 设置主路由速率
+     *
+     * @param bussinessRate 主路由速率
+     */
+    public void setBussinessRate(String bussinessRate) {
+        this.bussinessRate = bussinessRate == null ? null : bussinessRate.trim();
+    }
+
+    /**
      * 获取主路由
      *
      * @return main_route - 主路由
@@ -150,24 +162,6 @@ public class ResBussiness {
      */
     public void setMainRoute(String mainRoute) {
         this.mainRoute = mainRoute == null ? null : mainRoute.trim();
-    }
-
-    /**
-     * 获取主路由速率
-     *
-     * @return main_rate - 主路由速率
-     */
-    public String getMainRate() {
-        return mainRate;
-    }
-
-    /**
-     * 设置主路由速率
-     *
-     * @param mainRate 主路由速率
-     */
-    public void setMainRate(String mainRate) {
-        this.mainRate = mainRate == null ? null : mainRate.trim();
     }
 
     /**
@@ -240,24 +234,6 @@ public class ResBussiness {
      */
     public void setSpareRoute(String spareRoute) {
         this.spareRoute = spareRoute == null ? null : spareRoute.trim();
-    }
-
-    /**
-     * 获取备用路由速率
-     *
-     * @return spare_rate - 备用路由速率
-     */
-    public String getSpareRate() {
-        return spareRate;
-    }
-
-    /**
-     * 设置备用路由速率
-     *
-     * @param spareRate 备用路由速率
-     */
-    public void setSpareRate(String spareRate) {
-        this.spareRate = spareRate == null ? null : spareRate.trim();
     }
 
     /**
