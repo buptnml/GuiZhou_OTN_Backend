@@ -4,69 +4,69 @@ package com.bupt.pojo;
  * Created by 韩宪斌 on 2017/7/10.
  */
 public class UserDTO {
-    private Long id;
+    private Long userId;
     private String userName;
-    private String passWord;
+    private String password;
     private String userRole;
     private String userGroup;
-    
-    public Long getId() {
-        return id;
+
+    public UserDTO(Long userId, String userName, String password, String userRole, String userGroup) {
+        this.userId = userId;
+        this.userName = userName;
+        this.password = password;
+        this.userRole = userRole;
+        this.userGroup = userGroup;
     }
-    
-    public void setId(Long id) {
-        this.id = id;
+
+    public UserDTO() {
     }
-    
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
     public String getUserName() {
         return userName;
     }
-    
+
     public void setUserName(String userName) {
         this.userName = userName;
     }
-    
-    public String getPassWord() {
-        return passWord;
+
+    public String getPassword() {
+        return password;
     }
-    
-    public void setPassWord(String passWord) {
-        this.passWord = passWord;
+
+    public void setPassword(String password) {
+        this.password = password;
     }
-    
+
     public String getUserRole() {
         return userRole;
     }
-    
+
     public void setUserRole(String userRole) {
         this.userRole = userRole;
     }
-    
+
     public String getUserGroup() {
         return userGroup;
     }
-    
+
     public void setUserGroup(String userGroup) {
         this.userGroup = userGroup;
     }
-    
-    public UserDTO(Long id, String userName, String passWord, String userRole, String userGroup) {
-        this.id = id;
-        this.userName = userName;
-        this.passWord = passWord;
-        this.userRole = userRole;
-        this.userGroup = userGroup;
-    }
-    
-    public UserDTO() {
-    }
-    
+
     @Override
     public String toString() {
         return "UserDTO{" +
-                "id=" + id +
+                "userId=" + userId +
                 ", userName='" + userName + '\'' +
-                ", passWord='" + passWord + '\'' +
+                ", password='" + password + '\'' +
                 ", userRole='" + userRole + '\'' +
                 ", userGroup='" + userGroup + '\'' +
                 '}';

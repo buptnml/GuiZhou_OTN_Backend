@@ -5,30 +5,30 @@ package com.bupt.pojo;
  */
 public class UserQuery {
     private String userName;
-    private String passWord;
-    
-    
+    private String password;
+
+
+    public UserQuery(String userName, String password) {
+        this.userName = userName;
+        this.password = password;
+    }
+
+    public UserQuery() {
+    }
+
     public String getUserName() {
         return userName;
     }
-    
+
     public void setUserName(String userName) {
         this.userName = userName;
     }
-    
-    public String getPassWord() {
-        return passWord;
+
+    public String getPassword() {
+        return password;
     }
-    
-    public void setPassWord(String passWord) {
-        this.passWord = passWord;
-    }
-    
-    public UserQuery(String userName, String passWord) {
-        this.userName = userName;
-        this.passWord = passWord;
-    }
-    
-    public UserQuery() {
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

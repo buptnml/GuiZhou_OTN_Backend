@@ -1,7 +1,6 @@
 package com.bupt.dao;
 
 import com.bupt.entity.SysUser;
-
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 

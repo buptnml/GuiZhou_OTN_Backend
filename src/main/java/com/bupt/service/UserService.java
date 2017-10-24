@@ -1,5 +1,6 @@
 package com.bupt.service;
 
+import com.bupt.pojo.UserCreateInfo;
 import com.bupt.pojo.UserDTO;
 import com.bupt.pojo.UserQuery;
 
@@ -10,39 +11,78 @@ import java.util.List;
  * 用户Service层
  */
 public interface UserService {
-    
+
     /**
      * 创建用户
-     * @param userDTO
+     *
+     * @param userCreateInfo
      * @return
      */
-    UserDTO saveUser(UserDTO userDTO);
-    
+    UserDTO saveUser(UserCreateInfo userCreateInfo);
+
     /**
-     * 删除指定id的用户
-     * @param idList
-     * @return
+     * 批量删除指定id的用户
+     *
+     * @param userIdList
      */
-    boolean listRemoveUser(List<Long> idList);
-    
+    void listRemoveUser(List<Long> userIdList);
+
     /**
      * 查询用户，根据用户名和密码
+     *
      * @param userQuery
      * @return
      */
-    UserDTO getUser(UserQuery userQuery);
-    
+    UserDTO getUserByUserQuery(UserQuery userQuery);
+
+    /**
+     * 根据用户id查询用户
+     *
+     * @param userId
+     * @return
+     */
+    UserDTO getUserByUserId(Long userId);
+
     /**
      * 查询所有用户
+     *
      * @return
      */
     List<UserDTO> listUser();
-    
+
     /**
-     * 根据id修改客户信息
-     * @param id
-     * @param userDTO
+     * 更新用户信息
+     *
+     * @param userCreateInfo
      * @return
      */
-    UserDTO updateUser(Long id,UserDTO userDTO);
+    UserDTO updateUser(UserCreateInfo userCreateInfo);
+
+
+    /**
+     * 更新用户信息（通过ID）
+     *
+     * @param userId
+     * @param userCreateInfo
+     * @return
+     */
+    UserDTO updateUser(Long userId, UserCreateInfo userCreateInfo);
+
+
+    /**
+     * 查询所有用户名
+     *
+     * @return
+     */
+    List<String> listUserNames();
+
+    /**
+     * 通过用户名获取用户信息
+     *
+     * @param userName
+     * @return
+     */
+    UserDTO getUserByName(String userName);
+
+
 }

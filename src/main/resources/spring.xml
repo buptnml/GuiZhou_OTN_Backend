@@ -38,6 +38,7 @@
     </bean>
     <!-- 基于注解的事务配置-->
     <tx:annotation-driven transaction-manager="transactionManager"  />
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
 
 
 
