@@ -28,6 +28,7 @@ public class LinkServiceImpl implements LinkService {
     @Resource
     private ResNetElementDao resNetElementDao;
 
+
     @Override
     public LinkDTO saveResLink(Long versionId, LinkCreateInfo linkCreateInfo) {
         ResLink insertInfo = convertToResLink(linkCreateInfo);
@@ -41,7 +42,6 @@ public class LinkServiceImpl implements LinkService {
     @Override
     @Transactional
     public void listRemoveResLink(Long versionId, List<Long> linkIdList) {
-        //todo 删除链路的时候要删除链路所在的路由
         for (Long aLinkIdList : linkIdList) {
             if (resLinkDao.deleteByPrimaryKey(aLinkIdList) == 0) {
                 throw new NoneRemoveException();
@@ -140,9 +140,27 @@ public class LinkServiceImpl implements LinkService {
         /*后向*/
         List<ResLink> backList = resLinkDao.selectByExample(getExample(versionId, node2Name, node1Name));
         /*在两个结果集中随机制定一个结果*/
+        if (forthList.size() == 0 && backList.size() == 0) {
+            return null;
+        }
         int randomIndex = new Random().nextInt(forthList.size() + backList.size());
         return convertToResLinkDTO(forthList.size() > randomIndex ? forthList.get(randomIndex) : backList.get
                 (randomIndex - forthList.size()));
+    }
+
+    @Override
+    public List<ResLink> getReferLink(Long versionId, Long netElementId) {
+        List<ResLink> links = resLinkDao.selectByExample(getExample(versionId, "endAId", netElementId));
+        links.addAll(resLinkDao.selectByExample(getExample(versionId, "endZId", netElementId)));
+        return links;
+    }
+
+    private Example getExample(Long versionId, String condition, Long nodeId) {
+        Example removeExample = new Example(ResLink.class);
+        Example.Criteria criteria = removeExample.createCriteria();
+        criteria.andEqualTo("versionId", versionId);
+        criteria.andEqualTo(condition, nodeId);
+        return removeExample;
     }
 
 

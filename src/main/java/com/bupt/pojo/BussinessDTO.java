@@ -1,62 +1,14 @@
 package com.bupt.pojo;
 
-import com.bupt.entity.ResBussiness;
-import com.bupt.util.exception.controller.input.NullArgumentException;
-
 public class BussinessDTO {
     private Long bussinessId;
     private String bussinessName;
+    private String bussinessRate;
     private String mainRoute;
+    private String mainFrequency;
     private String spareRoute;
-    private ChannelDTO mainChannel;
-    private ChannelDTO spareChannel;
+    private String spareFrequency;
 
-    public BussinessDTO() {
-    }
-
-    public BussinessDTO(ResBussiness bussiness) {
-        this.bussinessId = bussiness.getBussinessId();
-        this.bussinessName = bussiness.getBussinessName();
-        this.mainRoute = bussiness.getMainRoute();
-        this.spareRoute = bussiness.getSpareRoute();
-    }
-
-    public void checkBussinessDTO() {
-        if (null == bussinessName) {
-            throw new NullArgumentException("bussinessName");
-        }
-        if (null == mainRoute) {
-            throw new NullArgumentException("mainRoute");
-        }
-        if (null == mainChannel) {
-            throw new NullArgumentException("mainChannel");
-        } else {
-            mainChannel.checkChannelDTO();
-        }
-        if (null != spareRoute) {
-            if (null == spareChannel) {
-                throw new NullArgumentException("spareChannel");
-            } else {
-                spareChannel.checkChannelDTO();
-            }
-        }
-    }
-
-    public ChannelDTO getMainChannel() {
-        return mainChannel;
-    }
-
-    public void setMainChannel(ChannelDTO mainChannel) {
-        this.mainChannel = mainChannel;
-    }
-
-    public ChannelDTO getSpareChannel() {
-        return spareChannel;
-    }
-
-    public void setSpareChannel(ChannelDTO spareChannel) {
-        this.spareChannel = spareChannel;
-    }
 
     public Long getBussinessId() {
         return bussinessId;
@@ -74,6 +26,14 @@ public class BussinessDTO {
         this.bussinessName = bussinessName;
     }
 
+    public String getBussinessRate() {
+        return bussinessRate;
+    }
+
+    public void setBussinessRate(String bussinessRate) {
+        this.bussinessRate = bussinessRate;
+    }
+
     public String getMainRoute() {
         return mainRoute;
     }
@@ -82,11 +42,27 @@ public class BussinessDTO {
         this.mainRoute = mainRoute;
     }
 
+    public String getMainFrequency() {
+        return mainFrequency;
+    }
+
+    public void setMainFrequency(String mainFrequency) {
+        this.mainFrequency = mainFrequency;
+    }
+
     public String getSpareRoute() {
         return spareRoute;
     }
 
     public void setSpareRoute(String spareRoute) {
         this.spareRoute = spareRoute;
+    }
+
+    public String getSpareFrequency() {
+        return spareFrequency;
+    }
+
+    public void setSpareFrequency(String spareFrequency) {
+        this.spareFrequency = spareFrequency;
     }
 }

@@ -1,10 +1,6 @@
 package com.bupt.service.impl;
 
-import com.bupt.dao.ResBussinessDao;
-import com.bupt.dao.ResLinkDao;
 import com.bupt.dao.ResNetElementDao;
-import com.bupt.entity.ResBussiness;
-import com.bupt.entity.ResLink;
 import com.bupt.entity.ResNetElement;
 import com.bupt.pojo.NetElementCreateInfo;
 import com.bupt.pojo.NetElementDTO;
@@ -26,10 +22,6 @@ import java.util.List;
 public class NetElementServiceImpl implements NetElementService {
     @Resource
     private ResNetElementDao resNetElementDao;
-    @Resource
-    private ResBussinessDao resBussinessDao;
-    @Resource
-    private ResLinkDao resLinkDao;
 
     @Override
     public NetElementDTO saveNetElement(Long versionId, NetElementCreateInfo netElementCreateInfo) {
@@ -45,42 +37,12 @@ public class NetElementServiceImpl implements NetElementService {
     @Transactional
     public void listRemoveNetElement(Long versionId, List<Long> netElementIdList) {
         for (Long aNetElementId : netElementIdList) {
-            removeReferBussiness(versionId, resNetElementDao.selectByPrimaryKey(aNetElementId).getNetElementName());
-            removeFromNetElement(versionId, aNetElementId);
             if (resNetElementDao.deleteByExample(getExample(versionId, aNetElementId)) == 0) {
                 throw new NoneRemoveException();
             }
         }
     }
 
-    //删除链路中和这个网元相关联的链路
-    private void removeFromNetElement(Long versionId, Long netElementId) {
-        resLinkDao.deleteByExample(getExample(versionId, "endAId", netElementId));
-        resLinkDao.deleteByExample(getExample(versionId, "endZId", netElementId));
-    }
-
-    //删除业务（光通道）中和这个网元相关联的业务（光通道）
-    private void removeReferBussiness(Long versionId, String referString) {
-        resBussinessDao.deleteByExample(getExample(versionId, "mainRoute", referString));
-        resBussinessDao.deleteByExample(getExample(versionId, "spareRoute", referString));
-    }
-
-    private Example getExample(Long versionId, String condition, Long nodeId) {
-        Example removeExample = new Example(ResLink.class);
-        Example.Criteria criteria = removeExample.createCriteria();
-        criteria.andEqualTo("versionId", versionId);
-        criteria.andEqualTo(condition, nodeId);
-        return removeExample;
-    }
-
-
-    private Example getExample(Long versionId, String condition, String referString) {
-        Example example = new Example(ResBussiness.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("versionId", versionId);
-        criteria.andEqualTo(condition, "%" + referString + "%");
-        return example;
-    }
 
     @Override
     public List<NetElementDTO> listNetElement(Long versionId) {
@@ -145,11 +107,11 @@ public class NetElementServiceImpl implements NetElementService {
 
     @Override
     public NetElementDTO getNetElement(Long versionId, String netElementName) {
-        ResNetElement result = resNetElementDao.selectByExample(getExample(versionId, netElementName)).get(0);
-        if (null != result) {
-            return convertToNetElementDTO(result);
+        List<ResNetElement> result = resNetElementDao.selectByExample(getExample(versionId, netElementName));
+        if (null != result || result.size() != 0) {
+            return convertToNetElementDTO(result.get(0));
         }
-        throw new NoneGetException();
+        throw new NoneGetException("网元" + netElementName + "不存在");
     }
 
     @Override
