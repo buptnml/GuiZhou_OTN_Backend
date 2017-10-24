@@ -2,9 +2,9 @@ package com.bupt.service.impl;
 
 import com.bupt.dao.SysUserDao;
 import com.bupt.entity.SysUser;
+import com.bupt.pojo.UserCreateInfo;
 import com.bupt.pojo.UserDTO;
 import com.bupt.pojo.UserQuery;
-import com.bupt.pojo.UserCreateInfo;
 import com.bupt.service.UserService;
 import com.bupt.util.exception.controller.result.NoneGetException;
 import com.bupt.util.exception.controller.result.NoneRemoveException;
@@ -77,11 +77,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> listUser() {
         Iterator<SysUser> sysUserIterator = sysUserDao.selectAll().iterator();
-        List<UserDTO> resultList = new ArrayList<UserDTO>();
+        List<UserDTO> resultList = new ArrayList<>();
         while (sysUserIterator.hasNext()) {
             resultList.add(this.convertToUserDTO(sysUserIterator.next()));
         }
-        if (resultList.size() == 0 ) {
+        if (resultList.size() == 0) {
             throw new NoneGetException();
         }
         return resultList;
@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
     private Example getExample(String userName) {
         Example example = new Example(SysUser.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("userName",userName);
+        criteria.andEqualTo("userName", userName);
         return example;
     }
 
@@ -127,10 +127,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO getUserByName(String userName) {
         List<SysUser> results = sysUserDao.selectByExample(getExample(userName));
-        if(results.size() == 0) {
+        if (results.size() == 0) {
             throw new NoneGetException("userName/creatorName");
         }
-        return convertToUserDTO(results.get(0) );
+        return convertToUserDTO(results.get(0));
     }
 
 

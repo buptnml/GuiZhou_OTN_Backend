@@ -9,12 +9,12 @@ public class AmplifierDTO {
 
     /**
      * amplifier_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '放大器id',
-     `amplifier_name` varchar(100) NOT NULL DEFAULT '' COMMENT '放大器名称',
-     `gain` smallint(6) NOT NULL COMMENT '放大器增益',
-     `minimum_input_power` smallint(6) NOT NULL COMMENT '最小输入功率',
-     `maximum_input_power` smallint(6) NOT NULL COMMENT '最大输入功率',
-     `maximum_output_power` smallint(6) NOT NULL COMMENT '最大输出功率',
-     `version_id` bigint(20) unsigned NOT NULL COMMENT '条目所在版本ID',
+     * `amplifier_name` varchar(100) NOT NULL DEFAULT '' COMMENT '放大器名称',
+     * `gain` smallint(6) NOT NULL COMMENT '放大器增益',
+     * `minimum_input_power` smallint(6) NOT NULL COMMENT '最小输入功率',
+     * `maximum_input_power` smallint(6) NOT NULL COMMENT '最大输入功率',
+     * `maximum_output_power` smallint(6) NOT NULL COMMENT '最大输出功率',
+     * `version_id` bigint(20) unsigned NOT NULL COMMENT '条目所在版本ID',
      */
     private Long amplifierID;
     private String amplifierName;
@@ -24,14 +24,16 @@ public class AmplifierDTO {
     private Short maximumOutputPower;
 
 
+    // ?
 
-   // ?
-
+    public Long getAmplifierID() {
+        return amplifierID;
+    }
 
     public void setAmplifierID(Long amplifierID) {
         this.amplifierID = amplifierID;
     }
-    public Long getAmplifierID() {return amplifierID;}
+
     public String getAmplifierName() {
         return amplifierName;
     }

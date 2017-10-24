@@ -5,6 +5,15 @@ public class DiskCreateInfo {
     private String diskType;
     private Long slotId;
 
+    public DiskCreateInfo() {
+    }
+
+    public DiskCreateInfo(String diskName, String diskType, Long slotId) {
+        this.diskName = diskName;
+        this.diskType = diskType;
+        this.slotId = slotId;
+    }
+
     public Long getSlotId() {
         return slotId;
     }
@@ -27,14 +36,5 @@ public class DiskCreateInfo {
 
     public void setDiskType(String diskType) {
         this.diskType = diskType;
-    }
-
-    public DiskCreateInfo() {
-    }
-
-    public DiskCreateInfo(String diskName, String diskType,Long slotId) {
-        this.diskName = diskName;
-        this.diskType = diskType;
-        this.slotId = slotId;
     }
 }

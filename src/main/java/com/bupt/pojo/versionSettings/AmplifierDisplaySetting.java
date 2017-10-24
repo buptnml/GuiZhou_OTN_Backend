@@ -2,7 +2,7 @@ package com.bupt.pojo.versionSettings;
 
 import java.io.Serializable;
 
-public class AmplifierDisplaySetting  implements Serializable {
+public class AmplifierDisplaySetting implements Serializable {
     private boolean hasAmplifierId;
     private boolean hasAmplifierName;
     private boolean hasGain;

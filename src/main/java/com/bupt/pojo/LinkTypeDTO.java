@@ -3,12 +3,12 @@ package com.bupt.pojo;
 /**
  * Created by caoxiaohong on 17/9/20.
  */
-public class LinkTypeDTO{
+public class LinkTypeDTO {
 
-    Float   linkLoss;//链路损耗，单位dB/km
-    String  linkRate;//链路速率
-    String  linkType;//链路类型
-    Long    linkTypeId;//链路类型ID
+    private Float linkLoss;//链路损耗，单位dB/km
+    private String linkRate;//链路速率
+    private String linkType;//链路类型
+    private Long linkTypeId;//链路类型ID
     //Long    versionId;//条目所在版本ID
 
 

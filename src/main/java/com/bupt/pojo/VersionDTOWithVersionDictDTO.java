@@ -15,6 +15,15 @@ public class VersionDTOWithVersionDictDTO {
     private Date gmtModified;
     private VersionDictDTO versionDict;
 
+    public VersionDTOWithVersionDictDTO(VersionDTO versionDTO) {
+        this.versionId = versionDTO.getVersionId();
+        this.versionName = versionDTO.getVersionName();
+        this.versionDescription = versionDTO.getVersionDescription();
+        this.creatorName = versionDTO.getCreatorName();
+        this.gmtCreate = versionDTO.getGmtCreate();
+        this.gmtModified = versionDTO.getGmtModified();
+    }
+
     public VersionDictDTO getVersionDict() {
         return versionDict;
     }
@@ -22,7 +31,6 @@ public class VersionDTOWithVersionDictDTO {
     public void setVersionDict(VersionDictDTO versionDict) {
         this.versionDict = versionDict;
     }
-
 
     public String getCreatorName() {
         return creatorName;
@@ -62,24 +70,15 @@ public class VersionDTOWithVersionDictDTO {
         return versionName;
     }
 
+    public void setVersionName(String versionName) {
+        this.versionName = versionName;
+    }
+
     public String getVersionDescription() {
         return versionDescription;
     }
 
     public void setVersionDescription(String versionDescription) {
         this.versionDescription = versionDescription;
-    }
-
-    public void setVersionName(String versionName) {
-        this.versionName = versionName;
-    }
-
-    public VersionDTOWithVersionDictDTO(VersionDTO versionDTO) {
-        this.versionId = versionDTO.getVersionId();
-        this.versionName = versionDTO.getVersionName();
-        this.versionDescription = versionDTO.getVersionDescription();
-        this.creatorName = versionDTO.getCreatorName();
-        this.gmtCreate = versionDTO.getGmtCreate();
-        this.gmtModified = versionDTO.getGmtModified();
     }
 }

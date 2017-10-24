@@ -6,38 +6,49 @@ public class BussinessCreateInfo {
     private String bussinessName;
     private String mainRoute;
     private String spareRoute;
+    private Long inputPower;
     private ChannelCreateInfo mainChannelInfo;
     private ChannelCreateInfo spareChannelInfo;
 
-    public void checkBussinessCreateInfoLegal(){
-        if(mainRoute.equals("")){
+    public void checkBussinessCreateInfoLegal() {
+        if (mainRoute.equals("")) {
             throw new IllegalArgumentException("mainRoute");
         }
-        if(null == this.getBussinessName()){
+        if (null == this.getBussinessName()) {
             throw new NullArgumentException("bussinessName");
         }
-        if(null == this.getMainRoute()){
-            throw  new NullArgumentException("mainRoute");
-        }
-        if(null == this.getMainChannelInfo()){
+        if (null == this.getMainRoute()) {
             throw new NullArgumentException("mainRoute");
-        }else{
+        }
+        if (null == this.getMainChannelInfo()) {
+            throw new NullArgumentException("mainRoute");
+        } else {
             mainChannelInfo.checkOsnrChannelCreateInfo();
         }
-        if(null != this.getSpareRoute()){
-            if(spareRoute.equals("")){
+        if (null != this.getSpareRoute()) {
+            if (spareRoute.equals("")) {
                 throw new IllegalArgumentException("spareRoute");
             }
-            if(null == this.getSpareChannelInfo()){
+            if (null == this.getSpareChannelInfo()) {
                 throw new NullArgumentException("spareChannelInfo");
-            }else{
+            } else {
                 spareChannelInfo.checkOsnrChannelCreateInfo();
             }
         }
     }
 
 
-    public String getBussinessName() {
+    public Long getInputPower() {
+        return inputPower;
+    }
+
+    public void setInputPower(Long inputPower) {
+        this.inputPower = inputPower;
+    }
+
+
+
+    private String getBussinessName() {
         return bussinessName;
     }
 
@@ -45,7 +56,7 @@ public class BussinessCreateInfo {
         this.bussinessName = bussinessName;
     }
 
-    public String getMainRoute() {
+    private String getMainRoute() {
         return mainRoute;
     }
 
@@ -53,7 +64,7 @@ public class BussinessCreateInfo {
         this.mainRoute = mainRoute;
     }
 
-    public String getSpareRoute() {
+    private String getSpareRoute() {
         return spareRoute;
     }
 

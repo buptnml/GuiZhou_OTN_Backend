@@ -1,8 +1,8 @@
 package com.bupt.service;
 
+import com.bupt.pojo.UserCreateInfo;
 import com.bupt.pojo.UserDTO;
 import com.bupt.pojo.UserQuery;
-import com.bupt.pojo.UserCreateInfo;
 
 import java.util.List;
 
@@ -78,11 +78,11 @@ public interface UserService {
 
     /**
      * 通过用户名获取用户信息
+     *
      * @param userName
      * @return
      */
     UserDTO getUserByName(String userName);
-
 
 
 }

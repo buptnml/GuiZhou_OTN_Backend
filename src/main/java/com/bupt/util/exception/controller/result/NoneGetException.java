@@ -10,6 +10,6 @@ public class NoneGetException extends RequestResultErrorException {
     }
 
     public NoneGetException(String message) {
-        super("The parameter "+ message + " could not be found in the database\n");
+        super("The parameter " + message + " could not be found in the database\n");
     }
 }

@@ -78,7 +78,7 @@ public class UserRoleServiceImpl implements UserRoleService {
         while (sysUserIterator.hasNext()) {
             resultList.add(this.DOtoDTO(sysUserIterator.next()));
         }
-        if (resultList.size() == 0 ){
+        if (resultList.size() == 0) {
             throw new NoneGetException();
         }
         return resultList;

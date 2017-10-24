@@ -10,6 +10,6 @@ public class NoneRemoveException extends RequestResultErrorException {
     }
 
     public NoneRemoveException(String message) {
-        super(message+"\n");
+        super(message + "\n");
     }
 }

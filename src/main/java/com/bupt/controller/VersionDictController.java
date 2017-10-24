@@ -1,7 +1,7 @@
 package com.bupt.controller;
 
-import com.bupt.pojo.VersionDictDTO;
 import com.bupt.pojo.VersionDictCreateInfo;
+import com.bupt.pojo.VersionDictDTO;
 import com.bupt.service.UserService;
 import com.bupt.service.VersionDictService;
 import com.bupt.util.exception.controller.input.IllegalArgumentException;
@@ -53,7 +53,7 @@ public class VersionDictController {
     @RequestMapping(value = "/{versionDictId}", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.CREATED)
     public VersionDictDTO updateVersionDict(@PathVariable Long versionDictId, @RequestBody VersionDictCreateInfo versionDictCreateInfo) {
-        if (versionDictId==100000000000L){
+        if (versionDictId == 100000000000L) {
             throw new IllegalArgumentException("versionDictIdList contains 100000000000 which is the basic version " +
                     "ID");
         }
@@ -70,12 +70,11 @@ public class VersionDictController {
     }
 
 
-
-    private void checkVersionDictInfo(VersionDictCreateInfo versionDictCreateInfo){
-        if(!userService.listUserNames().contains(versionDictCreateInfo.getCreatorName().trim())){
+    private void checkVersionDictInfo(VersionDictCreateInfo versionDictCreateInfo) {
+        if (!userService.listUserNames().contains(versionDictCreateInfo.getCreatorName().trim())) {
             throw new IllegalArgumentException("CreatorName");
         }
-        if(versionDictCreateInfo.getVersionDictName().trim().equals("基础字典")){
+        if (versionDictCreateInfo.getVersionDictName().trim().equals("基础字典")) {
             throw new IllegalArgumentException("versionDIctName should not be the basic version name.");
         }
     }

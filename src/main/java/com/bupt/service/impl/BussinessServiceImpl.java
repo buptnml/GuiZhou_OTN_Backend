@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
-
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +31,11 @@ public class BussinessServiceImpl implements BussinessService {
             resultList.add(createBussinessDTO(bussiness));
         }
         return resultList;
+    }
+
+    @Override
+    public ResBussiness getBussiness(Long versionId, Long bussinessId) {
+        return resBussinessDao.selectByExample(getExample(versionId, bussinessId)).get(0);
     }
 
     @Override
@@ -73,7 +77,6 @@ public class BussinessServiceImpl implements BussinessService {
     @Override
     @Transactional
     public void batchCreate(Long baseVersionId, Long newVersionId) {
-        //TODO 机盘Id中网元Id需要更新
         List<ResBussiness> bussinessList = resBussinessDao.selectByExample(getExample(baseVersionId));
         for (ResBussiness aBussinessList : bussinessList) {
             aBussinessList.setVersionId(newVersionId);
@@ -132,7 +135,7 @@ public class BussinessServiceImpl implements BussinessService {
         result.setVersionId(versionId);
         result.setMainRate(bussinessCreateInfo.getMainChannelInfo().getChannelRate());
         result.setMainFrequency(bussinessCreateInfo.getMainChannelInfo().getChannelFrequency());
-        if(null!= bussinessCreateInfo.getSpareChannelInfo()){
+        if (null != bussinessCreateInfo.getSpareChannelInfo()) {
             result.setSpareRate(bussinessCreateInfo.getSpareChannelInfo().getChannelRate());
             result.setSpareFrequency(bussinessCreateInfo.getSpareChannelInfo().getChannelFrequency());
         }
@@ -140,8 +143,6 @@ public class BussinessServiceImpl implements BussinessService {
 
         return result;
     }
-
-
 
 
 }

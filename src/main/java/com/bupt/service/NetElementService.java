@@ -69,15 +69,6 @@ public interface NetElementService {
      */
     void batchCreate(Long baseVersionId, Long newVersionId);
 
-    /**
-     *
-     * 给定一个旧版本的网元ID和旧版本id
-     * 指定一个新版本Id，返回该版本新生成的网元id
-      * @param oldVersionId
-     * @param newVersionId
-     * @return
-     */
-    Long getNewElementId(Long oldVersionId,Long oldNetElement, Long newVersionId);
 }
 
 

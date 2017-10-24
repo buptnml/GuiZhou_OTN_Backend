@@ -7,9 +7,25 @@ public class NetElementDTO {
     private Short coordinateX;
     private Short coordinateY;
 
-    public Long getNetElementId() { return netElementId; }
+    public NetElementDTO(Long id, String netElementName, String netElementType, Short coordinateX, Short coordinateY) {
+        this.netElementId = id;
+        this.netElementName = netElementName;
+        this.netElementType = netElementType;
+        this.coordinateX = coordinateX;
+        this.coordinateY = coordinateY;
+    }
 
-    public void setNetElementId(Long netElementId) { this.netElementId = netElementId; }
+    public NetElementDTO() {
+
+    }
+
+    public Long getNetElementId() {
+        return netElementId;
+    }
+
+    public void setNetElementId(Long netElementId) {
+        this.netElementId = netElementId;
+    }
 
     public String getNetElementName() {
         return netElementName;
@@ -41,18 +57,6 @@ public class NetElementDTO {
 
     public void setCoordinateY(Short coordinateY) {
         this.coordinateY = coordinateY;
-    }
-
-    public NetElementDTO (Long id,String netElementName, String netElementType, Short coordinateX, Short coordinateY){
-        this.netElementId = id;
-        this.netElementName = netElementName;
-        this.netElementType = netElementType;
-        this.coordinateX = coordinateX;
-        this.coordinateY = coordinateY;
-    }
-
-    public  NetElementDTO () {
-
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.bupt.controller;
 
 
-import com.bupt.facade.VersionService;
 import com.bupt.pojo.UserCreateInfo;
 import com.bupt.pojo.UserDTO;
 import com.bupt.pojo.UserQuery;
@@ -31,26 +30,25 @@ public class UserController {
 
     @Resource
     private UserRoleService userRoleService;
-    
+
     @ApiOperation(value = "查询全部用户信息")
     @RequestMapping(value = "/", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public List<UserDTO> listUser() {
         return userService.listUser();
     }
-    
-    
+
+
     @ApiOperation(value = "按条件查询用户")
     @RequestMapping(value = "/{userName}/{password}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public UserDTO getUserByUserQuery(@PathVariable String userName, @PathVariable String password) {
         UserQuery userQuery = new UserQuery(userName, password);
         this.checkUserQuery(userQuery);
-        UserDTO resultDTO = userService.getUserByUserQuery(userQuery);
-        return resultDTO;
+        return userService.getUserByUserQuery(userQuery);
     }
-    
-    
+
+
     @ApiOperation(value = "创建新用户")
     @RequestMapping(value = "/", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
@@ -59,20 +57,19 @@ public class UserController {
                 userCreateInfo.getUserRole(), userCreateInfo.getUserGroup()));
         return userService.saveUser(userCreateInfo);
     }
-    
-    
+
+
     @ApiOperation(value = "更新用户")
     @RequestMapping(value = "/{userId}", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDTO updateUser(@PathVariable Long userId,@RequestBody UserCreateInfo userCreateInfo) {
-        
+    public UserDTO updateUser(@PathVariable Long userId, @RequestBody UserCreateInfo userCreateInfo) {
+
         this.checkUserDTO(new UserDTO(userId, userCreateInfo.getUserName(), userCreateInfo.getPassword(),
                 userCreateInfo.getUserRole(), userCreateInfo.getUserGroup()));
-        UserDTO resultDTO = this.userService.updateUser(userId,userCreateInfo);
-        return resultDTO;
+        return this.userService.updateUser(userId, userCreateInfo);
     }
-    
-    
+
+
     @ApiOperation(value = "批量删除指定id的用户")
     @RequestMapping(value = "/", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -82,7 +79,7 @@ public class UserController {
         }
         this.userService.listRemoveUser(idList);
     }
-    
+
     private void checkUserDTO(UserDTO userDTO) {
         if (userDTO.getPassword() == null) {
             throw new NullArgumentException("password");
@@ -95,10 +92,10 @@ public class UserController {
         }
     }
 
-    private boolean checkUserRole(String userRole){
+    private boolean checkUserRole(String userRole) {
         List<UserRoleDTO> userRoleDTOList = userRoleService.listUserRole();
-        for (UserRoleDTO role:userRoleDTOList) {
-            if(role.getRoleName().equals(userRole)) {
+        for (UserRoleDTO role : userRoleDTOList) {
+            if (role.getRoleName().equals(userRole)) {
                 return false;
             }
         }
@@ -106,7 +103,6 @@ public class UserController {
     }
 
 
-    
     private void checkUserQuery(UserQuery userQuery) {
         if (userQuery.getPassword() == null) {
             throw new NullArgumentException("password");
@@ -115,5 +111,5 @@ public class UserController {
             throw new NullArgumentException("userName");
         }
     }
-    
+
 }

@@ -26,17 +26,13 @@ public class DiskController {
     private NetElementService netElementService;
 
 
-
-
     @ApiOperation(value = "查询某个版本下某设备的所有机盘信息")
     @RequestMapping(value = "/{versionId}/{netElementId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<DiskDTO> listResLink(@PathVariable Long versionId,@PathVariable Long netElementId) {
-        checkNetElementId(versionId,netElementId);
-        return diskService.listDiskByNetElement(versionId,netElementId);
+    public List<DiskDTO> listResLink(@PathVariable Long versionId, @PathVariable Long netElementId) {
+        checkNetElementId(versionId, netElementId);
+        return diskService.listDiskByNetElement(versionId, netElementId);
     }
-
-
 
 
     @ApiOperation(value = "创建新机盘")
@@ -45,7 +41,7 @@ public class DiskController {
     public DiskDTO saveDisk(@PathVariable Long versionId, @PathVariable Long netElementId, @RequestBody
             DiskCreateInfo diskCreateInfo) {
         checkVersionId(versionId);
-        checkNetElementId(versionId,netElementId);
+        checkNetElementId(versionId, netElementId);
         checkDiskCreateInfo(diskCreateInfo);
         return diskService.saveDisk(versionId, netElementId, diskCreateInfo);
     }
@@ -56,7 +52,7 @@ public class DiskController {
     public DiskDTO updateDisk(@PathVariable Long versionId, @PathVariable Long netElementId, @PathVariable Long diskId,
                               @RequestBody DiskCreateInfo diskCreateInfo) {
         checkVersionId(versionId);
-        checkNetElementId(versionId,netElementId);
+        checkNetElementId(versionId, netElementId);
         checkDiskCreateInfo(diskCreateInfo);
         return diskService.updateDisk(versionId, netElementId, diskId, diskCreateInfo);
     }
@@ -70,27 +66,30 @@ public class DiskController {
             throw new IllegalArgumentException("diskIdList不能为空");
         }
         checkVersionId(versionId);
-        checkNetElementId(versionId,netElementId);
+        checkNetElementId(versionId, netElementId);
         this.diskService.listRemove(versionId, netElementId, diskIdList);
     }
 
-    private void checkDiskCreateInfo(DiskCreateInfo diskCreateInfo){
+    private void checkDiskCreateInfo(DiskCreateInfo diskCreateInfo) {
         //TODO 机盘表中信息应该来源于机盘类型表的信息
-        if(null==diskCreateInfo.getDiskName()){
+        if (null == diskCreateInfo.getDiskName()) {
             throw new NullArgumentException("diskName should not be null!");
-        }if(null == diskCreateInfo.getDiskType()){
+        }
+        if (null == diskCreateInfo.getDiskType()) {
             throw new NullArgumentException("diskType should not be null");
-        }if(null == diskCreateInfo.getSlotId()){
+        }
+        if (null == diskCreateInfo.getSlotId()) {
             throw new NullArgumentException("slotId should not be null");
         }
     }
 
     /**
      * 检查网元id输入的合法性
+     *
      * @param netElementId
      */
-    private void checkNetElementId(Long versionId, Long netElementId){
-        if(null == netElementService.getNetElement(versionId,netElementId)){
+    private void checkNetElementId(Long versionId, Long netElementId) {
+        if (null == netElementService.getNetElement(versionId, netElementId)) {
             throw new NullArgumentException("could not find the netElement");
         }
     }
