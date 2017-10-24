@@ -1,54 +1,15 @@
 package com.bupt.pojo;
 
-import com.bupt.util.exception.controller.input.NullArgumentException;
-
 public class BussinessCreateInfo {
     private String bussinessName;
+    private String bussinessRate;
     private String mainRoute;
+    private String mainFrequency;
     private String spareRoute;
-    private Long inputPower;
-    private ChannelCreateInfo mainChannelInfo;
-    private ChannelCreateInfo spareChannelInfo;
+    private String spareFrequency;
+    private Double inputPower;
 
-    public void checkBussinessCreateInfoLegal() {
-        if (mainRoute.equals("")) {
-            throw new IllegalArgumentException("mainRoute");
-        }
-        if (null == this.getBussinessName()) {
-            throw new NullArgumentException("bussinessName");
-        }
-        if (null == this.getMainRoute()) {
-            throw new NullArgumentException("mainRoute");
-        }
-        if (null == this.getMainChannelInfo()) {
-            throw new NullArgumentException("mainRoute");
-        } else {
-            mainChannelInfo.checkOsnrChannelCreateInfo();
-        }
-        if (null != this.getSpareRoute()) {
-            if (spareRoute.equals("")) {
-                throw new IllegalArgumentException("spareRoute");
-            }
-            if (null == this.getSpareChannelInfo()) {
-                throw new NullArgumentException("spareChannelInfo");
-            } else {
-                spareChannelInfo.checkOsnrChannelCreateInfo();
-            }
-        }
-    }
-
-
-    public Long getInputPower() {
-        return inputPower;
-    }
-
-    public void setInputPower(Long inputPower) {
-        this.inputPower = inputPower;
-    }
-
-
-
-    private String getBussinessName() {
+    public String getBussinessName() {
         return bussinessName;
     }
 
@@ -56,7 +17,15 @@ public class BussinessCreateInfo {
         this.bussinessName = bussinessName;
     }
 
-    private String getMainRoute() {
+    public String getBussinessRate() {
+        return bussinessRate;
+    }
+
+    public void setBussinessRate(String bussinessRate) {
+        this.bussinessRate = bussinessRate;
+    }
+
+    public String getMainRoute() {
         return mainRoute;
     }
 
@@ -64,7 +33,15 @@ public class BussinessCreateInfo {
         this.mainRoute = mainRoute;
     }
 
-    private String getSpareRoute() {
+    public String getMainFrequency() {
+        return mainFrequency;
+    }
+
+    public void setMainFrequency(String mainFrequency) {
+        this.mainFrequency = mainFrequency;
+    }
+
+    public String getSpareRoute() {
         return spareRoute;
     }
 
@@ -72,19 +49,19 @@ public class BussinessCreateInfo {
         this.spareRoute = spareRoute;
     }
 
-    public ChannelCreateInfo getMainChannelInfo() {
-        return mainChannelInfo;
+    public String getSpareFrequency() {
+        return spareFrequency;
     }
 
-    public void setMainChannelInfo(ChannelCreateInfo mainChannelInfo) {
-        this.mainChannelInfo = mainChannelInfo;
+    public void setSpareFrequency(String spareFrequency) {
+        this.spareFrequency = spareFrequency;
     }
 
-    public ChannelCreateInfo getSpareChannelInfo() {
-        return spareChannelInfo;
+    public Double getInputPower() {
+        return inputPower;
     }
 
-    public void setSpareChannelInfo(ChannelCreateInfo spareChannelInfo) {
-        this.spareChannelInfo = spareChannelInfo;
+    public void setInputPower(double inputPower) {
+        this.inputPower = inputPower;
     }
 }

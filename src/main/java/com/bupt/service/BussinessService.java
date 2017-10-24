@@ -30,10 +30,6 @@ BussinessService {
      */
     BussinessDTO saveBussiness(Long versionId, BussinessCreateInfo bussinessCreateInfo);
 
-    /**
-     * 修改已有业务
-     */
-    BussinessDTO updateBussiness(Long versionId, Long bussinessId, BussinessCreateInfo bussinessCreateInfo);
 
     /**
      * 批量删除现有业务
@@ -51,4 +47,12 @@ BussinessService {
     void batchCreate(Long baseVersionId, Long newVersionId);
 
 
+    /**
+     * 更新路由中包含oldString的bussiness路由为newString，重新计算OSNR的输入输出功率
+     *
+     * @param versionId
+     * @param oldString
+     * @param newString
+     */
+    void updateReferBussiness(Long versionId, String oldString, String newString);
 }

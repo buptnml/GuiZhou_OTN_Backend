@@ -1,5 +1,6 @@
 package com.bupt.service;
 
+import com.bupt.entity.ResLink;
 import com.bupt.pojo.LinkCreateInfo;
 import com.bupt.pojo.LinkDTO;
 
@@ -60,5 +61,14 @@ public interface LinkService {
      * @return
      */
     LinkDTO getLinkByNodes(Long versionId, String node1Name, String node2Name);
+
+    /**
+     * 删除断点为指定netElementId的节点
+     *
+     * @param versionId
+     * @param netElementId
+     */
+    List<ResLink> getReferLink(Long versionId, Long netElementId);
+
 
 }
