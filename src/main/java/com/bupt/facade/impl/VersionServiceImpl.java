@@ -53,7 +53,6 @@ public class VersionServiceImpl implements VersionService {
     public VersionDTO saveVersion(VersionQuery versionQuery) {
         if (sysVersionDao.insertSelective(convertToSysVersion(versionQuery)) > 0) {
             SysVersion newVersion = getVersionByName(versionQuery.getVersionName());
-            batchCreate(newVersion.getVersionId());
             return DOtoDTO(newVersion);
         }
         throw new NoneSaveException();
@@ -65,7 +64,7 @@ public class VersionServiceImpl implements VersionService {
         for (Long aVersionIdList : versionIdList) {
             SysVersion temp = sysVersionDao.selectByPrimaryKey(aVersionIdList);
             if (null == temp) {
-                throw new NoneRemoveException();
+                throw new NoneRemoveException("版本ID不存在！");
             }
             batchRemove(temp.getVersionId());
             sysVersionDao.deleteByPrimaryKey(temp.getVersionId());
@@ -108,51 +107,56 @@ public class VersionServiceImpl implements VersionService {
         return DOtoDTO(sysVersionDao.selectByPrimaryKey(versionId));
     }
 
+    @Override
+    public void dataSynchronize(Long fromVersionId, Long toVersionId) {
+        SysVersion fromVersion = sysVersionDao.selectByPrimaryKey(fromVersionId);
+        SysVersion toVersion = sysVersionDao.selectByPrimaryKey(toVersionId);
+        if (null == fromVersion || null == toVersion) {
+            throw new NoneGetException("同步数据失败！!");
+        }
+        batchRemove(toVersionId);
+        batchCreate(fromVersionId, toVersionId);
+    }
+
     /**
-     * 从基础版本中拷贝数据到新版本中
-     *
-     * @param versionId
+     * 从指定版本中拷贝数据
      */
-    private void batchCreate(Long versionId) {
-        SysVersion Version = sysVersionDao.selectByPrimaryKey(versionId);
+    private void batchCreate(Long fromVersionId, Long toVersionId) {
+        SysVersion Version = sysVersionDao.selectByPrimaryKey(toVersionId);
         if (null == Version) {
-            throw new NoneRemoveException("Fail to create version!");
+            throw new NoneGetException("同步数据失败！!");
         }
         VersionDictDTO dictSetting = versionDictService.getVersionDictByName(Version.getVersionDictName());
-
         //创建的时候最先创建网元数据！！！重要！
         if (dictSetting.getHasNetElement()) {
-            netElementService.batchCreate(100000000000L, versionId);
-        }
-        if (dictSetting.getHasBussiness()) {
-            bussinessService.batchCreate(100000000000L, versionId);
+            netElementService.batchCreate(fromVersionId, toVersionId);
         }
         if (dictSetting.getHasDisk()) {
-            diskService.batchCreate(100000000000L, versionId);
+            diskService.batchCreate(fromVersionId, toVersionId);
         }
         if (dictSetting.getHasLink()) {
-            linkService.batchCreate(100000000000L, versionId);
+            linkService.batchCreate(fromVersionId, toVersionId);
         }
         if (dictSetting.getHasAmplifier()) {
-            amplifierService.batchCreate(100000000000L, versionId);
+            amplifierService.batchCreate(fromVersionId, toVersionId);
         }
         if (dictSetting.getHasLinkType()) {
-            linkTypeService.batchCreate(100000000000L, versionId);
+            linkTypeService.batchCreate(fromVersionId, toVersionId);
         }
-
-        //TODO 等到未来其他资源补齐以后补充batchRemove内容
+        /*最后复制业务*/
+        if (dictSetting.getHasBussiness()) {
+            bussinessService.batchCreate(fromVersionId, toVersionId);
+        }
     }
 
     /***
      * 根据版本设置批量删除该版本所用资源
      */
     private void batchRemove(Long versionId) {
-
         SysVersion Version = sysVersionDao.selectByPrimaryKey(versionId);
         if (null == Version) {
-            throw new NoneRemoveException("Fail to delete version info.");
+            throw new NoneRemoveException("删除版本数据失败！！");
         }
-
         VersionDictDTO dictSetting = versionDictService.getVersionDictByName(Version.getVersionDictName());
         if (dictSetting.getHasBussiness()) {
             bussinessService.batchRemove(versionId);
@@ -172,8 +176,6 @@ public class VersionServiceImpl implements VersionService {
         if (dictSetting.getHasLinkType()) {
             linkTypeService.batchRemove(versionId);
         }
-
-        //TODO 等到未来其他资源补齐以后补充batchRemove内容
     }
 
     @Transactional

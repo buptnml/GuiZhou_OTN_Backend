@@ -49,10 +49,10 @@ public interface VersionService {
      */
     VersionDTO updateVersion(Long versionId, VersionQuery versionQuery);
 
-//    /**
-//     * 同步指定版本名的资源
-//     * @param fromVersionName
-//     */
-//    void dataSynchronize(Long versionId,String fromVersionName);
+
+    /**
+     * 同步数据
+     */
+    void dataSynchronize(Long fromVersionId, Long toVersionId);
 
 }
