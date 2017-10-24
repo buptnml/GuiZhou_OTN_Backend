@@ -1,6 +1,7 @@
 package com.bupt.facade.OSNRCalculator;
 
-import com.bupt.facade.OSNRCalculator.exceptions.OutOfInputLimitsException;
+import com.bupt.facade.OSNRCalculator.exceptions.DiskNotFoundException;
+import com.bupt.facade.OSNRCalculator.exceptions.NetElementNotFoundException;
 import com.bupt.pojo.DiskDTO;
 import com.bupt.service.DiskService;
 import com.bupt.service.NetElementService;
@@ -38,8 +39,11 @@ public class NetElementCalculatorImpl implements NetElementCalculator {
     }
 
     @Override
-    public void calculate(String netElementName, long versionId, double firstInput) throws OutOfInputLimitsException {
+    public void calculate(String netElementName, long versionId, double firstInput) throws IllegalArgumentException {
         init(netElementName, versionId, firstInput);
+        if (disks.size() == 0) {
+            throw new DiskNotFoundException(netElementName);
+        }
         for (int i = 0; i < this.disks.size() - 1; i++) {
             diskCalculator.calculate(this.disks.get(i), this.inputPowers[i], this.versionId);
             setPowers(i);
@@ -53,6 +57,9 @@ public class NetElementCalculatorImpl implements NetElementCalculator {
 
     private void init(String netElementName, long versionId, double firstInput) {
         this.versionId = versionId;
+        if (null == netElementService.getNetElement(versionId, netElementName)) {
+            throw new NetElementNotFoundException(netElementName);
+        }
         this.disks = diskService.listDiskByNetElement(versionId, netElementService.getNetElement(versionId, netElementName)
                 .getNetElementId());
         this.inputPowers = new double[this.disks.size()];
@@ -61,7 +68,7 @@ public class NetElementCalculatorImpl implements NetElementCalculator {
     }
 
 
-    private void setPowers(int i) throws OutOfInputLimitsException {
+    private void setPowers(int i) {
         /*考虑实际情况，输入功率可能会有所变动，需要重新赋值*/
         this.inputPowers[i] = diskCalculator.getInputPower();
         this.outputPowers[i] = diskCalculator.getOutputPower();

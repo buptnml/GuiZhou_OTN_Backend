@@ -1,7 +1,7 @@
 package com.bupt.facade.OSNRCalculator;
 
 
-import com.bupt.facade.OSNRCalculator.exceptions.OutOfInputLimitsException;
+import com.bupt.util.exception.controller.input.IllegalArgumentException;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -48,24 +48,14 @@ public class InputsOutputsCalculator implements InputsOutputsCalculable {
         return results;
     }
 
-    public void calculate(String routeString, double firstInput, long versionId) {
+    public void calculate(String routeString, double firstInput, long versionId) throws IllegalArgumentException {
         init(routeString, firstInput);
         for (int i = 0; i < nodes.length - 1; i++) {
-            try {
-                netElementCalculator.calculate(nodes[i], versionId, this.firstInput);
-            } catch (OutOfInputLimitsException e) {
-                //如果捕捉到异常，说明这一点往后的输入输出功率均不需要继续计算
-                return;
-            }
+            netElementCalculator.calculate(nodes[i], versionId, this.firstInput);
             setPowers(i);
             this.firstInput = this.lastOutput - linkLossCalculator.getLinkLoss(versionId, nodes[i], nodes[i + 1]);
         }
-        try {
-            netElementCalculator.calculate(nodes[nodes.length - 1], versionId, this.firstInput);
-        } catch (OutOfInputLimitsException e) {
-            //同上
-            return;
-        }
+        netElementCalculator.calculate(nodes[nodes.length - 1], versionId, this.firstInput);
         setPowers(nodes.length - 1);
     }
 

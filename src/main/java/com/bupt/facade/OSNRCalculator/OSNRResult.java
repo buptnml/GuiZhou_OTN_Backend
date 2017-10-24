@@ -7,7 +7,6 @@ package com.bupt.facade.OSNRCalculator;
  */
 final public class OSNRResult {
     private final String netElementName;
-
     private final Double result;
 
     OSNRResult(String netElementName, Double result) {

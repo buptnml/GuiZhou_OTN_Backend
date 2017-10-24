@@ -1,6 +1,5 @@
 package com.bupt.facade.OSNRCalculator;
 
-import com.bupt.facade.OSNRCalculator.exceptions.OutOfInputLimitsException;
 
 /**
  * 用来计算所有节点的输入输出功率接口
@@ -14,7 +13,7 @@ public interface InputsOutputsCalculable {
      * @param firstInput
      * @param versionId
      */
-    void calculate(String routeString, double firstInput, long versionId) throws OutOfInputLimitsException;
+    void calculate(String routeString, double firstInput, long versionId);
 
     /**
      * 用来返回所有节点输入功率计算结果的函数

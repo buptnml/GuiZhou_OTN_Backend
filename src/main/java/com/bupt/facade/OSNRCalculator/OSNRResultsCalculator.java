@@ -1,7 +1,10 @@
 package com.bupt.facade.OSNRCalculator;
 
+import com.bupt.facade.OSNRCalculator.exceptions.OSNRResultOutOfLimitException;
+import com.bupt.pojo.NodeOSNRDetail;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,6 +14,8 @@ public class OSNRResultsCalculator implements OSNRResultsCalculable {
     private double[][] outputPowers;
     private double[] noisePowers;
     private String[] nodes;
+    @Resource
+    InputsOutputsCalculable inputsOutputsCalculator;
 
     @Override
     public List<OSNRResult> getResults(String routeString, double[][] inputPowers, double[][] outputPowers) {
@@ -18,10 +23,14 @@ public class OSNRResultsCalculator implements OSNRResultsCalculable {
         this.calculate();
         List<OSNRResult> results = new LinkedList<>();
         nodes = routeString.split("-");
-
         for (int i = 0; i < noisePowers.length; i++) {
             double OSNR = this.outputPowers[i][outputPowers[i].length - 1] - noisePowers[i];
-            results.add(new OSNRResult(nodes[i], OSNR));
+            if (OSNR > 18D) {
+                /*OSNR值要大于18dB*/
+                results.add(new OSNRResult(nodes[i], OSNR));
+            } else {
+                throw new OSNRResultOutOfLimitException();
+            }
         }
         return results;
     }
@@ -60,6 +69,9 @@ public class OSNRResultsCalculator implements OSNRResultsCalculable {
      * 注2：单位要统一在mW下计算
      */
     private void calculate() {
+        if (inputPowers.length == 0) {
+            return;
+        }
         //初始化
         double sigmaP_Ase_last = 0;
         double P_last = toMw(inputPowers[0][0]);

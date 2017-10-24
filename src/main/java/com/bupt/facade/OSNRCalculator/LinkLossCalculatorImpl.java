@@ -1,6 +1,7 @@
 package com.bupt.facade.OSNRCalculator;
 
 
+import com.bupt.facade.OSNRCalculator.exceptions.LinkNotFoundException;
 import com.bupt.pojo.LinkDTO;
 import com.bupt.service.LinkService;
 import com.bupt.service.LinkTypeService;
@@ -22,7 +23,7 @@ public class LinkLossCalculatorImpl implements LinkLossCalculator {
     private LinkTypeService linkTypeService;
 
     @Override
-    public double getLinkLoss(long versionId, String node1Name, String node2Name) {
+    public double getLinkLoss(long versionId, String node1Name, String node2Name) throws LinkNotFoundException {
         init(versionId, node1Name, node2Name);
         if (link.getLinkLoss() != 0) {
             return link.getLinkLoss();
@@ -32,6 +33,9 @@ public class LinkLossCalculatorImpl implements LinkLossCalculator {
 
     private void init(long versionId, String node1Name, String node2Name) {
         link = linkService.getLinkByNodes(versionId, node1Name, node2Name);
+        if (null == link) {
+            throw new LinkNotFoundException(node1Name, node2Name);
+        }
     }
 
 }

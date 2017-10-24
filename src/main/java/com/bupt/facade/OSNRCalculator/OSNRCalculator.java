@@ -1,6 +1,7 @@
 package com.bupt.facade.OSNRCalculator;
 
-import com.bupt.facade.OSNRCalculator.exceptions.OutOfInputLimitsException;
+import com.bupt.facade.OSNRCalculator.exceptions.OSNRResultOutOfLimitException;
+import com.bupt.pojo.NodeOSNRDetail;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -14,9 +15,9 @@ import java.util.List;
 public class OSNRCalculator extends AbstractCalculator {
     @Resource
     private
-    InputsOutputsCalculable inputsOutputsCalculable = new InputsOutputsCalculator();
+    InputsOutputsCalculable inputsOutputsCalculable;
     @Resource
-    private OSNRResultsCalculable osnrResultsCalculable = new OSNRResultsCalculator();
+    private OSNRResultsCalculable osnrResultsCalculable;
     private long versionId;
     private String routeString;
     private double[][] inputPowers;
@@ -56,14 +57,17 @@ public class OSNRCalculator extends AbstractCalculator {
 
 
     @Override
-    void inputsOutputsCalculate() throws OutOfInputLimitsException {
-        inputsOutputsCalculable.calculate(routeString, inputPowers[0][0], versionId);
-        inputPowers = inputsOutputsCalculable.getInputPowers();
-        outputPowers = inputsOutputsCalculable.getOutputPowers();
+    void inputsOutputsCalculate() throws IllegalArgumentException {
+        try {
+            inputsOutputsCalculable.calculate(routeString, inputPowers[0][0], versionId);
+        } finally {
+            inputPowers = inputsOutputsCalculable.getInputPowers();
+            outputPowers = inputsOutputsCalculable.getOutputPowers();
+        }
     }
 
     @Override
-    void OSNRCalculate() {
+    void OSNRCalculate() throws OSNRResultOutOfLimitException {
         results = osnrResultsCalculable.getResults(routeString, inputPowers, outputPowers);
         nodeResults = osnrResultsCalculable.getDetail();
     }

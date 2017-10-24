@@ -1,8 +1,6 @@
 package com.bupt.facade.OSNRCalculator;
 
 
-import com.bupt.facade.OSNRCalculator.exceptions.OutOfInputLimitsException;
-
 /**
  * OSNR计算抽象类
  * 主要用来实现模板方法设计模式
@@ -36,7 +34,7 @@ abstract class AbstractCalculator implements Calculable {
     /**
      * 用来计算各个网元的输入和输出
      */
-    abstract void inputsOutputsCalculate() throws OutOfInputLimitsException;
+    abstract void inputsOutputsCalculate();
 
     /**
      * 用来计算各个节点的OSNR值

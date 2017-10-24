@@ -1,5 +1,7 @@
 package com.bupt.facade.OSNRCalculator;
 
+import com.bupt.pojo.NodeOSNRDetail;
+
 import java.util.List;
 
 /**

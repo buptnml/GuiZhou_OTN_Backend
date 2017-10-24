@@ -1,7 +1,6 @@
 package com.bupt.facade.OSNRCalculator;
 
 
-import com.bupt.facade.OSNRCalculator.exceptions.OutOfInputLimitsException;
 import com.bupt.pojo.DiskDTO;
 
 /**
@@ -16,7 +15,7 @@ public interface DiskCalculator {
      * @param inputPower
      * @param versionId
      */
-    void calculate(DiskDTO disk, double inputPower, long versionId) throws OutOfInputLimitsException;
+    void calculate(DiskDTO disk, double inputPower, long versionId);
 
     /**
      * 获取计算后的输出功率

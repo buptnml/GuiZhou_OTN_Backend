@@ -4,7 +4,7 @@ import com.bupt.util.exception.controller.input.IllegalArgumentException;
 
 public class OutOfInputLimitsException extends IllegalArgumentException {
     public OutOfInputLimitsException() {
-        super("Argument out of limit！.\n");
+        super("输入功率超过放大器支持范围！\n");
     }
 
     public OutOfInputLimitsException(String message) {
