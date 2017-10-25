@@ -16,6 +16,15 @@ public interface LinkService {
      */
     LinkDTO saveResLink(Long versionId, LinkCreateInfo linkCreateInfo);
 
+    /**
+     * 根据id获取一个link
+     *
+     * @param versionId
+     * @param linkId
+     * @return
+     */
+    LinkDTO getLink(Long versionId, Long linkId);
+
 
     /**
      * 批量删除
@@ -63,12 +72,21 @@ public interface LinkService {
     LinkDTO getLinkByNodes(Long versionId, String node1Name, String node2Name);
 
     /**
-     * 删除断点为指定netElementId的节点
+     * 获取指定网元id为端点的链路
      *
      * @param versionId
      * @param netElementId
      */
     List<ResLink> getReferLink(Long versionId, Long netElementId);
+
+    /**
+     * 获取指定链路类型的链路
+     *
+     * @param versionId
+     * @param linkType
+     * @return
+     */
+    List<LinkDTO> ListLinkByType(Long versionId, String linkType);
 
 
 }

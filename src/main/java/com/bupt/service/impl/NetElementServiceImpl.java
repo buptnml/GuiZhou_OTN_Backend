@@ -100,7 +100,7 @@ public class NetElementServiceImpl implements NetElementService {
     @Override
     public NetElementDTO getNetElement(Long versionId, long netElementId) {
         if (null != resNetElementDao.selectByExample(getExample(versionId, netElementId))) {
-            return convertToNetElementDTO(resNetElementDao.selectByExample(getExample(versionId, netElementId)));
+            return convertToNetElementDTO(resNetElementDao.selectByExample(getExample(versionId, netElementId)).get(0));
         }
         throw new NoneGetException();
     }

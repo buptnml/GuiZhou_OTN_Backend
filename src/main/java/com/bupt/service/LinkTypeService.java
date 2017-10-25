@@ -55,6 +55,12 @@ public interface LinkTypeService {
     LinkTypeDTO getLinkType(Long versionId, String linkType);
 
 
+    /**
+     * 根据ID获取链路类型
+     */
+    LinkTypeDTO getLinkTypeById(Long versionId, Long linkTypeId);
+
+
 
     /**
      * 删除指定版本全本链路信息

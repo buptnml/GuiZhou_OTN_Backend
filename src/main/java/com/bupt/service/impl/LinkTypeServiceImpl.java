@@ -34,7 +34,7 @@ public class LinkTypeServiceImpl implements LinkTypeService {
         if (resOsnrLinkTypeDao.updateByExampleSelective(rolt, getExample(versionId, linkTypeId)) == 0) {
             throw new NoneSaveException();
         } else {
-            return linkTypeDaoToDto(resOsnrLinkTypeDao.selectOne(rolt));
+            return linkTypeDaoToDto(resOsnrLinkTypeDao.selectByPrimaryKey(linkTypeId));
         }
     }
 
@@ -84,6 +84,11 @@ public class LinkTypeServiceImpl implements LinkTypeService {
     @Override
     public LinkTypeDTO getLinkType(Long versionId, String linkType) {
         return linkTypeDaoToDto(resOsnrLinkTypeDao.selectByExample(getExample(versionId, linkType)).get(0));
+    }
+
+    @Override
+    public LinkTypeDTO getLinkTypeById(Long versionId, Long linkTypeId) {
+        return linkTypeDaoToDto(resOsnrLinkTypeDao.selectByExample(getExample(versionId, linkTypeId)).get(0));
     }
 
     @Override

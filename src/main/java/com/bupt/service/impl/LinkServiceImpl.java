@@ -20,6 +20,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service("linkService")
 public class LinkServiceImpl implements LinkService {
@@ -37,6 +38,11 @@ public class LinkServiceImpl implements LinkService {
             return convertToResLinkDTO(resLinkDao.selectOne(insertInfo));
         }
         throw new NoneSaveException();
+    }
+
+    @Override
+    public LinkDTO getLink(Long versionId, Long linkId) {
+        return convertToResLinkDTO(resLinkDao.selectByExample(getExample(versionId, linkId)).get(0));
     }
 
     @Override
@@ -153,6 +159,16 @@ public class LinkServiceImpl implements LinkService {
         List<ResLink> links = resLinkDao.selectByExample(getExample(versionId, "endAId", netElementId));
         links.addAll(resLinkDao.selectByExample(getExample(versionId, "endZId", netElementId)));
         return links;
+    }
+
+    @Override
+    public List<LinkDTO> ListLinkByType(Long versionId, String linkType) {
+        Example example = new Example(ResLink.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("versionId", versionId);
+        criteria.andEqualTo("linkType", linkType);
+        return resLinkDao.selectByExample(example).stream().map(this::convertToResLinkDTO).collect
+                (Collectors.toList());
     }
 
     private Example getExample(Long versionId, String condition, Long nodeId) {

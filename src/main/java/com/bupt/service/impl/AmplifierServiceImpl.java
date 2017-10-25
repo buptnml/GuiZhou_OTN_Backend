@@ -95,6 +95,15 @@ public class AmplifierServiceImpl implements AmplifierService {
     }
 
     @Override
+    public AmplifierDTO getAmpById(Long versionId, Long amplifierId) {
+        try {
+            return amplifierDaoToDto(resOsnrAmplifierDao.selectByExample(getExample(versionId, amplifierId)).get(0));
+        } catch (Exception e) {
+            throw new NoneGetException("没有在数据库中找到指定的放大器信息!");
+        }
+    }
+
+    @Override
     public AmplifierDTO getAmpByName(Long versionId, String ampType) {
         return amplifierDaoToDto(resOsnrAmplifierDao.selectByExample(getExample(versionId, ampType)).get(0));
     }

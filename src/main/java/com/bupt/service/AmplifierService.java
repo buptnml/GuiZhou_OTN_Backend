@@ -38,7 +38,14 @@ public interface AmplifierService {
      */
     AmplifierDTO insertAmplifier(Long versionId, AmplifierCreateInfo amplifierCreateInfo);
 
-
+    /**
+     * 通过Id获取放大器
+     *
+     * @param versionId
+     * @param amplifierId
+     * @return
+     */
+    AmplifierDTO getAmpById(Long versionId, Long amplifierId);
     /**
      * 通过放大器类型获取放大器
      *

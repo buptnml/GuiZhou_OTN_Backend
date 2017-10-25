@@ -19,6 +19,11 @@ public interface DiskService {
     List<DiskDTO> listDiskByNetElement(Long versionId, Long netElementId);
 
     /**
+     * 获取指定类型的机盘
+     */
+    List<DiskDTO> listDiskByType(Long versionId, String diskType);
+
+    /**
      * 创建机盘信息
      *
      * @param versionId
