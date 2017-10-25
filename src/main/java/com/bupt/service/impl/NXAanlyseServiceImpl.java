@@ -174,7 +174,7 @@ public class NXAanlyseServiceImpl implements NXAnalyseService {
         }
 //        计算恢复率
         if (affectBusiness.size() == 0)
-            nxAnalyseItem.setRecoveryRate("100%");
+            nxAnalyseItem.setRecoveryRate("100.00%");
         else {
             double recoveryRate = (double) recoveryBusiness.size() / affectBusiness.size();
             nxAnalyseItem.setRecoveryRate(decimalFormat.format(recoveryRate));

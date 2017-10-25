@@ -46,8 +46,11 @@ public class NXAnalyseController {
         else if (type == LINK)
             return nxAnalyseService.analyseLink(versionId, num);
 
-        else
+        else if (type==BOTH)
             return nxAnalyseService.analyseEquipAndLink(versionId,num);
+        else {
+            throw new IllegalArgumentException("类型参数出错！");
+        }
     }
 
 }
