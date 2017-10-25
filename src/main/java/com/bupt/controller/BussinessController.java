@@ -6,6 +6,7 @@ import com.bupt.pojo.BussinessCreateInfo;
 import com.bupt.pojo.BussinessDTO;
 import com.bupt.service.BussinessService;
 import com.bupt.util.exception.controller.input.IllegalArgumentException;
+import com.bupt.util.exception.controller.input.NullArgumentException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
@@ -42,20 +43,9 @@ public class BussinessController {
     @ResponseStatus(HttpStatus.CREATED)
     public BussinessDTO saveBussiness(@PathVariable Long versionId, @RequestBody BussinessCreateInfo bussinessCreateInfo) {
         checkVersionId(versionId);
-        bussinessCreateInfo.checkBussinessCreateInfoLegal();
+        checkBussinessCreateInfo(bussinessCreateInfo);
         return bussinessService.saveBussiness(versionId, bussinessCreateInfo);
     }
-
-//    @ApiOperation(value = "更新某个版本下的某光通道条目")
-//    @RequestMapping(value = "/{versionId}/{bussinessId}", method = RequestMethod.PATCH)
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public BussinessDTO updateBussiness(@PathVariable Long versionId, @PathVariable Long bussinessId, @RequestBody
-//            BussinessCreateInfo bussinessCreateInfo) {
-//        checkVersionId(versionId);
-//        bussinessCreateInfo.checkBussinessCreateInfoLegal();
-//        return bussinessService.updateBussiness(versionId, bussinessId, bussinessCreateInfo);
-//    }
-
 
     @ApiOperation(value = "批量删除某版本下指定Id的光通道条目")
     @RequestMapping(value = "/{versionId}", method = RequestMethod.DELETE)
@@ -65,6 +55,30 @@ public class BussinessController {
             throw new IllegalArgumentException("bussinessIdList");
         }
         this.bussinessService.listRemove(versionId, bussinessIdList);
+    }
+
+
+    private void checkBussinessCreateInfo(BussinessCreateInfo bussinessCreateInfo) {
+        if (null == bussinessCreateInfo.getBussinessName()) {
+            throw new NullArgumentException("bussinessName should not be null!");
+        }
+        if (null == bussinessCreateInfo.getBussinessRate()) {
+            throw new NullArgumentException("bussinessRate should not be null!");
+        }
+        if (null == bussinessCreateInfo.getMainRoute()) {
+            throw new NullArgumentException("mainRoute should not be null!");
+        }
+        if (null == bussinessCreateInfo.getMainFrequency()) {
+            throw new NullArgumentException("mainFrequency should not be null");
+        }
+        if (null == bussinessCreateInfo.getInputPower()) {
+            throw new NullArgumentException("inputPower should not be null");
+        }
+        if (null != bussinessCreateInfo.getSpareRoute()) {
+            if (null == bussinessCreateInfo.getSpareFrequency()) {
+                throw new NullArgumentException("spareFrequency should not be null when spareRoute exists!");
+            }
+        }
     }
 
 

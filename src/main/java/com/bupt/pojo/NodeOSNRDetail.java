@@ -1,4 +1,4 @@
-package com.bupt.facade.OSNRCalculator;
+package com.bupt.pojo;
 
 public class NodeOSNRDetail {
     private String nodeName;
@@ -7,7 +7,7 @@ public class NodeOSNRDetail {
     private double gain;
     private double noisePower;
 
-    NodeOSNRDetail(String nodeName, double inputPower, double outputPower, double gain, double noisePower) {
+    public NodeOSNRDetail(String nodeName, double inputPower, double outputPower, double gain, double noisePower) {
         this.nodeName = nodeName;
         this.inputPower = inputPower;
         this.outputPower = outputPower;
@@ -24,8 +24,7 @@ public class NodeOSNRDetail {
 
         if (Double.compare(that.inputPower, inputPower) != 0) return false;
         if (Double.compare(that.outputPower, outputPower) != 0) return false;
-        if (Double.compare(that.gain, gain) != 0) return false;
-        return Double.compare(that.noisePower, noisePower) == 0 && (nodeName != null ? nodeName.equals(that.nodeName) : that.nodeName == null);
+        return Double.compare(that.gain, gain) == 0 && Double.compare(that.noisePower, noisePower) == 0 && (nodeName != null ? nodeName.equals(that.nodeName) : that.nodeName == null);
     }
 
     @Override

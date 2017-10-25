@@ -56,7 +56,7 @@ public class DiskServiceImpl implements DiskService {
         if (resDiskDao.updateByExampleSelective(createResDisk(diskCreateInfo), getExample(versionId, netElementId,
                 diskId)) != 1) {
             throw new NoneUpdateException();
-        } else return convertToDTO(resDiskDao.selectOne(createResDisk(diskCreateInfo)));
+        } else return convertToDTO(resDiskDao.selectByExample(getExample(versionId, netElementId, diskId)).get(0));
     }
 
 
