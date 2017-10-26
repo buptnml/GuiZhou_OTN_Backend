@@ -47,7 +47,7 @@ public interface LinkService {
      * @param versionId
      * @return
      */
-    List<LinkDTO> getResLink(Long versionId);
+    List<LinkDTO> listLinks(Long versionId);
 
     /**
      * 删除指定版本全本链路信息

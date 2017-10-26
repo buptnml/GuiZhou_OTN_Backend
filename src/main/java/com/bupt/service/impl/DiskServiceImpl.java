@@ -17,8 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,15 +30,13 @@ public class DiskServiceImpl implements DiskService {
 
     @Override
     public List<DiskDTO> listDiskByNetElement(Long versionId, Long netElementId) {
-        Iterator<ResDisk> searchListIte = resDiskDao.selectByExample(getExample(versionId, netElementId)).iterator();
-        if (!searchListIte.hasNext()) {
-            throw new NoneGetException("没有机盘");
+        List<DiskDTO> result = resDiskDao.selectByExample(getExample(versionId, netElementId)).stream().sorted
+                (Comparator.comparing(ResDisk::getGmtModified).reversed()).map(this::convertToDTO)
+                .collect(Collectors.toList());
+        if (result.size() == 0) {
+            throw new NoneGetException("没有查询到机盘相关记录！");
         }
-        List<DiskDTO> resultList = new ArrayList<>();
-        while (searchListIte.hasNext()) {
-            resultList.add(convertToDTO(searchListIte.next()));
-        }
-        return resultList;
+        return result;
     }
 
     @Override
@@ -143,7 +140,7 @@ public class DiskServiceImpl implements DiskService {
     }
 
 
-    private Example getExample(Long versionId, Long netElementId) {
+    public Example getExample(Long versionId, Long netElementId) {
         Example example = new Example(ResDisk.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("netElementId", netElementId);

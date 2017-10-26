@@ -1,7 +1,8 @@
-package com.bupt.service;
+package com.bupt.facade.aspects;
 
 import com.bupt.entity.ResLink;
 import com.bupt.pojo.*;
+import com.bupt.service.*;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Around;
@@ -13,12 +14,8 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * 在各个service之间传递信息的切面。
- * 主要目的是为了保证数据一致性
- */
-@Aspect
 @Component
+@Aspect
 public class MessageAspect {
     @Resource
     private

@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -73,7 +73,7 @@ public class LinkServiceImpl implements LinkService {
     }
 
 
-    private Example getExample(Long versionId) {
+    public Example getExample(Long versionId) {
         Example example = new Example(ResLink.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("versionId", versionId);
@@ -82,16 +82,14 @@ public class LinkServiceImpl implements LinkService {
 
 
     @Override
-    public List<LinkDTO> getResLink(Long versionId) {
-        List<ResLink> resLinksList = resLinkDao.selectByExample(getExample(versionId));
-        if (resLinksList.size() == 0) {
-            throw new NoneGetException();
+    public List<LinkDTO> listLinks(Long versionId) {
+        List<LinkDTO> result = resLinkDao.selectByExample(getExample(versionId)).stream().sorted(Comparator
+                .comparing(ResLink::getGmtModified).reversed()).map(this::convertToResLinkDTO).collect(Collectors
+                .toList());
+        if (result.size() == 0) {
+            throw new NoneGetException("没有查询到链路相关记录");
         }
-        List<LinkDTO> linkDTOList = new ArrayList<>();
-        for (ResLink aResLinksList : resLinksList) {
-            linkDTOList.add(this.convertToResLinkDTO(aResLinksList));
-        }
-        return linkDTOList;
+        return result;
     }
 
     @Override

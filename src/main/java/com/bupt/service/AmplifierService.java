@@ -63,7 +63,7 @@ public interface AmplifierService {
      * @param versionID
      * @return
      */
-    List<AmplifierDTO> selectAmplifiers(Long versionID);
+    List<AmplifierDTO> listAmplifiers(Long versionID);
 
     /**
      * 删除指定版本全本链路信息

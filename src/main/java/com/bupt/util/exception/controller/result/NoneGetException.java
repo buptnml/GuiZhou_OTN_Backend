@@ -6,7 +6,7 @@ package com.bupt.util.exception.controller.result;
  */
 public class NoneGetException extends RequestResultErrorException {
     public NoneGetException() {
-        super("Nothing found from the database.\n");
+        super("没有从数据库中查询到相关记录！\n");
     }
 
     public NoneGetException(String message) {

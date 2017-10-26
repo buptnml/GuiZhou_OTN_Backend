@@ -17,8 +17,9 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by 韩宪斌 on 2017/7/10.
@@ -76,13 +77,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO> listUser() {
-        Iterator<SysUser> sysUserIterator = sysUserDao.selectAll().iterator();
-        List<UserDTO> resultList = new ArrayList<>();
-        while (sysUserIterator.hasNext()) {
-            resultList.add(this.convertToUserDTO(sysUserIterator.next()));
-        }
+        List<UserDTO> resultList = sysUserDao.selectAll().stream().sorted(Comparator.comparing
+                (SysUser::getGmtModified).reversed()).map(this::convertToUserDTO).collect(Collectors.toList());
         if (resultList.size() == 0) {
-            throw new NoneGetException();
+            throw new NoneGetException("没有查询到用户相关记录！");
         }
         return resultList;
     }
