@@ -76,14 +76,15 @@ public class AmplifierController {
 
     private void checkVersionId(Long versionID) {
         if (versionID == 100000000000L) {
-            throw new IllegalArgumentException("versionID should not be 100000000000, the base version " +
-                    "could not be altered in anyway！");
+            throw new IllegalArgumentException("基础版本数据不允许修改！");
         }
     }
 
     private void checkAmplifierCreateInfo(AmplifierCreateInfo amplifierCreateInfo) {
         if (null == amplifierCreateInfo.getAmplifierName()) {
-            throw new NullArgumentException("amplifierName");
+            throw new NullArgumentException("放大器名称不能为空！");
         }
     }
+
+    //TODO 插入数据的时候首先要检查该版本存不存在！！！
 }

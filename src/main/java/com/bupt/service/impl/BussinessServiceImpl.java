@@ -1,14 +1,16 @@
 package com.bupt.service.impl;
 
+
 import com.bupt.dao.ResBussinessDao;
 import com.bupt.entity.ResBussiness;
+import com.bupt.facade.OSNRCalculator.Calculable;
 import com.bupt.pojo.BussinessCreateInfo;
 import com.bupt.pojo.BussinessDTO;
-import com.bupt.pojo.ChannelDTO;
 import com.bupt.service.BussinessService;
 import com.bupt.util.exception.controller.result.NoneRemoveException;
 import com.bupt.util.exception.controller.result.NoneSaveException;
-import com.bupt.util.exception.controller.result.NoneUpdateException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +24,10 @@ import java.util.List;
 public class BussinessServiceImpl implements BussinessService {
     @Resource
     private ResBussinessDao resBussinessDao;
+    @Resource
+    private Calculable calculator;
+    private Logger logger = LoggerFactory.getLogger(BussinessServiceImpl.class);
+
 
     @Override
     public List<BussinessDTO> listBussiness(Long versionId) {
@@ -50,17 +56,6 @@ public class BussinessServiceImpl implements BussinessService {
 
     @Override
     @Transactional
-    public BussinessDTO updateBussiness(Long versionId, Long bussinessId, BussinessCreateInfo bussinessCreateInfo) {
-        if (resBussinessDao.updateByExampleSelective(createBussiness(versionId, bussinessCreateInfo), getExample
-                (versionId, bussinessId)) == 1) {
-            return createBussinessDTO(resBussinessDao.selectByExample(getExample(versionId, bussinessId
-            )).get(0));
-        }
-        throw new NoneUpdateException();
-    }
-
-    @Override
-    @Transactional
     public void listRemove(Long versionId, List<Long> bussinessIdList) {
         for (Long bussinessId : bussinessIdList) {
             if (resBussinessDao.deleteByExample(getExample(versionId, bussinessId)) == 0) {
@@ -86,18 +81,46 @@ public class BussinessServiceImpl implements BussinessService {
     }
 
 
-    private ChannelDTO setChannelInfo(ResBussiness bussiness, boolean isMain) {
-        return new ChannelDTO(bussiness, isMain);
-    }
-
-
-    private Example getExample(Long versionId, String bussinessName) {
+    private Example getExample(Long versionId, String condition, String referString) {
         Example example = new Example(ResBussiness.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("versionId", versionId);
-        criteria.andEqualTo("bussinessName", bussinessName);
+        criteria.andLike(condition, "%" + referString + "%");
         return example;
     }
+
+
+    @Override
+    public void updateReferBussiness(Long versionId, String oldString, String newString) {
+        List<ResBussiness> relatedBussiness = resBussinessDao.selectByExample(getExample(versionId, "mainRoute",
+                oldString));
+        relatedBussiness.addAll(resBussinessDao.selectByExample(getExample(versionId, "spareRoute",
+                oldString)));
+        for (ResBussiness bus : relatedBussiness) {
+            this.updateBussiness(versionId, bus.getBussinessId(), createInfo(bus, oldString, newString));
+        }
+    }
+
+    private BussinessCreateInfo createInfo(ResBussiness bussiness, String oldString, String newString) {
+        BussinessCreateInfo createInfo = new BussinessCreateInfo();
+        BeanUtils.copyProperties(bussiness, createInfo);
+        createInfo.setMainRoute(bussiness.getMainRoute().replace(oldString, newString));
+        createInfo.setSpareRoute(bussiness.getSpareRoute().replace(oldString, newString));
+        return createInfo;
+    }
+
+    private void updateBussiness(Long versionId, Long bussinessId, BussinessCreateInfo bussinessCreateInfo) {
+        ResBussiness createdBus = null;
+        try {
+            createdBus = createBussiness(versionId, bussinessCreateInfo);
+        } catch (Exception e) {
+            logger.warn(e.getMessage());
+        }
+        resBussinessDao.updateByExampleSelective(createdBus, getExample(versionId, bussinessId));
+    }
+
+
+
 
     private Example getExample(Long versionId, Long bussinessId) {
         Example example = new Example(ResBussiness.class);
@@ -118,11 +141,8 @@ public class BussinessServiceImpl implements BussinessService {
         if (null == bussiness) {
             return null;
         }
-        BussinessDTO bussinessInfo = new BussinessDTO(bussiness);
-        bussinessInfo.setMainChannel(setChannelInfo(bussiness, true));
-        if (null != bussiness.getSpareRoute()) {
-            bussinessInfo.setSpareChannel(setChannelInfo(bussiness, false));
-        }
+        BussinessDTO bussinessInfo = new BussinessDTO();
+        BeanUtils.copyProperties(bussiness, bussinessInfo);
         return bussinessInfo;
     }
 
@@ -133,14 +153,24 @@ public class BussinessServiceImpl implements BussinessService {
         ResBussiness result = new ResBussiness();
         BeanUtils.copyProperties(bussinessCreateInfo, result);
         result.setVersionId(versionId);
-        result.setMainRate(bussinessCreateInfo.getMainChannelInfo().getChannelRate());
-        result.setMainFrequency(bussinessCreateInfo.getMainChannelInfo().getChannelFrequency());
-        if (null != bussinessCreateInfo.getSpareChannelInfo()) {
-            result.setSpareRate(bussinessCreateInfo.getSpareChannelInfo().getChannelRate());
-            result.setSpareFrequency(bussinessCreateInfo.getSpareChannelInfo().getChannelFrequency());
+        double[][] inputPower = new double[1][1];
+        inputPower[0][0] = bussinessCreateInfo.getInputPower();
+        try {
+            calculator.calculate(inputPower, null, bussinessCreateInfo.getMainRoute(), versionId);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("主路由中的" + e.getMessage());
         }
-        //TODO 未来要在Osnr算法补全以后补上对输入输出功率的计算结果
-
+        result.setMainInputPowers(calculator.getInputPowersString());
+        result.setMainOutputPowers(calculator.getOutputPowerString());
+        if (null != bussinessCreateInfo.getSpareRoute()) {
+            try {
+                calculator.calculate(inputPower, null, bussinessCreateInfo.getSpareRoute(), versionId);
+            } catch (Exception e) {
+                throw new IllegalArgumentException("备用路由中的" + e.getMessage());
+            }
+            result.setSpareInputPowers(calculator.getInputPowersString());
+            result.setSpareOutputPowers(calculator.getOutputPowerString());
+        }
         return result;
     }
 

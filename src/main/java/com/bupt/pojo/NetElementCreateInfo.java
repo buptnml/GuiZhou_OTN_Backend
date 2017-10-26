@@ -20,16 +20,16 @@ public class NetElementCreateInfo {
         return coordinateX;
     }
 
-    public void setCoordinateX(short coordinateX) {
-        this.coordinateX = coordinateX;
+    public void setCoordinateX(double coordinateX) {
+        this.coordinateX = (short) coordinateX;
     }
 
     public short getCoordinateY() {
         return coordinateY;
     }
 
-    public void setCoordinateY(short coordinateY) {
-        this.coordinateY = coordinateY;
+    public void setCoordinateY(double coordinateY) {
+        this.coordinateY = (short) coordinateY;
     }
 
     public String getNetElementName() {
