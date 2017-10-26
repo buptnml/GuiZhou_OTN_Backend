@@ -82,7 +82,7 @@ public class LinkTypeController {
     @RequestMapping(value = "/{versionId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public List<LinkTypeDTO> retrieveLinkTypes(@PathVariable Long versionId) {
-        return linkTypeService.selectLinkTypes(versionId);
+        return linkTypeService.listLinkTypes(versionId);
     }
 
 

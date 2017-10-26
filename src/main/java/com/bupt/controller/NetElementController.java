@@ -90,6 +90,9 @@ public class NetElementController {
         if (null == netElementCreateInfo.getNetElementType()) {
             throw new NullArgumentException("netElementType should not be null.");
         }
+        if (netElementCreateInfo.getNetElementName().contains("-")) {
+            throw new IllegalArgumentException("网元名称不允许包含'-'字符！");
+        }
     }
 
     private void checkVersionId(Long versionID) {

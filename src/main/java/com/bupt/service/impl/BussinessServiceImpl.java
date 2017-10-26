@@ -4,9 +4,11 @@ package com.bupt.service.impl;
 import com.bupt.dao.ResBussinessDao;
 import com.bupt.entity.ResBussiness;
 import com.bupt.facade.OSNRCalculator.Calculable;
+import com.bupt.facade.impl.OSNRServiceImpl;
 import com.bupt.pojo.BussinessCreateInfo;
 import com.bupt.pojo.BussinessDTO;
 import com.bupt.service.BussinessService;
+import com.bupt.util.exception.controller.result.NoneGetException;
 import com.bupt.util.exception.controller.result.NoneRemoveException;
 import com.bupt.util.exception.controller.result.NoneSaveException;
 import org.slf4j.Logger;
@@ -17,8 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service("bussinessService")
 public class BussinessServiceImpl implements BussinessService {
@@ -31,22 +34,27 @@ public class BussinessServiceImpl implements BussinessService {
 
     @Override
     public List<BussinessDTO> listBussiness(Long versionId) {
-        List<ResBussiness> bussinessList = resBussinessDao.selectByExample(getExample(versionId));
-        List<BussinessDTO> resultList = new ArrayList<>();
-        for (ResBussiness bussiness : bussinessList) {
-            resultList.add(createBussinessDTO(bussiness));
+        List<BussinessDTO> result = resBussinessDao.selectByExample(getExample(versionId)).stream().sorted(Comparator
+                .comparing(ResBussiness::getGmtModified).reversed()).map(this::createBussinessDTO).collect
+                (Collectors.toList());
+        if (result.size() == 0) {
+            throw new NoneGetException("没有查询到光通道相关记录！");
         }
-        return resultList;
+        return result;
     }
 
     @Override
     public ResBussiness getBussiness(Long versionId, Long bussinessId) {
-        return resBussinessDao.selectByExample(getExample(versionId, bussinessId)).get(0);
+        List<ResBussiness> bussiness = resBussinessDao.selectByExample(getExample(versionId, bussinessId));
+        if (bussiness.size() != 1) {
+            throw new NoneGetException("查询失败，请检查查询的信息是否正确");
+        }
+        return bussiness.get(0);
     }
 
     @Override
     public BussinessDTO saveBussiness(Long versionId, BussinessCreateInfo bussinessCreateInfo) {
-        ResBussiness insertInfo = createBussiness(versionId, bussinessCreateInfo);
+        ResBussiness insertInfo = createBussiness(versionId, bussinessCreateInfo, true);
         if (resBussinessDao.insertSelective(insertInfo) == 1) {
             return createBussinessDTO(resBussinessDao.selectOne(insertInfo));
         }
@@ -70,14 +78,12 @@ public class BussinessServiceImpl implements BussinessService {
     }
 
     @Override
-    @Transactional
     public void batchCreate(Long baseVersionId, Long newVersionId) {
-        List<ResBussiness> bussinessList = resBussinessDao.selectByExample(getExample(baseVersionId));
-        for (ResBussiness aBussinessList : bussinessList) {
-            aBussinessList.setVersionId(newVersionId);
-            aBussinessList.setBussinessId(null);
-            resBussinessDao.insertSelective(aBussinessList);
-        }
+        resBussinessDao.selectByExample(getExample(baseVersionId)).forEach(resBussiness -> {
+            resBussiness.setVersionId(newVersionId);
+            resBussiness.setBussinessId(null);
+            resBussinessDao.insertSelective(resBussiness);
+        });
     }
 
 
@@ -85,7 +91,7 @@ public class BussinessServiceImpl implements BussinessService {
         Example example = new Example(ResBussiness.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("versionId", versionId);
-        criteria.andLike(condition, "%" + referString + "%");
+        criteria.andLike(condition, referString);
         return example;
     }
 
@@ -93,33 +99,55 @@ public class BussinessServiceImpl implements BussinessService {
     @Override
     public void updateReferBussiness(Long versionId, String oldString, String newString) {
         List<ResBussiness> relatedBussiness = resBussinessDao.selectByExample(getExample(versionId, "mainRoute",
-                oldString));
+                "%" + oldString + "%"));
         relatedBussiness.addAll(resBussinessDao.selectByExample(getExample(versionId, "spareRoute",
-                oldString)));
-        for (ResBussiness bus : relatedBussiness) {
-            this.updateBussiness(versionId, bus.getBussinessId(), createInfo(bus, oldString, newString));
-        }
+                "%" + oldString + "%")));
+        relatedBussiness.forEach(bus -> updateBussiness(versionId, bus.getBussinessId(), createInfo(bus,
+                oldString, newString)));
     }
 
     private BussinessCreateInfo createInfo(ResBussiness bussiness, String oldString, String newString) {
         BussinessCreateInfo createInfo = new BussinessCreateInfo();
         BeanUtils.copyProperties(bussiness, createInfo);
-        createInfo.setMainRoute(bussiness.getMainRoute().replace(oldString, newString));
-        createInfo.setSpareRoute(bussiness.getSpareRoute().replace(oldString, newString));
+        createInfo.setMainRoute(createNewRoute(bussiness.getMainRoute(), oldString, newString));
+        if (null != createInfo.getSpareRoute()) {
+            createInfo.setSpareRoute(createNewRoute(bussiness.getSpareRoute(), oldString, newString));
+        }
+        //TODO 抽象成为一个静态类 避免越级调用
+        createInfo.setInputPower(OSNRServiceImpl.stringTransfer(bussiness.getMainInputPowers())[0][0]);
         return createInfo;
+    }
+
+    private String createNewRoute(String routeString, String oldString, String newString) {
+        String[] oldNodes = oldString.split("-");
+        String[] newNodes = newString.split("-");
+        if (oldNodes.length == 1 && newNodes.length == 1) {
+            return routeString.replace(oldString, newString);
+        } else {
+            String[] nodes = routeString.split("-");
+            StringBuilder result = new StringBuilder();
+            for (int i = 0; i < nodes.length - 1; i++) {
+                if (nodes[i].equals(oldNodes[0]) && nodes[i + 1].equals(oldNodes[1])) {
+                    nodes[i] = newNodes[0];
+                    nodes[i + 1] = newNodes[1];
+                }
+            }
+            for (String node : nodes) {
+                result.append(node).append("-");
+            }
+            return result.substring(0, result.length() - 1);
+        }
     }
 
     private void updateBussiness(Long versionId, Long bussinessId, BussinessCreateInfo bussinessCreateInfo) {
         ResBussiness createdBus = null;
         try {
-            createdBus = createBussiness(versionId, bussinessCreateInfo);
+            createdBus = createBussiness(versionId, bussinessCreateInfo, false);
         } catch (Exception e) {
             logger.warn(e.getMessage());
         }
         resBussinessDao.updateByExampleSelective(createdBus, getExample(versionId, bussinessId));
     }
-
-
 
 
     private Example getExample(Long versionId, Long bussinessId) {
@@ -130,7 +158,7 @@ public class BussinessServiceImpl implements BussinessService {
         return example;
     }
 
-    private Example getExample(Long versionId) {
+    public Example getExample(Long versionId) {
         Example example = new Example(ResBussiness.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("versionId", versionId);
@@ -146,10 +174,12 @@ public class BussinessServiceImpl implements BussinessService {
         return bussinessInfo;
     }
 
-    private ResBussiness createBussiness(Long versionId, BussinessCreateInfo bussinessCreateInfo) {
-        if (null == bussinessCreateInfo) {
-            return null;
-        }
+
+    /*
+     * 这个函数既要能正常抛出异常 也要能正常输出结果
+     */
+    private ResBussiness createBussiness(Long versionId, BussinessCreateInfo bussinessCreateInfo, boolean
+            needException) {
         ResBussiness result = new ResBussiness();
         BeanUtils.copyProperties(bussinessCreateInfo, result);
         result.setVersionId(versionId);
@@ -158,7 +188,11 @@ public class BussinessServiceImpl implements BussinessService {
         try {
             calculator.calculate(inputPower, null, bussinessCreateInfo.getMainRoute(), versionId);
         } catch (Exception e) {
-            throw new IllegalArgumentException("主路由中的" + e.getMessage());
+            if (needException) {
+                throw new IllegalArgumentException("主路由中的" + e.getMessage());
+            } else {
+                logger.warn("主路由中的" + e.getMessage());
+            }
         }
         result.setMainInputPowers(calculator.getInputPowersString());
         result.setMainOutputPowers(calculator.getOutputPowerString());
@@ -166,12 +200,19 @@ public class BussinessServiceImpl implements BussinessService {
             try {
                 calculator.calculate(inputPower, null, bussinessCreateInfo.getSpareRoute(), versionId);
             } catch (Exception e) {
-                throw new IllegalArgumentException("备用路由中的" + e.getMessage());
+                if (needException) {
+                    throw new IllegalArgumentException("备用路由中的" + e.getMessage());
+                } else {
+                    logger.warn("备用路由中的" + e.getMessage());
+                }
             }
             result.setSpareInputPowers(calculator.getInputPowersString());
             result.setSpareOutputPowers(calculator.getOutputPowerString());
+            return result;
         }
         return result;
+
+
     }
 
 

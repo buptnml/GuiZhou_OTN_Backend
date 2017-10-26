@@ -14,8 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by caoxiaohong on 17/9/20.
@@ -34,7 +35,7 @@ public class LinkTypeServiceImpl implements LinkTypeService {
         if (resOsnrLinkTypeDao.updateByExampleSelective(rolt, getExample(versionId, linkTypeId)) == 0) {
             throw new NoneSaveException();
         } else {
-            return linkTypeDaoToDto(resOsnrLinkTypeDao.selectOne(rolt));
+            return linkTypeDaoToDto(resOsnrLinkTypeDao.selectByPrimaryKey(linkTypeId));
         }
     }
 
@@ -68,15 +69,12 @@ public class LinkTypeServiceImpl implements LinkTypeService {
     }
 
     @Override
-    public List<LinkTypeDTO> selectLinkTypes(Long versionId) {
-        List<LinkTypeDTO> result = new ArrayList<>();
-        List<ResOnsrLinkType> tmp = resOsnrLinkTypeDao.selectByExample(getExample(versionId));
-        if (tmp.size() == 0) {
-            throw new NoneGetException();
-        }
-        for (ResOnsrLinkType rolt : tmp) {
-            LinkTypeDTO re = linkTypeDaoToDto(rolt);
-            result.add(re);
+    public List<LinkTypeDTO> listLinkTypes(Long versionId) {
+        List<LinkTypeDTO> result = resOsnrLinkTypeDao.selectByExample(getExample(versionId)).stream().sorted
+                (Comparator.comparing(ResOnsrLinkType::getGmtModified).reversed()).map(this::linkTypeDaoToDto).
+                collect(Collectors.toList());
+        if (result.size() == 0) {
+            throw new NoneGetException("没有找到链路类型相关记录");
         }
         return result;
     }
@@ -87,11 +85,16 @@ public class LinkTypeServiceImpl implements LinkTypeService {
     }
 
     @Override
+    public LinkTypeDTO getLinkTypeById(Long versionId, Long linkTypeId) {
+        return linkTypeDaoToDto(resOsnrLinkTypeDao.selectByExample(getExample(versionId, linkTypeId)).get(0));
+    }
+
+    @Override
     public void batchRemove(Long versionId) {
         resOsnrLinkTypeDao.deleteByExample(getExample(versionId));
     }
 
-    private Example getExample(Long versionId) {
+    public Example getExample(Long versionId) {
         Example example = new Example(ResOnsrLinkType.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("versionId", versionId);

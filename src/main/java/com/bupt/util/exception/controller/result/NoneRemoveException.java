@@ -6,7 +6,7 @@ package com.bupt.util.exception.controller.result;
  */
 public class NoneRemoveException extends RequestResultErrorException {
     public NoneRemoveException() {
-        super("Nothing removed from the database.\n");
+        super("要删除的信息和记录不匹配！\n");
     }
 
     public NoneRemoveException(String message) {

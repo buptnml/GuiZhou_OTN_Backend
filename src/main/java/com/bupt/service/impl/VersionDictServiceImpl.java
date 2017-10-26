@@ -17,8 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service("versionDictService")
 public class VersionDictServiceImpl implements VersionDictService {
@@ -81,6 +82,7 @@ public class VersionDictServiceImpl implements VersionDictService {
 
     private Example getExample(String versionDictName) {
         Example example = new Example(SysVersionDict.class);
+
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("versionDictName", versionDictName);
         return example;
@@ -88,12 +90,10 @@ public class VersionDictServiceImpl implements VersionDictService {
 
     @Override
     public List<VersionDictDTO> listVersionDict() {
-        List<VersionDictDTO> resultList = new ArrayList<>();
-        for (SysVersionDict versionDict : sysVersionDictDao.selectAll()) {
-            resultList.add(convertToDTO(versionDict));
-        }
+        List<VersionDictDTO> resultList = sysVersionDictDao.selectAll().stream().sorted(Comparator.comparing
+                (SysVersionDict::getGmtModified).reversed()).map(this::convertToDTO).collect(Collectors.toList());
         if (resultList.size() == 0) {
-            throw new NoneGetException();
+            throw new NoneGetException("没有查询到版本字典相关记录！");
         }
         return resultList;
     }

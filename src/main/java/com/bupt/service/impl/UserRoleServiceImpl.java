@@ -16,9 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service("userRoleService")
 public class UserRoleServiceImpl implements UserRoleService {
@@ -73,13 +73,10 @@ public class UserRoleServiceImpl implements UserRoleService {
 
     @Override
     public List<UserRoleDTO> listUserRole() {
-        Iterator<SysUserRole> sysUserIterator = sysUserRoleDao.selectAll().iterator();
-        List<UserRoleDTO> resultList = new ArrayList<>();
-        while (sysUserIterator.hasNext()) {
-            resultList.add(this.DOtoDTO(sysUserIterator.next()));
-        }
+        List<UserRoleDTO> resultList = sysUserRoleDao.selectAll().stream().sorted(Comparator.comparing
+                (SysUserRole::getGmtModified).reversed()).map(this::DOtoDTO).collect(Collectors.toList());
         if (resultList.size() == 0) {
-            throw new NoneGetException();
+            throw new NoneGetException("没有查询到用户角色相关记录");
         }
         return resultList;
     }

@@ -8,6 +8,7 @@ import com.bupt.pojo.DiskCreateInfo;
 import com.bupt.pojo.DiskDTO;
 import com.bupt.service.DiskService;
 import com.bupt.util.exception.controller.result.NoneGetException;
+import com.bupt.util.exception.controller.result.NoneRemoveException;
 import com.bupt.util.exception.controller.result.NoneSaveException;
 import com.bupt.util.exception.controller.result.NoneUpdateException;
 import org.springframework.beans.BeanUtils;
@@ -16,9 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service("diskService")
 public class DiskServiceImpl implements DiskService {
@@ -29,15 +30,23 @@ public class DiskServiceImpl implements DiskService {
 
     @Override
     public List<DiskDTO> listDiskByNetElement(Long versionId, Long netElementId) {
-        Iterator<ResDisk> searchListIte = resDiskDao.selectByExample(getExample(versionId, netElementId)).iterator();
-        if (!searchListIte.hasNext()) {
-            throw new NoneGetException();
+        List<DiskDTO> result = resDiskDao.selectByExample(getExample(versionId, netElementId)).stream().sorted
+                (Comparator.comparing(ResDisk::getGmtModified).reversed()).map(this::convertToDTO)
+                .collect(Collectors.toList());
+        if (result.size() == 0) {
+            throw new NoneGetException("没有查询到机盘相关记录！");
         }
-        List<DiskDTO> resultList = new ArrayList<>();
-        while (searchListIte.hasNext()) {
-            resultList.add(convertToDTO(searchListIte.next()));
-        }
-        return resultList;
+        return result;
+    }
+
+    @Override
+    public List<DiskDTO> listDiskByType(Long versionId, String diskType) {
+        Example example = new Example(ResDisk.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("versionId", versionId);
+        criteria.andEqualTo("diskType", diskType);
+        return resDiskDao.selectByExample(example).stream().map(this::convertToDTO).collect(Collectors
+                .toList());
     }
 
     @Override
@@ -56,18 +65,18 @@ public class DiskServiceImpl implements DiskService {
         if (resDiskDao.updateByExampleSelective(createResDisk(diskCreateInfo), getExample(versionId, netElementId,
                 diskId)) != 1) {
             throw new NoneUpdateException();
-        } else return convertToDTO(resDiskDao.selectByExample(getExample(versionId, netElementId, diskId)).get(0));
+        } else return convertToDTO(resDiskDao.selectByPrimaryKey(diskId));
     }
 
 
     @Override
     @Transactional
     public void listRemove(Long versionId, Long netElementId, List<Long> diskIdList) {
-        for (Long diskId : diskIdList) {
-            if (resDiskDao.deleteByExample(getExample(versionId, netElementId, diskId)) != 1) {
-                throw new NoneUpdateException();
+        diskIdList.forEach(id -> {
+            if (resDiskDao.deleteByExample(getExample(versionId, netElementId, id)) != 1) {
+                throw new NoneRemoveException("机盘移除失败！");
             }
-        }
+        });
     }
 
     @Override
@@ -131,7 +140,7 @@ public class DiskServiceImpl implements DiskService {
     }
 
 
-    private Example getExample(Long versionId, Long netElementId) {
+    public Example getExample(Long versionId, Long netElementId) {
         Example example = new Example(ResDisk.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("netElementId", netElementId);

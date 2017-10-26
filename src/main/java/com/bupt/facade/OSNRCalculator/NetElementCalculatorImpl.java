@@ -5,6 +5,7 @@ import com.bupt.facade.OSNRCalculator.exceptions.NetElementNotFoundException;
 import com.bupt.pojo.DiskDTO;
 import com.bupt.service.DiskService;
 import com.bupt.service.NetElementService;
+import com.bupt.util.exception.controller.result.NoneGetException;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -60,8 +61,12 @@ public class NetElementCalculatorImpl implements NetElementCalculator {
         if (null == netElementService.getNetElement(versionId, netElementName)) {
             throw new NetElementNotFoundException(netElementName);
         }
-        this.disks = diskService.listDiskByNetElement(versionId, netElementService.getNetElement(versionId, netElementName)
-                .getNetElementId());
+        try {
+            this.disks = diskService.listDiskByNetElement(versionId, netElementService.getNetElement(versionId, netElementName)
+                    .getNetElementId());
+        } catch (Exception e) {
+            throw new NoneGetException(netElementName + "网元" + e.getMessage());
+        }
         this.inputPowers = new double[this.disks.size()];
         this.outputPowers = new double[this.disks.size()];
         this.inputPowers[0] = firstInput;

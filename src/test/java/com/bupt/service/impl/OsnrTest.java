@@ -22,9 +22,9 @@ public class OsnrTest {
     public void nothing() {
         double[][] inputs = new double[1][1];
         inputs[0][0] = -10;
-        String routeString = "905_两所屯变-904_安顺地调-903_安顺变-902_青岩变-901_中调";
+        String routeString = "905_两所屯变-917_信息中心-901_中调";
         try {
-            osnrCalculator.calculate(inputs, null, routeString, 100000000153L);
+            osnrCalculator.calculate(inputs, null, routeString, 100000000243L);
         } catch (Exception e) {
             e.printStackTrace();
         }

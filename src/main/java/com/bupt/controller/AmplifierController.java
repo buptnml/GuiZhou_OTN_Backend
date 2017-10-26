@@ -67,7 +67,7 @@ public class AmplifierController {
     @RequestMapping(value = "/{versionId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public List<AmplifierDTO> selectAmplifiers(@PathVariable Long versionId) {
-        List<AmplifierDTO> result = amplifierService.selectAmplifiers(versionId);
+        List<AmplifierDTO> result = amplifierService.listAmplifiers(versionId);
         if (result == null || result.size() <= 0)
             throw new NoneGetException();
         return result;

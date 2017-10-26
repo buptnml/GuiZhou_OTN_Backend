@@ -20,6 +20,7 @@ public class OSNRCalculator extends AbstractCalculator {
     private OSNRResultsCalculable osnrResultsCalculable;
     private long versionId;
     private String routeString;
+    private double inputPower;
     private double[][] inputPowers;
     private double[][] outputPowers;
     private List<OSNRResult> results;
@@ -49,6 +50,7 @@ public class OSNRCalculator extends AbstractCalculator {
 
     @Override
     void init(double[][] inputPowers, double[][] outputPowers, String routeString, long versionId) {
+        this.inputPower = inputPowers[0][0];
         this.inputPowers = inputPowers;
         this.outputPowers = outputPowers;
         this.routeString = routeString;
@@ -82,7 +84,8 @@ public class OSNRCalculator extends AbstractCalculator {
     }
     @Override
     public String getInputPowersString() {
-        return Arrays.deepToString(inputPowers);
+        return Arrays.deepToString(inputPowers).equals("[]") ? Double.toString(this.inputPower) : Arrays.deepToString
+                (inputPowers);
     }
 
     @Override

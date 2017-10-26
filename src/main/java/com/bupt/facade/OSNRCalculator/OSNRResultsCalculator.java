@@ -4,7 +4,6 @@ import com.bupt.facade.OSNRCalculator.exceptions.OSNRResultOutOfLimitException;
 import com.bupt.pojo.NodeOSNRDetail;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,8 +13,6 @@ public class OSNRResultsCalculator implements OSNRResultsCalculable {
     private double[][] outputPowers;
     private double[] noisePowers;
     private String[] nodes;
-    @Resource
-    InputsOutputsCalculable inputsOutputsCalculator;
 
     @Override
     public List<OSNRResult> getResults(String routeString, double[][] inputPowers, double[][] outputPowers) {

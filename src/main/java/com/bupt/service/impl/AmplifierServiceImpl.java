@@ -15,8 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by caoxiaohong on 17/9/13.
@@ -41,7 +42,7 @@ public class AmplifierServiceImpl implements AmplifierService {
         }
     }
 
-    private Example getExample(Long amplifierID) {
+    public Example getExample(Long amplifierID) {
         Example condition = new Example(ResOsnrAmplifier.class);
         Example.Criteria criteria = condition.createCriteria();
         criteria.andEqualTo("versionId", amplifierID);
@@ -95,22 +96,28 @@ public class AmplifierServiceImpl implements AmplifierService {
     }
 
     @Override
+    public AmplifierDTO getAmpById(Long versionId, Long amplifierId) {
+        try {
+            return amplifierDaoToDto(resOsnrAmplifierDao.selectByExample(getExample(versionId, amplifierId)).get(0));
+        } catch (Exception e) {
+            throw new NoneGetException("没有在数据库中找到指定的放大器信息!");
+        }
+    }
+
+    @Override
     public AmplifierDTO getAmpByName(Long versionId, String ampType) {
         return amplifierDaoToDto(resOsnrAmplifierDao.selectByExample(getExample(versionId, ampType)).get(0));
     }
 
     @Override
-    public List<AmplifierDTO> selectAmplifiers(Long versionID) {
-        List<ResOsnrAmplifier> list = resOsnrAmplifierDao.selectByExample(getExample(versionID));
+    public List<AmplifierDTO> listAmplifiers(Long versionID) {
+        List<AmplifierDTO> list = resOsnrAmplifierDao.selectByExample(getExample(versionID)).stream().sorted
+                (Comparator.comparing(ResOsnrAmplifier::getGmtModified).reversed()).map(this::amplifierDaoToDto).
+                collect(Collectors.toList());
         if (list.size() <= 0) {
-            throw new NoneGetException();
+            throw new NoneGetException("没有放大器类型数据的相关记录");
         }
-        List<AmplifierDTO> result = new ArrayList<>();
-        for (ResOsnrAmplifier i : list) {
-            AmplifierDTO amplifierDTO = amplifierDaoToDto(i);
-            result.add(amplifierDTO);
-        }
-        return result;
+        return list;
     }
 
     @Override

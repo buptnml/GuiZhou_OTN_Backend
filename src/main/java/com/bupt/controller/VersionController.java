@@ -32,6 +32,22 @@ public class VersionController {
     @Resource
     private UserService userService;
 
+    @ApiOperation(value = "同步数据")
+    @RequestMapping(value = "synchronize/{versionId}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public response dataSynchronize(@PathVariable Long versionId, Long fromVersionId) {
+        if (versionId == 100000000000L) {
+            throw new IllegalArgumentException("不允许同步基础版本数据");
+        }
+        if (null == fromVersionId) {
+            fromVersionId = 100000000000L;
+        }
+        versionService.dataSynchronize(fromVersionId, versionId);
+        return new response("同步成功！");
+    }
+
+
+
     @ApiOperation(value = "查询所有版本")
     @RequestMapping(value = "/", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
@@ -47,18 +63,20 @@ public class VersionController {
         return versionService.saveVersion(versionQuery);
     }
 
-    @ApiOperation(value = "同步数据")
-    @RequestMapping(value = "synchronize/{versionId}", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.CREATED)
-    public String dataSynchronize(@PathVariable Long versionId, Long fromVersionId) {
-        if (versionId == 100000000000L) {
-            throw new IllegalArgumentException("不允许同步基础版本数据");
+    private class response {
+        private String responseMessage;
+
+        response(String responseMessage) {
+            this.responseMessage = responseMessage;
         }
-        if (null == fromVersionId) {
-            fromVersionId = 100000000000L;
+
+        public String getResponseMessage() {
+            return responseMessage;
         }
-        versionService.dataSynchronize(fromVersionId, versionId);
-        return "数据同步成功！";
+
+        public void setResponseMessage(String responseMessage) {
+            this.responseMessage = responseMessage;
+        }
     }
 
     @ApiOperation(value = "批量删除指定id的版本")

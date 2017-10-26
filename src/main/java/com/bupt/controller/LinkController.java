@@ -33,7 +33,7 @@ public class LinkController {
     @RequestMapping(value = "/{versionId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public List<LinkDTO> listResLink(@PathVariable Long versionId) {
-        return linkService.getResLink(versionId);
+        return linkService.listLinks(versionId);
     }
 
     @ApiOperation(value = "创建新链路")
