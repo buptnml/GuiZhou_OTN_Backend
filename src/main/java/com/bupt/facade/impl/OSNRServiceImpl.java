@@ -61,8 +61,7 @@ public class OSNRServiceImpl implements OSNRService {
             if (stringTransfer(getBussiness(versionId, bus.getBussinessId()).getMainInputPowers()).length <
                     bus.getMainRoute().split("-").length) {
                 results.add(bus);
-            }
-            if (null != bus.getSpareRoute()) {
+            } else if (null != bus.getSpareRoute()) {
                 if (stringTransfer(getBussiness(versionId, bus.getBussinessId()).getSpareInputPowers()).length
                         < bus.getSpareRoute().split("-").length) {
                     results.add(bus);
@@ -84,7 +83,9 @@ public class OSNRServiceImpl implements OSNRService {
         } catch (Exception e) {
             //do nothing
         }
-        results.addAll(calculator.getNodeResults());
+        if (null != calculator.getNodeResults()) {
+            results.addAll(calculator.getNodeResults());
+        }
         if (null != bus.getSpareRoute()) {
             inputPowers = stringTransfer(bus.getSpareInputPowers());
             outputPowers = stringTransfer(bus.getSpareOutputPowers());
@@ -94,7 +95,9 @@ public class OSNRServiceImpl implements OSNRService {
             } catch (Exception e) {
                 //do nothing
             }
-            results.addAll(calculator.getNodeResults());
+            if (null != calculator.getNodeResults()) {
+                results.addAll(calculator.getNodeResults());
+            }
         }
         return new ArrayList<>(results);
     }
@@ -129,7 +132,6 @@ public class OSNRServiceImpl implements OSNRService {
                 .getSpareOutputPowers());
         String routeString = isMain ? bus.getMainRoute() : bus.getSpareRoute();
         String errorMessage = null;
-
         try {
             calculator.calculate(inputPowers, outputPowers, routeString, versionId);
         } catch (Exception e) {
@@ -142,6 +144,9 @@ public class OSNRServiceImpl implements OSNRService {
             routeString, String errorMessage, List<OSNRResult> calculatorResult) {
         List<ResultOSNRDetail> results = new LinkedList<>();
         for (int i = 0; i < routeString.split("-").length; i++) {
+            if (null == calculatorResult) {
+                return results;
+            }
             if (i < calculatorResult.size()) {
                 results.add(new ResultOSNRDetail(bus, isMain, calculatorResult.get(0).getNetElementName(),
                         calculatorResult.get(i)));

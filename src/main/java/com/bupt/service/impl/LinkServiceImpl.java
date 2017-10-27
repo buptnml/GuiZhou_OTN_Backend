@@ -57,9 +57,8 @@ public class LinkServiceImpl implements LinkService {
 
     @Override
     public LinkDTO updateResLink(Long versionId, Long linkId, LinkCreateInfo linkCreateInfo) {
-        ResLink updateInfo = convertToResLink(linkCreateInfo);
         if (resLinkDao.updateByExampleSelective(convertToResLink(linkCreateInfo), getExample(versionId, linkId)) == 1) {
-            return convertToResLinkDTO(resLinkDao.selectOne(updateInfo));
+            return convertToResLinkDTO(resLinkDao.selectByExample(getExample(versionId, linkId)).get(0));
         }
         throw new NoneUpdateException();
     }

@@ -45,7 +45,7 @@ public class DIskCalculatorImpl implements DiskCalculator {
         }
         if (this.inputPower < amplifier.getMinimumInputPower()) {
             throw new OutOfInputLimitsException("输入功率小于机盘" + disk.getDiskName
-                    () + "能支持的最大功率！");
+                    () + "能支持的最小功率！");
         }
         this.inputPower = amplifier.getMaximumInputPower() > inputPower ? inputPower : amplifier.getMaximumInputPower();
         /*大于放大器放大后的结果一般按照可以做到的最大输出功率输出，

@@ -30,6 +30,7 @@ public class InputsOutputsCalculator implements InputsOutputsCalculable {
         this.firstInput = firstInput;
         inputPowers = new double[nodes.length][];
         outputPowers = new double[nodes.length][];
+        lastOutput = 0;
     }
 
     @Override

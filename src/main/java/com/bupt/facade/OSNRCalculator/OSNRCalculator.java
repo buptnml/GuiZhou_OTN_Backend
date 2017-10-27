@@ -55,6 +55,8 @@ public class OSNRCalculator extends AbstractCalculator {
         this.outputPowers = outputPowers;
         this.routeString = routeString;
         this.versionId = versionId;
+        results = null;
+        nodeResults = null;
     }
 
 

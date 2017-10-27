@@ -87,7 +87,8 @@ public class AmplifierServiceImpl implements AmplifierService {
         if (resOsnrAmplifierDao.insertSelective(roa) < 0) {
             throw new NoneSaveException();
         } else {
-            ResOsnrAmplifier result = resOsnrAmplifierDao.selectOne(roa);
+            ResOsnrAmplifier result = resOsnrAmplifierDao.selectByExample(getExample(versionId, amplifierCreateInfo
+                    .getAmplifierName())).get(0);
             if (null == result) {
                 throw new NoneSaveException();
             }

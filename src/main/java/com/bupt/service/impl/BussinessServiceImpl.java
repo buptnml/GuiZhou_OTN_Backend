@@ -110,7 +110,7 @@ public class BussinessServiceImpl implements BussinessService {
         BussinessCreateInfo createInfo = new BussinessCreateInfo();
         BeanUtils.copyProperties(bussiness, createInfo);
         createInfo.setMainRoute(createNewRoute(bussiness.getMainRoute(), oldString, newString));
-        if (null != createInfo.getSpareRoute()) {
+        if (null != bussiness.getSpareRoute()) {
             createInfo.setSpareRoute(createNewRoute(bussiness.getSpareRoute(), oldString, newString));
         }
         //TODO 抽象成为一个静态类 避免越级调用
@@ -140,13 +140,16 @@ public class BussinessServiceImpl implements BussinessService {
     }
 
     private void updateBussiness(Long versionId, Long bussinessId, BussinessCreateInfo bussinessCreateInfo) {
-        ResBussiness createdBus = null;
+        ResBussiness createdBus = new ResBussiness();
         try {
             createdBus = createBussiness(versionId, bussinessCreateInfo, false);
         } catch (Exception e) {
             logger.warn(e.getMessage());
         }
-        resBussinessDao.updateByExampleSelective(createdBus, getExample(versionId, bussinessId));
+        createdBus.setBussinessId(bussinessId);
+        createdBus.setVersionId(versionId);
+        resBussinessDao.updateByPrimaryKeySelective(createdBus);
+
     }
 
 

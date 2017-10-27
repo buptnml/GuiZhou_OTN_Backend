@@ -44,6 +44,9 @@ public class BussinessController {
     public BussinessDTO saveBussiness(@PathVariable Long versionId, @RequestBody BussinessCreateInfo bussinessCreateInfo) {
         checkVersionId(versionId);
         checkBussinessCreateInfo(bussinessCreateInfo);
+        if (bussinessCreateInfo.getSpareRoute().equals("")) {
+            bussinessCreateInfo.setSpareRoute(null);
+        }
         return bussinessService.saveBussiness(versionId, bussinessCreateInfo);
     }
 
