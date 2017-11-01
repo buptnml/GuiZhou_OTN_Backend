@@ -164,7 +164,7 @@ public class AmplifierServiceImpl implements AmplifierService {
         AmplifierDTO result = new AmplifierDTO();
         if (resOsnrAmplifier == null)
             return result;
-        result.setAmplifierID(resOsnrAmplifier.getAmplifierId());
+        result.setAmplifierId(resOsnrAmplifier.getAmplifierId());
         result.setAmplifierName(resOsnrAmplifier.getAmplifierName());
         result.setGain(resOsnrAmplifier.getGain());
         result.setMaximumInputPower(resOsnrAmplifier.getMaximumInputPower());

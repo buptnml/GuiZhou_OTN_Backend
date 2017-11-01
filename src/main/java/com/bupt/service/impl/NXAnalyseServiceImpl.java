@@ -8,8 +8,8 @@ import com.bupt.entity.ResLink;
 import com.bupt.entity.ResNetElement;
 import com.bupt.pojo.NXAnalyseItemDTO;
 import com.bupt.service.NXAnalyseService;
+import com.bupt.util.exception.controller.result.NoneGetException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.NumberFormat;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
@@ -23,7 +23,7 @@ import java.util.List;
  */
 
 @Service
-public class NXAanlyseServiceImpl implements NXAnalyseService {
+public class NXAnalyseServiceImpl implements NXAnalyseService {
 
     @Autowired
     private ResNetElementDao netElementDao;
@@ -38,15 +38,15 @@ public class NXAanlyseServiceImpl implements NXAnalyseService {
     public List<NXAnalyseItemDTO> analyseEquip(long versionId, int num) {
 
         List<ResNetElement> netElements = netElementDao.selectByExample( getExampleByVersion(versionId, ResNetElement.class) );
-        List<ResBussiness> bussinesses = bussinessDao.selectByExample( getExampleByVersion(versionId, ResBussiness.class) );
+        List<ResBussiness> bussiness = bussinessDao.selectByExample(getExampleByVersion(versionId, ResBussiness.class));
 
         List<NXAnalyseItemDTO> result = new LinkedList<>();
-        if (netElements.size()==0||bussinesses.size()==0) return null;
+        if (netElements.size() == 0 || bussiness.size() == 0) return null;
 
         if (1 == num) {
             for (ResNetElement netElement : netElements) {
 
-                NXAnalyseItemDTO nxAnalyseItem =analyse(bussinesses,new String[]{netElement.getNetElementName()});
+                NXAnalyseItemDTO nxAnalyseItem = analyse(bussiness, new String[]{netElement.getNetElementName()});
 
                 result.add(nxAnalyseItem);
             }
@@ -58,7 +58,7 @@ public class NXAanlyseServiceImpl implements NXAnalyseService {
                     String eleA=netElements.get(i).getNetElementName();
                     String eleB=netElements.get(j).getNetElementName();
 
-                    NXAnalyseItemDTO nxAnalyseItem=analyse(bussinesses,new String[]{eleA,eleB});
+                    NXAnalyseItemDTO nxAnalyseItem = analyse(bussiness, new String[]{eleA, eleB});
 
                     result.add(nxAnalyseItem);
                 }
@@ -71,8 +71,9 @@ public class NXAanlyseServiceImpl implements NXAnalyseService {
     @Override
     public List<NXAnalyseItemDTO> analyseLink(long versionId, int num) {
         List<ResLink> links = linkDao.selectByExample( getExampleByVersion(versionId, ResLink.class) );
-        List<ResBussiness> bussinesses = bussinessDao.selectByExample( getExampleByVersion(versionId, ResBussiness.class) );
-        if (links.size()==0||bussinesses.size()==0) return null;
+        List<ResBussiness> bussiness = bussinessDao.selectByExample(getExampleByVersion(versionId, ResBussiness.class));
+        if (links.size() == 0 || bussiness.size() == 0)
+            throw new NoneGetException();
         // 结果
         List<NXAnalyseItemDTO> result = new LinkedList<>();
 
@@ -81,7 +82,7 @@ public class NXAanlyseServiceImpl implements NXAnalyseService {
                 //                链路的起止点在路由中不能确定，故有两种情况
                 String path1 = link.getEndAName() + "-" + link.getEndZName();
                 String path2 = link.getEndZName() + "-" + link.getEndAName();
-                NXAnalyseItemDTO nxAnalyseItem=analyse(bussinesses,new String[]{path1,path2});
+                NXAnalyseItemDTO nxAnalyseItem = analyse(bussiness, new String[]{path1, path2});
                 nxAnalyseItem.setItemName(link.getLinkName());
 
                 result.add(nxAnalyseItem);
@@ -94,7 +95,7 @@ public class NXAanlyseServiceImpl implements NXAnalyseService {
                     String pathA2 = links.get(i).getEndZName() + "-" + links.get(i).getEndAName();
                     String pathZ1 = links.get(j).getEndAName() + "-" + links.get(j).getEndZName();
                     String pathZ2 = links.get(j).getEndZName() + "-" + links.get(j).getEndAName();
-                    NXAnalyseItemDTO nxAnalyseItem=analyse(bussinesses,new String[]{pathA1,pathA2,pathZ1,pathZ2});
+                    NXAnalyseItemDTO nxAnalyseItem = analyse(bussiness, new String[]{pathA1, pathA2, pathZ1, pathZ2});
 
                     nxAnalyseItem.setItemName(pathA1+","+pathZ1);
                     result.add(nxAnalyseItem);

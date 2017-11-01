@@ -1,10 +1,9 @@
 package com.bupt.controller;
 
+import com.bupt.controller.utils.VersionCheckException;
 import com.bupt.pojo.LinkTypeCreateInfo;
 import com.bupt.pojo.LinkTypeDTO;
 import com.bupt.service.LinkTypeService;
-import com.bupt.util.exception.controller.input.IllegalArgumentException;
-import com.bupt.util.exception.controller.input.NullArgumentException;
 import com.bupt.util.exception.controller.result.NoneRemoveException;
 import com.bupt.util.exception.controller.result.NoneUpdateException;
 import io.swagger.annotations.Api;
@@ -31,13 +30,10 @@ public class LinkTypeController {
     @ResponseStatus(HttpStatus.OK)
     public LinkTypeDTO updateByLinkTypeId(@PathVariable Long versionId, @PathVariable Long linkTypeId, @RequestBody
             LinkTypeCreateInfo linkTypeCreateInfo) {
-        checkVersionId(versionId);
-        checkLinkTypeCreateInfo(linkTypeCreateInfo);
         LinkTypeDTO result = linkTypeService.updateByLinkTypeId(versionId, linkTypeId, linkTypeCreateInfo);
         if (result == null) {
             throw new NoneUpdateException();
         }
-
         return result;
     }
 
@@ -50,9 +46,6 @@ public class LinkTypeController {
     @RequestMapping(value = "/{versionId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteByLinkTypeId(@PathVariable Long versionId, @RequestBody List<Long> linkTypeId) {
-        checkVersionId(versionId);
-        if (linkTypeId.size() == 0)
-            throw new IllegalArgumentException("linkTypeId");
         if (!linkTypeService.deleteByLinkTypeId(versionId, linkTypeId))
             throw new NoneRemoveException();
     }
@@ -67,8 +60,6 @@ public class LinkTypeController {
     @RequestMapping(value = "/{versionId}", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public LinkTypeDTO createLinkType(@PathVariable Long versionId, @RequestBody LinkTypeCreateInfo linkTypeCreateInfo) {
-        checkVersionId(versionId);
-        checkLinkTypeCreateInfo(linkTypeCreateInfo);
         return linkTypeService.createLinkType(versionId, linkTypeCreateInfo);
     }
 
@@ -81,29 +72,9 @@ public class LinkTypeController {
     @ApiOperation(value = "查询", notes = "获取所有链路信息")
     @RequestMapping(value = "/{versionId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
+    @VersionCheckException(reason = "获取信息的时候不需要进行版本检查")
     public List<LinkTypeDTO> retrieveLinkTypes(@PathVariable Long versionId) {
         return linkTypeService.listLinkTypes(versionId);
-    }
-
-
-    private void checkLinkTypeCreateInfo(LinkTypeCreateInfo linkTypeCreateInfo) {
-        if (null == linkTypeCreateInfo.getLinkLoss()) {
-            throw new NullArgumentException("linkLoss");
-        }
-        if (null == linkTypeCreateInfo.getLinkRate()) {
-            throw new NullArgumentException("linkRate");
-        }
-        if (null == linkTypeCreateInfo.getLinkType()) {
-            throw new NullArgumentException("linkType");
-        }
-    }
-
-
-    private void checkVersionId(Long versionID) {
-        if (versionID == 100000000000L) {
-            throw new IllegalArgumentException("versionID should not be 100000000000, the base version " +
-                    "could not be altered in anyway！");
-        }
     }
 
 

@@ -1,8 +1,11 @@
 package com.bupt.pojo;
 
+import org.springframework.lang.Nullable;
+
 public class UserRoleCreateInfo {
-    String roleName;
-    String roleDescription;
+    private String roleName;
+    @Nullable
+    private String roleDescription;
 
     public String getRoleName() {
         return roleName;
@@ -12,11 +15,12 @@ public class UserRoleCreateInfo {
         this.roleName = roleName;
     }
 
+    @Nullable
     public String getRoleDescription() {
         return roleDescription;
     }
 
-    public void setRoleDescription(String roleDescription) {
+    public void setRoleDescription(@Nullable String roleDescription) {
         this.roleDescription = roleDescription;
     }
 }

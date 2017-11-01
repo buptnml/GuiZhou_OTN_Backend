@@ -106,7 +106,7 @@ public class NetElementServiceImpl implements NetElementService {
     @Override
     public NetElementDTO getNetElement(Long versionId, String netElementName) {
         List<ResNetElement> result = resNetElementDao.selectByExample(getExample(versionId, netElementName));
-        if (null != result || result.size() != 0) {
+        if (result.size() != 0) {
             return convertToNetElementDTO(result.get(0));
         }
         throw new NoneGetException("网元" + netElementName + "不存在");

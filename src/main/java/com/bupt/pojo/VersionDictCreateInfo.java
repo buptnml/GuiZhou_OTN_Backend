@@ -1,15 +1,18 @@
 package com.bupt.pojo;
 
+import org.springframework.lang.Nullable;
+
 public class VersionDictCreateInfo {
     private String versionDictName;
+    @Nullable
     private String versionDictDescription;
     private String creatorName;
-    private boolean hasBussiness;
-    private boolean hasDisk;
-    private boolean hasLink;
-    private boolean hasNetElement;
-    private boolean hasLinkType;
-    private boolean hasAmplifier;
+    private Boolean hasBussiness;
+    private Boolean hasDisk;
+    private Boolean hasLink;
+    private Boolean hasNetElement;
+    private Boolean hasLinkType;
+    private Boolean hasAmplifier;
 
     public String getVersionDictName() {
         return versionDictName;
@@ -19,11 +22,12 @@ public class VersionDictCreateInfo {
         this.versionDictName = versionDictName;
     }
 
+    @Nullable
     public String getVersionDictDescription() {
         return versionDictDescription;
     }
 
-    public void setVersionDictDescription(String versionDictDescription) {
+    public void setVersionDictDescription(@Nullable String versionDictDescription) {
         this.versionDictDescription = versionDictDescription;
     }
 
@@ -35,51 +39,51 @@ public class VersionDictCreateInfo {
         this.creatorName = creatorName;
     }
 
-    public boolean isHasBussiness() {
+    public Boolean getHasBussiness() {
         return hasBussiness;
     }
 
-    public void setHasBussiness(boolean hasBussiness) {
+    public void setHasBussiness(Boolean hasBussiness) {
         this.hasBussiness = hasBussiness;
     }
 
-    public boolean isHasDisk() {
+    public Boolean getHasDisk() {
         return hasDisk;
     }
 
-    public void setHasDisk(boolean hasDisk) {
+    public void setHasDisk(Boolean hasDisk) {
         this.hasDisk = hasDisk;
     }
 
-    public boolean isHasLink() {
+    public Boolean getHasLink() {
         return hasLink;
     }
 
-    public void setHasLink(boolean hasLink) {
+    public void setHasLink(Boolean hasLink) {
         this.hasLink = hasLink;
     }
 
-    public boolean isHasNetElement() {
+    public Boolean getHasNetElement() {
         return hasNetElement;
     }
 
-    public void setHasNetElement(boolean hasNetElement) {
+    public void setHasNetElement(Boolean hasNetElement) {
         this.hasNetElement = hasNetElement;
     }
 
-    public boolean isHasLinkType() {
+    public Boolean getHasLinkType() {
         return hasLinkType;
     }
 
-    public void setHasLinkType(boolean hasLinkType) {
+    public void setHasLinkType(Boolean hasLinkType) {
         this.hasLinkType = hasLinkType;
     }
 
-    public boolean isHasAmplifier() {
+    public Boolean getHasAmplifier() {
         return hasAmplifier;
     }
 
-    public void setHasAmplifier(boolean hasAmplifier) {
+    public void setHasAmplifier(Boolean hasAmplifier) {
         this.hasAmplifier = hasAmplifier;
     }
 }

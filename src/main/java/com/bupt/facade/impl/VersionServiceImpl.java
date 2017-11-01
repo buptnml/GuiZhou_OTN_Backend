@@ -86,7 +86,7 @@ public class VersionServiceImpl implements VersionService {
     public VersionDTOWithVersionDictDTO getVersion(Long versionId) {
         SysVersion sysVersionDO = sysVersionDao.selectByPrimaryKey(versionId);
         if (null == sysVersionDO) {
-            throw new NoneGetException();
+            throw new NoneGetException("没有从数据库中找到该版本记录！");
         }
         VersionDTOWithVersionDictDTO versionDTOWithVersionDictDTO = new VersionDTOWithVersionDictDTO(DOtoDTO(sysVersionDO));
         versionDTOWithVersionDictDTO.setVersionDict(versionDictService.getVersionDictByName(sysVersionDO.getVersionDictName()));

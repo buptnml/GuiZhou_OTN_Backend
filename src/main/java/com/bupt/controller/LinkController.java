@@ -1,13 +1,11 @@
 package com.bupt.controller;
 
 
+import com.bupt.controller.utils.VersionCheckException;
 import com.bupt.pojo.LinkCreateInfo;
 import com.bupt.pojo.LinkDTO;
-import com.bupt.pojo.NetElementDTO;
 import com.bupt.service.LinkService;
 import com.bupt.service.NetElementService;
-import com.bupt.util.exception.controller.input.IllegalArgumentException;
-import com.bupt.util.exception.controller.input.NullArgumentException;
 import com.bupt.util.exception.controller.result.NoneGetException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,6 +30,7 @@ public class LinkController {
     @ApiOperation(value = "查询某个版本下的所有链路信息")
     @RequestMapping(value = "/{versionId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
+    @VersionCheckException(reason = "获取信息的时候不需要进行版本检查")
     public List<LinkDTO> listResLink(@PathVariable Long versionId) {
         return linkService.listLinks(versionId);
     }
@@ -40,7 +39,6 @@ public class LinkController {
     @RequestMapping(value = "/{versionId}", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public LinkDTO saveResLink(@PathVariable Long versionId, @RequestBody LinkCreateInfo linkCreateInfo) {
-        checkVersionId(versionId);
         checkLinkCreateInfo(versionId, linkCreateInfo);
         return linkService.saveResLink(versionId, linkCreateInfo);
     }
@@ -50,7 +48,6 @@ public class LinkController {
     @ResponseStatus(HttpStatus.CREATED)
     public LinkDTO updateResLink(@PathVariable Long versionId, @PathVariable Long linkId, @RequestBody LinkCreateInfo
             linkCreateInfo) {
-        checkVersionId(versionId);
         checkLinkCreateInfo(versionId, linkCreateInfo);
         return linkService.updateResLink(versionId, linkId, linkCreateInfo);
     }
@@ -59,57 +56,23 @@ public class LinkController {
     @RequestMapping(value = "/{versionId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteResLink(@PathVariable Long versionId, @RequestBody List<Long> linkIdList) {
-        if (linkIdList == null || linkIdList.size() == 0) {
-            throw new IllegalArgumentException("linkIdList");
-        }
-        checkVersionId(versionId);
         this.linkService.listRemoveResLink(versionId, linkIdList);
     }
 
+    //TODO 链路信息应该来自于链路类型
     private void checkLinkCreateInfo(Long versionId, LinkCreateInfo linkCreateInfo) {
-        if (null == linkCreateInfo.getEndAId()) {
-            throw new NullArgumentException("endAId should not be NULL!");
-        }
-        if (null == linkCreateInfo.getEndZId()) {
-            throw new NullArgumentException("endZId should not be NULL!");
-        }
-        NetElementDTO endA;
         try {
-            endA = netElementService.getNetElement(versionId, linkCreateInfo.getEndAId());
+            netElementService.getNetElement(versionId, linkCreateInfo.getEndAId());
         } catch (NoneGetException e) {
-            throw new NoneGetException("endAId");
+            throw new NoneGetException("数据库中没有找到链路A端点指定的网元信息！");
         }
-        NetElementDTO endZ;
         try {
-            endZ = netElementService.getNetElement(versionId, linkCreateInfo.getEndZId());
+            netElementService.getNetElement(versionId, linkCreateInfo.getEndZId());
         } catch (Exception e) {
-            throw new NoneGetException("endZId");
-        }
-        if (null == endA) {
-            throw new NullArgumentException("could not find endAId`s netElement");
-        }
-        if (null == endZ) {
-            throw new NullArgumentException("could not find endZId`s netElement");
-        }
-        if (null == linkCreateInfo.getLinkType()) {
-            throw new NullArgumentException("linkType could not be null");
-        }
-        if (null == linkCreateInfo.getLinkName()) {
-            throw new IllegalArgumentException("linkName could not be null");
+            throw new NoneGetException("数据库中没有找到链路Z端点指定的网元信息！");
         }
     }
 
-    private void checkVersionId(Long versionID) {
-        if (versionID == 100000000000L) {
-            throw new IllegalArgumentException("versionID should not be 100000000000, the base version " +
-                    "could not be altered in anyway！");
-        }
-    }
-
-    //链路类型枚举
-    public enum LinkTypes {
-        OPGW, ADSS, NORMAL, UNKNOWN
-    }
 }
 
 

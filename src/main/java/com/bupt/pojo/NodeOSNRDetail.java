@@ -2,10 +2,10 @@ package com.bupt.pojo;
 
 public class NodeOSNRDetail {
     private String nodeName;
-    private double inputPower;
-    private double outputPower;
-    private double gain;
-    private double noisePower;
+    private Double inputPower;
+    private Double outputPower;
+    private Double gain;
+    private Double noisePower;
 
     public NodeOSNRDetail(String nodeName, double inputPower, double outputPower, double gain, double noisePower) {
         this.nodeName = nodeName;
@@ -13,6 +13,9 @@ public class NodeOSNRDetail {
         this.outputPower = outputPower;
         this.gain = gain;
         this.noisePower = noisePower;
+    }
+
+    public NodeOSNRDetail() {
     }
 
     @Override
@@ -23,8 +26,7 @@ public class NodeOSNRDetail {
         NodeOSNRDetail that = (NodeOSNRDetail) o;
 
         if (Double.compare(that.inputPower, inputPower) != 0) return false;
-        if (Double.compare(that.outputPower, outputPower) != 0) return false;
-        return Double.compare(that.gain, gain) == 0 && Double.compare(that.noisePower, noisePower) == 0 && (nodeName != null ? nodeName.equals(that.nodeName) : that.nodeName == null);
+        return Double.compare(that.outputPower, outputPower) == 0 && Double.compare(that.gain, gain) == 0 && Double.compare(that.noisePower, noisePower) == 0 && (nodeName != null ? nodeName.equals(that.nodeName) : that.nodeName == null);
     }
 
     @Override
@@ -51,35 +53,35 @@ public class NodeOSNRDetail {
         this.nodeName = nodeName;
     }
 
-    public double getInputPower() {
+    public Double getInputPower() {
         return inputPower;
     }
 
-    public void setInputPower(double inputPower) {
+    public void setInputPower(Double inputPower) {
         this.inputPower = inputPower;
     }
 
-    public double getOutputPower() {
+    public Double getOutputPower() {
         return outputPower;
     }
 
-    public void setOutputPower(double outputPower) {
+    public void setOutputPower(Double outputPower) {
         this.outputPower = outputPower;
     }
 
-    public double getGain() {
+    public Double getGain() {
         return gain;
     }
 
-    public void setGain(double gain) {
+    public void setGain(Double gain) {
         this.gain = gain;
     }
 
-    public double getNoisePower() {
+    public Double getNoisePower() {
         return noisePower;
     }
 
-    public void setNoisePower(double noisePower) {
+    public void setNoisePower(Double noisePower) {
         this.noisePower = noisePower;
     }
 }

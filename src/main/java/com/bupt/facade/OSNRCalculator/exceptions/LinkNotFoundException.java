@@ -8,6 +8,6 @@ public class LinkNotFoundException extends NullArgumentException {
     }
 
     public LinkNotFoundException(String node1, String node2) {
-        super(node1 + "和" + node2 + "之间的链路不存在或已断开！\n");
+        super(node1 + "和" + node2 + "之间的链路不存在或已断开\n");
     }
 }

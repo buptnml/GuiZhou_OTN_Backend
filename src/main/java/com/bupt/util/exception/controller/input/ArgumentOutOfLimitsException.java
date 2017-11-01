@@ -6,10 +6,10 @@ package com.bupt.util.exception.controller.input;
  */
 public class ArgumentOutOfLimitsException extends IllegalArgumentException {
     public ArgumentOutOfLimitsException() {
-        super("Argument out of limit！.\n");
+        super("输入参数超出限制！\n");
     }
 
     public ArgumentOutOfLimitsException(String message) {
-        super("Argument out of limit：" + message + "\n");
+        super(message + "\n");
     }
 }

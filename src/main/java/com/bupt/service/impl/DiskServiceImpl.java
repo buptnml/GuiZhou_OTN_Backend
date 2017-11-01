@@ -7,7 +7,6 @@ import com.bupt.entity.ResNetElement;
 import com.bupt.pojo.DiskCreateInfo;
 import com.bupt.pojo.DiskDTO;
 import com.bupt.service.DiskService;
-import com.bupt.util.exception.controller.result.NoneGetException;
 import com.bupt.util.exception.controller.result.NoneRemoveException;
 import com.bupt.util.exception.controller.result.NoneSaveException;
 import com.bupt.util.exception.controller.result.NoneUpdateException;
@@ -30,13 +29,9 @@ public class DiskServiceImpl implements DiskService {
 
     @Override
     public List<DiskDTO> listDiskByNetElement(Long versionId, Long netElementId) {
-        List<DiskDTO> result = resDiskDao.selectByExample(getExample(versionId, netElementId)).stream().sorted
+        return resDiskDao.selectByExample(getExample(versionId, netElementId)).stream().sorted
                 (Comparator.comparing(ResDisk::getGmtModified).reversed()).map(this::convertToDTO)
                 .collect(Collectors.toList());
-        if (result.size() == 0) {
-            throw new NoneGetException("没有查询到机盘相关记录！");
-        }
-        return result;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.bupt.service.impl;
+package com.bupt.facade;
 
 import com.bupt.entity.ResLink;
 import com.bupt.pojo.*;
@@ -14,6 +14,10 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+/**
+ * 用来保证数据完整性的切面
+ */
 @Component
 @Aspect
 public class MessageAspect {
@@ -41,14 +45,16 @@ public class MessageAspect {
     @AfterReturning(value =
             "(execution(* com.bupt.service.DiskService.saveDisk(..)) && args(versionId,netElementId,..)) ||" +
                     "(execution(* com.bupt.service.DiskService.updateDisk(..)) && args(versionId,netElementId,..)) ||" +
-                    "(execution(* com.bupt.service.DiskService.listRemove(..)) && args(versionId,netElementId,..))", argNames = "versionId,netElementId")
+                    "(execution(* com.bupt.service.DiskService.listRemove(..)) && args(versionId,netElementId,..))",
+            argNames = "versionId,netElementId")
     public void updateBussinessFromDisk(Long versionId, Long netElementId) {
         NetElementDTO netElementDTO = netElementService.getNetElement(versionId, netElementId);
         bussinessService.updateReferBussiness(versionId, netElementDTO.getNetElementName(), netElementDTO.getNetElementName());
     }
 
     /*删除网元的时候要删除链路*/
-    @AfterReturning(value = "execution(* com.bupt.service.NetElementService.listRemoveNetElement(..)) && args(versionId,netElementIdList)", argNames = "versionId,netElementIdList")
+    @AfterReturning(value = "execution(* com.bupt.service.NetElementService.listRemoveNetElement(..)) && args(versionId,netElementIdList)",
+            argNames = "versionId,netElementIdList")
     public void removeLinkFromNetElement(Long versionId, List<Long> netElementIdList) {
         netElementIdList.forEach(netElementId -> linkService.listRemoveResLink(versionId,
                 linkService.getReferLink(versionId, netElementId).stream().map(ResLink::getLinkId)
@@ -97,18 +103,12 @@ public class MessageAspect {
         List<LinkDTO> deleteList = linkIdList.stream().map(linkId -> linkService.getLink(versionId, linkId)).collect
                 (Collectors.toList());
         point.proceed();
-        try {
-            deleteList.
-                    forEach(linkDTO -> {
-                        String endAName = linkDTO.getEndAName();
-                        String endZName = linkDTO.getEndZName();
-                        bussinessService.updateReferBussiness(versionId, endAName + "-" + endZName, endAName + "-" + endZName);
-                        bussinessService.updateReferBussiness(versionId, endZName + "-" + endAName, endZName + "-" + endAName);
-
-                    });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        deleteList.forEach(linkDTO -> {
+            String endAName = linkDTO.getEndAName();
+            String endZName = linkDTO.getEndZName();
+            bussinessService.updateReferBussiness(versionId, endAName + "-" + endZName, endAName + "-" + endZName);
+            bussinessService.updateReferBussiness(versionId, endZName + "-" + endAName, endZName + "-" + endAName);
+        });
     }
 
     /*更新放大器的时候要更新机盘*/
@@ -132,16 +132,12 @@ public class MessageAspect {
                                                 LinkTypeCreateInfo linkTypeCreateInfo) throws Throwable {
         LinkTypeDTO oldType = linkTypeService.getLinkTypeById(versionId, linkTypeId);
         LinkTypeDTO result = (LinkTypeDTO) point.proceed();
-        try {
-            linkService.ListLinkByType(versionId, oldType.getLinkType()).forEach(linkDTO -> {
-                LinkCreateInfo updateInfo = new LinkCreateInfo();
-                BeanUtils.copyProperties(linkDTO, updateInfo);
-                updateInfo.setLinkType(linkTypeCreateInfo.getLinkType());
-                linkService.updateResLink(versionId, linkDTO.getLinkId(), updateInfo);
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        linkService.ListLinkByType(versionId, oldType.getLinkType()).forEach(linkDTO -> {
+            LinkCreateInfo updateInfo = new LinkCreateInfo();
+            BeanUtils.copyProperties(linkDTO, updateInfo);
+            updateInfo.setLinkType(linkTypeCreateInfo.getLinkType());
+            linkService.updateResLink(versionId, linkDTO.getLinkId(), updateInfo);
+        });
         return result;
     }
 

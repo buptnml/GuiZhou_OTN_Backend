@@ -4,11 +4,11 @@ public class NetElementDTO {
     private Long netElementId;
     private String netElementName;
     private String netElementType;
-    private Short coordinateX;
-    private Short coordinateY;
+    private Float coordinateX;
+    private Float coordinateY;
 
-    public NetElementDTO(Long id, String netElementName, String netElementType, Short coordinateX, Short coordinateY) {
-        this.netElementId = id;
+    public NetElementDTO(Long netElementId, String netElementName, String netElementType, Float coordinateX, Float coordinateY) {
+        this.netElementId = netElementId;
         this.netElementName = netElementName;
         this.netElementType = netElementType;
         this.coordinateX = coordinateX;
@@ -43,19 +43,19 @@ public class NetElementDTO {
         this.netElementType = netElementType;
     }
 
-    public Short getCoordinateX() {
+    public Float getCoordinateX() {
         return coordinateX;
     }
 
-    public void setCoordinateX(Short coordinateX) {
+    public void setCoordinateX(Float coordinateX) {
         this.coordinateX = coordinateX;
     }
 
-    public Short getCoordinateY() {
+    public Float getCoordinateY() {
         return coordinateY;
     }
 
-    public void setCoordinateY(Short coordinateY) {
+    public void setCoordinateY(Float coordinateY) {
         this.coordinateY = coordinateY;
     }
 

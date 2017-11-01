@@ -1,11 +1,9 @@
 package com.bupt.controller;
 
+import com.bupt.controller.utils.VersionCheckException;
 import com.bupt.pojo.AmplifierCreateInfo;
 import com.bupt.pojo.AmplifierDTO;
 import com.bupt.service.AmplifierService;
-import com.bupt.util.exception.controller.input.IllegalArgumentException;
-import com.bupt.util.exception.controller.input.NullArgumentException;
-import com.bupt.util.exception.controller.result.NoneGetException;
 import com.bupt.util.exception.controller.result.NoneRemoveException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
-
+//todo  待重构
 /**
  * Created by caoxiaohong on 17/9/13.
  * 放大器:控制层
@@ -31,8 +29,6 @@ public class AmplifierController {
     @ResponseStatus(HttpStatus.OK)
     public AmplifierDTO updateAmplifiers(@PathVariable Long versionId, @PathVariable Long amplifierId,
                                          @RequestBody AmplifierCreateInfo amplifierCreateInfo) {
-        checkAmplifierCreateInfo(amplifierCreateInfo);
-        checkVersionId(versionId);
         return amplifierService.updateAmplifiers(versionId, amplifierId, amplifierCreateInfo);
     }
 
@@ -41,7 +37,6 @@ public class AmplifierController {
     @RequestMapping(value = "/{versionId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteByAmpid(@PathVariable Long versionId, @RequestBody List<Long> amplifierId) {
-        checkVersionId(versionId);
         if (amplifierId == null || amplifierId.size() == 0)
             throw new NegativeArraySizeException();
         else {
@@ -57,8 +52,6 @@ public class AmplifierController {
     @ResponseStatus(HttpStatus.CREATED)
     public AmplifierDTO insertAmplifier(@PathVariable Long versionId, @RequestBody AmplifierCreateInfo
             amplifierCreateInfo) {
-        checkAmplifierCreateInfo(amplifierCreateInfo);
-        checkVersionId(versionId);
         return amplifierService.insertAmplifier(versionId, amplifierCreateInfo);
     }
 
@@ -66,25 +59,10 @@ public class AmplifierController {
     @ApiOperation(value = "查找", notes = "查找当前版本下所有放大器")
     @RequestMapping(value = "/{versionId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
+    @VersionCheckException(reason = "获取信息的时候不需要进行版本检查")
     public List<AmplifierDTO> selectAmplifiers(@PathVariable Long versionId) {
-        List<AmplifierDTO> result = amplifierService.listAmplifiers(versionId);
-        if (result == null || result.size() <= 0)
-            throw new NoneGetException();
-        return result;
+        return amplifierService.listAmplifiers(versionId);
     }
 
 
-    private void checkVersionId(Long versionID) {
-        if (versionID == 100000000000L) {
-            throw new IllegalArgumentException("基础版本数据不允许修改！");
-        }
-    }
-
-    private void checkAmplifierCreateInfo(AmplifierCreateInfo amplifierCreateInfo) {
-        if (null == amplifierCreateInfo.getAmplifierName()) {
-            throw new NullArgumentException("放大器名称不能为空！");
-        }
-    }
-
-    //TODO 插入数据的时候首先要检查该版本存不存在！！！
 }

@@ -39,11 +39,8 @@ public class VersionDictController {
     @RequestMapping(value = "/", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void listRemoveUser(@RequestBody List<Long> versionDictIdList) {
-        if (null == versionDictIdList || versionDictIdList.size() == 0) {
-            throw new IllegalArgumentException("versionDictIdList");
-        }
         if (versionDictIdList.contains(100000000000L)) {
-            throw new IllegalArgumentException("versionDictIdList contains 100000000000");
+            throw new IllegalArgumentException("基础字典不允许删除");
         }
         this.versionDictService.listRemoveVersionDict(versionDictIdList);
     }
@@ -54,8 +51,7 @@ public class VersionDictController {
     @ResponseStatus(HttpStatus.CREATED)
     public VersionDictDTO updateVersionDict(@PathVariable Long versionDictId, @RequestBody VersionDictCreateInfo versionDictCreateInfo) {
         if (versionDictId == 100000000000L) {
-            throw new IllegalArgumentException("versionDictIdList contains 100000000000 which is the basic version " +
-                    "ID");
+            throw new IllegalArgumentException("基础字典的信息不允许改动");
         }
         checkVersionDictInfo(versionDictCreateInfo);
         return versionDictService.updateVersionDict(versionDictId, versionDictCreateInfo);
@@ -72,10 +68,10 @@ public class VersionDictController {
 
     private void checkVersionDictInfo(VersionDictCreateInfo versionDictCreateInfo) {
         if (!userService.listUserNames().contains(versionDictCreateInfo.getCreatorName().trim())) {
-            throw new IllegalArgumentException("CreatorName");
+            throw new IllegalArgumentException("在数据库中找不到创建者相关记录！");
         }
         if (versionDictCreateInfo.getVersionDictName().trim().equals("基础字典")) {
-            throw new IllegalArgumentException("versionDIctName should not be the basic version name.");
+            throw new IllegalArgumentException("字典名称不能为”基础字典“");
         }
     }
 }

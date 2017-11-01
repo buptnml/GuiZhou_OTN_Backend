@@ -3,7 +3,6 @@ package com.bupt.controller;
 import com.bupt.pojo.UserRoleCreateInfo;
 import com.bupt.pojo.UserRoleDTO;
 import com.bupt.service.UserRoleService;
-import com.bupt.util.exception.controller.input.NullArgumentException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
@@ -33,9 +32,6 @@ public class UserRoleController {
     @RequestMapping(value = "/", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public UserRoleDTO saveUserRole(@RequestBody UserRoleCreateInfo userRoleCreateInfo) {
-        if (userRoleCreateInfo.getRoleName() == null || userRoleCreateInfo.getRoleName().trim().length() == 0) {
-            throw new NullArgumentException("roleName");
-        }
         return this.userRoleService.saveUserRole(userRoleCreateInfo);
     }
 
@@ -43,9 +39,6 @@ public class UserRoleController {
     @RequestMapping(value = "/", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void listRemoveUserRole(@RequestBody List<Long> userRoleIdList) {
-        if (null == userRoleIdList || userRoleIdList.size() == 0) {
-            throw new IllegalArgumentException("userRoleIdList");
-        }
         this.userRoleService.listRemoveUserRole(userRoleIdList);
     }
 

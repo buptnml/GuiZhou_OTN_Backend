@@ -6,7 +6,7 @@ package com.bupt.util.exception.controller.result;
  */
 public class NoneSaveException extends RequestResultErrorException {
     public NoneSaveException() {
-        super("Nothing saved from the database.\n");
+        super("数据库保存失败！请检查输入信息！\n");
     }
 
 }

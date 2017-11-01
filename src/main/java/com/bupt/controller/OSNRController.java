@@ -1,5 +1,6 @@
 package com.bupt.controller;
 
+import com.bupt.controller.utils.VersionCheckException;
 import com.bupt.facade.OSNRService;
 import com.bupt.pojo.BussinessDTO;
 import com.bupt.pojo.NodeOSNRDetail;
@@ -17,6 +18,7 @@ import java.util.List;
  * 光通道（业务）层的Controller层
  */
 @RestController
+@VersionCheckException(reason = "OSNR相关操作不会对数据库写数据，不需要进行版本检查")
 @Api(tags = "OSNR", description = "OSNR相关操作")
 @RequestMapping(value = "/osnrs")
 public class OSNRController {
@@ -33,6 +35,7 @@ public class OSNRController {
     @ApiOperation(value = "查询某个版本下的某光通道中所有可以计算出的节点的功率数据")
     @RequestMapping(value = "/nodes/{versionId}/{bussinessId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
+
     public List<NodeOSNRDetail> getNodeOSNRDetail(@PathVariable Long versionId, @PathVariable Long bussinessId) {
         return osnrService.getNodeOSNRDetail(versionId, bussinessId);
     }
