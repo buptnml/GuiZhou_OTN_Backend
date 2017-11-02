@@ -1,4 +1,4 @@
-package com.bupt.service.impl; 
+package com.bupt.service.impl;
 
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -6,15 +6,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 /**
-* UserServiceImpl Tester. 
-* @author <Authors name> 
-* @version 1.0 
-*/ 
-@RunWith(SpringJUnit4ClassRunner.class)	
+ * UserServiceImpl Tester.
+ *
+ * @author <Authors name>
+ * @version 1.0
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring.xml"})
 @WebAppConfiguration
 
-public class UserServiceImplTest { 
+public class UserServiceImplTest {
 //    private static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 //    @Resource
 //    UserService userService;

@@ -1,4 +1,4 @@
-package com.bupt.service;
+package com.bupt.facade;
 
 
 import com.bupt.entity.ResBussiness;
@@ -25,6 +25,7 @@ BussinessService {
      * @return
      */
     ResBussiness getBussiness(Long versionId, Long bussinessId);
+
     /**
      * 创建新的业务
      */

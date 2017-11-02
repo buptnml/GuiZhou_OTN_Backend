@@ -10,6 +10,6 @@ public class NoneGetException extends RequestResultErrorException {
     }
 
     public NoneGetException(String message) {
-        super(message + "\n");
+        super(message);
     }
 }

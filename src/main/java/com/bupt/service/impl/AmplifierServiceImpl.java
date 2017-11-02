@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  * Created by caoxiaohong on 17/9/13.
  */
 @Service(value = "amplifierService")
-public class AmplifierServiceImpl implements AmplifierService {
+class AmplifierServiceImpl implements AmplifierService {
     @Resource
     private ResOsnrAmplifierDao resOsnrAmplifierDao;
 
@@ -87,7 +87,8 @@ public class AmplifierServiceImpl implements AmplifierService {
         if (resOsnrAmplifierDao.insertSelective(roa) < 0) {
             throw new NoneSaveException();
         } else {
-            ResOsnrAmplifier result = resOsnrAmplifierDao.selectOne(roa);
+            ResOsnrAmplifier result = resOsnrAmplifierDao.selectByExample(getExample(versionId, amplifierCreateInfo
+                    .getAmplifierName())).get(0);
             if (null == result) {
                 throw new NoneSaveException();
             }
@@ -163,7 +164,7 @@ public class AmplifierServiceImpl implements AmplifierService {
         AmplifierDTO result = new AmplifierDTO();
         if (resOsnrAmplifier == null)
             return result;
-        result.setAmplifierID(resOsnrAmplifier.getAmplifierId());
+        result.setAmplifierId(resOsnrAmplifier.getAmplifierId());
         result.setAmplifierName(resOsnrAmplifier.getAmplifierName());
         result.setGain(resOsnrAmplifier.getGain());
         result.setMaximumInputPower(resOsnrAmplifier.getMaximumInputPower());

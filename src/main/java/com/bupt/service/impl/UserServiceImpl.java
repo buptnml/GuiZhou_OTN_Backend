@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  * Created by 韩宪斌 on 2017/7/10.
  */
 @Service("userService")
-public class UserServiceImpl implements UserService {
+class UserServiceImpl implements UserService {
 
     @Resource
     private SysUserDao sysUserDao;

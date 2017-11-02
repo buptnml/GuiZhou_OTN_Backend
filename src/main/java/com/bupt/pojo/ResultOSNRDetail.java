@@ -1,7 +1,6 @@
 package com.bupt.pojo;
 
 import com.bupt.entity.ResBussiness;
-import com.bupt.facade.OSNRCalculator.OSNRResult;
 
 import java.text.DecimalFormat;
 

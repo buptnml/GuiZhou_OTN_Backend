@@ -8,6 +8,6 @@ public class DiskNotFoundException extends NullArgumentException {
     }
 
     public DiskNotFoundException(String message) {
-        super(message + "下没有机盘！\n");
+        super(message + "下没有机盘");
     }
 }

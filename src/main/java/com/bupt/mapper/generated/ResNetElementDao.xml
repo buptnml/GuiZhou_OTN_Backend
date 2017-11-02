@@ -8,8 +8,8 @@
         <id column="net_element_id" jdbcType="BIGINT" property="netElementId"/>
         <result column="net_element_name" jdbcType="VARCHAR" property="netElementName"/>
         <result column="net_element_type" jdbcType="VARCHAR" property="netElementType"/>
-        <result column="coordinate_x" jdbcType="SMALLINT" property="coordinateX"/>
-        <result column="coordinate_y" jdbcType="SMALLINT" property="coordinateY"/>
+        <result column="coordinate_x" jdbcType="REAL" property="coordinateX"/>
+        <result column="coordinate_y" jdbcType="REAL" property="coordinateY"/>
         <result column="version_id" jdbcType="BIGINT" property="versionId"/>
         <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
         <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>

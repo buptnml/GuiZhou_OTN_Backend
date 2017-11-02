@@ -1,7 +1,9 @@
 package com.bupt.controller;
 
+import com.bupt.controller.utils.VersionCheckException;
 import com.bupt.pojo.DiskCreateInfo;
 import com.bupt.pojo.DiskDTO;
+import com.bupt.service.AmplifierService;
 import com.bupt.service.DiskService;
 import com.bupt.service.NetElementService;
 import com.bupt.util.exception.controller.input.NullArgumentException;
@@ -24,11 +26,14 @@ public class DiskController {
     private DiskService diskService;
     @Resource
     private NetElementService netElementService;
+    @Resource
+    private AmplifierService amplifierService;
 
 
     @ApiOperation(value = "查询某个版本下某设备的所有机盘信息")
     @RequestMapping(value = "/{versionId}/{netElementId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
+    @VersionCheckException(reason = "获取信息的时候不需要进行版本检查")
     public List<DiskDTO> listResLink(@PathVariable Long versionId, @PathVariable Long netElementId) {
         checkNetElementId(versionId, netElementId);
         return diskService.listDiskByNetElement(versionId, netElementId);
@@ -40,9 +45,8 @@ public class DiskController {
     @ResponseStatus(HttpStatus.CREATED)
     public DiskDTO saveDisk(@PathVariable Long versionId, @PathVariable Long netElementId, @RequestBody
             DiskCreateInfo diskCreateInfo) {
-        checkVersionId(versionId);
         checkNetElementId(versionId, netElementId);
-        checkDiskCreateInfo(diskCreateInfo);
+        checkDiskCreateInfo(versionId, diskCreateInfo);
         return diskService.saveDisk(versionId, netElementId, diskCreateInfo);
     }
 
@@ -51,9 +55,8 @@ public class DiskController {
     @ResponseStatus(HttpStatus.CREATED)
     public DiskDTO updateDisk(@PathVariable Long versionId, @PathVariable Long netElementId, @PathVariable Long diskId,
                               @RequestBody DiskCreateInfo diskCreateInfo) {
-        checkVersionId(versionId);
         checkNetElementId(versionId, netElementId);
-        checkDiskCreateInfo(diskCreateInfo);
+        checkDiskCreateInfo(versionId, diskCreateInfo);
         return diskService.updateDisk(versionId, netElementId, diskId, diskCreateInfo);
     }
 
@@ -62,26 +65,20 @@ public class DiskController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void listRemove(@PathVariable Long versionId, @PathVariable Long netElementId, @RequestBody List<Long>
             diskIdList) {
-        if (diskIdList == null || diskIdList.size() == 0) {
-            throw new IllegalArgumentException("diskIdList不能为空");
-        }
-        checkVersionId(versionId);
         checkNetElementId(versionId, netElementId);
         this.diskService.listRemove(versionId, netElementId, diskIdList);
     }
 
-    private void checkDiskCreateInfo(DiskCreateInfo diskCreateInfo) {
-        //TODO 机盘表中信息应该来源于机盘类型表的信息
-        if (null == diskCreateInfo.getDiskName()) {
-            throw new NullArgumentException("diskName should not be null!");
+    private void checkDiskCreateInfo(Long versionId, DiskCreateInfo diskCreateInfo) {
+        if (diskCreateInfo.getSlotId() <= 0) {
+            throw new IllegalArgumentException("机盘槽位号错误");
         }
-        if (null == diskCreateInfo.getDiskType()) {
-            throw new NullArgumentException("diskType should not be null");
-        }
-        if (null == diskCreateInfo.getSlotId()) {
-            throw new NullArgumentException("slotId should not be null");
+        if (amplifierService.listAmplifiers(versionId).stream().filter(amplifierDTO ->
+                amplifierDTO.getAmplifierName().equals(diskCreateInfo.getDiskType())).count() == 0) {
+            throw new IllegalArgumentException("输入的机盘类型信息不支持，请重新输入");
         }
     }
+
 
     /**
      * 检查网元id输入的合法性
@@ -90,15 +87,9 @@ public class DiskController {
      */
     private void checkNetElementId(Long versionId, Long netElementId) {
         if (null == netElementService.getNetElement(versionId, netElementId)) {
-            throw new NullArgumentException("could not find the netElement");
+            throw new NullArgumentException("数据库中没有指定的网元信息！");
         }
     }
 
 
-    private void checkVersionId(Long versionID) {
-        if (versionID == 100000000000L) {
-            throw new IllegalArgumentException("versionID should not be 100000000000, the base version could not be " +
-                    "altered in anyway!");
-        }
-    }
 }

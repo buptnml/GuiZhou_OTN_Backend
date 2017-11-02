@@ -16,7 +16,7 @@ public class AmplifierDTO {
      * `maximum_output_power` smallint(6) NOT NULL COMMENT '最大输出功率',
      * `version_id` bigint(20) unsigned NOT NULL COMMENT '条目所在版本ID',
      */
-    private Long amplifierID;
+    private Long amplifierId;
     private String amplifierName;
     private Short gain;
     private Short minimumInputPower;
@@ -26,12 +26,12 @@ public class AmplifierDTO {
 
     // ?
 
-    public Long getAmplifierID() {
-        return amplifierID;
+    public Long getAmplifierId() {
+        return amplifierId;
     }
 
-    public void setAmplifierID(Long amplifierID) {
-        this.amplifierID = amplifierID;
+    public void setAmplifierId(Long amplifierId) {
+        this.amplifierId = amplifierId;
     }
 
     public String getAmplifierName() {
@@ -85,7 +85,7 @@ public class AmplifierDTO {
     @Override
     public String toString() {
         return "AmplifierDTO{" +
-                "amplifierID=" + amplifierID +
+                "amplifierId=" + amplifierId +
                 ", amplifierName='" + amplifierName + '\'' +
                 ", gain=" + gain +
                 ", minimumInputPower=" + minimumInputPower +

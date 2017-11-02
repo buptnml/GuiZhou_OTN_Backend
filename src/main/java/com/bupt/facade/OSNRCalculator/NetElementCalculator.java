@@ -5,7 +5,7 @@ package com.bupt.facade.OSNRCalculator;
  * 网元的职责是做一层封装，对上面的算法来说，只要知道网元的粒度就可以
  * 这层封装可以保证可以适应未来的数据结构变化（如没有机盘数据）
  */
-public interface NetElementCalculator {
+interface NetElementCalculator {
 
     /**
      * 计算函数

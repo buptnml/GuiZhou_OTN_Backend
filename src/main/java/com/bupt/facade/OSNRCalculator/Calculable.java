@@ -1,12 +1,14 @@
 package com.bupt.facade.OSNRCalculator;
 
 import com.bupt.pojo.NodeOSNRDetail;
+import com.bupt.pojo.OSNRResult;
 
 import java.util.List;
 
 /**
  * OSNR算法接口
  * 标记性接口，实现了这个接口的类均具有计算OSNR结果的能力
+ * 这是整个OSNR计算包中唯一对外开放的接口
  */
 public interface Calculable {
     /**

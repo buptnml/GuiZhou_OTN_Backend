@@ -1,6 +1,7 @@
 package com.bupt.controller;
 
 
+import com.bupt.controller.utils.VersionCheckException;
 import com.bupt.pojo.UserCreateInfo;
 import com.bupt.pojo.UserDTO;
 import com.bupt.pojo.UserQuery;
@@ -8,7 +9,6 @@ import com.bupt.pojo.UserRoleDTO;
 import com.bupt.service.UserRoleService;
 import com.bupt.service.UserService;
 import com.bupt.util.exception.controller.input.IllegalArgumentException;
-import com.bupt.util.exception.controller.input.NullArgumentException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
@@ -24,6 +24,7 @@ import java.util.List;
 @RestController
 @Api(tags = "User", description = "用户相关操作")
 @RequestMapping(value = "/users")
+@VersionCheckException(reason = "用户操作不涉及版本，不需要进行版本检查")
 public class UserController {
     @Resource
     private UserService userService;
@@ -43,9 +44,7 @@ public class UserController {
     @RequestMapping(value = "/{userName}/{password}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public UserDTO getUserByUserQuery(@PathVariable String userName, @PathVariable String password) {
-        UserQuery userQuery = new UserQuery(userName, password);
-        this.checkUserQuery(userQuery);
-        return userService.getUserByUserQuery(userQuery);
+        return userService.getUserByUserQuery(new UserQuery(userName, password));
     }
 
 
@@ -63,7 +62,6 @@ public class UserController {
     @RequestMapping(value = "/{userId}", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.CREATED)
     public UserDTO updateUser(@PathVariable Long userId, @RequestBody UserCreateInfo userCreateInfo) {
-
         this.checkUserDTO(new UserDTO(userId, userCreateInfo.getUserName(), userCreateInfo.getPassword(),
                 userCreateInfo.getUserRole(), userCreateInfo.getUserGroup()));
         return this.userService.updateUser(userId, userCreateInfo);
@@ -74,19 +72,10 @@ public class UserController {
     @RequestMapping(value = "/", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void listRemoveUser(@RequestBody List<Long> idList) {
-        if (null == idList || idList.size() == 0) {
-            throw new IllegalArgumentException("idList");
-        }
         this.userService.listRemoveUser(idList);
     }
 
     private void checkUserDTO(UserDTO userDTO) {
-        if (userDTO.getPassword() == null) {
-            throw new NullArgumentException("password");
-        }
-        if (userDTO.getUserName() == null) {
-            throw new NullArgumentException("userName");
-        }
         if (checkUserRole(userDTO.getUserRole())) {
             throw new IllegalArgumentException("userRole");
         }
@@ -102,14 +91,5 @@ public class UserController {
         return true;
     }
 
-
-    private void checkUserQuery(UserQuery userQuery) {
-        if (userQuery.getPassword() == null) {
-            throw new NullArgumentException("password");
-        }
-        if (userQuery.getUserName() == null) {
-            throw new NullArgumentException("userName");
-        }
-    }
 
 }

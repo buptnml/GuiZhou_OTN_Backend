@@ -1,12 +1,12 @@
 package com.bupt.pojo;
 
 public class NetElementCreateInfo {
-    private short coordinateX;
-    private short coordinateY;
+    private Float coordinateX;
+    private Float coordinateY;
     private String netElementName;
     private String netElementType;
 
-    public NetElementCreateInfo(short coordinateX, short coordinateY, String netElementName, String netElementType) {
+    public NetElementCreateInfo(Float coordinateX, Float coordinateY, String netElementName, String netElementType) {
         this.coordinateX = coordinateX;
         this.coordinateY = coordinateY;
         this.netElementName = netElementName;
@@ -16,20 +16,20 @@ public class NetElementCreateInfo {
     public NetElementCreateInfo() {
     }
 
-    public short getCoordinateX() {
+    public Float getCoordinateX() {
         return coordinateX;
     }
 
-    public void setCoordinateX(double coordinateX) {
-        this.coordinateX = (short) coordinateX;
+    public void setCoordinateX(Float coordinateX) {
+        this.coordinateX = coordinateX;
     }
 
-    public short getCoordinateY() {
+    public Float getCoordinateY() {
         return coordinateY;
     }
 
-    public void setCoordinateY(double coordinateY) {
-        this.coordinateY = (short) coordinateY;
+    public void setCoordinateY(Float coordinateY) {
+        this.coordinateY = coordinateY;
     }
 
     public String getNetElementName() {
@@ -47,5 +47,4 @@ public class NetElementCreateInfo {
     public void setNetElementType(String netElementType) {
         this.netElementType = netElementType;
     }
-
 }

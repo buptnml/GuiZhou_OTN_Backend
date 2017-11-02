@@ -1,13 +1,12 @@
-package com.bupt.service.impl;
+package com.bupt.facade.impl;
 
 
 import com.bupt.dao.ResBussinessDao;
 import com.bupt.entity.ResBussiness;
+import com.bupt.facade.BussinessService;
 import com.bupt.facade.OSNRCalculator.Calculable;
-import com.bupt.facade.impl.OSNRServiceImpl;
 import com.bupt.pojo.BussinessCreateInfo;
 import com.bupt.pojo.BussinessDTO;
-import com.bupt.service.BussinessService;
 import com.bupt.util.exception.controller.result.NoneGetException;
 import com.bupt.util.exception.controller.result.NoneRemoveException;
 import com.bupt.util.exception.controller.result.NoneSaveException;
@@ -24,7 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service("bussinessService")
-public class BussinessServiceImpl implements BussinessService {
+class BussinessServiceImpl implements BussinessService {
     @Resource
     private ResBussinessDao resBussinessDao;
     @Resource
@@ -110,10 +109,9 @@ public class BussinessServiceImpl implements BussinessService {
         BussinessCreateInfo createInfo = new BussinessCreateInfo();
         BeanUtils.copyProperties(bussiness, createInfo);
         createInfo.setMainRoute(createNewRoute(bussiness.getMainRoute(), oldString, newString));
-        if (null != createInfo.getSpareRoute()) {
+        if (null != bussiness.getSpareRoute()) {
             createInfo.setSpareRoute(createNewRoute(bussiness.getSpareRoute(), oldString, newString));
         }
-        //TODO 抽象成为一个静态类 避免越级调用
         createInfo.setInputPower(OSNRServiceImpl.stringTransfer(bussiness.getMainInputPowers())[0][0]);
         return createInfo;
     }
@@ -140,13 +138,16 @@ public class BussinessServiceImpl implements BussinessService {
     }
 
     private void updateBussiness(Long versionId, Long bussinessId, BussinessCreateInfo bussinessCreateInfo) {
-        ResBussiness createdBus = null;
+        ResBussiness createdBus = new ResBussiness();
         try {
             createdBus = createBussiness(versionId, bussinessCreateInfo, false);
         } catch (Exception e) {
             logger.warn(e.getMessage());
         }
-        resBussinessDao.updateByExampleSelective(createdBus, getExample(versionId, bussinessId));
+        createdBus.setBussinessId(bussinessId);
+        createdBus.setVersionId(versionId);
+        resBussinessDao.updateByPrimaryKeySelective(createdBus);
+
     }
 
 

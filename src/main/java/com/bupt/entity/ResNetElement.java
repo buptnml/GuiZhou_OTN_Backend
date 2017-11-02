@@ -30,13 +30,13 @@ public class ResNetElement {
      * 网元坐标x
      */
     @Column(name = "coordinate_x")
-    private Short coordinateX;
+    private Float coordinateX;
 
     /**
      * 网元坐标y
      */
     @Column(name = "coordinate_y")
-    private Short coordinateY;
+    private Float coordinateY;
 
     /**
      * 条目所在版本ID
@@ -115,7 +115,7 @@ public class ResNetElement {
      *
      * @return coordinate_x - 网元坐标x
      */
-    public Short getCoordinateX() {
+    public Float getCoordinateX() {
         return coordinateX;
     }
 
@@ -124,7 +124,7 @@ public class ResNetElement {
      *
      * @param coordinateX 网元坐标x
      */
-    public void setCoordinateX(Short coordinateX) {
+    public void setCoordinateX(Float coordinateX) {
         this.coordinateX = coordinateX;
     }
 
@@ -133,7 +133,7 @@ public class ResNetElement {
      *
      * @return coordinate_y - 网元坐标y
      */
-    public Short getCoordinateY() {
+    public Float getCoordinateY() {
         return coordinateY;
     }
 
@@ -142,7 +142,7 @@ public class ResNetElement {
      *
      * @param coordinateY 网元坐标y
      */
-    public void setCoordinateY(Short coordinateY) {
+    public void setCoordinateY(Float coordinateY) {
         this.coordinateY = coordinateY;
     }
 

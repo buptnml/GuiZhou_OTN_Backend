@@ -2,6 +2,7 @@ package com.bupt.facade.OSNRCalculator;
 
 import com.bupt.facade.OSNRCalculator.exceptions.OSNRResultOutOfLimitException;
 import com.bupt.pojo.NodeOSNRDetail;
+import com.bupt.pojo.OSNRResult;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -12,7 +13,7 @@ import java.util.List;
  * OSNR计算器实现
  */
 @Component
-public class OSNRCalculator extends AbstractCalculator {
+class OSNRCalculator extends AbstractCalculator {
     @Resource
     private
     InputsOutputsCalculable inputsOutputsCalculable;
@@ -25,6 +26,7 @@ public class OSNRCalculator extends AbstractCalculator {
     private double[][] outputPowers;
     private List<OSNRResult> results;
     private List<NodeOSNRDetail> nodeResults;
+
     @Override
     /*
       所有的输入和输出要一一对应
@@ -55,6 +57,8 @@ public class OSNRCalculator extends AbstractCalculator {
         this.outputPowers = outputPowers;
         this.routeString = routeString;
         this.versionId = versionId;
+        results = null;
+        nodeResults = null;
     }
 
 
@@ -82,6 +86,7 @@ public class OSNRCalculator extends AbstractCalculator {
     public List<NodeOSNRDetail> getNodeResults() {
         return nodeResults;
     }
+
     @Override
     public String getInputPowersString() {
         return Arrays.deepToString(inputPowers).equals("[]") ? Double.toString(this.inputPower) : Arrays.deepToString

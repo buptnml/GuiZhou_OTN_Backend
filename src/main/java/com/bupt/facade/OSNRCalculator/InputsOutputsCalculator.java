@@ -10,7 +10,7 @@ import javax.annotation.Resource;
  * 计算输入输出功率的实现类
  */
 @Component
-public class InputsOutputsCalculator implements InputsOutputsCalculable {
+class InputsOutputsCalculator implements InputsOutputsCalculable {
     @Resource
     private
     NetElementCalculator netElementCalculator;
@@ -30,6 +30,7 @@ public class InputsOutputsCalculator implements InputsOutputsCalculable {
         this.firstInput = firstInput;
         inputPowers = new double[nodes.length][];
         outputPowers = new double[nodes.length][];
+        lastOutput = 0;
     }
 
     @Override

@@ -1,17 +1,18 @@
 package com.bupt.controller;
 
 
+import com.bupt.controller.utils.VersionCheckException;
 import com.bupt.pojo.NetElementCreateInfo;
 import com.bupt.pojo.NetElementDTO;
 import com.bupt.service.NetElementService;
 import com.bupt.util.exception.controller.input.IllegalArgumentException;
-import com.bupt.util.exception.controller.input.NullArgumentException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.EnumSet;
 import java.util.List;
 
 /**
@@ -33,6 +34,7 @@ public class NetElementController {
     @ApiOperation(value = "查询某个版本下的所有网元信息")
     @RequestMapping(value = "/{versionId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
+    @VersionCheckException(reason = "获取信息时不需要进行版本检查")
     public List<NetElementDTO> listNetElement(@PathVariable Long versionId) {
         return netElementService.listNetElement(versionId);
     }
@@ -48,7 +50,6 @@ public class NetElementController {
     @ResponseStatus(HttpStatus.CREATED)
     public NetElementDTO saveNetElement(@PathVariable Long versionId, @RequestBody NetElementCreateInfo
             netElementCreateInfo) {
-        checkVersionId(versionId);
         checkNetElementCreateInfo(netElementCreateInfo);
         return netElementService.saveNetElement(versionId, netElementCreateInfo);
     }
@@ -65,7 +66,6 @@ public class NetElementController {
     public NetElementDTO updateNetElement(@PathVariable Long versionId, @PathVariable Long netElementId,
                                           @RequestBody NetElementCreateInfo
                                                   netElementCreateInfo) {
-        checkVersionId(versionId);
         checkNetElementCreateInfo(netElementCreateInfo);
         return netElementService.updateNetElement(versionId, netElementId, netElementCreateInfo);
     }
@@ -74,33 +74,19 @@ public class NetElementController {
     @RequestMapping(value = "/{versionId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void listRemoveNetElement(@PathVariable Long versionId, @RequestBody List<Long> netElementIdList) {
-        checkVersionId(versionId);
-        if (netElementIdList == null || netElementIdList.size() == 0) {
-            throw new IllegalArgumentException("netElementIdList should not be empty.");
-        }
         this.netElementService.listRemoveNetElement(versionId, netElementIdList);
     }
 
     private void checkNetElementCreateInfo(NetElementCreateInfo netElementCreateInfo) {
-        if (null == netElementCreateInfo.getNetElementName()) {
-            throw new NullArgumentException("netElementName should not be empty.");
-        } else if (netElementCreateInfo.getNetElementName().trim().equals("")) {
-            throw new IllegalArgumentException("netElementName should not be empty.");
-        }
-        if (null == netElementCreateInfo.getNetElementType()) {
-            throw new NullArgumentException("netElementType should not be null.");
-        }
         if (netElementCreateInfo.getNetElementName().contains("-")) {
-            throw new IllegalArgumentException("网元名称不允许包含'-'字符！");
+            throw new IllegalArgumentException("名称不允许包含'-'字符！");
+        }
+        if (EnumSet.allOf(NetElementTypes.class).stream().filter(e -> e.toString().equals(netElementCreateInfo
+                .getNetElementType())).count() == 0) {
+            throw new IllegalArgumentException("输入的类型不支持，请重新输入");
         }
     }
 
-    private void checkVersionId(Long versionID) {
-        if (versionID == 100000000000L) {
-            throw new java.lang.IllegalArgumentException("versionID should not be 100000000000, the base version " +
-                    "could not be altered in anyway！");
-        }
-    }
 
     //网元类型枚举
     public enum NetElementTypes {

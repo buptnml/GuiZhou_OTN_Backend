@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  * Created by caoxiaohong on 17/9/20.
  */
 @Service(value = "linkTypeService")
-public class LinkTypeServiceImpl implements LinkTypeService {
+class LinkTypeServiceImpl implements LinkTypeService {
     @Resource
     private ResOsnrLinkTypeDao resOsnrLinkTypeDao;
 

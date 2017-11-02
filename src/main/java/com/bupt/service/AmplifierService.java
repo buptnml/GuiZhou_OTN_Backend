@@ -46,6 +46,7 @@ public interface AmplifierService {
      * @return
      */
     AmplifierDTO getAmpById(Long versionId, Long amplifierId);
+
     /**
      * 通过放大器类型获取放大器
      *

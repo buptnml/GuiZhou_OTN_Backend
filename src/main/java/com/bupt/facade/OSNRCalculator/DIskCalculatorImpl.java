@@ -14,7 +14,7 @@ import javax.annotation.Resource;
  * 对于机盘内部来说，若输入功率大于机盘可承受的最大功率，按照可承受最大功率计算
  */
 @Component
-public class DIskCalculatorImpl implements DiskCalculator {
+class DIskCalculatorImpl implements DiskCalculator {
     private double inputPower;
     private double outputPower;
     private AmplifierDTO amplifier;
@@ -31,8 +31,8 @@ public class DIskCalculatorImpl implements DiskCalculator {
         return inputPower;
     }
 
-    //TODO 放大器工作原理的关键函数，未来可能需要进一步的修改
     @Override
+    /*放大器工作原理的关键函数，未来可能需要进一步的修改*/
     public void calculate(DiskDTO disk, double inputPower, long versionId) throws OutOfInputLimitsException {
         init(inputPower, disk, versionId);
         /*输入值如果大于放大器支持的最大输入功率
@@ -45,7 +45,7 @@ public class DIskCalculatorImpl implements DiskCalculator {
         }
         if (this.inputPower < amplifier.getMinimumInputPower()) {
             throw new OutOfInputLimitsException("输入功率小于机盘" + disk.getDiskName
-                    () + "能支持的最大功率！");
+                    () + "能支持的最小功率！");
         }
         this.inputPower = amplifier.getMaximumInputPower() > inputPower ? inputPower : amplifier.getMaximumInputPower();
         /*大于放大器放大后的结果一般按照可以做到的最大输出功率输出，

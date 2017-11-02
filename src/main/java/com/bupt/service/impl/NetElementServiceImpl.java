@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service("netElementService")
-public class NetElementServiceImpl implements NetElementService {
+class NetElementServiceImpl implements NetElementService {
     @Resource
     private ResNetElementDao resNetElementDao;
 
@@ -60,7 +60,7 @@ public class NetElementServiceImpl implements NetElementService {
     public NetElementDTO updateNetElement(Long versionId, Long netElementId, NetElementCreateInfo netElementCreateInfo) {
         ResNetElement updateInfo = this.convertToResNetElement(netElementCreateInfo);
         if (resNetElementDao.updateByExampleSelective(updateInfo, getExample(versionId, netElementId)) == 1) {
-            return convertToNetElementDTO(resNetElementDao.selectOne(updateInfo));
+            return convertToNetElementDTO(resNetElementDao.selectByExample(getExample(versionId, netElementId)).get(0));
         }
         throw new NoneUpdateException();
     }
@@ -106,7 +106,7 @@ public class NetElementServiceImpl implements NetElementService {
     @Override
     public NetElementDTO getNetElement(Long versionId, String netElementName) {
         List<ResNetElement> result = resNetElementDao.selectByExample(getExample(versionId, netElementName));
-        if (null != result || result.size() != 0) {
+        if (result.size() != 0) {
             return convertToNetElementDTO(result.get(0));
         }
         throw new NoneGetException("网元" + netElementName + "不存在");

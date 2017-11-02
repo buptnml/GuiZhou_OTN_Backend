@@ -1,9 +1,9 @@
 package com.bupt.controller;
 
+import com.bupt.controller.utils.VersionCheckException;
 import com.bupt.pojo.UserRoleCreateInfo;
 import com.bupt.pojo.UserRoleDTO;
 import com.bupt.service.UserRoleService;
-import com.bupt.util.exception.controller.input.NullArgumentException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
@@ -18,6 +18,7 @@ import java.util.List;
 @RestController
 @Api(tags = "UserRole", description = "角色相关操作")
 @RequestMapping(value = "/userRoles")
+@VersionCheckException(reason = "角色相关操作不涉及版本检查")
 public class UserRoleController {
     @Resource
     private UserRoleService userRoleService;
@@ -33,9 +34,6 @@ public class UserRoleController {
     @RequestMapping(value = "/", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public UserRoleDTO saveUserRole(@RequestBody UserRoleCreateInfo userRoleCreateInfo) {
-        if (userRoleCreateInfo.getRoleName() == null || userRoleCreateInfo.getRoleName().trim().length() == 0) {
-            throw new NullArgumentException("roleName");
-        }
         return this.userRoleService.saveUserRole(userRoleCreateInfo);
     }
 
@@ -43,9 +41,6 @@ public class UserRoleController {
     @RequestMapping(value = "/", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void listRemoveUserRole(@RequestBody List<Long> userRoleIdList) {
-        if (null == userRoleIdList || userRoleIdList.size() == 0) {
-            throw new IllegalArgumentException("userRoleIdList");
-        }
         this.userRoleService.listRemoveUserRole(userRoleIdList);
     }
 

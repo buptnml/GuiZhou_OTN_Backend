@@ -11,8 +11,6 @@ import java.util.Date;
 
 /**
  * 自定义返回JSON 数据格中日期格式化处理
- *
- * @author &lt;a href="http://www.micmiu.com"&gt;Michael Sun&lt;/a&gt;
  */
 public class CustomDateSerializer extends JsonSerializer<Date> {
     @Override

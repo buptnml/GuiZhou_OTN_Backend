@@ -7,7 +7,6 @@ import com.bupt.entity.ResNetElement;
 import com.bupt.pojo.DiskCreateInfo;
 import com.bupt.pojo.DiskDTO;
 import com.bupt.service.DiskService;
-import com.bupt.util.exception.controller.result.NoneGetException;
 import com.bupt.util.exception.controller.result.NoneRemoveException;
 import com.bupt.util.exception.controller.result.NoneSaveException;
 import com.bupt.util.exception.controller.result.NoneUpdateException;
@@ -22,21 +21,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service("diskService")
-public class DiskServiceImpl implements DiskService {
+class DiskServiceImpl implements DiskService {
     @Resource
     private ResDiskDao resDiskDao;
     @Resource
     private ResNetElementDao resNetElementDao;
 
     @Override
+    /*机盘取出来的时候要按照机盘槽位来排序*/
     public List<DiskDTO> listDiskByNetElement(Long versionId, Long netElementId) {
-        List<DiskDTO> result = resDiskDao.selectByExample(getExample(versionId, netElementId)).stream().sorted
-                (Comparator.comparing(ResDisk::getGmtModified).reversed()).map(this::convertToDTO)
+        return resDiskDao.selectByExample(getExample(versionId, netElementId)).stream().sorted
+                (Comparator.comparing(ResDisk::getSlotId)).map(this::convertToDTO)
                 .collect(Collectors.toList());
-        if (result.size() == 0) {
-            throw new NoneGetException("没有查询到机盘相关记录！");
-        }
-        return result;
     }
 
     @Override

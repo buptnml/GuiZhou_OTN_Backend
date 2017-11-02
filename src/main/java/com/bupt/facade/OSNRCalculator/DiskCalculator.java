@@ -6,7 +6,7 @@ import com.bupt.pojo.DiskDTO;
 /**
  * 机盘计算接口
  */
-public interface DiskCalculator {
+interface DiskCalculator {
 
     /**
      * 计算入口

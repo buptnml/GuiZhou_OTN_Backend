@@ -10,6 +10,17 @@ task wrapper(type: Wrapper) {
     gradleVersion = '3.5'
 }
 
+ext {
+    jdkLevel = 1.8
+    encoding = 'UTF-8'
+}
+
+tasks.withType(JavaCompile) {
+    sourceCompatibility = jdkLevel
+    targetCompatibility = jdkLevel
+//    options.compilerArgs << '-parameters'
+    options.encoding = encoding
+}
 
 repositories {
     mavenCentral()
@@ -19,9 +30,6 @@ configurations {
     mybatisGenerator
 }
 
-
-//统一编码为utf-8
-[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 dependencies {
     testCompile 'com.jayway.restassured:rest-assured:2.9.0'

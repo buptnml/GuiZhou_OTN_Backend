@@ -1,11 +1,15 @@
 package com.bupt.pojo;
 
+import org.springframework.lang.Nullable;
+
 public class BussinessCreateInfo {
     private String bussinessName;
     private String bussinessRate;
     private String mainRoute;
     private String mainFrequency;
+    @Nullable
     private String spareRoute;
+    @Nullable
     private String spareFrequency;
     private Double inputPower;
 
@@ -41,19 +45,21 @@ public class BussinessCreateInfo {
         this.mainFrequency = mainFrequency;
     }
 
+    @Nullable
     public String getSpareRoute() {
         return spareRoute;
     }
 
-    public void setSpareRoute(String spareRoute) {
+    public void setSpareRoute(@Nullable String spareRoute) {
         this.spareRoute = spareRoute;
     }
 
+    @Nullable
     public String getSpareFrequency() {
         return spareFrequency;
     }
 
-    public void setSpareFrequency(String spareFrequency) {
+    public void setSpareFrequency(@Nullable String spareFrequency) {
         this.spareFrequency = spareFrequency;
     }
 
@@ -61,7 +67,7 @@ public class BussinessCreateInfo {
         return inputPower;
     }
 
-    public void setInputPower(double inputPower) {
+    public void setInputPower(Double inputPower) {
         this.inputPower = inputPower;
     }
 }

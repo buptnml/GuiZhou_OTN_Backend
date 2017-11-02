@@ -22,11 +22,11 @@ public class NXAnalyseServiceTest {
     private NXAnalyseService nxAnalyseService;
 
     @Test
-    public void equipAnaTest(){
+    public void equipAnaTest() {
 
-        List<NXAnalyseItemDTO> list=
-        nxAnalyseService.analyseEquip(100000000000L,1);
-        NXAnalyseItemDTO nxAna=list.get(1);
-        System.out.println("------------------------------"+list.size()+nxAna.getItemName()+"---");
+        List<NXAnalyseItemDTO> list =
+                nxAnalyseService.analyseEquip(100000000000L, 1);
+        NXAnalyseItemDTO nxAna = list.get(1);
+        System.out.println("------------------------------" + list.size() + nxAna.getItemName() + "---");
     }
 }

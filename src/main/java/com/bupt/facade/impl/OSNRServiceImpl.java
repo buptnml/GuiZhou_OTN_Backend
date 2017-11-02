@@ -1,34 +1,35 @@
 package com.bupt.facade.impl;
 
 import com.bupt.entity.ResBussiness;
+import com.bupt.facade.BussinessService;
 import com.bupt.facade.OSNRCalculator.Calculable;
-import com.bupt.facade.OSNRCalculator.OSNRResult;
 import com.bupt.facade.OSNRService;
-import com.bupt.pojo.BussinessDTO;
-import com.bupt.pojo.NodeOSNRDetail;
-import com.bupt.pojo.ResultOSNRDetail;
-import com.bupt.pojo.RouteOSNRDetail;
-import com.bupt.service.BussinessService;
+import com.bupt.pojo.*;
+import com.bupt.service.DiskService;
 import com.bupt.service.LinkService;
+import com.bupt.service.NetElementService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.stream.Collectors;
 
-
-//todo 用JAVA8的StreamAPI重写这个类
 @Service("OSNRService")
-public class OSNRServiceImpl implements OSNRService {
+class OSNRServiceImpl implements OSNRService {
     @Resource
     private Calculable calculator;
     @Resource
     private BussinessService bussinessService;
     @Resource
     private LinkService linkService;
+    @Resource
+    private DiskService diskService;
+    @Resource
+    private NetElementService netElementService;
 
     /*考虑到设计简单的原则，输入输出功率是以字符串的形式存储在数据库的，这里需要转换
     */
-    public static double[][] stringTransfer(String powerString) {
+    static double[][] stringTransfer(String powerString) {
         if (null == powerString || powerString.equals("[]")) {
             return new double[0][0];
         }
@@ -55,21 +56,13 @@ public class OSNRServiceImpl implements OSNRService {
 
     @Override
     public List<BussinessDTO> listErrorBussiness(Long versionId) {
-        List<BussinessDTO> busList = bussinessService.listBussiness(versionId);
-        List<BussinessDTO> results = new LinkedList<>();
-        for (BussinessDTO bus : busList) {
-            if (stringTransfer(getBussiness(versionId, bus.getBussinessId()).getMainInputPowers()).length <
-                    bus.getMainRoute().split("-").length) {
-                results.add(bus);
-            }
-            if (null != bus.getSpareRoute()) {
-                if (stringTransfer(getBussiness(versionId, bus.getBussinessId()).getSpareInputPowers()).length
-                        < bus.getSpareRoute().split("-").length) {
-                    results.add(bus);
-                }
-            }
-        }
-        return results;
+        return bussinessService.listBussiness(versionId).stream().filter(bussinessDTO ->
+                stringTransfer(getBussiness(versionId, bussinessDTO.getBussinessId()).getMainInputPowers()).length <
+                        bussinessDTO.getMainRoute().split("-").length
+                        || ((null != bussinessDTO.getSpareRoute())
+                        && stringTransfer(getBussiness(versionId, bussinessDTO.getBussinessId()).getSpareInputPowers
+                        ()).length < bussinessDTO.getSpareRoute().split("-").length)
+        ).collect(Collectors.toList());
     }
 
     @Override
@@ -84,7 +77,9 @@ public class OSNRServiceImpl implements OSNRService {
         } catch (Exception e) {
             //do nothing
         }
-        results.addAll(calculator.getNodeResults());
+        if (null != calculator.getNodeResults()) {
+            results.addAll(calculator.getNodeResults());
+        }
         if (null != bus.getSpareRoute()) {
             inputPowers = stringTransfer(bus.getSpareInputPowers());
             outputPowers = stringTransfer(bus.getSpareOutputPowers());
@@ -94,7 +89,9 @@ public class OSNRServiceImpl implements OSNRService {
             } catch (Exception e) {
                 //do nothing
             }
-            results.addAll(calculator.getNodeResults());
+            if (null != calculator.getNodeResults()) {
+                results.addAll(calculator.getNodeResults());
+            }
         }
         return new ArrayList<>(results);
     }
@@ -129,7 +126,6 @@ public class OSNRServiceImpl implements OSNRService {
                 .getSpareOutputPowers());
         String routeString = isMain ? bus.getMainRoute() : bus.getSpareRoute();
         String errorMessage = null;
-
         try {
             calculator.calculate(inputPowers, outputPowers, routeString, versionId);
         } catch (Exception e) {
@@ -142,16 +138,24 @@ public class OSNRServiceImpl implements OSNRService {
             routeString, String errorMessage, List<OSNRResult> calculatorResult) {
         List<ResultOSNRDetail> results = new LinkedList<>();
         for (int i = 0; i < routeString.split("-").length; i++) {
-            if (i < calculatorResult.size()) {
-                results.add(new ResultOSNRDetail(bus, isMain, calculatorResult.get(0).getNetElementName(),
-                        calculatorResult.get(i)));
-            } else if (null != errorMessage) {
-                results.add(new ResultOSNRDetail(bus, isMain, calculatorResult.get(0).getNetElementName(),
+            if (null == calculatorResult) {
+                if (null == errorMessage) {
+                    errorMessage = getErrorMessage(versionId, routeString.split("-")[0], routeString.split("-")[1]);
+                }
+                results.add(new ResultOSNRDetail(bus, isMain, routeString.split("-")[0],
                         routeString.split("-")[i], errorMessage));
             } else {
-                errorMessage = getErrorMessage(versionId, routeString.split("-")[i - 1], routeString.split("-")[i]);
-                results.add(new ResultOSNRDetail(bus, isMain, calculatorResult.get(0).getNetElementName(),
-                        routeString.split("-")[i], errorMessage));
+                if (i < calculatorResult.size()) {
+                    results.add(new ResultOSNRDetail(bus, isMain, calculatorResult.get(0).getNetElementName(),
+                            calculatorResult.get(i)));
+                } else if (null != errorMessage) {
+                    results.add(new ResultOSNRDetail(bus, isMain, calculatorResult.get(0).getNetElementName(),
+                            routeString.split("-")[i], errorMessage));
+                } else {
+                    errorMessage = getErrorMessage(versionId, routeString.split("-")[i - 1], routeString.split("-")[i]);
+                    results.add(new ResultOSNRDetail(bus, isMain, calculatorResult.get(0).getNetElementName(),
+                            routeString.split("-")[i], errorMessage));
+                }
             }
         }
         return results;
@@ -160,7 +164,10 @@ public class OSNRServiceImpl implements OSNRService {
     private String getErrorMessage(Long versionId, String nodeName1, String nodeName2) {
         if (null == linkService.getLinkByNodes(versionId, nodeName1, nodeName2)) {
             return "光路中断";
-        } else return "不满足网元" + nodeName2 + "内机盘的输入功率范围";
+        } else if (diskService.listDiskByNetElement(versionId, netElementService.getNetElement(versionId, nodeName1)
+                .getNetElementId()).size() == 0) {
+            return nodeName1 + "中没有机盘";
+        } else return "不满足" + nodeName2 + "中的机盘的输入范围";
     }
 
     private ResBussiness getBussiness(Long versionId, Long bussinessId) {

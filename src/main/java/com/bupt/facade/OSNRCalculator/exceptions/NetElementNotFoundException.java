@@ -8,6 +8,6 @@ public class NetElementNotFoundException extends NullArgumentException {
     }
 
     public NetElementNotFoundException(String message) {
-        super("网元" + message + "不存在！\n");
+        super("网元" + message + "不存在\n");
     }
 }
