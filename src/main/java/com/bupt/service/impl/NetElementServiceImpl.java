@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service("netElementService")
-public class NetElementServiceImpl implements NetElementService {
+class NetElementServiceImpl implements NetElementService {
     @Resource
     private ResNetElementDao resNetElementDao;
 

@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service("diskService")
-public class DiskServiceImpl implements DiskService {
+class DiskServiceImpl implements DiskService {
     @Resource
     private ResDiskDao resDiskDao;
     @Resource

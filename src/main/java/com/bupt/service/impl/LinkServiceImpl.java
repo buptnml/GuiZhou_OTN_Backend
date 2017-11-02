@@ -23,7 +23,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service("linkService")
-public class LinkServiceImpl implements LinkService {
+class LinkServiceImpl implements LinkService {
     @Resource
     private ResLinkDao resLinkDao;
     @Resource

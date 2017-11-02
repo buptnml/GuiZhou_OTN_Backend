@@ -5,7 +5,7 @@ package com.bupt.facade.OSNRCalculator;
  * 用来计算所有节点的输入输出功率接口
  * 标记性接口
  */
-public interface InputsOutputsCalculable {
+interface InputsOutputsCalculable {
     /**
      * 计算函数
      *

@@ -25,8 +25,7 @@ public class NodeOSNRDetail {
 
         NodeOSNRDetail that = (NodeOSNRDetail) o;
 
-        if (Double.compare(that.inputPower, inputPower) != 0) return false;
-        return Double.compare(that.outputPower, outputPower) == 0 && Double.compare(that.gain, gain) == 0 && Double.compare(that.noisePower, noisePower) == 0 && (nodeName != null ? nodeName.equals(that.nodeName) : that.nodeName == null);
+        return Double.compare(that.inputPower, inputPower) == 0 && Double.compare(that.outputPower, outputPower) == 0 && Double.compare(that.gain, gain) == 0 && Double.compare(that.noisePower, noisePower) == 0 && (nodeName != null ? nodeName.equals(that.nodeName) : that.nodeName == null);
     }
 
     @Override

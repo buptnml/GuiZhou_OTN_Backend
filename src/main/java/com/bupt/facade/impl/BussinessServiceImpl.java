@@ -1,13 +1,12 @@
-package com.bupt.service.impl;
+package com.bupt.facade.impl;
 
 
 import com.bupt.dao.ResBussinessDao;
 import com.bupt.entity.ResBussiness;
+import com.bupt.facade.BussinessService;
 import com.bupt.facade.OSNRCalculator.Calculable;
-import com.bupt.facade.impl.OSNRServiceImpl;
 import com.bupt.pojo.BussinessCreateInfo;
 import com.bupt.pojo.BussinessDTO;
-import com.bupt.service.BussinessService;
 import com.bupt.util.exception.controller.result.NoneGetException;
 import com.bupt.util.exception.controller.result.NoneRemoveException;
 import com.bupt.util.exception.controller.result.NoneSaveException;
@@ -24,7 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service("bussinessService")
-public class BussinessServiceImpl implements BussinessService {
+class BussinessServiceImpl implements BussinessService {
     @Resource
     private ResBussinessDao resBussinessDao;
     @Resource

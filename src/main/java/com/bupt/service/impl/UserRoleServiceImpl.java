@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service("userRoleService")
-public class UserRoleServiceImpl implements UserRoleService {
+class UserRoleServiceImpl implements UserRoleService {
     @Resource
     private SysUserRoleDao sysUserRoleDao;
     @Resource

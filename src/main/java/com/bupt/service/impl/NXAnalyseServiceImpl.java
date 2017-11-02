@@ -23,7 +23,7 @@ import java.util.List;
  */
 
 @Service
-public class NXAnalyseServiceImpl implements NXAnalyseService {
+class NXAnalyseServiceImpl implements NXAnalyseService {
 
     @Autowired
     private ResNetElementDao netElementDao;

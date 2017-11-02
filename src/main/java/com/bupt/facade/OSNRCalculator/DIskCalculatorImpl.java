@@ -14,7 +14,7 @@ import javax.annotation.Resource;
  * 对于机盘内部来说，若输入功率大于机盘可承受的最大功率，按照可承受最大功率计算
  */
 @Component
-public class DIskCalculatorImpl implements DiskCalculator {
+class DIskCalculatorImpl implements DiskCalculator {
     private double inputPower;
     private double outputPower;
     private AmplifierDTO amplifier;

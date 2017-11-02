@@ -1,14 +1,10 @@
 package com.bupt.facade.impl;
 
 import com.bupt.entity.ResBussiness;
+import com.bupt.facade.BussinessService;
 import com.bupt.facade.OSNRCalculator.Calculable;
-import com.bupt.facade.OSNRCalculator.OSNRResult;
 import com.bupt.facade.OSNRService;
-import com.bupt.pojo.BussinessDTO;
-import com.bupt.pojo.NodeOSNRDetail;
-import com.bupt.pojo.ResultOSNRDetail;
-import com.bupt.pojo.RouteOSNRDetail;
-import com.bupt.service.BussinessService;
+import com.bupt.pojo.*;
 import com.bupt.service.DiskService;
 import com.bupt.service.LinkService;
 import com.bupt.service.NetElementService;
@@ -19,7 +15,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service("OSNRService")
-public class OSNRServiceImpl implements OSNRService {
+class OSNRServiceImpl implements OSNRService {
     @Resource
     private Calculable calculator;
     @Resource
@@ -33,7 +29,7 @@ public class OSNRServiceImpl implements OSNRService {
 
     /*考虑到设计简单的原则，输入输出功率是以字符串的形式存储在数据库的，这里需要转换
     */
-    public static double[][] stringTransfer(String powerString) {
+    static double[][] stringTransfer(String powerString) {
         if (null == powerString || powerString.equals("[]")) {
             return new double[0][0];
         }

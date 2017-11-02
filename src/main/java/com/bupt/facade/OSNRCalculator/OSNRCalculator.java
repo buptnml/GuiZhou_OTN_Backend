@@ -2,6 +2,7 @@ package com.bupt.facade.OSNRCalculator;
 
 import com.bupt.facade.OSNRCalculator.exceptions.OSNRResultOutOfLimitException;
 import com.bupt.pojo.NodeOSNRDetail;
+import com.bupt.pojo.OSNRResult;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -12,7 +13,7 @@ import java.util.List;
  * OSNR计算器实现
  */
 @Component
-public class OSNRCalculator extends AbstractCalculator {
+class OSNRCalculator extends AbstractCalculator {
     @Resource
     private
     InputsOutputsCalculable inputsOutputsCalculable;

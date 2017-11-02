@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service("versionDictService")
-public class VersionDictServiceImpl implements VersionDictService {
+class VersionDictServiceImpl implements VersionDictService {
     @Resource
     private SysVersionDictDao sysVersionDictDao;
     @Resource

@@ -2,6 +2,7 @@ package com.bupt.facade.impl;
 
 import com.bupt.dao.SysVersionDao;
 import com.bupt.entity.SysVersion;
+import com.bupt.facade.BussinessService;
 import com.bupt.facade.VersionService;
 import com.bupt.pojo.VersionDTO;
 import com.bupt.pojo.VersionDTOWithVersionDictDTO;
@@ -27,7 +28,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service("versionService")
-public class VersionServiceImpl implements VersionService {
+class VersionServiceImpl implements VersionService {
     @Resource
     private SysVersionDao sysVersionDao;
     @Resource

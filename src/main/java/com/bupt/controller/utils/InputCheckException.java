@@ -17,5 +17,5 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface InputCheckException {
-    String reason() default "加入异常的原因";
+    String reason() default "加入注解的原因";
 }

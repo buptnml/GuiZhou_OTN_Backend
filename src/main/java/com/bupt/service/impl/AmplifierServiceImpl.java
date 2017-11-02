@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  * Created by caoxiaohong on 17/9/13.
  */
 @Service(value = "amplifierService")
-public class AmplifierServiceImpl implements AmplifierService {
+class AmplifierServiceImpl implements AmplifierService {
     @Resource
     private ResOsnrAmplifierDao resOsnrAmplifierDao;
 

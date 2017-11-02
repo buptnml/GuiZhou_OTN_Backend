@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  * 网元之间的链路可能是有多条的，因此在找链路的时候应随机选择一条作为两点之间的链路（OSNR算法要求）
  */
 @Component
-public class LinkLossCalculatorImpl implements LinkLossCalculator {
+class LinkLossCalculatorImpl implements LinkLossCalculator {
     private LinkDTO link;
     @Resource
     private LinkService linkService;

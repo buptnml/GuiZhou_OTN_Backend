@@ -1,4 +1,4 @@
-package com.bupt.facade.OSNRCalculator;
+package com.bupt.pojo;
 
 /**
  * OSNR值的计算结果类
@@ -9,7 +9,7 @@ final public class OSNRResult {
     private final String netElementName;
     private final Double result;
 
-    OSNRResult(String netElementName, Double result) {
+    public OSNRResult(String netElementName, Double result) {
         this.netElementName = netElementName;
         this.result = result;
     }

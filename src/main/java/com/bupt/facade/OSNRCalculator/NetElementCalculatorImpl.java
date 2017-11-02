@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Component
-public class NetElementCalculatorImpl implements NetElementCalculator {
+class NetElementCalculatorImpl implements NetElementCalculator {
     private List<DiskDTO> disks;
     private long versionId;
     private double[] inputPowers;
