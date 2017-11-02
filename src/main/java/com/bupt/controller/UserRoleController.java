@@ -1,5 +1,6 @@
 package com.bupt.controller;
 
+import com.bupt.controller.utils.VersionCheckException;
 import com.bupt.pojo.UserRoleCreateInfo;
 import com.bupt.pojo.UserRoleDTO;
 import com.bupt.service.UserRoleService;
@@ -17,6 +18,7 @@ import java.util.List;
 @RestController
 @Api(tags = "UserRole", description = "角色相关操作")
 @RequestMapping(value = "/userRoles")
+@VersionCheckException(reason = "角色相关操作不涉及版本检查")
 public class UserRoleController {
     @Resource
     private UserRoleService userRoleService;

@@ -25,6 +25,7 @@ public class OSNRCalculator extends AbstractCalculator {
     private double[][] outputPowers;
     private List<OSNRResult> results;
     private List<NodeOSNRDetail> nodeResults;
+
     @Override
     /*
       所有的输入和输出要一一对应
@@ -84,6 +85,7 @@ public class OSNRCalculator extends AbstractCalculator {
     public List<NodeOSNRDetail> getNodeResults() {
         return nodeResults;
     }
+
     @Override
     public String getInputPowersString() {
         return Arrays.deepToString(inputPowers).equals("[]") ? Double.toString(this.inputPower) : Arrays.deepToString

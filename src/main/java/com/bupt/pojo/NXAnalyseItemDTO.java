@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  * Created by zhangminchao on 2017/10/23.
- *
+ * <p>
  * N-X分析结果DTO
  */
 

@@ -5,6 +5,7 @@ import com.bupt.controller.utils.VersionCheckException;
 import com.bupt.pojo.LinkCreateInfo;
 import com.bupt.pojo.LinkDTO;
 import com.bupt.service.LinkService;
+import com.bupt.service.LinkTypeService;
 import com.bupt.service.NetElementService;
 import com.bupt.util.exception.controller.result.NoneGetException;
 import io.swagger.annotations.Api;
@@ -26,6 +27,8 @@ public class LinkController {
     private LinkService linkService;
     @Resource
     private NetElementService netElementService;
+    @Resource
+    private LinkTypeService linkTypeService;
 
     @ApiOperation(value = "查询某个版本下的所有链路信息")
     @RequestMapping(value = "/{versionId}", method = RequestMethod.GET)
@@ -59,7 +62,6 @@ public class LinkController {
         this.linkService.listRemoveResLink(versionId, linkIdList);
     }
 
-    //TODO 链路信息应该来自于链路类型
     private void checkLinkCreateInfo(Long versionId, LinkCreateInfo linkCreateInfo) {
         try {
             netElementService.getNetElement(versionId, linkCreateInfo.getEndAId());
@@ -70,6 +72,10 @@ public class LinkController {
             netElementService.getNetElement(versionId, linkCreateInfo.getEndZId());
         } catch (Exception e) {
             throw new NoneGetException("数据库中没有找到链路Z端点指定的网元信息！");
+        }
+        if (linkTypeService.listLinkTypes(versionId).stream().filter(linkTypeDTO -> linkCreateInfo.getLinkType().equals
+                (linkTypeDTO.getLinkType())).count() == 0) {
+            throw new IllegalArgumentException("选择的链路类型不支持");
         }
     }
 

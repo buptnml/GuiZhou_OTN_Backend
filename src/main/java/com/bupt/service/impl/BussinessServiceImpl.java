@@ -113,7 +113,6 @@ public class BussinessServiceImpl implements BussinessService {
         if (null != bussiness.getSpareRoute()) {
             createInfo.setSpareRoute(createNewRoute(bussiness.getSpareRoute(), oldString, newString));
         }
-        //TODO 抽象成为一个静态类 避免越级调用
         createInfo.setInputPower(OSNRServiceImpl.stringTransfer(bussiness.getMainInputPowers())[0][0]);
         return createInfo;
     }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:aop="http://www.springframework.org/schema/aop"
+<beans xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
@@ -16,30 +16,29 @@
     <!--总配置文件，引入所有配置文件和事务配置相关-->
 
     <!--引入所有配置文件-->
-    <import resource="spring-mybatis.xml" />
-    <import resource="spring-beans.xml" />
-    <import resource="spring-mvc.xml" />
+    <import resource="spring-mybatis.xml"/>
+    <import resource="spring-beans.xml"/>
+    <import resource="spring-mvc.xml"/>
 
     <!-- 扫描注解，除去web层注解，web层注解在mvc配置中扫描 -->
     <context:component-scan
             base-package="com.bupt">
         <context:exclude-filter type="annotation"
-                                expression="org.springframework.stereotype.Controller" />
+                                expression="org.springframework.stereotype.Controller"/>
         <context:exclude-filter type="annotation"
-                                expression="org.springframework.web.bind.annotation.RestController" />
+                                expression="org.springframework.web.bind.annotation.RestController"/>
         <context:exclude-filter type="annotation"
-                                expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+                                expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
     </context:component-scan>
 
     <!-- 定义单事务管理器（声明式的事务） -->
     <bean id="transactionManager"
           class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource" />
+        <property name="dataSource" ref="dataSource"/>
     </bean>
     <!-- 基于注解的事务配置-->
-    <tx:annotation-driven transaction-manager="transactionManager"  />
+    <tx:annotation-driven/>
     <aop:aspectj-autoproxy proxy-target-class="true"/>
-
 
 
 </beans>

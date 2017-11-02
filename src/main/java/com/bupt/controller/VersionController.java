@@ -43,7 +43,6 @@ public class VersionController {
     }
 
 
-
     @ApiOperation(value = "查询所有版本")
     @RequestMapping(value = "/", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
@@ -57,22 +56,6 @@ public class VersionController {
     @ResponseStatus(HttpStatus.CREATED)
     public VersionDTO saveVersion(@RequestBody VersionQuery versionQuery) {
         return versionService.saveVersion(versionQuery);
-    }
-
-    private class response {
-        private String responseMessage;
-
-        response(String responseMessage) {
-            this.responseMessage = responseMessage;
-        }
-
-        public String getResponseMessage() {
-            return responseMessage;
-        }
-
-        public void setResponseMessage(String responseMessage) {
-            this.responseMessage = responseMessage;
-        }
     }
 
     @ApiOperation(value = "批量删除指定id的版本")
@@ -96,12 +79,27 @@ public class VersionController {
         return versionService.getVersion(versionId);
     }
 
-
     @ApiOperation(value = "")
     @RequestMapping(value = "/{versionId}", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.CREATED)
     public VersionDTO updateVersion(@PathVariable Long versionId, @RequestBody VersionQuery versionQuery) {
         return versionService.updateVersion(versionId, versionQuery);
+    }
+
+    private class response {
+        private String responseMessage;
+
+        response(String responseMessage) {
+            this.responseMessage = responseMessage;
+        }
+
+        public String getResponseMessage() {
+            return responseMessage;
+        }
+
+        public void setResponseMessage(String responseMessage) {
+            this.responseMessage = responseMessage;
+        }
     }
 
 

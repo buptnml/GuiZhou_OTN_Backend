@@ -8,9 +8,9 @@ import com.bupt.util.exception.controller.result.NoneGetException;
 import com.bupt.util.exception.controller.result.NoneRemoveException;
 import com.bupt.util.exception.controller.result.NoneSaveException;
 import com.bupt.util.exception.controller.result.NoneUpdateException;
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -76,14 +76,14 @@ public class ExceptionHandlerController {
         return e.getMessage();
     }
 
-    @ExceptionHandler(NullArgumentException.class)
+    @ExceptionHandler({NullArgumentException.class,})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleNullArgumentException(HttpServletRequest request, RuntimeException e) {
         logger.error("Request: " + request.getRequestURL() + " raised " + e);
         return e.getMessage();
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
+    @ExceptionHandler({IllegalArgumentException.class, java.lang.IllegalArgumentException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleIllegalArgumentException(HttpServletRequest request, RuntimeException e) {
         logger.error("Request: " + request.getRequestURL() + " raised " + e);
@@ -97,13 +97,12 @@ public class ExceptionHandlerController {
         return "输入信息为空或不合法，请检查输入信息重新输入。";
     }
 
-    @ExceptionHandler(MySQLIntegrityConstraintViolationException.class)
+    @ExceptionHandler(DuplicateKeyException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleMySQLIntegrityConstraintViolationException(HttpServletRequest request, RuntimeException e) {
         logger.warn("Request: " + request.getRequestURL() + " raised " + e);
-        return "输入的信息中关键内容和数据库内容重复，请重新输入。";
+        return "输入的信息中关键内容和数据库记录重复，请重新输入。";
     }
-
 
 
     @ExceptionHandler(Exception.class)

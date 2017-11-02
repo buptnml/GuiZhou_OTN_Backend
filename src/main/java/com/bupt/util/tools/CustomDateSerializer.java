@@ -11,7 +11,6 @@ import java.util.Date;
 
 /**
  * 自定义返回JSON 数据格中日期格式化处理
- *
  */
 public class CustomDateSerializer extends JsonSerializer<Date> {
     @Override

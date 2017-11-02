@@ -28,9 +28,10 @@ public class DiskServiceImpl implements DiskService {
     private ResNetElementDao resNetElementDao;
 
     @Override
+    /*机盘取出来的时候要按照机盘槽位来排序*/
     public List<DiskDTO> listDiskByNetElement(Long versionId, Long netElementId) {
         return resDiskDao.selectByExample(getExample(versionId, netElementId)).stream().sorted
-                (Comparator.comparing(ResDisk::getGmtModified).reversed()).map(this::convertToDTO)
+                (Comparator.comparing(ResDisk::getSlotId)).map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
 

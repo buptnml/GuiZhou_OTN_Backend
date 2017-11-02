@@ -18,8 +18,6 @@ import javax.annotation.Resource;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
-//todo 用JAVA8的StreamAPI重写这个类
 @Service("OSNRService")
 public class OSNRServiceImpl implements OSNRService {
     @Resource

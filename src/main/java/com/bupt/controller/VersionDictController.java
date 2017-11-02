@@ -1,5 +1,6 @@
 package com.bupt.controller;
 
+import com.bupt.controller.utils.VersionCheckException;
 import com.bupt.pojo.VersionDictCreateInfo;
 import com.bupt.pojo.VersionDictDTO;
 import com.bupt.service.UserService;
@@ -20,6 +21,7 @@ import java.util.List;
 @RestController
 @Api(tags = "VersionDict", description = "版本字典相关操作")
 @RequestMapping(value = "/versionDicts")
+@VersionCheckException(reason = "版本字典不需要进行版本检查")
 public class VersionDictController {
 
     @Resource

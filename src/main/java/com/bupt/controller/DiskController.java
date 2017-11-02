@@ -3,6 +3,7 @@ package com.bupt.controller;
 import com.bupt.controller.utils.VersionCheckException;
 import com.bupt.pojo.DiskCreateInfo;
 import com.bupt.pojo.DiskDTO;
+import com.bupt.service.AmplifierService;
 import com.bupt.service.DiskService;
 import com.bupt.service.NetElementService;
 import com.bupt.util.exception.controller.input.NullArgumentException;
@@ -25,6 +26,8 @@ public class DiskController {
     private DiskService diskService;
     @Resource
     private NetElementService netElementService;
+    @Resource
+    private AmplifierService amplifierService;
 
 
     @ApiOperation(value = "查询某个版本下某设备的所有机盘信息")
@@ -43,6 +46,7 @@ public class DiskController {
     public DiskDTO saveDisk(@PathVariable Long versionId, @PathVariable Long netElementId, @RequestBody
             DiskCreateInfo diskCreateInfo) {
         checkNetElementId(versionId, netElementId);
+        checkDiskCreateInfo(versionId, diskCreateInfo);
         return diskService.saveDisk(versionId, netElementId, diskCreateInfo);
     }
 
@@ -52,6 +56,7 @@ public class DiskController {
     public DiskDTO updateDisk(@PathVariable Long versionId, @PathVariable Long netElementId, @PathVariable Long diskId,
                               @RequestBody DiskCreateInfo diskCreateInfo) {
         checkNetElementId(versionId, netElementId);
+        checkDiskCreateInfo(versionId, diskCreateInfo);
         return diskService.updateDisk(versionId, netElementId, diskId, diskCreateInfo);
     }
 
@@ -64,7 +69,16 @@ public class DiskController {
         this.diskService.listRemove(versionId, netElementId, diskIdList);
     }
 
-    //TODO 网元中的类型信息应该来自机盘表
+    private void checkDiskCreateInfo(Long versionId, DiskCreateInfo diskCreateInfo) {
+        if (diskCreateInfo.getSlotId() <= 0) {
+            throw new IllegalArgumentException("机盘槽位号错误");
+        }
+        if (amplifierService.listAmplifiers(versionId).stream().filter(amplifierDTO ->
+                amplifierDTO.getAmplifierName().equals(diskCreateInfo.getDiskType())).count() == 0) {
+            throw new IllegalArgumentException("输入的机盘类型信息不支持，请重新输入");
+        }
+    }
+
 
     /**
      * 检查网元id输入的合法性

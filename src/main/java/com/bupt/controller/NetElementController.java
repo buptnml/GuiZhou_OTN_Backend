@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.EnumSet;
 import java.util.List;
 
 /**
@@ -78,9 +79,12 @@ public class NetElementController {
 
     private void checkNetElementCreateInfo(NetElementCreateInfo netElementCreateInfo) {
         if (netElementCreateInfo.getNetElementName().contains("-")) {
-            throw new IllegalArgumentException("网元名称不允许包含'-'字符！");
+            throw new IllegalArgumentException("名称不允许包含'-'字符！");
         }
-        //TODO 网元类型应当来自于网元枚举
+        if (EnumSet.allOf(NetElementTypes.class).stream().filter(e -> e.toString().equals(netElementCreateInfo
+                .getNetElementType())).count() == 0) {
+            throw new IllegalArgumentException("输入的类型不支持，请重新输入");
+        }
     }
 
 

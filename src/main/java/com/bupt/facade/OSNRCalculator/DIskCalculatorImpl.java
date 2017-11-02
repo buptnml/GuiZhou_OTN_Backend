@@ -31,8 +31,8 @@ public class DIskCalculatorImpl implements DiskCalculator {
         return inputPower;
     }
 
-    //TODO 放大器工作原理的关键函数，未来可能需要进一步的修改
     @Override
+    /*放大器工作原理的关键函数，未来可能需要进一步的修改*/
     public void calculate(DiskDTO disk, double inputPower, long versionId) throws OutOfInputLimitsException {
         init(inputPower, disk, versionId);
         /*输入值如果大于放大器支持的最大输入功率

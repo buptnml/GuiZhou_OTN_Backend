@@ -1,6 +1,7 @@
 package com.bupt.controller;
 
 
+import com.bupt.controller.utils.VersionCheckException;
 import com.bupt.pojo.UserCreateInfo;
 import com.bupt.pojo.UserDTO;
 import com.bupt.pojo.UserQuery;
@@ -23,6 +24,7 @@ import java.util.List;
 @RestController
 @Api(tags = "User", description = "用户相关操作")
 @RequestMapping(value = "/users")
+@VersionCheckException(reason = "用户操作不涉及版本，不需要进行版本检查")
 public class UserController {
     @Resource
     private UserService userService;

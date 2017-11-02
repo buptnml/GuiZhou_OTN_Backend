@@ -61,7 +61,6 @@ public interface LinkTypeService {
     LinkTypeDTO getLinkTypeById(Long versionId, Long linkTypeId);
 
 
-
     /**
      * 删除指定版本全本链路信息
      *

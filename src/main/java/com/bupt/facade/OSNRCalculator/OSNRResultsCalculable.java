@@ -27,5 +27,4 @@ public interface OSNRResultsCalculable {
     List<NodeOSNRDetail> getDetail();
 
 
-
 }

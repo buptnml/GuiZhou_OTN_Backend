@@ -58,7 +58,7 @@ public class NetElementCalculatorImpl implements NetElementCalculator {
             throw new NetElementNotFoundException(netElementName);
         }
         this.disks = diskService.listDiskByNetElement(versionId, netElementService.getNetElement(versionId, netElementName)
-                    .getNetElementId());
+                .getNetElementId());
         if (disks.size() == 0) {
             throw new DiskNotFoundException(netElementName);
         }
