@@ -6,6 +6,7 @@
           WARNING - @mbg.generated
         -->
         <id column="amplifier_id" jdbcType="BIGINT" property="amplifierId"/>
+        <result column="disk_type" jdbcType="VARCHAR" property="diskType"/>
         <result column="amplifier_name" jdbcType="VARCHAR" property="amplifierName"/>
         <result column="gain" jdbcType="SMALLINT" property="gain"/>
         <result column="minimum_input_power" jdbcType="SMALLINT" property="minimumInputPower"/>
@@ -19,7 +20,7 @@
         <!--
           WARNING - @mbg.generated
         -->
-        amplifier_id, amplifier_name, gain, minimum_input_power, maximum_input_power, maximum_output_power,
-        version_id, gmt_create, gmt_modified
+        amplifier_id, disk_type, amplifier_name, gain, minimum_input_power, maximum_input_power,
+        maximum_output_power, version_id, gmt_create, gmt_modified
     </sql>
 </mapper>

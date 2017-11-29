@@ -3,7 +3,7 @@ package com.bupt.pojo;
 import com.bupt.entity.ResBussiness;
 import org.springframework.beans.BeanUtils;
 
-public class RouteOSNRDetail {
+public class OSNRGeneralInfo {
     private Long bussinessId;
     private String bussinessName;
     private String isMain;
@@ -12,7 +12,7 @@ public class RouteOSNRDetail {
     private String frequency;
     private String isUsable;
 
-    public RouteOSNRDetail(ResBussiness bus, Boolean isMain, String realRouteString) {
+    public OSNRGeneralInfo(ResBussiness bus, Boolean isMain, String realRouteString) {
         BeanUtils.copyProperties(bus, this);
         this.isMain = isMain ? "主用" : "备用";
         this.wholeRouteString = isMain ? bus.getMainRoute() : bus.getSpareRoute();

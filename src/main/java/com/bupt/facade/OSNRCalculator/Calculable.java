@@ -1,6 +1,6 @@
 package com.bupt.facade.OSNRCalculator;
 
-import com.bupt.pojo.NodeOSNRDetail;
+import com.bupt.pojo.OSNRNodesDetails;
 import com.bupt.pojo.OSNRResult;
 
 import java.util.List;
@@ -16,7 +16,14 @@ public interface Calculable {
      */
     void calculate(double[][] inputPowers, double[][] outputPowers, String routeString, long versionId);
 
-
+    /**
+     * 计算函数
+     *
+     * @param inputPower
+     * @param routeString
+     * @param versionId
+     */
+    void calculate(double inputPower, String routeString, long versionId);
     /**
      * 获取计算结果的接口
      */
@@ -36,7 +43,7 @@ public interface Calculable {
     String getOutputPowerString();
 
 
-    List<NodeOSNRDetail> getNodeResults();
+    List<OSNRNodesDetails> getNodeResults();
 
 
 }

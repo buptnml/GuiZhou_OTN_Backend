@@ -1,4 +1,4 @@
-package com.bupt.controller.utils;
+package com.bupt.controller.util;
 
 /*定义了每个版本中可能存在的数据操作枚举*/
 public enum VersionDictEnum {

@@ -5,6 +5,7 @@ import com.bupt.dao.ResBussinessDao;
 import com.bupt.entity.ResBussiness;
 import com.bupt.facade.BussinessService;
 import com.bupt.facade.OSNRCalculator.Calculable;
+import com.bupt.facade.util.BussinessPowerStringTransfer;
 import com.bupt.pojo.BussinessCreateInfo;
 import com.bupt.pojo.BussinessDTO;
 import com.bupt.util.exception.controller.result.NoneGetException;
@@ -13,11 +14,13 @@ import com.bupt.util.exception.controller.result.NoneSaveException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,6 +31,7 @@ class BussinessServiceImpl implements BussinessService {
     private ResBussinessDao resBussinessDao;
     @Resource
     private Calculable calculator;
+
     private Logger logger = LoggerFactory.getLogger(BussinessServiceImpl.class);
 
 
@@ -53,8 +57,12 @@ class BussinessServiceImpl implements BussinessService {
 
     @Override
     public BussinessDTO saveBussiness(Long versionId, BussinessCreateInfo bussinessCreateInfo) {
-        ResBussiness insertInfo = createBussiness(versionId, bussinessCreateInfo, true);
-        if (resBussinessDao.insertSelective(insertInfo) == 1) {
+        if (resBussinessDao.selectByExample(getExampleByBusName(versionId, bussinessCreateInfo.getBussinessName()))
+                .size() != 0) {
+            throw new DuplicateKeyException("bussiness_name");
+        }
+        ResBussiness insertInfo = createBussiness(versionId, bussinessCreateInfo);
+        if (resBussinessDao.insertSelective(insertInfo) > 0) {
             return createBussinessDTO(resBussinessDao.selectOne(insertInfo));
         }
         throw new NoneSaveException();
@@ -96,13 +104,13 @@ class BussinessServiceImpl implements BussinessService {
 
 
     @Override
-    public void updateReferBussiness(Long versionId, String oldString, String newString) {
+    public void updateReferBussiness(Long versionId, String oldString, String newString, boolean needRecalculate) {
         List<ResBussiness> relatedBussiness = resBussinessDao.selectByExample(getExample(versionId, "mainRoute",
                 "%" + oldString + "%"));
         relatedBussiness.addAll(resBussinessDao.selectByExample(getExample(versionId, "spareRoute",
                 "%" + oldString + "%")));
         relatedBussiness.forEach(bus -> updateBussiness(versionId, bus.getBussinessId(), createInfo(bus,
-                oldString, newString)));
+                oldString, newString), newString, needRecalculate));
     }
 
     private BussinessCreateInfo createInfo(ResBussiness bussiness, String oldString, String newString) {
@@ -112,7 +120,7 @@ class BussinessServiceImpl implements BussinessService {
         if (null != bussiness.getSpareRoute()) {
             createInfo.setSpareRoute(createNewRoute(bussiness.getSpareRoute(), oldString, newString));
         }
-        createInfo.setInputPower(OSNRServiceImpl.stringTransfer(bussiness.getMainInputPowers())[0][0]);
+        createInfo.setInputPower(BussinessPowerStringTransfer.stringTransfer(bussiness.getMainInputPowers())[0][0]);
         return createInfo;
     }
 
@@ -137,19 +145,83 @@ class BussinessServiceImpl implements BussinessService {
         }
     }
 
-    private void updateBussiness(Long versionId, Long bussinessId, BussinessCreateInfo bussinessCreateInfo) {
+    private void updateBussiness(Long versionId, Long bussinessId, BussinessCreateInfo bussinessCreateInfo, String
+            newString, boolean needRecalculate) {
         ResBussiness createdBus = new ResBussiness();
-        try {
-            createdBus = createBussiness(versionId, bussinessCreateInfo, false);
-        } catch (Exception e) {
-            logger.warn(e.getMessage());
+        ResBussiness oldBus = resBussinessDao.selectByExample(getExample(versionId, bussinessId)).get(0);
+        if (null == oldBus) return;
+        BeanUtils.copyProperties(bussinessCreateInfo, createdBus);
+        if (needRecalculate) {
+            //主路由
+            int index = findIndex(bussinessCreateInfo.getMainRoute(), newString, oldBus, true);
+            double inputPower = findInputPower(oldBus.getMainInputPowers(), index);
+            String subString = getSubString(bussinessCreateInfo.getMainRoute(), newString);
+            PowerResults mainSubResults = calculateResult(inputPower, subString, versionId);
+            createdBus.setMainInputPowers(buildNewPowerString(mainSubResults.getInputPowerResult(), oldBus
+                    .getMainInputPowers(), index));
+            createdBus.setMainOutputPowers(buildNewPowerString(mainSubResults.getOutputPowerResult(), oldBus
+                    .getMainOutputPowers(), index));
+
+            //备用路由
+            if (null != bussinessCreateInfo.getSpareRoute()) {
+                index = findIndex(bussinessCreateInfo.getSpareRoute(), newString, oldBus, false);
+                inputPower = findInputPower(oldBus.getSpareInputPowers(), index);
+                subString = getSubString(bussinessCreateInfo.getSpareRoute(), newString);
+                mainSubResults = calculateResult(inputPower, subString, versionId);
+                createdBus.setSpareInputPowers(buildNewPowerString(mainSubResults.getInputPowerResult(), oldBus
+                        .getSpareInputPowers(), index));
+                createdBus.setSpareOutputPowers(buildNewPowerString(mainSubResults.getOutputPowerResult(), oldBus
+                        .getSpareOutputPowers(), index));
+            }
         }
         createdBus.setBussinessId(bussinessId);
         createdBus.setVersionId(versionId);
         resBussinessDao.updateByPrimaryKeySelective(createdBus);
-
     }
 
+    private String buildNewPowerString(String subPowerString, String oldPowerString, int index) {
+        double[][] oldPowerArr = BussinessPowerStringTransfer.stringTransfer(oldPowerString);
+        double[][] subPowerArr = BussinessPowerStringTransfer.stringTransfer(subPowerString);
+        double[][] resultArr = new double[index + subPowerArr.length][];
+        for (int i = 0; i < resultArr.length; i++) {
+            if (i < index) {
+                resultArr[i] = oldPowerArr[i];
+            } else {
+                resultArr[i] = subPowerArr[i - index];
+            }
+        }
+        return Arrays.deepToString(resultArr);
+    }
+
+
+    private int findIndex(String routeString, String newString, ResBussiness oldBus, boolean isMain) {
+        int stringIndex = routeString.split("-").length - getSubString(routeString, newString).split("-")
+                .length;
+        String inputPowerString = isMain ? oldBus.getMainInputPowers() : oldBus.getSpareInputPowers();
+        int powerIndex = BussinessPowerStringTransfer.stringTransfer(inputPowerString).length - 1;
+        return Math.min(stringIndex, powerIndex);
+    }
+
+    private String getSubString(String routeString, String newString) {
+        return routeString.substring(routeString.indexOf(newString));
+    }
+
+    private double findInputPower(String inputPowerString, int index) {
+        double[][] inputPowers = BussinessPowerStringTransfer.stringTransfer(inputPowerString);
+        if (index <= inputPowers.length) {
+            return inputPowers[index][0];
+        }
+        return inputPowers[0][0];
+    }
+
+    private PowerResults calculateResult(double inputPower, String routeString, Long versionId) {
+        try {
+            calculator.calculate(inputPower, routeString, versionId);
+        } catch (Exception e) {
+            logger.warn(e.getMessage());
+        }
+        return new PowerResults(calculator.getInputPowersString(), calculator.getOutputPowerString());
+    }
 
     private Example getExample(Long versionId, Long bussinessId) {
         Example example = new Example(ResBussiness.class);
@@ -159,10 +231,18 @@ class BussinessServiceImpl implements BussinessService {
         return example;
     }
 
-    public Example getExample(Long versionId) {
+    private Example getExample(Long versionId) {
         Example example = new Example(ResBussiness.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("versionId", versionId);
+        return example;
+    }
+
+    private Example getExampleByBusName(Long versionId, String busName) {
+        Example example = new Example(ResBussiness.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("versionId", versionId);
+        criteria.andEqualTo("bussinessName", busName);
         return example;
     }
 
@@ -179,17 +259,15 @@ class BussinessServiceImpl implements BussinessService {
     /*
      * 这个函数既要能正常抛出异常 也要能正常输出结果
      */
-    private ResBussiness createBussiness(Long versionId, BussinessCreateInfo bussinessCreateInfo, boolean
-            needException) {
+    private ResBussiness createBussiness(Long versionId, BussinessCreateInfo bussinessCreateInfo) {
+        if (null == bussinessCreateInfo) return null;
         ResBussiness result = new ResBussiness();
-        BeanUtils.copyProperties(bussinessCreateInfo, result);
         result.setVersionId(versionId);
-        double[][] inputPower = new double[1][1];
-        inputPower[0][0] = bussinessCreateInfo.getInputPower();
+        BeanUtils.copyProperties(bussinessCreateInfo, result);
         try {
-            calculator.calculate(inputPower, null, bussinessCreateInfo.getMainRoute(), versionId);
+            calculator.calculate(bussinessCreateInfo.getInputPower(), bussinessCreateInfo.getMainRoute(), versionId);
         } catch (Exception e) {
-            if (needException) {
+            if (true) {
                 throw new IllegalArgumentException("主路由中的" + e.getMessage());
             } else {
                 logger.warn("主路由中的" + e.getMessage());
@@ -199,9 +277,9 @@ class BussinessServiceImpl implements BussinessService {
         result.setMainOutputPowers(calculator.getOutputPowerString());
         if (null != bussinessCreateInfo.getSpareRoute()) {
             try {
-                calculator.calculate(inputPower, null, bussinessCreateInfo.getSpareRoute(), versionId);
+                calculator.calculate(bussinessCreateInfo.getInputPower(), bussinessCreateInfo.getSpareRoute(), versionId);
             } catch (Exception e) {
-                if (needException) {
+                if (true) {
                     throw new IllegalArgumentException("备用路由中的" + e.getMessage());
                 } else {
                     logger.warn("备用路由中的" + e.getMessage());
@@ -212,9 +290,25 @@ class BussinessServiceImpl implements BussinessService {
             return result;
         }
         return result;
-
-
     }
 
+
+    class PowerResults {
+        private final String inputPowerResult;
+        private final String outputPowerResult;
+
+        public PowerResults(String inputPowerResult, String outputPowerResult) {
+            this.inputPowerResult = inputPowerResult;
+            this.outputPowerResult = outputPowerResult;
+        }
+
+        public String getInputPowerResult() {
+            return inputPowerResult;
+        }
+
+        public String getOutputPowerResult() {
+            return outputPowerResult;
+        }
+    }
 
 }

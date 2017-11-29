@@ -56,7 +56,7 @@ class DIskCalculatorImpl implements DiskCalculator {
 
     private void init(double inputPower, DiskDTO disk, long versionId) {
         this.inputPower = inputPower;
-        amplifier = amplifierService.getAmpByName(versionId, disk.getDiskType());
+        amplifier = amplifierService.getAmpByName(versionId, disk.getAmplifierName());
     }
 
 }

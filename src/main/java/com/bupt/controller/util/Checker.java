@@ -1,7 +1,9 @@
-package com.bupt.controller.utils;
+package com.bupt.controller.util;
 
 
-import com.bupt.facade.VersionService;
+import com.bupt.pojo.VersionDictDTO;
+import com.bupt.service.VersionBasicService;
+import com.bupt.service.VersionDictService;
 import com.bupt.util.exception.controller.input.IllegalArgumentException;
 import com.bupt.util.exception.controller.input.NullArgumentException;
 import org.springframework.lang.Nullable;
@@ -16,15 +18,17 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 
 /**
- * Controller层的检查工具，主要用来检查一些Controller层基础的数据检查
+ * 检查工具，主要用来检查一些Controller层基础的数据检查
  */
 @Component
-public class ControllerChecker {
+public class Checker {
     /*Spring是基于对象层面上的依赖注入，静态变量不是对象的属性，而是一个类的属性
     * 通过上面的方法可以实现类似静态注入的效果*/
-    private static ControllerChecker controllerCheckerFactory;
+    private static Checker checkerFactory;
     @Resource
-    private VersionService versionService;
+    private VersionBasicService versionBasicService;
+    @Resource
+    private VersionDictService versionDictService;
 
     /**
      * 检查Object和Object内部的属性是否合法
@@ -61,7 +65,7 @@ public class ControllerChecker {
             if (((Collection) object).size() == 0) {
                 throw new IllegalArgumentException("输入的信息不能为空！");
             }
-            ((Collection) object).forEach(ControllerChecker::checkObject);
+            ((Collection) object).forEach(Checker::checkObject);
             return;
         }
         /*最后要判断是否为数组类型,若为数组类型需要逐个检查*/
@@ -121,48 +125,50 @@ public class ControllerChecker {
      * @param versionId
      * @param dataEnum
      */
-    static void checkVersion(Long versionId, VersionDictEnum dataEnum) {
+    public static void checkVersion(Long versionId, VersionDictEnum dataEnum) {
         if (versionId == 100000000000L) {
             throw new IllegalArgumentException("不允许对基础版本的数据做任何修改操作！");
         }
         if (null == dataEnum) { //匹配失败就返回
             return;
         }
+        VersionDictDTO versionDictDTO = checkerFactory.versionDictService.getVersionDictByName(checkerFactory
+                .versionBasicService.getVersion(versionId).getVersionDictName());
         switch (dataEnum) {
             case disk: {
-                if (!controllerCheckerFactory.versionService.getVersion(versionId).getVersionDict().getHasDisk()) {
+                if (!versionDictDTO.getHasDisk()) {
                     throw new IllegalArgumentException("该版本没有机盘信息，请重新选择版本！");
                 }
                 break;
             }
             case link: {
-                if (!controllerCheckerFactory.versionService.getVersion(versionId).getVersionDict().getHasLink()) {
+                if (!versionDictDTO.getHasLink()) {
                     throw new IllegalArgumentException("该版本没有链路信息，请重新选择版本！");
                 }
                 break;
             }
             case linkType: {
-                if (!controllerCheckerFactory.versionService.getVersion(versionId).getVersionDict().getHasLinkType()) {
+                if (!versionDictDTO.getHasLinkType()) {
                     throw new IllegalArgumentException("该版本没有链路类型信息，请重新选择版本！");
                 }
                 break;
             }
             case amplifier: {
-                if (!controllerCheckerFactory.versionService.getVersion(versionId).getVersionDict().getHasAmplifier()) {
+                if (!versionDictDTO.getHasAmplifier()) {
                     throw new IllegalArgumentException("该版本没有机盘信息，请重新选择版本！");
                 }
                 break;
             }
             case bussiness: {
-                if (!controllerCheckerFactory.versionService.getVersion(versionId).getVersionDict().getHasBussiness()) {
-                    throw new IllegalArgumentException("该版本没有机盘信息，请重新选择版本！");
+                if (!versionDictDTO.getHasBussiness()) {
+                    throw new IllegalArgumentException("该版本没有光通道信息，请重新选择版本！");
                 }
                 break;
             }
             case netElement: {
-                if (!controllerCheckerFactory.versionService.getVersion(versionId).getVersionDict().getHasNetElement
+                if (!versionDictDTO.getHasNetElement
                         ()) {
-                    throw new IllegalArgumentException("该版本没有机盘信息，请重新选择版本！");
+                    throw new IllegalArgumentException("该版本没有网元信息，请重新选择版本！");
                 }
                 break;
             }
@@ -171,8 +177,8 @@ public class ControllerChecker {
 
 
     @PostConstruct
-    public void init() {
-        controllerCheckerFactory = this;
+    private void init() {
+        checkerFactory = this;
     }
 }
 

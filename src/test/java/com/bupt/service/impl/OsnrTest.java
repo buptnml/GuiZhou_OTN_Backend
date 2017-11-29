@@ -1,6 +1,6 @@
 package com.bupt.service.impl;
 
-import com.bupt.facade.OSNRCalculator.OSNRCalculator;
+import com.bupt.facade.OSNRCalculator.Calculable;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -16,15 +16,15 @@ public class OsnrTest {
 
     @Resource
     private
-    OSNRCalculator osnrCalculator;
+    Calculable osnrCalculator;
 
     @Test
     public void nothing() {
         double[][] inputs = new double[1][1];
-        inputs[0][0] = -10;
-        String routeString = "905_两所屯变-917_信息中心123123123-901_中调";
+        inputs[0][0] = -20;
+        String routeString = "904_安顺地调-905_两所屯变-917_信息中心-901_中调";
         try {
-            osnrCalculator.calculate(inputs, null, routeString, 100000000252L);
+            osnrCalculator.calculate(inputs, null, routeString, 100000000310L);
         } catch (Exception e) {
             e.printStackTrace();
         }

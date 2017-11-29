@@ -35,13 +35,6 @@ public interface UserService {
      */
     UserDTO getUserByUserQuery(UserQuery userQuery);
 
-    /**
-     * 根据用户id查询用户
-     *
-     * @param userId
-     * @return
-     */
-    UserDTO getUserByUserId(Long userId);
 
     /**
      * 查询所有用户
@@ -50,13 +43,6 @@ public interface UserService {
      */
     List<UserDTO> listUser();
 
-    /**
-     * 更新用户信息
-     *
-     * @param userCreateInfo
-     * @return
-     */
-    UserDTO updateUser(UserCreateInfo userCreateInfo);
 
 
     /**
@@ -76,13 +62,6 @@ public interface UserService {
      */
     List<String> listUserNames();
 
-    /**
-     * 通过用户名获取用户信息
-     *
-     * @param userName
-     * @return
-     */
-    UserDTO getUserByName(String userName);
 
 
 }

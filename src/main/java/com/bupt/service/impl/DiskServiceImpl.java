@@ -68,6 +68,9 @@ class DiskServiceImpl implements DiskService {
     @Override
     @Transactional
     public void listRemove(Long versionId, Long netElementId, List<Long> diskIdList) {
+        if (diskIdList.size() == 0) {
+            resDiskDao.deleteByExample(getExample(versionId, netElementId));
+        }
         diskIdList.forEach(id -> {
             if (resDiskDao.deleteByExample(getExample(versionId, netElementId, id)) != 1) {
                 throw new NoneRemoveException("机盘移除失败！");
@@ -86,7 +89,8 @@ class DiskServiceImpl implements DiskService {
         Example example = getExample(baseVersionId);
         List<ResDisk> basicVersionList = resDiskDao.selectByExample(example);
         for (ResDisk disk : basicVersionList) {
-            DiskCreateInfo newDisk = new DiskCreateInfo(disk.getDiskName(), disk.getDiskType(), disk.getSlotId());
+            DiskCreateInfo newDisk = new DiskCreateInfo(disk.getDiskName(), disk.getDiskType(), disk.getAmplifierName
+                    (), disk.getSlotId());
             saveDisk(newVersionId, getNewElementId(baseVersionId, disk.getNetElementId(),
                     newVersionId), newDisk);
         }

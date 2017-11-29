@@ -3,10 +3,11 @@ package com.bupt.entity;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Date;
 
 @Table(name = "res_onsr_link_type")
-public class ResOnsrLinkType {
+public class ResOnsrLinkType implements Serializable {
     /**
      * 链路类型ID
      */
@@ -49,6 +50,8 @@ public class ResOnsrLinkType {
      */
     @Column(name = "gmt_modified")
     private Date gmtModified;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取链路类型ID
@@ -174,5 +177,58 @@ public class ResOnsrLinkType {
      */
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        }
+        if (that == null) {
+            return false;
+        }
+        if (getClass() != that.getClass()) {
+            return false;
+        }
+        ResOnsrLinkType other = (ResOnsrLinkType) that;
+        return (this.getLinkTypeId() == null ? other.getLinkTypeId() == null : this.getLinkTypeId().equals(other.getLinkTypeId()))
+                && (this.getLinkType() == null ? other.getLinkType() == null : this.getLinkType().equals(other.getLinkType()))
+                && (this.getLinkLoss() == null ? other.getLinkLoss() == null : this.getLinkLoss().equals(other.getLinkLoss()))
+                && (this.getLinkRate() == null ? other.getLinkRate() == null : this.getLinkRate().equals(other.getLinkRate()))
+                && (this.getVersionId() == null ? other.getVersionId() == null : this.getVersionId().equals(other.getVersionId()))
+                && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
+                && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((getLinkTypeId() == null) ? 0 : getLinkTypeId().hashCode());
+        result = prime * result + ((getLinkType() == null) ? 0 : getLinkType().hashCode());
+        result = prime * result + ((getLinkLoss() == null) ? 0 : getLinkLoss().hashCode());
+        result = prime * result + ((getLinkRate() == null) ? 0 : getLinkRate().hashCode());
+        result = prime * result + ((getVersionId() == null) ? 0 : getVersionId().hashCode());
+        result = prime * result + ((getGmtCreate() == null) ? 0 : getGmtCreate().hashCode());
+        result = prime * result + ((getGmtModified() == null) ? 0 : getGmtModified().hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", linkTypeId=").append(linkTypeId);
+        sb.append(", linkType=").append(linkType);
+        sb.append(", linkLoss=").append(linkLoss);
+        sb.append(", linkRate=").append(linkRate);
+        sb.append(", versionId=").append(versionId);
+        sb.append(", gmtCreate=").append(gmtCreate);
+        sb.append(", gmtModified=").append(gmtModified);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
     }
 }

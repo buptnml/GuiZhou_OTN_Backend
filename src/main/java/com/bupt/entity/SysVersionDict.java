@@ -3,10 +3,11 @@ package com.bupt.entity;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Date;
 
 @Table(name = "sys_version_dict")
-public class SysVersionDict {
+public class SysVersionDict implements Serializable {
     /**
      * 版本字典id
      */
@@ -79,6 +80,8 @@ public class SysVersionDict {
      */
     @Column(name = "gmt_modified")
     private Date gmtModified;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取版本字典id
@@ -294,5 +297,73 @@ public class SysVersionDict {
      */
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        }
+        if (that == null) {
+            return false;
+        }
+        if (getClass() != that.getClass()) {
+            return false;
+        }
+        SysVersionDict other = (SysVersionDict) that;
+        return (this.getVersionDictId() == null ? other.getVersionDictId() == null : this.getVersionDictId().equals(other.getVersionDictId()))
+                && (this.getVersionDictName() == null ? other.getVersionDictName() == null : this.getVersionDictName().equals(other.getVersionDictName()))
+                && (this.getVersionDictDescription() == null ? other.getVersionDictDescription() == null : this.getVersionDictDescription().equals(other.getVersionDictDescription()))
+                && (this.getCreatorName() == null ? other.getCreatorName() == null : this.getCreatorName().equals(other.getCreatorName()))
+                && (this.getHasBussiness() == null ? other.getHasBussiness() == null : this.getHasBussiness().equals(other.getHasBussiness()))
+                && (this.getHasDisk() == null ? other.getHasDisk() == null : this.getHasDisk().equals(other.getHasDisk()))
+                && (this.getHasLink() == null ? other.getHasLink() == null : this.getHasLink().equals(other.getHasLink()))
+                && (this.getHasNetElement() == null ? other.getHasNetElement() == null : this.getHasNetElement().equals(other.getHasNetElement()))
+                && (this.getHasLinkType() == null ? other.getHasLinkType() == null : this.getHasLinkType().equals(other.getHasLinkType()))
+                && (this.getHasAmplifier() == null ? other.getHasAmplifier() == null : this.getHasAmplifier().equals(other.getHasAmplifier()))
+                && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
+                && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((getVersionDictId() == null) ? 0 : getVersionDictId().hashCode());
+        result = prime * result + ((getVersionDictName() == null) ? 0 : getVersionDictName().hashCode());
+        result = prime * result + ((getVersionDictDescription() == null) ? 0 : getVersionDictDescription().hashCode());
+        result = prime * result + ((getCreatorName() == null) ? 0 : getCreatorName().hashCode());
+        result = prime * result + ((getHasBussiness() == null) ? 0 : getHasBussiness().hashCode());
+        result = prime * result + ((getHasDisk() == null) ? 0 : getHasDisk().hashCode());
+        result = prime * result + ((getHasLink() == null) ? 0 : getHasLink().hashCode());
+        result = prime * result + ((getHasNetElement() == null) ? 0 : getHasNetElement().hashCode());
+        result = prime * result + ((getHasLinkType() == null) ? 0 : getHasLinkType().hashCode());
+        result = prime * result + ((getHasAmplifier() == null) ? 0 : getHasAmplifier().hashCode());
+        result = prime * result + ((getGmtCreate() == null) ? 0 : getGmtCreate().hashCode());
+        result = prime * result + ((getGmtModified() == null) ? 0 : getGmtModified().hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", versionDictId=").append(versionDictId);
+        sb.append(", versionDictName=").append(versionDictName);
+        sb.append(", versionDictDescription=").append(versionDictDescription);
+        sb.append(", creatorName=").append(creatorName);
+        sb.append(", hasBussiness=").append(hasBussiness);
+        sb.append(", hasDisk=").append(hasDisk);
+        sb.append(", hasLink=").append(hasLink);
+        sb.append(", hasNetElement=").append(hasNetElement);
+        sb.append(", hasLinkType=").append(hasLinkType);
+        sb.append(", hasAmplifier=").append(hasAmplifier);
+        sb.append(", gmtCreate=").append(gmtCreate);
+        sb.append(", gmtModified=").append(gmtModified);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
     }
 }

@@ -1,7 +1,7 @@
 package com.bupt.controller;
 
 
-import com.bupt.controller.utils.VersionCheckException;
+import com.bupt.controller.util.VersionCheckException;
 import com.bupt.pojo.UserCreateInfo;
 import com.bupt.pojo.UserDTO;
 import com.bupt.pojo.UserQuery;

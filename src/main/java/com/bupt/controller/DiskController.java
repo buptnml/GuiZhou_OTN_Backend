@@ -1,6 +1,6 @@
 package com.bupt.controller;
 
-import com.bupt.controller.utils.VersionCheckException;
+import com.bupt.controller.util.VersionCheckException;
 import com.bupt.pojo.DiskCreateInfo;
 import com.bupt.pojo.DiskDTO;
 import com.bupt.service.AmplifierService;
@@ -74,7 +74,7 @@ public class DiskController {
             throw new IllegalArgumentException("机盘槽位号错误");
         }
         if (amplifierService.listAmplifiers(versionId).stream().filter(amplifierDTO ->
-                amplifierDTO.getAmplifierName().equals(diskCreateInfo.getDiskType())).count() == 0) {
+                amplifierDTO.getDiskType().equals(diskCreateInfo.getDiskType())).count() == 0) {
             throw new IllegalArgumentException("输入的机盘类型信息不支持，请重新输入");
         }
     }

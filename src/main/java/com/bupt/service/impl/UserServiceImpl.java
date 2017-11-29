@@ -66,14 +66,6 @@ class UserServiceImpl implements UserService {
         return example;
     }
 
-    @Override
-    public UserDTO getUserByUserId(Long userId) {
-        UserDTO userDTO = this.convertToUserDTO(sysUserDao.selectByPrimaryKey(userId));
-        if (null == userDTO) {
-            throw new NoneGetException();
-        }
-        return userDTO;
-    }
 
     @Override
     public List<UserDTO> listUser() {
@@ -85,22 +77,6 @@ class UserServiceImpl implements UserService {
         return resultList;
     }
 
-    @Override
-    public UserDTO updateUser(UserCreateInfo userCreateInfo) {
-        if (sysUserDao.updateByExampleSelective(this.convertToSysUser(userCreateInfo), getExample(userCreateInfo
-                .getUserName())) >
-                0) {
-            return this.getUserByUserQuery(new UserQuery(userCreateInfo.getUserName(), userCreateInfo.getPassword()));
-        }
-        throw new NoneUpdateException();
-    }
-
-    private Example getExample(String userName) {
-        Example example = new Example(SysUser.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("userName", userName);
-        return example;
-    }
 
     @Override
     public UserDTO updateUser(Long userId, UserCreateInfo userCreateInfo) {
@@ -120,15 +96,6 @@ class UserServiceImpl implements UserService {
             userNameList.add(userDTO.getUserName());
         }
         return userNameList;
-    }
-
-    @Override
-    public UserDTO getUserByName(String userName) {
-        List<SysUser> results = sysUserDao.selectByExample(getExample(userName));
-        if (results.size() == 0) {
-            throw new NoneGetException("userName/creatorName");
-        }
-        return convertToUserDTO(results.get(0));
     }
 
 

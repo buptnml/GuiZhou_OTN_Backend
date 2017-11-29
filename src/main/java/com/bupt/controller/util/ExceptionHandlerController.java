@@ -1,4 +1,4 @@
-package com.bupt.controller.utils;
+package com.bupt.controller.util;
 
 
 import com.bupt.util.exception.controller.input.ArgumentOutOfLimitsException;
@@ -37,6 +37,7 @@ public class ExceptionHandlerController {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleHttpMessageNotReadableException(HttpServletRequest request, RuntimeException e) {
+        e.printStackTrace();
         logger.warn("Request: " + request.getRequestURL() + " raised " + e);
         return e.getMessage();
     }
@@ -44,6 +45,7 @@ public class ExceptionHandlerController {
     @ExceptionHandler(NoneGetException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleNoneGetException(HttpServletRequest request, RuntimeException e) {
+        e.printStackTrace();
         logger.warn("Request: " + request.getRequestURL() + " raised " + e);
         return e.getMessage();
     }
@@ -51,6 +53,7 @@ public class ExceptionHandlerController {
     @ExceptionHandler(NoneRemoveException.class)
     @ResponseStatus(HttpStatus.GONE)
     public String handleNoneRemoveException(HttpServletRequest request, RuntimeException e) {
+        e.printStackTrace();
         logger.warn("Request: " + request.getRequestURL() + " raised " + e);
         return e.getMessage();
     }
@@ -58,6 +61,7 @@ public class ExceptionHandlerController {
     @ExceptionHandler(NoneSaveException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public String handleNoneSaveException(HttpServletRequest request, RuntimeException e) {
+        e.printStackTrace();
         logger.warn("Request: " + request.getRequestURL() + " raised " + e);
         return e.getMessage();
     }
@@ -65,6 +69,7 @@ public class ExceptionHandlerController {
     @ExceptionHandler(NoneUpdateException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public String handleNoneUpdateException(HttpServletRequest request, RuntimeException e) {
+        e.printStackTrace();
         logger.warn("Request: " + request.getRequestURL() + " raised " + e);
         return e.getMessage();
     }
@@ -72,6 +77,7 @@ public class ExceptionHandlerController {
     @ExceptionHandler(ArgumentOutOfLimitsException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleArgumentOutOfLimitsException(HttpServletRequest request, RuntimeException e) {
+        e.printStackTrace();
         logger.error("Request: " + request.getRequestURL() + " raised " + e);
         return e.getMessage();
     }
@@ -89,17 +95,18 @@ public class ExceptionHandlerController {
         logger.error("Request: " + request.getRequestURL() + " raised " + e);
         return e.getMessage();
     }
-
-    @ExceptionHandler(RuntimeException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleException(HttpServletRequest request, RuntimeException e) {
-        logger.warn("Request: " + request.getRequestURL() + " raised " + e);
-        return "输入信息为空或不合法，请检查输入信息重新输入。";
-    }
+//
+//    @ExceptionHandler(RuntimeException.class)
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    public String handleException(HttpServletRequest request, RuntimeException e) {
+//        logger.warn("Request: " + request.getRequestURL() + " raised " + e);
+//        return "输入信息为空或不合法，请检查输入信息重新输入。";
+//    }
 
     @ExceptionHandler(DuplicateKeyException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleMySQLIntegrityConstraintViolationException(HttpServletRequest request, RuntimeException e) {
+        e.printStackTrace();
         logger.warn("Request: " + request.getRequestURL() + " raised " + e);
         return "输入的信息中关键内容和数据库记录重复，请重新输入。";
     }
@@ -108,8 +115,9 @@ public class ExceptionHandlerController {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleException(HttpServletRequest request, Exception e) {
+        e.printStackTrace();
         logger.error("Request: " + request.getRequestURL() + " raised " + e);
-        return "输入信息为空或不合法，请检查输入信息重新输入！";
+        return "输入信息为空或不合法，请检查输入信息重新输入。";
     }
 
 

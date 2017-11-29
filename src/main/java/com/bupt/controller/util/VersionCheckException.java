@@ -1,4 +1,4 @@
-package com.bupt.controller.utils;
+package com.bupt.controller.util;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

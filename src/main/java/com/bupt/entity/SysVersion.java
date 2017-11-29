@@ -3,10 +3,12 @@ package com.bupt.entity;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
 
 @Table(name = "sys_version")
-public class SysVersion {
+public class SysVersion implements Serializable {
     /**
      * 版本id
      */
@@ -55,6 +57,8 @@ public class SysVersion {
      */
     @Column(name = "version_setting")
     private byte[] versionSetting;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取版本id
@@ -198,5 +202,61 @@ public class SysVersion {
      */
     public void setVersionSetting(byte[] versionSetting) {
         this.versionSetting = versionSetting;
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        }
+        if (that == null) {
+            return false;
+        }
+        if (getClass() != that.getClass()) {
+            return false;
+        }
+        SysVersion other = (SysVersion) that;
+        return (this.getVersionId() == null ? other.getVersionId() == null : this.getVersionId().equals(other.getVersionId()))
+                && (this.getVersionName() == null ? other.getVersionName() == null : this.getVersionName().equals(other.getVersionName()))
+                && (this.getVersionDictName() == null ? other.getVersionDictName() == null : this.getVersionDictName().equals(other.getVersionDictName()))
+                && (this.getCreatorName() == null ? other.getCreatorName() == null : this.getCreatorName().equals(other.getCreatorName()))
+                && (this.getVersionDescription() == null ? other.getVersionDescription() == null : this.getVersionDescription().equals(other.getVersionDescription()))
+                && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
+                && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()))
+                && (Arrays.equals(this.getVersionSetting(), other.getVersionSetting()));
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((getVersionId() == null) ? 0 : getVersionId().hashCode());
+        result = prime * result + ((getVersionName() == null) ? 0 : getVersionName().hashCode());
+        result = prime * result + ((getVersionDictName() == null) ? 0 : getVersionDictName().hashCode());
+        result = prime * result + ((getCreatorName() == null) ? 0 : getCreatorName().hashCode());
+        result = prime * result + ((getVersionDescription() == null) ? 0 : getVersionDescription().hashCode());
+        result = prime * result + ((getGmtCreate() == null) ? 0 : getGmtCreate().hashCode());
+        result = prime * result + ((getGmtModified() == null) ? 0 : getGmtModified().hashCode());
+        result = prime * result + (Arrays.hashCode(getVersionSetting()));
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", versionId=").append(versionId);
+        sb.append(", versionName=").append(versionName);
+        sb.append(", versionDictName=").append(versionDictName);
+        sb.append(", creatorName=").append(creatorName);
+        sb.append(", versionDescription=").append(versionDescription);
+        sb.append(", gmtCreate=").append(gmtCreate);
+        sb.append(", gmtModified=").append(gmtModified);
+        sb.append(", versionSetting=").append(versionSetting);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
     }
 }

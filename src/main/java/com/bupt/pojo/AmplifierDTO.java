@@ -17,6 +17,7 @@ public class AmplifierDTO {
      * `version_id` bigint(20) unsigned NOT NULL COMMENT '条目所在版本ID',
      */
     private Long amplifierId;
+    private String diskType;
     private String amplifierName;
     private Short gain;
     private Short minimumInputPower;
@@ -25,6 +26,15 @@ public class AmplifierDTO {
 
 
     // ?
+
+
+    public String getDiskType() {
+        return diskType;
+    }
+
+    public void setDiskType(String diskType) {
+        this.diskType = diskType;
+    }
 
     public Long getAmplifierId() {
         return amplifierId;

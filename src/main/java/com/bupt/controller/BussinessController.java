@@ -1,8 +1,7 @@
 package com.bupt.controller;
 
 
-import com.bupt.controller.utils.ControllerChecker;
-import com.bupt.controller.utils.VersionCheckException;
+import com.bupt.controller.util.VersionCheckException;
 import com.bupt.facade.BussinessService;
 import com.bupt.pojo.BussinessCreateInfo;
 import com.bupt.pojo.BussinessDTO;
@@ -39,7 +38,8 @@ public class BussinessController {
     @ApiOperation(value = "创建新光通道条目")
     @RequestMapping(value = "/{versionId}", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public BussinessDTO saveBussiness(@PathVariable Long versionId, @RequestBody BussinessCreateInfo bussinessCreateInfo) {
+    public BussinessDTO saveBussiness(@PathVariable Long versionId, @RequestBody BussinessCreateInfo
+            bussinessCreateInfo) {
         checkBussinessCreateInfo(bussinessCreateInfo);
         return bussinessService.saveBussiness(versionId, bussinessCreateInfo);
     }
@@ -53,9 +53,7 @@ public class BussinessController {
 
 
     private void checkBussinessCreateInfo(BussinessCreateInfo bussinessCreateInfo) {
-        ControllerChecker.checkObject(bussinessCreateInfo);
         if (null != bussinessCreateInfo.getSpareRoute()) {
-            ControllerChecker.checkObject(bussinessCreateInfo.getSpareRoute());
             if (null == bussinessCreateInfo.getSpareFrequency()) {
                 throw new NullArgumentException("有备用路由时备用频点不能为空！");
             }

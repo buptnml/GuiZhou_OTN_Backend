@@ -1,7 +1,7 @@
 package com.bupt.facade.OSNRCalculator;
 
 import com.bupt.facade.OSNRCalculator.exceptions.OSNRResultOutOfLimitException;
-import com.bupt.pojo.NodeOSNRDetail;
+import com.bupt.pojo.OSNRNodesDetails;
 import com.bupt.pojo.OSNRResult;
 import org.springframework.stereotype.Component;
 
@@ -34,10 +34,10 @@ class OSNRResultsCalculator implements OSNRResultsCalculable {
     }
 
     @Override
-    public List<NodeOSNRDetail> getDetail() {
-        List<NodeOSNRDetail> results = new LinkedList<>();
+    public List<OSNRNodesDetails> getDetail() {
+        List<OSNRNodesDetails> results = new LinkedList<>();
         for (int i = 0; i < noisePowers.length; i++) {
-            results.add(new NodeOSNRDetail(nodes[i], inputPowers[i][outputPowers[i].length - 1],
+            results.add(new OSNRNodesDetails(nodes[i], inputPowers[i][outputPowers[i].length - 1],
                     outputPowers[i][outputPowers[i].length - 1], outputPowers[i][outputPowers[i].length -
                     1] - inputPowers[i][outputPowers[i].length - 1], noisePowers[i]));
         }

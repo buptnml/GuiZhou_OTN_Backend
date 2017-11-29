@@ -1,4 +1,4 @@
-package com.bupt.controller.utils;
+package com.bupt.controller.util;
 
 
 import org.aspectj.lang.JoinPoint;
@@ -11,6 +11,10 @@ import org.springframework.stereotype.Component;
 import java.util.EnumSet;
 
 
+/**
+ * 该切面的目的是对整个Controller的输入参数做一些基础的合法性检查
+ * 附带有两个例外注解：InputCheckException和VersionCheckException
+ */
 @Component
 @Aspect
 public class InputFilterAspect {
@@ -23,13 +27,13 @@ public class InputFilterAspect {
         Class targetClass = point.getSignature().getDeclaringType();
         if (null == ((MethodSignature) point.getSignature()).getMethod().getAnnotation(InputCheckException.class)) {
             for (int i = 0; i < paramNames.length; i++) {
-                ControllerChecker.checkObject(args[i]);
+                Checker.checkObject(args[i]);
                 if (paramNames[i].trim().toLowerCase().equals("versionid")
                         && null == targetClass.getAnnotation(VersionCheckException.class)
                         && null == ((MethodSignature) point.getSignature()).getMethod().getAnnotation
                         (VersionCheckException.class)) {
                     /*涉及到版本的操作，在类和方法上均无指定的Exceptional注解的情况下，需要验证版本信息*/
-                    ControllerChecker.checkVersion((Long) args[i], enumFactory(targetClass.getName()));
+                    Checker.checkVersion((Long) args[i], enumFactory(targetClass.getName()));
                 }
             }
         }

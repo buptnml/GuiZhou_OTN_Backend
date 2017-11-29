@@ -1,7 +1,7 @@
 package com.bupt.controller;
 
 
-import com.bupt.controller.utils.VersionCheckException;
+import com.bupt.controller.util.VersionCheckException;
 import com.bupt.pojo.NetElementCreateInfo;
 import com.bupt.pojo.NetElementDTO;
 import com.bupt.service.NetElementService;
@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.EnumSet;
 import java.util.List;
 
 /**
@@ -81,16 +80,6 @@ public class NetElementController {
         if (netElementCreateInfo.getNetElementName().contains("-")) {
             throw new IllegalArgumentException("名称不允许包含'-'字符！");
         }
-        if (EnumSet.allOf(NetElementTypes.class).stream().filter(e -> e.toString().equals(netElementCreateInfo
-                .getNetElementType())).count() == 0) {
-            throw new IllegalArgumentException("输入的类型不支持，请重新输入");
-        }
-    }
-
-
-    //网元类型枚举
-    public enum NetElementTypes {
-        OTM, OLA
     }
 
 

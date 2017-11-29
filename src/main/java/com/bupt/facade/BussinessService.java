@@ -55,5 +55,5 @@ BussinessService {
      * @param oldString
      * @param newString
      */
-    void updateReferBussiness(Long versionId, String oldString, String newString);
+    void updateReferBussiness(Long versionId, String oldString, String newString, boolean needRecalculate);
 }

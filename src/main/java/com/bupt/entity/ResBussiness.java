@@ -3,10 +3,11 @@ package com.bupt.entity;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Date;
 
 @Table(name = "res_bussiness")
-public class ResBussiness {
+public class ResBussiness implements Serializable {
     /**
      * 业务id
      */
@@ -91,6 +92,8 @@ public class ResBussiness {
      */
     @Column(name = "gmt_modified")
     private Date gmtModified;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取业务id
@@ -342,5 +345,79 @@ public class ResBussiness {
      */
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        }
+        if (that == null) {
+            return false;
+        }
+        if (getClass() != that.getClass()) {
+            return false;
+        }
+        ResBussiness other = (ResBussiness) that;
+        return (this.getBussinessId() == null ? other.getBussinessId() == null : this.getBussinessId().equals(other.getBussinessId()))
+                && (this.getBussinessName() == null ? other.getBussinessName() == null : this.getBussinessName().equals(other.getBussinessName()))
+                && (this.getBussinessRate() == null ? other.getBussinessRate() == null : this.getBussinessRate().equals(other.getBussinessRate()))
+                && (this.getMainRoute() == null ? other.getMainRoute() == null : this.getMainRoute().equals(other.getMainRoute()))
+                && (this.getMainFrequency() == null ? other.getMainFrequency() == null : this.getMainFrequency().equals(other.getMainFrequency()))
+                && (this.getMainInputPowers() == null ? other.getMainInputPowers() == null : this.getMainInputPowers().equals(other.getMainInputPowers()))
+                && (this.getMainOutputPowers() == null ? other.getMainOutputPowers() == null : this.getMainOutputPowers().equals(other.getMainOutputPowers()))
+                && (this.getSpareRoute() == null ? other.getSpareRoute() == null : this.getSpareRoute().equals(other.getSpareRoute()))
+                && (this.getSpareFrequency() == null ? other.getSpareFrequency() == null : this.getSpareFrequency().equals(other.getSpareFrequency()))
+                && (this.getSpareInputPowers() == null ? other.getSpareInputPowers() == null : this.getSpareInputPowers().equals(other.getSpareInputPowers()))
+                && (this.getSpareOutputPowers() == null ? other.getSpareOutputPowers() == null : this.getSpareOutputPowers().equals(other.getSpareOutputPowers()))
+                && (this.getVersionId() == null ? other.getVersionId() == null : this.getVersionId().equals(other.getVersionId()))
+                && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
+                && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((getBussinessId() == null) ? 0 : getBussinessId().hashCode());
+        result = prime * result + ((getBussinessName() == null) ? 0 : getBussinessName().hashCode());
+        result = prime * result + ((getBussinessRate() == null) ? 0 : getBussinessRate().hashCode());
+        result = prime * result + ((getMainRoute() == null) ? 0 : getMainRoute().hashCode());
+        result = prime * result + ((getMainFrequency() == null) ? 0 : getMainFrequency().hashCode());
+        result = prime * result + ((getMainInputPowers() == null) ? 0 : getMainInputPowers().hashCode());
+        result = prime * result + ((getMainOutputPowers() == null) ? 0 : getMainOutputPowers().hashCode());
+        result = prime * result + ((getSpareRoute() == null) ? 0 : getSpareRoute().hashCode());
+        result = prime * result + ((getSpareFrequency() == null) ? 0 : getSpareFrequency().hashCode());
+        result = prime * result + ((getSpareInputPowers() == null) ? 0 : getSpareInputPowers().hashCode());
+        result = prime * result + ((getSpareOutputPowers() == null) ? 0 : getSpareOutputPowers().hashCode());
+        result = prime * result + ((getVersionId() == null) ? 0 : getVersionId().hashCode());
+        result = prime * result + ((getGmtCreate() == null) ? 0 : getGmtCreate().hashCode());
+        result = prime * result + ((getGmtModified() == null) ? 0 : getGmtModified().hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", bussinessId=").append(bussinessId);
+        sb.append(", bussinessName=").append(bussinessName);
+        sb.append(", bussinessRate=").append(bussinessRate);
+        sb.append(", mainRoute=").append(mainRoute);
+        sb.append(", mainFrequency=").append(mainFrequency);
+        sb.append(", mainInputPowers=").append(mainInputPowers);
+        sb.append(", mainOutputPowers=").append(mainOutputPowers);
+        sb.append(", spareRoute=").append(spareRoute);
+        sb.append(", spareFrequency=").append(spareFrequency);
+        sb.append(", spareInputPowers=").append(spareInputPowers);
+        sb.append(", spareOutputPowers=").append(spareOutputPowers);
+        sb.append(", versionId=").append(versionId);
+        sb.append(", gmtCreate=").append(gmtCreate);
+        sb.append(", gmtModified=").append(gmtModified);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
     }
 }
