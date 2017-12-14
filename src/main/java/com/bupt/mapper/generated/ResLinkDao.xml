@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bupt.mapper.generated.{0}Dao">
-    <resultMap id="BaseResultMap" type="com.bupt.entity.ResLink">
-        <!--
-          WARNING - @mbg.generated
-        -->
-        <id column="link_id" jdbcType="BIGINT" property="linkId"/>
-        <result column="link_name" jdbcType="VARCHAR" property="linkName"/>
-        <result column="link_type" jdbcType="VARCHAR" property="linkType"/>
-        <result column="link_length" jdbcType="REAL" property="linkLength"/>
-        <result column="link_loss" jdbcType="REAL" property="linkLoss"/>
-        <result column="end_a_id" jdbcType="BIGINT" property="endAId"/>
-        <result column="end_a_name" jdbcType="VARCHAR" property="endAName"/>
-        <result column="end_z_id" jdbcType="BIGINT" property="endZId"/>
-        <result column="end_z_name" jdbcType="VARCHAR" property="endZName"/>
-        <result column="version_id" jdbcType="BIGINT" property="versionId"/>
-        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
-        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
-    </resultMap>
-    <sql id="Base_Column_List">
-        <!--
-          WARNING - @mbg.generated
-        -->
-        link_id, link_name, link_type, link_length, link_loss, end_a_id, end_a_name, end_z_id,
-        end_z_name, version_id, gmt_create, gmt_modified
-    </sql>
+  <resultMap id="BaseResultMap" type="com.bupt.entity.ResLink">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="link_id" jdbcType="BIGINT" property="linkId" />
+    <result column="link_name" jdbcType="VARCHAR" property="linkName" />
+    <result column="link_type" jdbcType="VARCHAR" property="linkType" />
+    <result column="link_length" jdbcType="REAL" property="linkLength" />
+    <result column="link_loss" jdbcType="REAL" property="linkLoss" />
+    <result column="end_a_id" jdbcType="BIGINT" property="endAId" />
+    <result column="end_a_name" jdbcType="VARCHAR" property="endAName" />
+    <result column="end_z_id" jdbcType="BIGINT" property="endZId" />
+    <result column="end_z_name" jdbcType="VARCHAR" property="endZName" />
+    <result column="version_id" jdbcType="BIGINT" property="versionId" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    link_id, link_name, link_type, link_length, link_loss, end_a_id, end_a_name, end_z_id, 
+    end_z_name, version_id, gmt_create, gmt_modified
+  </sql>
 </mapper>

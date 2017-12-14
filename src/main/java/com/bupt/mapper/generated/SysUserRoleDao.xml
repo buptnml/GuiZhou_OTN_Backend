@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bupt.mapper.generated.{0}Dao">
-    <resultMap id="BaseResultMap" type="com.bupt.entity.SysUserRole">
-        <!--
-          WARNING - @mbg.generated
-        -->
-        <id column="role_id" jdbcType="BIGINT" property="roleId"/>
-        <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
-        <result column="role_description" jdbcType="VARCHAR" property="roleDescription"/>
-        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
-        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
-    </resultMap>
-    <sql id="Base_Column_List">
-        <!--
-          WARNING - @mbg.generated
-        -->
-        role_id, role_name, role_description, gmt_create, gmt_modified
-    </sql>
+  <resultMap id="BaseResultMap" type="com.bupt.entity.SysUserRole">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="role_id" jdbcType="BIGINT" property="roleId" />
+    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+    <result column="role_description" jdbcType="VARCHAR" property="roleDescription" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    role_id, role_name, role_description, gmt_create, gmt_modified
+  </sql>
 </mapper>

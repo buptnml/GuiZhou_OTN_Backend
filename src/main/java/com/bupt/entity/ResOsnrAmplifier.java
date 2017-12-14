@@ -1,10 +1,8 @@
 package com.bupt.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.*;
 
 @Table(name = "res_osnr_amplifier")
 public class ResOsnrAmplifier implements Serializable {
@@ -15,7 +13,11 @@ public class ResOsnrAmplifier implements Serializable {
     @Column(name = "amplifier_id")
     private Long amplifierId;
 
-    private static final long serialVersionUID = 1L;
+    /**
+     * 放大器所在机盘名称
+     */
+    @Column(name = "disk_type")
+    private String diskType;
 
     /**
      * 放大器名称
@@ -63,11 +65,8 @@ public class ResOsnrAmplifier implements Serializable {
      */
     @Column(name = "gmt_modified")
     private Date gmtModified;
-    /**
-     * 放大器所在机盘名称
-     */
-    @Column(name = "disk_type")
-    private String diskType;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取放大器id
@@ -262,15 +261,15 @@ public class ResOsnrAmplifier implements Serializable {
         }
         ResOsnrAmplifier other = (ResOsnrAmplifier) that;
         return (this.getAmplifierId() == null ? other.getAmplifierId() == null : this.getAmplifierId().equals(other.getAmplifierId()))
-                && (this.getDiskType() == null ? other.getDiskType() == null : this.getDiskType().equals(other.getDiskType()))
-                && (this.getAmplifierName() == null ? other.getAmplifierName() == null : this.getAmplifierName().equals(other.getAmplifierName()))
-                && (this.getGain() == null ? other.getGain() == null : this.getGain().equals(other.getGain()))
-                && (this.getMinimumInputPower() == null ? other.getMinimumInputPower() == null : this.getMinimumInputPower().equals(other.getMinimumInputPower()))
-                && (this.getMaximumInputPower() == null ? other.getMaximumInputPower() == null : this.getMaximumInputPower().equals(other.getMaximumInputPower()))
-                && (this.getMaximumOutputPower() == null ? other.getMaximumOutputPower() == null : this.getMaximumOutputPower().equals(other.getMaximumOutputPower()))
-                && (this.getVersionId() == null ? other.getVersionId() == null : this.getVersionId().equals(other.getVersionId()))
-                && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
-                && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
+            && (this.getDiskType() == null ? other.getDiskType() == null : this.getDiskType().equals(other.getDiskType()))
+            && (this.getAmplifierName() == null ? other.getAmplifierName() == null : this.getAmplifierName().equals(other.getAmplifierName()))
+            && (this.getGain() == null ? other.getGain() == null : this.getGain().equals(other.getGain()))
+            && (this.getMinimumInputPower() == null ? other.getMinimumInputPower() == null : this.getMinimumInputPower().equals(other.getMinimumInputPower()))
+            && (this.getMaximumInputPower() == null ? other.getMaximumInputPower() == null : this.getMaximumInputPower().equals(other.getMaximumInputPower()))
+            && (this.getMaximumOutputPower() == null ? other.getMaximumOutputPower() == null : this.getMaximumOutputPower().equals(other.getMaximumOutputPower()))
+            && (this.getVersionId() == null ? other.getVersionId() == null : this.getVersionId().equals(other.getVersionId()))
+            && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
+            && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
     }
 
     @Override

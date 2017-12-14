@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bupt.mapper.generated.{0}Dao">
-    <resultMap id="BaseResultMap" type="com.bupt.entity.ResDisk">
-        <!--
-          WARNING - @mbg.generated
-        -->
-        <id column="disk_id" jdbcType="BIGINT" property="diskId"/>
-        <result column="slot_id" jdbcType="BIGINT" property="slotId"/>
-        <result column="disk_name" jdbcType="VARCHAR" property="diskName"/>
-        <result column="disk_type" jdbcType="VARCHAR" property="diskType"/>
-        <result column="amplifier_name" jdbcType="VARCHAR" property="amplifierName"/>
-        <result column="net_element_id" jdbcType="BIGINT" property="netElementId"/>
-        <result column="version_id" jdbcType="BIGINT" property="versionId"/>
-        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
-        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
-    </resultMap>
-    <sql id="Base_Column_List">
-        <!--
-          WARNING - @mbg.generated
-        -->
-        disk_id, slot_id, disk_name, disk_type, amplifier_name, net_element_id, version_id,
-        gmt_create, gmt_modified
-    </sql>
+  <resultMap id="BaseResultMap" type="com.bupt.entity.ResDisk">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="disk_id" jdbcType="BIGINT" property="diskId" />
+    <result column="slot_id" jdbcType="BIGINT" property="slotId" />
+    <result column="disk_name" jdbcType="VARCHAR" property="diskName" />
+    <result column="disk_type" jdbcType="VARCHAR" property="diskType" />
+    <result column="amplifier_name" jdbcType="VARCHAR" property="amplifierName" />
+    <result column="net_element_id" jdbcType="BIGINT" property="netElementId" />
+    <result column="version_id" jdbcType="BIGINT" property="versionId" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    disk_id, slot_id, disk_name, disk_type, amplifier_name, net_element_id, version_id, 
+    gmt_create, gmt_modified
+  </sql>
 </mapper>

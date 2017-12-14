@@ -1,10 +1,8 @@
 package com.bupt.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.*;
 
 @Table(name = "res_disk")
 public class ResDisk implements Serializable {
@@ -30,7 +28,11 @@ public class ResDisk implements Serializable {
     @Column(name = "disk_type")
     private String diskType;
 
-    private static final long serialVersionUID = 1L;
+    /**
+     * 放大器类型
+     */
+    @Column(name = "amplifier_name")
+    private String amplifierName;
 
     /**
      * 网元ID
@@ -55,11 +57,8 @@ public class ResDisk implements Serializable {
      */
     @Column(name = "gmt_modified")
     private Date gmtModified;
-    /**
-     * 放大器类型
-     */
-    @Column(name = "amplifier_name")
-    private String amplifierName;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取机盘ID
@@ -232,14 +231,14 @@ public class ResDisk implements Serializable {
         }
         ResDisk other = (ResDisk) that;
         return (this.getDiskId() == null ? other.getDiskId() == null : this.getDiskId().equals(other.getDiskId()))
-                && (this.getSlotId() == null ? other.getSlotId() == null : this.getSlotId().equals(other.getSlotId()))
-                && (this.getDiskName() == null ? other.getDiskName() == null : this.getDiskName().equals(other.getDiskName()))
-                && (this.getDiskType() == null ? other.getDiskType() == null : this.getDiskType().equals(other.getDiskType()))
-                && (this.getAmplifierName() == null ? other.getAmplifierName() == null : this.getAmplifierName().equals(other.getAmplifierName()))
-                && (this.getNetElementId() == null ? other.getNetElementId() == null : this.getNetElementId().equals(other.getNetElementId()))
-                && (this.getVersionId() == null ? other.getVersionId() == null : this.getVersionId().equals(other.getVersionId()))
-                && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
-                && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
+            && (this.getSlotId() == null ? other.getSlotId() == null : this.getSlotId().equals(other.getSlotId()))
+            && (this.getDiskName() == null ? other.getDiskName() == null : this.getDiskName().equals(other.getDiskName()))
+            && (this.getDiskType() == null ? other.getDiskType() == null : this.getDiskType().equals(other.getDiskType()))
+            && (this.getAmplifierName() == null ? other.getAmplifierName() == null : this.getAmplifierName().equals(other.getAmplifierName()))
+            && (this.getNetElementId() == null ? other.getNetElementId() == null : this.getNetElementId().equals(other.getNetElementId()))
+            && (this.getVersionId() == null ? other.getVersionId() == null : this.getVersionId().equals(other.getVersionId()))
+            && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
+            && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
     }
 
     @Override
