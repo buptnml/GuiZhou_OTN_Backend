@@ -1,6 +1,6 @@
 package com.bupt.facade.impl;
 
-import com.bupt.dao.SysVersionDao;
+import com.bupt.dao.*;
 import com.bupt.entity.SysVersion;
 import com.bupt.facade.BussinessService;
 import com.bupt.facade.VersionConcreteService;
@@ -11,6 +11,8 @@ import com.bupt.pojo.VersionQuery;
 import com.bupt.service.*;
 import com.bupt.util.exception.controller.result.NoneGetException;
 import com.bupt.util.exception.controller.result.NoneRemoveException;
+import com.bupt.webservice.WebServiceDataFactory;
+import com.bupt.webservice.com.pojo.WebServiceConfigInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,9 +41,28 @@ class VersionConcreteServiceImpl implements VersionConcreteService {
     private LinkService linkService;
     @Resource
     private VersionBackUpService versionBackUpService;
-
+    @Resource
+    private WebServiceDataFactory webServiceDataFactory;
     @Resource
     private NetElementService netElementService;
+
+    @Resource
+    private ResDiskDao resDiskDao;
+    @Resource
+    private ResLinkDao resLinkDao;
+    @Resource
+    private ResBussinessDao resBussinessDao;
+    @Resource
+    private ResOsnrAmplifierDao resOsnrAmplifierDao;
+    @Resource
+    private ResNetElementDao resNetElementDao;
+
+
+    @Resource
+    private WebServiceConfigInfo webServiceConfigInfo;
+
+
+
 
 
     @Override
@@ -91,10 +112,24 @@ class VersionConcreteServiceImpl implements VersionConcreteService {
         if (null == fromVersion || null == toVersion) {
             throw new NoneGetException("同步数据失败！!");
         }
-        batchRemove(toVersionId);
-        batchCreate(fromVersionId, toVersionId);
+        if (!toVersionId.equals(webServiceConfigInfo.getBASIC_VERSION_ID())) {
+            batchRemove(toVersionId);
+            batchCreate(fromVersionId, toVersionId);
+        } else {
+            basicVersionDataSynchronize();
+        }
     }
 
+    private void basicVersionDataSynchronize() {
+        batchRemove(webServiceConfigInfo.getBASIC_VERSION_ID());
+        webServiceDataFactory.listRemoteNetElement().parallelStream().forEach(resNetElement -> resNetElementDao
+                .insertSelective
+                        (resNetElement));
+        webServiceDataFactory.listRemoteDisk().parallelStream().forEach(resDisk -> resDiskDao.insertSelective(resDisk));
+        webServiceDataFactory.listRemoteLink().parallelStream().forEach(resLink -> resLinkDao.insertSelective(resLink));
+        webServiceDataFactory.listRemoteAmp().parallelStream().forEach(resOsnrAmplifier -> resOsnrAmplifierDao.insertSelective(resOsnrAmplifier));
+        webServiceDataFactory.listRemoteBusData().parallelStream().forEach(resBussiness -> resBussinessDao.insertSelective(resBussiness));
+    }
 
     /**
      * 从指定版本中拷贝数据
@@ -153,7 +188,7 @@ class VersionConcreteServiceImpl implements VersionConcreteService {
         if (dictSetting.getHasAmplifier()) {
             amplifierService.batchRemove(versionId);
         }
-        if (dictSetting.getHasLinkType()) {
+        if (dictSetting.getHasLinkType() && !versionId.equals(webServiceConfigInfo.getBASIC_VERSION_ID())) {
             linkTypeService.batchRemove(versionId);
         }
     }

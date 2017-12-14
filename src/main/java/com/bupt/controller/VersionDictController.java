@@ -6,6 +6,7 @@ import com.bupt.pojo.VersionDictDTO;
 import com.bupt.service.UserService;
 import com.bupt.service.VersionDictService;
 import com.bupt.util.exception.controller.input.IllegalArgumentException;
+import com.bupt.webservice.com.pojo.WebServiceConfigInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,8 @@ public class VersionDictController {
     private VersionDictService versionDictService;
     @Resource
     private UserService userService;
+    @Resource
+    private WebServiceConfigInfo webServiceConfigInfo;
 
     @ApiOperation(value = "查询全部版本字典信息")
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -41,7 +44,7 @@ public class VersionDictController {
     @RequestMapping(value = "/", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void listRemoveUser(@RequestBody List<Long> versionDictIdList) {
-        if (versionDictIdList.contains(100000000000L)) {
+        if (versionDictIdList.contains(webServiceConfigInfo.getBASIC_VERSION_ID())) {
             throw new IllegalArgumentException("基础字典不允许删除");
         }
         this.versionDictService.listRemoveVersionDict(versionDictIdList);
@@ -52,7 +55,7 @@ public class VersionDictController {
     @RequestMapping(value = "/{versionDictId}", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.CREATED)
     public VersionDictDTO updateVersionDict(@PathVariable Long versionDictId, @RequestBody VersionDictCreateInfo versionDictCreateInfo) {
-        if (versionDictId == 100000000000L) {
+        if (versionDictId == webServiceConfigInfo.getBASIC_VERSION_ID()) {
             throw new IllegalArgumentException("基础字典的信息不允许改动");
         }
         checkVersionDictInfo(versionDictCreateInfo);

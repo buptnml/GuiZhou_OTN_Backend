@@ -66,7 +66,7 @@ class OSNRServiceImpl implements OSNRService {
             calculator.calculate(inputPowers, outputPowers, routeString, versionId);
         } catch (Exception ignore) {  //do nothing
         }
-        return calculator.getNodeResults() == null ? new ArrayList<OSNRNodesDetails>() : calculator.getNodeResults();
+        return calculator.getNodeResults() == null ? new ArrayList<>() : calculator.getNodeResults();
     }
 
     @Override
@@ -108,7 +108,7 @@ class OSNRServiceImpl implements OSNRService {
     }
 
     @Override
-    public void OSNRLegalCheck(Long versionId, OSNRLegalCheckRequest osnrLegalCheckRequest) {
+    public synchronized void OSNRLegalCheck(Long versionId, OSNRLegalCheckRequest osnrLegalCheckRequest) {
         calculator.calculate(osnrLegalCheckRequest.getInputPower(), osnrLegalCheckRequest.getRouteString(), versionId);
     }
 

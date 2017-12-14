@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bupt.mapper.generated.{0}Dao">
-  <resultMap id="BaseResultMap" type="com.bupt.entity.SysVersionDict">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="version_dict_id" jdbcType="BIGINT" property="versionDictId" />
-    <result column="version_dict_name" jdbcType="VARCHAR" property="versionDictName" />
-    <result column="version_dict_description" jdbcType="VARCHAR" property="versionDictDescription" />
-    <result column="creator_name" jdbcType="VARCHAR" property="creatorName" />
-    <result column="has_bussiness" jdbcType="BIT" property="hasBussiness" />
-    <result column="has_disk" jdbcType="BIT" property="hasDisk" />
-    <result column="has_link" jdbcType="BIT" property="hasLink" />
-    <result column="has_net_element" jdbcType="BIT" property="hasNetElement" />
-    <result column="has_link_type" jdbcType="BIT" property="hasLinkType" />
-    <result column="has_amplifier" jdbcType="BIT" property="hasAmplifier" />
-    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
-    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    version_dict_id, version_dict_name, version_dict_description, creator_name, has_bussiness, 
-    has_disk, has_link, has_net_element, has_link_type, has_amplifier, gmt_create, gmt_modified
-  </sql>
+    <resultMap id="BaseResultMap" type="com.bupt.entity.SysVersionDict">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="version_dict_id" jdbcType="BIGINT" property="versionDictId"/>
+        <result column="version_dict_name" jdbcType="VARCHAR" property="versionDictName"/>
+        <result column="version_dict_description" jdbcType="VARCHAR" property="versionDictDescription"/>
+        <result column="creator_name" jdbcType="VARCHAR" property="creatorName"/>
+        <result column="has_bussiness" jdbcType="BIT" property="hasBussiness"/>
+        <result column="has_disk" jdbcType="BIT" property="hasDisk"/>
+        <result column="has_link" jdbcType="BIT" property="hasLink"/>
+        <result column="has_net_element" jdbcType="BIT" property="hasNetElement"/>
+        <result column="has_link_type" jdbcType="BIT" property="hasLinkType"/>
+        <result column="has_amplifier" jdbcType="BIT" property="hasAmplifier"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        version_dict_id, version_dict_name, version_dict_description, creator_name, has_bussiness,
+        has_disk, has_link, has_net_element, has_link_type, has_amplifier, gmt_create, gmt_modified
+    </sql>
 </mapper>

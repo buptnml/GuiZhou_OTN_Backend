@@ -14,7 +14,8 @@ abstract class AbstractCalculator implements Calculable {
      * 一般而言，这个函数是不需要改变的，而不同阶段的具体计算函数，延迟到子类实现
      */
     @Override
-    public final void calculate(double[][] inputPowers, double[][] outputPowers, String routeString, long versionId) {
+    public synchronized final void calculate(double[][] inputPowers, double[][] outputPowers, String routeString, long
+            versionId) {
         init(inputPowers, outputPowers, routeString, versionId);
         if (!hasInputsOutputs()) {
             inputsOutputsCalculate();

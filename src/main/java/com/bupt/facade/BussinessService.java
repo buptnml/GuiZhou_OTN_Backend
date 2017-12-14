@@ -31,6 +31,8 @@ BussinessService {
      */
     BussinessDTO saveBussiness(Long versionId, BussinessCreateInfo bussinessCreateInfo);
 
+    BussinessDTO updateBussiness(Long versionId, Long bussinessId, BussinessCreateInfo bussinessCreateInfo);
+
 
     /**
      * 批量删除现有业务

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bupt.mapper.generated.{0}Dao">
+    <resultMap id="BaseResultMap" type="com.bupt.entity.SysBackUp">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="version_id" jdbcType="BIGINT" property="versionId"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.bupt.entity.SysBackUp">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <result column="disk_back_up" jdbcType="LONGVARBINARY" property="diskBackUp"/>
+        <result column="link_back_up" jdbcType="LONGVARBINARY" property="linkBackUp"/>
+        <result column="net_element_back_up" jdbcType="LONGVARBINARY" property="netElementBackUp"/>
+        <result column="osnr_link_type_back_up" jdbcType="LONGVARBINARY" property="osnrLinkTypeBackUp"/>
+        <result column="osnr_amplifier_back_up" jdbcType="LONGVARBINARY" property="osnrAmplifierBackUp"/>
+        <result column="bussiness_back_up" jdbcType="LONGVARBINARY" property="bussinessBackUp"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        version_id, gmt_create, gmt_modified
+    </sql>
+    <sql id="Blob_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        disk_back_up, link_back_up, net_element_back_up, osnr_link_type_back_up, osnr_amplifier_back_up,
+        bussiness_back_up
+    </sql>
+</mapper>

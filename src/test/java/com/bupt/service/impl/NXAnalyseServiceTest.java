@@ -21,6 +21,7 @@ public class NXAnalyseServiceTest {
     @Resource
     private NXAnalyseService nxAnalyseService;
 
+
     @Test
     public void equipAnaTest() {
 

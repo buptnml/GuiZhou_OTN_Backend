@@ -11,6 +11,7 @@ import com.bupt.util.exception.controller.result.NoneUpdateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.RecoverableDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -37,77 +38,70 @@ public class ExceptionHandlerController {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleHttpMessageNotReadableException(HttpServletRequest request, RuntimeException e) {
-        e.printStackTrace();
-        logger.warn("Request: " + request.getRequestURL() + " raised " + e);
+        logger.error("Request: " + request.getRequestURL() + " raised:", e);
         return e.getMessage();
     }
 
     @ExceptionHandler(NoneGetException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleNoneGetException(HttpServletRequest request, RuntimeException e) {
-        e.printStackTrace();
-        logger.warn("Request: " + request.getRequestURL() + " raised " + e);
+        logger.error("Request: " + request.getRequestURL() + " raised:", e);
         return e.getMessage();
     }
 
     @ExceptionHandler(NoneRemoveException.class)
     @ResponseStatus(HttpStatus.GONE)
     public String handleNoneRemoveException(HttpServletRequest request, RuntimeException e) {
-        e.printStackTrace();
-        logger.warn("Request: " + request.getRequestURL() + " raised " + e);
+        logger.error("Request: " + request.getRequestURL() + " raised:", e);
         return e.getMessage();
     }
 
     @ExceptionHandler(NoneSaveException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public String handleNoneSaveException(HttpServletRequest request, RuntimeException e) {
-        e.printStackTrace();
-        logger.warn("Request: " + request.getRequestURL() + " raised " + e);
+        logger.error("Request: " + request.getRequestURL() + " raised:", e);
         return e.getMessage();
     }
 
     @ExceptionHandler(NoneUpdateException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public String handleNoneUpdateException(HttpServletRequest request, RuntimeException e) {
-        e.printStackTrace();
-        logger.warn("Request: " + request.getRequestURL() + " raised " + e);
+        logger.error("Request: " + request.getRequestURL() + " raised:", e);
         return e.getMessage();
     }
 
     @ExceptionHandler(ArgumentOutOfLimitsException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleArgumentOutOfLimitsException(HttpServletRequest request, RuntimeException e) {
-        e.printStackTrace();
-        logger.error("Request: " + request.getRequestURL() + " raised " + e);
+        logger.error("Request: " + request.getRequestURL() + " raised:", e);
         return e.getMessage();
     }
 
     @ExceptionHandler({NullArgumentException.class,})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleNullArgumentException(HttpServletRequest request, RuntimeException e) {
-        logger.error("Request: " + request.getRequestURL() + " raised " + e);
+        logger.error("Request: " + request.getRequestURL() + " raised:", e);
         return e.getMessage();
     }
 
     @ExceptionHandler({IllegalArgumentException.class, java.lang.IllegalArgumentException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleIllegalArgumentException(HttpServletRequest request, RuntimeException e) {
-        logger.error("Request: " + request.getRequestURL() + " raised " + e);
+        logger.error("Request: " + request.getRequestURL() + " raised:", e);
         return e.getMessage();
     }
-//
-//    @ExceptionHandler(RuntimeException.class)
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public String handleException(HttpServletRequest request, RuntimeException e) {
-//        logger.warn("Request: " + request.getRequestURL() + " raised " + e);
-//        return "输入信息为空或不合法，请检查输入信息重新输入。";
-//    }
+
+    @ExceptionHandler({com.mysql.jdbc.exceptions.jdbc4.CommunicationsException.class, RecoverableDataAccessException.class})
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public String handleException(HttpServletRequest request, RuntimeException e) {
+        logger.warn("Request: " + request.getRequestURL() + " raised " + e);
+        return "和远程数据库失去连接，请稍后重试";
+    }
 
     @ExceptionHandler(DuplicateKeyException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleMySQLIntegrityConstraintViolationException(HttpServletRequest request, RuntimeException e) {
-        e.printStackTrace();
-        logger.warn("Request: " + request.getRequestURL() + " raised " + e);
+        logger.error("Request: " + request.getRequestURL() + " raised:", e);
         return "输入的信息中关键内容和数据库记录重复，请重新输入。";
     }
 
@@ -115,8 +109,7 @@ public class ExceptionHandlerController {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleException(HttpServletRequest request, Exception e) {
-        e.printStackTrace();
-        logger.error("Request: " + request.getRequestURL() + " raised " + e);
+        logger.error("Request: " + request.getRequestURL() + " raised:", e);
         return "输入信息为空或不合法，请检查输入信息重新输入。";
     }
 

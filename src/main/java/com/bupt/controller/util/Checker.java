@@ -6,6 +6,7 @@ import com.bupt.service.VersionBasicService;
 import com.bupt.service.VersionDictService;
 import com.bupt.util.exception.controller.input.IllegalArgumentException;
 import com.bupt.util.exception.controller.input.NullArgumentException;
+import com.bupt.webservice.com.pojo.WebServiceConfigInfo;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
@@ -29,6 +30,8 @@ public class Checker {
     private VersionBasicService versionBasicService;
     @Resource
     private VersionDictService versionDictService;
+    @Resource
+    private WebServiceConfigInfo webServiceConfigInfo;
 
     /**
      * 检查Object和Object内部的属性是否合法
@@ -126,7 +129,7 @@ public class Checker {
      * @param dataEnum
      */
     public static void checkVersion(Long versionId, VersionDictEnum dataEnum) {
-        if (versionId == 100000000000L) {
+        if (versionId == checkerFactory.webServiceConfigInfo.getBASIC_VERSION_ID()) {
             throw new IllegalArgumentException("不允许对基础版本的数据做任何修改操作！");
         }
         if (null == dataEnum) { //匹配失败就返回

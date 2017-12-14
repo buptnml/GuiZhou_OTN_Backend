@@ -1,8 +1,10 @@
 package com.bupt.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.*;
 
 @Table(name = "res_net_element")
 public class ResNetElement implements Serializable {
@@ -214,13 +216,13 @@ public class ResNetElement implements Serializable {
         }
         ResNetElement other = (ResNetElement) that;
         return (this.getNetElementId() == null ? other.getNetElementId() == null : this.getNetElementId().equals(other.getNetElementId()))
-            && (this.getNetElementName() == null ? other.getNetElementName() == null : this.getNetElementName().equals(other.getNetElementName()))
-            && (this.getNetElementType() == null ? other.getNetElementType() == null : this.getNetElementType().equals(other.getNetElementType()))
-            && (this.getCoordinateX() == null ? other.getCoordinateX() == null : this.getCoordinateX().equals(other.getCoordinateX()))
-            && (this.getCoordinateY() == null ? other.getCoordinateY() == null : this.getCoordinateY().equals(other.getCoordinateY()))
-            && (this.getVersionId() == null ? other.getVersionId() == null : this.getVersionId().equals(other.getVersionId()))
-            && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
-            && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
+                && (this.getNetElementName() == null ? other.getNetElementName() == null : this.getNetElementName().equals(other.getNetElementName()))
+                && (this.getNetElementType() == null ? other.getNetElementType() == null : this.getNetElementType().equals(other.getNetElementType()))
+                && (this.getCoordinateX() == null ? other.getCoordinateX() == null : this.getCoordinateX().equals(other.getCoordinateX()))
+                && (this.getCoordinateY() == null ? other.getCoordinateY() == null : this.getCoordinateY().equals(other.getCoordinateY()))
+                && (this.getVersionId() == null ? other.getVersionId() == null : this.getVersionId().equals(other.getVersionId()))
+                && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
+                && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
     }
 
     @Override

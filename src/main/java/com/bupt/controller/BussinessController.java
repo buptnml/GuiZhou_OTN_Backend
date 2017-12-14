@@ -26,6 +26,14 @@ public class BussinessController {
     private BussinessService bussinessService;
 
 
+    @ApiOperation(value = "更新某个版本下的某设备的某机盘条目")
+    @RequestMapping(value = "/{versionId}/{bussinessId}", method = RequestMethod.PATCH)
+    @ResponseStatus(HttpStatus.CREATED)
+    public BussinessDTO updateBussiness(@PathVariable Long versionId, @PathVariable Long bussinessId, @RequestBody BussinessCreateInfo
+            bussinessCreateInfo) {
+        return bussinessService.updateBussiness(versionId, bussinessId, bussinessCreateInfo);
+    }
+
     @ApiOperation(value = "查询某个版本下的所有光通道信息")
     @RequestMapping(value = "/{versionId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)

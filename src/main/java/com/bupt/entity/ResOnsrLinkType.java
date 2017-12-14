@@ -1,8 +1,10 @@
 package com.bupt.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.*;
 
 @Table(name = "res_onsr_link_type")
 public class ResOnsrLinkType implements Serializable {
@@ -190,12 +192,12 @@ public class ResOnsrLinkType implements Serializable {
         }
         ResOnsrLinkType other = (ResOnsrLinkType) that;
         return (this.getLinkTypeId() == null ? other.getLinkTypeId() == null : this.getLinkTypeId().equals(other.getLinkTypeId()))
-            && (this.getLinkType() == null ? other.getLinkType() == null : this.getLinkType().equals(other.getLinkType()))
-            && (this.getLinkLoss() == null ? other.getLinkLoss() == null : this.getLinkLoss().equals(other.getLinkLoss()))
-            && (this.getLinkRate() == null ? other.getLinkRate() == null : this.getLinkRate().equals(other.getLinkRate()))
-            && (this.getVersionId() == null ? other.getVersionId() == null : this.getVersionId().equals(other.getVersionId()))
-            && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
-            && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
+                && (this.getLinkType() == null ? other.getLinkType() == null : this.getLinkType().equals(other.getLinkType()))
+                && (this.getLinkLoss() == null ? other.getLinkLoss() == null : this.getLinkLoss().equals(other.getLinkLoss()))
+                && (this.getLinkRate() == null ? other.getLinkRate() == null : this.getLinkRate().equals(other.getLinkRate()))
+                && (this.getVersionId() == null ? other.getVersionId() == null : this.getVersionId().equals(other.getVersionId()))
+                && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
+                && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
     }
 
     @Override
