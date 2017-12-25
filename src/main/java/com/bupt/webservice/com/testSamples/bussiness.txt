@@ -1023,10 +1023,10 @@
     <channel>
         <channel_id>2015-06-18 02:30:20 - 5681 -wdm</channel_id>
         <channel_name>901-中调-909-兴义地调-Client-5675</channel_name>
-        <main_route>901-中调、917-信息中心、905-两所屯变、918-八河变、919-兴仁换流站、920-金州变、908-兴义变、909-兴义地调</main_route>
+        <main_route>901-中调、917-信息中心、905-两所屯变、918-八河变、919-兴仁换流站、920-金州变、908-兴义变、兴义地调</main_route>
         <main_opl_in>-4、4.3、1.3、-7.7、-4.6、-11.5、-3.1、-7.4</main_opl_in>
         <main_opl_out>5.3、15.2、15.2、14.8、17.7、16、7.6、3</main_opl_out>
-        <spare_route>901-中调、916-贵阳变、915-夏云变、914-普定变、913-六枝变、906-六盘水变、912-台沙变、911-红果变、910-香田变、908-兴义变、909-兴义地调</spare_route>
+        <spare_route>901-中调、916-贵阳变、915-夏云变、914-普定变、913-六枝变、906-六盘水变、912-台沙变、911-红果变、910-香田变、908-兴义变、兴义地调</spare_route>
         <spare_opl_in>-4、0、0、-6.2、-5.5、-1、-9.4、-8.3、-6.7、-3.1、-7.4</spare_opl_in>
         <spare_opl_out>5.3、0、0、15.6、16.8、12、12.4、13.9、17、7.6、3</spare_opl_out>
     </channel>
@@ -2733,10 +2733,10 @@
     <channel>
         <channel_id>2015-06-12 09:11:46 - 5644 -wdm</channel_id>
         <channel_name>909-兴义地调-901-中调-ODU2-5646</channel_name>
-        <main_route>909-兴义地调、908-兴义变、910-香田变、911-红果变、912-台沙变、906-六盘水变、913-六枝变、914-普定变、915-夏云变、916-贵阳变、901-中调</main_route>
+        <main_route>兴义地调、908-兴义变、910-香田变、911-红果变、912-台沙变、906-六盘水变、913-六枝变、914-普定变、915-夏云变、916-贵阳变、901-中调</main_route>
         <main_opl_in>-7.4、-3.1、-6.7、-8.3、-9.4、-1、-5.5、-6.2、0、0、-4</main_opl_in>
         <main_opl_out>3、7.6、17、13.9、12.4、12、16.8、15.6、0、0、5.3</main_opl_out>
-        <spare_route>909-兴义地调、908-兴义变、920-金州变、919-兴仁换流站、918-八河变、905-两所屯变、917-信息中心、901-中调</spare_route>
+        <spare_route>兴义地调、908-兴义变、920-金州变、919-兴仁换流站、918-八河变、905-两所屯变、917-信息中心、901-中调</spare_route>
         <spare_opl_in>-7.4、-3.1、-11.5、-4.6、-7.7、1.3、4.3、-4</spare_opl_in>
         <spare_opl_out>3、7.6、16、17.7、14.8、15.2、15.2、5.3</spare_opl_out>
     </channel>
@@ -6873,7 +6873,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6949 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-6949</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -6883,7 +6883,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6952 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-6952</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -6893,7 +6893,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6955 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-6955</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -6903,7 +6903,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6958 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-6958</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -6913,7 +6913,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6961 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-6961</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -6923,7 +6923,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6964 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-6964</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -6933,7 +6933,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6967 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-6967</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -6943,7 +6943,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6970 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6970</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>-9.8、-0.6</main_opl_in>
         <main_opl_out>8.3、11.3</main_opl_out>
         <spare_route></spare_route>
@@ -6953,7 +6953,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6981 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6981</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>-9.8、-0.6</main_opl_in>
         <main_opl_out>8.3、11.3</main_opl_out>
         <spare_route></spare_route>
@@ -6963,7 +6963,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6993 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6993</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>-9.8、-0.6</main_opl_in>
         <main_opl_out>8.3、11.3</main_opl_out>
         <spare_route></spare_route>
@@ -6973,7 +6973,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6996 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6996</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -8033,7 +8033,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7002 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-7002</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -8043,7 +8043,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7005 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-7005</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>-10.1、1.4</main_opl_in>
         <main_opl_out>7.7、13</main_opl_out>
         <spare_route></spare_route>
@@ -8053,7 +8053,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7008 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-7008</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -8063,7 +8063,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7011 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-7011</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>-10.1、1.4</main_opl_in>
         <main_opl_out>7.7、13</main_opl_out>
         <spare_route></spare_route>
@@ -8073,7 +8073,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7014 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-7014</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -8083,7 +8083,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7017 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-7017</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>-10.1、1.4</main_opl_in>
         <main_opl_out>7.7、13</main_opl_out>
         <spare_route></spare_route>
@@ -8093,7 +8093,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7020 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-7020</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -8103,7 +8103,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7023 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-7023</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -8113,7 +8113,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7026 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-7026</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -8123,7 +8123,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7029 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-7029</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -9143,7 +9143,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6881 -wdm</channel_id>
         <channel_name>906-六盘水变-908-兴义变-OCh-6881</channel_name>
-        <main_route>06-六盘水变、912-台沙变、911-红果变、910-香田变、908-兴义变</main_route>
+        <main_route>906-六盘水变、912-台沙变、911-红果变、910-香田变、908-兴义变</main_route>
         <main_opl_in>-7.8、-4.2、-4.6、-9.7、2.3</main_opl_in>
         <main_opl_out>10.7、19.9、18.5、12.2、14.1</main_opl_out>
         <spare_route></spare_route>
@@ -9183,7 +9183,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6892 -wdm</channel_id>
         <channel_name>906-六盘水变-908-兴义变-OCh-6892</channel_name>
-        <main_route>06-六盘水变、912-台沙变、911-红果变、910-香田变、908-兴义变</main_route>
+        <main_route>906-六盘水变、912-台沙变、911-红果变、910-香田变、908-兴义变</main_route>
         <main_opl_in>-7.8、-4.2、-4.6、-9.7、2.3</main_opl_in>
         <main_opl_out>10.7、19.9、18.5、12.2、14.1</main_opl_out>
         <spare_route></spare_route>
@@ -9193,7 +9193,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6895 -wdm</channel_id>
         <channel_name>906-六盘水变-908-兴义变-OCh-6895</channel_name>
-        <main_route>06-六盘水变、912-台沙变、911-红果变、910-香田变、908-兴义变</main_route>
+        <main_route>906-六盘水变、912-台沙变、911-红果变、910-香田变、908-兴义变</main_route>
         <main_opl_in>-7.8、-4.2、-4.6、-9.7、2.3</main_opl_in>
         <main_opl_out>10.7、19.9、18.5、12.2、14.1</main_opl_out>
         <spare_route></spare_route>
@@ -9223,7 +9223,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6907 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6907</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>0、-3.9</main_opl_in>
         <main_opl_out>3.1、6.5</main_opl_out>
         <spare_route></spare_route>
@@ -9233,7 +9233,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6910 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6910</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>0、-3.9</main_opl_in>
         <main_opl_out>3.1、6.5</main_opl_out>
         <spare_route></spare_route>
@@ -9243,7 +9243,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6913 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6913</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>0、-4</main_opl_in>
         <main_opl_out>3.1、6.5</main_opl_out>
         <spare_route></spare_route>
@@ -9253,7 +9253,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6916 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6916</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>0、-4</main_opl_in>
         <main_opl_out>3.1、6.5</main_opl_out>
         <spare_route></spare_route>
@@ -9263,7 +9263,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6925 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6925</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>0、-4</main_opl_in>
         <main_opl_out>3.1、6.5</main_opl_out>
         <spare_route></spare_route>
@@ -9273,7 +9273,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6928 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6928</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>0、-3.9</main_opl_in>
         <main_opl_out>3.1、6.5</main_opl_out>
         <spare_route></spare_route>
@@ -9283,7 +9283,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6931 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6931</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>0、-3.9</main_opl_in>
         <main_opl_out>3.1、6.5</main_opl_out>
         <spare_route></spare_route>
@@ -9293,7 +9293,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6934 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6934</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in></main_opl_in>
         <main_opl_out></main_opl_out>
         <spare_route></spare_route>
@@ -9303,7 +9303,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6937 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-6937</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -9313,7 +9313,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6940 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-6940</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -9323,7 +9323,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6943 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-6943</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -9333,7 +9333,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6946 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-6946</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -9804,8 +9804,8 @@
         <channel_id>2015-08-18 02:35:06 - 7439 -wdm</channel_id>
         <channel_name>804-凯里地调-803-凯里变-OCh-7439</channel_name>
         <main_route>804-凯里地调、803-凯里变</main_route>
-        <main_opl_in>无数据</main_opl_in>
-        <main_opl_out>无数据</main_opl_out>
+        <main_opl_in></main_opl_in>
+        <main_opl_out></main_opl_out>
         <spare_route></spare_route>
         <spare_opl_in></spare_opl_in>
         <spare_opl_out></spare_opl_out>
@@ -10793,7 +10793,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6896 -wdm</channel_id>
         <channel_name>906-六盘水变-908-兴义变-OCh-6896</channel_name>
-        <main_route>06-六盘水变、912-台沙变、911-红果变、910-香田变、908-兴义变</main_route>
+        <main_route>906-六盘水变、912-台沙变、911-红果变、910-香田变、908-兴义变</main_route>
         <main_opl_in>-7.8、-4.2、-4.6、-9.7、2.3</main_opl_in>
         <main_opl_out>10.7、19.9、18.5、12.2、14.1</main_opl_out>
         <spare_route></spare_route>
@@ -10823,7 +10823,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6905 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6905</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>0、-4</main_opl_in>
         <main_opl_out>3.1、6.5</main_opl_out>
         <spare_route></spare_route>
@@ -10833,7 +10833,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6914 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6914</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>0、-3.9</main_opl_in>
         <main_opl_out>3.1、6.5</main_opl_out>
         <spare_route></spare_route>
@@ -10843,7 +10843,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6917 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6917</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>0、-3.9</main_opl_in>
         <main_opl_out>3.1、6.5</main_opl_out>
         <spare_route></spare_route>
@@ -10853,7 +10853,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6918 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6918</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>0、-3.9</main_opl_in>
         <main_opl_out>3.1、6.5</main_opl_out>
         <spare_route></spare_route>
@@ -10863,7 +10863,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6919 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6919</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>0、-3.9</main_opl_in>
         <main_opl_out>3.1、6.5</main_opl_out>
         <spare_route></spare_route>
@@ -10873,7 +10873,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6920 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6920</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>0、-3.9</main_opl_in>
         <main_opl_out>3.1、6.5</main_opl_out>
         <spare_route></spare_route>
@@ -10883,7 +10883,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6926 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6926</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>0、-4</main_opl_in>
         <main_opl_out>3.1、6.5</main_opl_out>
         <spare_route></spare_route>
@@ -10893,7 +10893,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6932 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6932</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>0、-3.9</main_opl_in>
         <main_opl_out>3.1、6.5</main_opl_out>
         <spare_route></spare_route>
@@ -10903,7 +10903,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6935 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6935</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>0、-4</main_opl_in>
         <main_opl_out>3.1、6.5</main_opl_out>
         <spare_route></spare_route>
@@ -10913,7 +10913,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6938 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-6938</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -10923,7 +10923,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6941 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-6941</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -10933,7 +10933,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6944 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-6944</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -10943,7 +10943,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6947 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-6947</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -10953,7 +10953,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6950 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-6950</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -10963,7 +10963,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6953 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-6953</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -10973,7 +10973,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6956 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-6956</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -10983,7 +10983,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6959 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-6959</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -10993,7 +10993,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6962 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-6962</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -11003,7 +11003,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6965 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-6965</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -11013,7 +11013,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6968 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6968</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>-9.8、-0.6</main_opl_in>
         <main_opl_out>8.3、11.3</main_opl_out>
         <spare_route></spare_route>
@@ -11023,7 +11023,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6974 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6974</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>-9.8、-0.6</main_opl_in>
         <main_opl_out>8.3、11.3</main_opl_out>
         <spare_route></spare_route>
@@ -11033,7 +11033,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6977 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6977</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>-9.8、-0.6</main_opl_in>
         <main_opl_out>8.3、11.3</main_opl_out>
         <spare_route></spare_route>
@@ -11043,7 +11043,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6982 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6982</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -11053,7 +11053,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6985 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6985</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>-9.8、-0.6</main_opl_in>
         <main_opl_out>8.3、11.3</main_opl_out>
         <spare_route></spare_route>
@@ -11063,7 +11063,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6988 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6988</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>-9.8、-0.6</main_opl_in>
         <main_opl_out>8.3、11.3</main_opl_out>
         <spare_route></spare_route>
@@ -11073,7 +11073,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6994 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6994</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -11083,7 +11083,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6997 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6997</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>-9.8、-0.6</main_opl_in>
         <main_opl_out>8.3、11.3</main_opl_out>
         <spare_route></spare_route>
@@ -11093,7 +11093,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7000 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-7000</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -11103,7 +11103,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7003 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-7003</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>-10.1、1.4</main_opl_in>
         <main_opl_out>7.7、13</main_opl_out>
         <spare_route></spare_route>
@@ -11113,7 +11113,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7006 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-7006</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>-10.1、1.4</main_opl_in>
         <main_opl_out>7.7、13</main_opl_out>
         <spare_route></spare_route>
@@ -11123,7 +11123,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7009 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-7009</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -11133,7 +11133,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7012 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-7012</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>-10.1、1.4</main_opl_in>
         <main_opl_out>7.7、13</main_opl_out>
         <spare_route></spare_route>
@@ -11143,7 +11143,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7015 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-7015</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>-10.1、1.4</main_opl_in>
         <main_opl_out>7.7、13</main_opl_out>
         <spare_route></spare_route>
@@ -11153,7 +11153,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7018 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-7018</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -11163,7 +11163,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7021 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-7021</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -11173,7 +11173,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7024 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-7024</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>-10.1、1.4</main_opl_in>
         <main_opl_out>7.7、13</main_opl_out>
         <spare_route></spare_route>
@@ -11183,7 +11183,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7027 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-7027</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -11193,7 +11193,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7030 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-7030</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -13283,7 +13283,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6883 -wdm</channel_id>
         <channel_name>906-六盘水变-908-兴义变-OCh-6883</channel_name>
-        <main_route>06-六盘水变、912-台沙变、911-红果变、910-香田变、908-兴义变</main_route>
+        <main_route>906-六盘水变、912-台沙变、911-红果变、910-香田变、908-兴义变</main_route>
         <main_opl_in>-7.8、-4.2、-4.6、-9.7、2.3</main_opl_in>
         <main_opl_out>10.7、19.9、18.5、12.2、14.1</main_opl_out>
         <spare_route></spare_route>
@@ -13483,7 +13483,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6894 -wdm</channel_id>
         <channel_name>906-六盘水变-908-兴义变-OCh-6894</channel_name>
-        <main_route>06-六盘水变、912-台沙变、911-红果变、910-香田变、908-兴义变</main_route>
+        <main_route>906-六盘水变、912-台沙变、911-红果变、910-香田变、908-兴义变</main_route>
         <main_opl_in>-7.8、-4.2、-4.6、-9.7、2.3</main_opl_in>
         <main_opl_out>10.7、19.9、18.5、12.2、14.1</main_opl_out>
         <spare_route></spare_route>
@@ -13513,7 +13513,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6909 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6909</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>0、-3.9</main_opl_in>
         <main_opl_out>3.1、6.5</main_opl_out>
         <spare_route></spare_route>
@@ -13523,7 +13523,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6915 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6915</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>0、-4</main_opl_in>
         <main_opl_out>3.1、6.5</main_opl_out>
         <spare_route></spare_route>
@@ -13533,7 +13533,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6921 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6921</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>0、-3.9</main_opl_in>
         <main_opl_out>3.1、6.5</main_opl_out>
         <spare_route></spare_route>
@@ -13543,7 +13543,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6924 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6924</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>0、-3.9</main_opl_in>
         <main_opl_out>3.1、6.5</main_opl_out>
         <spare_route></spare_route>
@@ -13553,7 +13553,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6936 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-6936</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -13563,7 +13563,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6939 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-6939</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -13573,7 +13573,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6942 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-6942</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -13583,7 +13583,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6945 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-6945</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -13593,7 +13593,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6948 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-6948</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -13753,7 +13753,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6951 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-6951</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -13763,7 +13763,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6954 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-6954</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -13773,7 +13773,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6957 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-6957</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -13783,7 +13783,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6960 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-6960</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -13793,7 +13793,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6963 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-6963</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -13803,7 +13803,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6966 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-6966</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -13813,7 +13813,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6972 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6972</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>-9.8、-0.6</main_opl_in>
         <main_opl_out>8.3、11.3</main_opl_out>
         <spare_route></spare_route>
@@ -13823,7 +13823,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6975 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6975</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>-9.8、-0.6</main_opl_in>
         <main_opl_out>8.3、11.3</main_opl_out>
         <spare_route></spare_route>
@@ -13833,7 +13833,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6978 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6978</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -13843,7 +13843,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6983 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6983</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>-9.8、-0.6</main_opl_in>
         <main_opl_out>8.3、11.3</main_opl_out>
         <spare_route></spare_route>
@@ -13853,7 +13853,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6992 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6992</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>-9.8、-0.6</main_opl_in>
         <main_opl_out>8.3、11.3</main_opl_out>
         <spare_route></spare_route>
@@ -13863,7 +13863,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6995 -wdm</channel_id>
         <channel_name>908-兴义变-909-兴义地调-OCh-6995</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -13873,7 +13873,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7001 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-7001</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>-10.1、1.4</main_opl_in>
         <main_opl_out>7.7、13</main_opl_out>
         <spare_route></spare_route>
@@ -13883,7 +13883,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7004 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-7004</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>-10.1、1.4</main_opl_in>
         <main_opl_out>7.7、13</main_opl_out>
         <spare_route></spare_route>
@@ -14063,7 +14063,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7007 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-7007</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -14073,7 +14073,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7010 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-7010</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -14083,7 +14083,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7013 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-7013</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>-10.1、1.4</main_opl_in>
         <main_opl_out>7.7、13</main_opl_out>
         <spare_route></spare_route>
@@ -14093,7 +14093,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7016 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-7016</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -14103,7 +14103,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7019 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-7019</channel_name>
-        <main_route>908-兴义变、909-兴义地调</main_route>
+        <main_route>908-兴义变、兴义地调</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -14113,7 +14113,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7022 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-7022</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -14123,7 +14123,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7025 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-7025</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -14133,7 +14133,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7028 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-7028</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -14143,7 +14143,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7031 -wdm</channel_id>
         <channel_name>909-兴义地调-908-兴义变-OCh-7031</channel_name>
-        <main_route>909-兴义地调、908-兴义变</main_route>
+        <main_route>兴义地调、908-兴义变</main_route>
         <main_opl_in>0、2.4</main_opl_in>
         <main_opl_out>2.9、12.5</main_opl_out>
         <spare_route></spare_route>
@@ -14223,10 +14223,10 @@
     <channel>
         <channel_id>2016-04-08 11:17:35 - 10899 -wdm</channel_id>
         <channel_name>909-兴义地调-917-信息中心-ODU2-3880</channel_name>
-        <main_route>909-兴义地调、908-兴义变、920-金州变、919-兴仁换流站、918-八河变、905-两所屯变、917-信息中心</main_route>
+        <main_route>兴义地调、908-兴义变、920-金州变、919-兴仁换流站、918-八河变、905-两所屯变、917-信息中心</main_route>
         <main_opl_in>-6.7、-3.1、-11.5、-4.6、-7.7、1.3、-1.3</main_opl_in>
         <main_opl_out>2.7、7.6、16、17.7、14.8、15.2、8</main_opl_out>
-        <spare_route>909-兴义地调、908-兴义变、910-香田变、911-红果变、912-台沙变、906-六盘水变、913-六枝变、914-普定变、915-夏云变、916-贵阳变、901-中调、917-信息中心</spare_route>
+        <spare_route>兴义地调、908-兴义变、910-香田变、911-红果变、912-台沙变、906-六盘水变、913-六枝变、914-普定变、915-夏云变、916-贵阳变、901-中调、917-信息中心</spare_route>
         <spare_opl_in>-6.7、-3.1、-6.7、-8.3、-9.4、-1、-5.5、-6.2、0、0、0.9、-1.3</spare_opl_in>
         <spare_opl_out>2.7、7.6、17、13.9、12.4、12、16.8、15.6、0、0、11.6、8</spare_opl_out>
     </channel>
@@ -15211,4 +15211,3 @@
         <spare_opl_out></spare_opl_out>
     </channel>
 </data>
-

@@ -24,6 +24,8 @@ public class WebServiceDataFactory {
     public List<ResBussiness> listRemoteBusData() {
 //        List<RawLinkData> rawList = XML_CONVERTER.getData(WS.getChannel(),XMLConverter.REQUEST_TYPES.bussiness);
         List<RawBussinessData> rawList = XML_CONVERTER.getData("E:\\研究生\\GitHub\\GuiZhou_OTN_Backend\\src\\main\\java\\com\\bupt\\webservice\\com\\testSamples\\bussiness.txt", XMLConverter.REQUEST_TYPES.bussiness, "file");
+//        List<RawBussinessData> rawList = XML_CONVERTER.getData
+//                ("E:\\研究生\\GitHub\\GuiZhou_OTN_Backend\\src\\main\\java\\com\\bupt\\webservice\\com\\testSamples\\test.txt", XMLConverter.REQUEST_TYPES.bussiness, "file");
         return rawList.parallelStream().distinct().map(
                 rawData -> {
                     if (rawData.getSpareRoute().equals("")) {
@@ -58,7 +60,12 @@ public class WebServiceDataFactory {
     }
 
     private String routeStringConverter(String routeString) {
-        return routeString.trim().replace("-", "_").replace("、", "-").replace("909-兴义地调", "兴义地调");
+        return routeString.trim().replace("917-信息中心-901-中调", "917-信息中心、901-中调").replace("712-黔北电厂-701-毕节变",
+                "712-黔北电厂、701-毕节变").replace("\b07-鸭溪变、706-遵义地调、", "707-鸭溪变、706-遵义地调").replace
+                ("703-贵阳变、715-息烽变2-707-鸭溪变", "703-贵阳变、715-息烽变2、707-鸭溪变").replace("\b两所屯变、904-安顺地调",
+                "905-两所屯变、904-安顺地调")
+                .replace("-", "_").replace("、",
+                        "-");
     }
 
     public List<ResDisk> listRemoteDisk() {

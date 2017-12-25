@@ -279,7 +279,7 @@ class BussinessServiceImpl implements BussinessService {
 
         //辅助createUpdateInfo计算OSNR结果
         private String getSubString(String routeString, String newString) {
-            return routeString.substring(routeString.indexOf(newString));
+            return routeString.substring(routeString.indexOf(newString) == -1 ? 0 : routeString.indexOf(newString));
         }
 
         //辅助createUpdateInfo计算OSNR结果

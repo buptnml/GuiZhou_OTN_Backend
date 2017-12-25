@@ -40,12 +40,9 @@ class VersionConcreteServiceImpl implements VersionConcreteService {
     @Resource
     private LinkService linkService;
     @Resource
-    private VersionBackUpService versionBackUpService;
-    @Resource
     private WebServiceDataFactory webServiceDataFactory;
     @Resource
     private NetElementService netElementService;
-
     @Resource
     private ResDiskDao resDiskDao;
     @Resource
@@ -56,13 +53,8 @@ class VersionConcreteServiceImpl implements VersionConcreteService {
     private ResOsnrAmplifierDao resOsnrAmplifierDao;
     @Resource
     private ResNetElementDao resNetElementDao;
-
-
     @Resource
     private WebServiceConfigInfo webServiceConfigInfo;
-
-
-
 
 
     @Override
@@ -75,9 +67,9 @@ class VersionConcreteServiceImpl implements VersionConcreteService {
     @Transactional
     public void listRemoveVersion(List<Long> versionIdList) {
         versionIdList.forEach(versionId -> {
-            batchRemove(versionId);
+//            batchRemove(versionId);
             sysVersionDao.deleteByPrimaryKey(versionId);
-            versionBackUpService.removeBackUp(versionId);
+//            versionBackUpService.removeBackUp(versionId);
         });
     }
 
@@ -90,7 +82,6 @@ class VersionConcreteServiceImpl implements VersionConcreteService {
 
     @Override
     public VersionDTOWithVersionDictDTO getVersion(Long versionId) {
-        //todo getVersion必须要重新更改 输入检查里涉及大量的getVersion操作
         SysVersion sysVersionDO = sysVersionDao.selectByPrimaryKey(versionId);
         if (null == sysVersionDO) {
             throw new NoneGetException("没有从数据库中找到该版本记录！");
@@ -167,7 +158,6 @@ class VersionConcreteServiceImpl implements VersionConcreteService {
      * 根据版本设置批量删除该版本所用资源
      */
     private void batchRemove(Long versionId) {
-        //TODO 多线程并发
         SysVersion Version = sysVersionDao.selectByPrimaryKey(versionId);
         if (null == Version) {
             throw new NoneRemoveException("删除版本数据失败！！");

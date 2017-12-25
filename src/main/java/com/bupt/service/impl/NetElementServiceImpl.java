@@ -61,7 +61,7 @@ class NetElementServiceImpl implements NetElementService {
     public NetElementDTO updateNetElement(Long versionId, Long netElementId, NetElementCreateInfo netElementCreateInfo) {
         ResNetElement updateInfo = this.convertToResNetElement(netElementCreateInfo);
         if (resNetElementDao.updateByExampleSelective(updateInfo, getExample(versionId, netElementId)) == 1) {
-            return convertToNetElementDTO(resNetElementDao.selectByExample(getExample(versionId, netElementId)).get(0));
+            return convertToNetElementDTO(resNetElementDao.selectByPrimaryKey(netElementId));
         }
         throw new NoneUpdateException();
     }
