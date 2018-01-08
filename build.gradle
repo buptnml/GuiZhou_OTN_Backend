@@ -1,5 +1,5 @@
-group 'GuiZhou_OTN_Backend'
-version '0.1.2.1'
+group 'OTN_Backend'
+version '1.0'
 
 apply plugin: 'java'
 apply plugin: 'war'

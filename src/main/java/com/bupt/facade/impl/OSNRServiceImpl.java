@@ -73,21 +73,25 @@ class OSNRServiceImpl implements OSNRService {
     public List<OSNRGeneralInfo> getRouteOSNRDetail(Long versionId, Long bussinessId) {
         ResBussiness bus = getBussiness(versionId, bussinessId);
         List<OSNRGeneralInfo> results = new ArrayList<>();
-        results.add(new OSNRGeneralInfo(bus, true, getRealRouteString(bus, true)));
+        results.add(new OSNRGeneralInfo(bus, true, getRealRouteString(bus, true, getOSNRResult(versionId,
+                bussinessId, true))));
         if (null != bus.getSpareRoute()) {
-            results.add(new OSNRGeneralInfo(bus, false, getRealRouteString(bus, false)));
+            results.add(new OSNRGeneralInfo(bus, false, getRealRouteString(bus, false, getOSNRResult(versionId,
+                    bussinessId, false))));
         }
         return results;
     }
 
-    private String getRealRouteString(ResBussiness bus, boolean isMain) {
+    private String getRealRouteString(ResBussiness bus, boolean isMain, List<OSNRDetailInfo> details) {
         String[] nodes = isMain ? bus.getMainRoute().split("-") : bus.getSpareRoute().split("-");
         StringBuilder results = new StringBuilder("");
         for (int i = 0; i < BussinessPowerStringTransfer.stringTransfer(isMain ? bus.getMainInputPowers() : bus.getSpareInputPowers()).length; i++) {
-            results.append(nodes[i]);
-            results.append("-");
+            if (!details.get(i).getResult().contains("小于18dB")) {
+                results.append(nodes[i]);
+                results.append("-");
+            }
         }
-        return results.substring(0, results.lastIndexOf("-"));
+        return results.length() == 0 ? "" : results.substring(0, results.lastIndexOf("-"));
     }
 
     @Override

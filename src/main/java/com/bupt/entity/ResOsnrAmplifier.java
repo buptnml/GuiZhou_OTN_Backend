@@ -64,7 +64,7 @@ public class ResOsnrAmplifier implements Serializable {
     @Column(name = "gmt_modified")
     private Date gmtModified;
     /**
-     * 放大器所在机盘名称
+     * 机盘类型
      */
     @Column(name = "disk_type")
     private String diskType;
@@ -88,18 +88,18 @@ public class ResOsnrAmplifier implements Serializable {
     }
 
     /**
-     * 获取放大器所在机盘名称
+     * 获取机盘类型
      *
-     * @return disk_type - 放大器所在机盘名称
+     * @return disk_type - 机盘类型
      */
     public String getDiskType() {
         return diskType;
     }
 
     /**
-     * 设置放大器所在机盘名称
+     * 设置机盘类型
      *
-     * @param diskType 放大器所在机盘名称
+     * @param diskType 机盘类型
      */
     public void setDiskType(String diskType) {
         this.diskType = diskType == null ? null : diskType.trim();

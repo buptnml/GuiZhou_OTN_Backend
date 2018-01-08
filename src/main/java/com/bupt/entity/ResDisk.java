@@ -24,13 +24,13 @@ public class ResDisk implements Serializable {
     @Column(name = "disk_name")
     private String diskName;
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * 机盘类型
      */
     @Column(name = "disk_type")
     private String diskType;
-
-    private static final long serialVersionUID = 1L;
 
     /**
      * 网元ID
@@ -55,9 +55,6 @@ public class ResDisk implements Serializable {
      */
     @Column(name = "gmt_modified")
     private Date gmtModified;
-    /**
-     * 放大器类型
-     */
     @Column(name = "amplifier_name")
     private String amplifierName;
 
@@ -112,6 +109,20 @@ public class ResDisk implements Serializable {
     }
 
     /**
+     * @return amplifier_name
+     */
+    public String getAmplifierName() {
+        return amplifierName;
+    }
+
+    /**
+     * @param amplifierName
+     */
+    public void setAmplifierName(String amplifierName) {
+        this.amplifierName = amplifierName == null ? null : amplifierName.trim();
+    }
+
+    /**
      * 获取机盘类型
      *
      * @return disk_type - 机盘类型
@@ -127,24 +138,6 @@ public class ResDisk implements Serializable {
      */
     public void setDiskType(String diskType) {
         this.diskType = diskType == null ? null : diskType.trim();
-    }
-
-    /**
-     * 获取放大器类型
-     *
-     * @return amplifier_name - 放大器类型
-     */
-    public String getAmplifierName() {
-        return amplifierName;
-    }
-
-    /**
-     * 设置放大器类型
-     *
-     * @param amplifierName 放大器类型
-     */
-    public void setAmplifierName(String amplifierName) {
-        this.amplifierName = amplifierName == null ? null : amplifierName.trim();
     }
 
     /**
@@ -234,8 +227,8 @@ public class ResDisk implements Serializable {
         return (this.getDiskId() == null ? other.getDiskId() == null : this.getDiskId().equals(other.getDiskId()))
                 && (this.getSlotId() == null ? other.getSlotId() == null : this.getSlotId().equals(other.getSlotId()))
                 && (this.getDiskName() == null ? other.getDiskName() == null : this.getDiskName().equals(other.getDiskName()))
-                && (this.getDiskType() == null ? other.getDiskType() == null : this.getDiskType().equals(other.getDiskType()))
                 && (this.getAmplifierName() == null ? other.getAmplifierName() == null : this.getAmplifierName().equals(other.getAmplifierName()))
+                && (this.getDiskType() == null ? other.getDiskType() == null : this.getDiskType().equals(other.getDiskType()))
                 && (this.getNetElementId() == null ? other.getNetElementId() == null : this.getNetElementId().equals(other.getNetElementId()))
                 && (this.getVersionId() == null ? other.getVersionId() == null : this.getVersionId().equals(other.getVersionId()))
                 && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
@@ -249,8 +242,8 @@ public class ResDisk implements Serializable {
         result = prime * result + ((getDiskId() == null) ? 0 : getDiskId().hashCode());
         result = prime * result + ((getSlotId() == null) ? 0 : getSlotId().hashCode());
         result = prime * result + ((getDiskName() == null) ? 0 : getDiskName().hashCode());
-        result = prime * result + ((getDiskType() == null) ? 0 : getDiskType().hashCode());
         result = prime * result + ((getAmplifierName() == null) ? 0 : getAmplifierName().hashCode());
+        result = prime * result + ((getDiskType() == null) ? 0 : getDiskType().hashCode());
         result = prime * result + ((getNetElementId() == null) ? 0 : getNetElementId().hashCode());
         result = prime * result + ((getVersionId() == null) ? 0 : getVersionId().hashCode());
         result = prime * result + ((getGmtCreate() == null) ? 0 : getGmtCreate().hashCode());
@@ -267,8 +260,8 @@ public class ResDisk implements Serializable {
         sb.append(", diskId=").append(diskId);
         sb.append(", slotId=").append(slotId);
         sb.append(", diskName=").append(diskName);
-        sb.append(", diskType=").append(diskType);
         sb.append(", amplifierName=").append(amplifierName);
+        sb.append(", diskType=").append(diskType);
         sb.append(", netElementId=").append(netElementId);
         sb.append(", versionId=").append(versionId);
         sb.append(", gmtCreate=").append(gmtCreate);

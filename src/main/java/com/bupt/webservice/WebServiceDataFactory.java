@@ -21,9 +21,13 @@ public class WebServiceDataFactory {
 //        static ResourceServiceDelegate WS = RS.getResourceServicePort();
 
 
+    String filepath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
+
+
     public List<ResBussiness> listRemoteBusData() {
 //        List<RawLinkData> rawList = XML_CONVERTER.getData(WS.getChannel(),XMLConverter.REQUEST_TYPES.bussiness);
-        List<RawBussinessData> rawList = XML_CONVERTER.getData("E:\\研究生\\GitHub\\GuiZhou_OTN_Backend\\src\\main\\java\\com\\bupt\\webservice\\com\\testSamples\\bussiness.txt", XMLConverter.REQUEST_TYPES.bussiness, "file");
+        List<RawBussinessData> rawList = XML_CONVERTER.getData(filepath + "testSamples/bussiness.txt", XMLConverter
+                .REQUEST_TYPES.bussiness, "file");
 //        List<RawBussinessData> rawList = XML_CONVERTER.getData
 //                ("E:\\研究生\\GitHub\\GuiZhou_OTN_Backend\\src\\main\\java\\com\\bupt\\webservice\\com\\testSamples\\test.txt", XMLConverter.REQUEST_TYPES.bussiness, "file");
         return rawList.parallelStream().distinct().map(
@@ -60,17 +64,20 @@ public class WebServiceDataFactory {
     }
 
     private String routeStringConverter(String routeString) {
-        return routeString.trim().replace("917-信息中心-901-中调", "917-信息中心、901-中调").replace("712-黔北电厂-701-毕节变",
-                "712-黔北电厂、701-毕节变").replace("\b07-鸭溪变、706-遵义地调、", "707-鸭溪变、706-遵义地调").replace
-                ("703-贵阳变、715-息烽变2-707-鸭溪变", "703-贵阳变、715-息烽变2、707-鸭溪变").replace("\b两所屯变、904-安顺地调",
-                "905-两所屯变、904-安顺地调")
-                .replace("-", "_").replace("、",
-                        "-");
+        return routeString.trim().
+                replace("917-信息中心、901中调", "917-信息中心、901-中调").
+                replace("917-信息中心-901-中调", "917-信息中心、901-中调").
+                replace("712-黔北电厂-701-毕节变", "712-黔北电厂、701-毕节变").
+                replaceAll("\\b07-鸭溪变、706-遵义地调、", "707-鸭溪变、706-遵义地调").
+                replaceAll("\\b07-鸭溪变、706-遵义地调", "707-鸭溪变、706-遵义地调").
+                replace("703-贵阳变、715-息烽变2-707-鸭溪变", "703-贵阳变、715-息烽变2、707-鸭溪变")
+                .replace("-", "_").replace("、", "-");
     }
 
     public List<ResDisk> listRemoteDisk() {
 //        List<RawLinkData> rawList = XML_CONVERTER.getData(WS.getAllEquipCardByAmp(),XMLConverter.REQUEST_TYPES.amp);
-        List<RawAmpData> rawList = XML_CONVERTER.getData("E:\\研究生\\GitHub\\GuiZhou_OTN_Backend\\src\\main\\java\\com\\bupt\\webservice\\com\\testSamples\\amplifier.txt", XMLConverter.REQUEST_TYPES.amp, "file");
+        List<RawAmpData> rawList = XML_CONVERTER.getData(filepath + "testSamples/amplifier.txt", XMLConverter
+                .REQUEST_TYPES.amp, "file");
         return rawList.stream().distinct().map(rawData -> {
             ResDisk res = new ResDisk();
             BeanUtils.copyProperties(rawData, res);
@@ -83,7 +90,9 @@ public class WebServiceDataFactory {
 
     public List<ResLink> listRemoteLink() {
 //        List<RawLinkData> rawList = XML_CONVERTER.getData(WS.getAllEquipLink(),XMLConverter.REQUEST_TYPES.link);
-        List<RawLinkData> rawList = XML_CONVERTER.getData("E:\\研究生\\GitHub\\GuiZhou_OTN_Backend\\src\\main\\java\\com\\bupt\\webservice\\com\\testSamples\\link.txt", XMLConverter.REQUEST_TYPES.link, "file");
+        List<RawLinkData> rawList = XML_CONVERTER.getData(filepath + "testSamples/link.txt", XMLConverter
+                        .REQUEST_TYPES.link,
+                "file");
         return rawList.stream().distinct().map(rawData -> {
             ResLink res = new ResLink();
             BeanUtils.copyProperties(rawData, res);
@@ -102,7 +111,8 @@ public class WebServiceDataFactory {
     public List<ResNetElement> listRemoteNetElement() {
 //        List<RawNetElementData> rawList = XML_CONVERTER.getData(WS.getAllEquip(), XMLConverter.REQUEST_TYPES
 //                .netElement);
-        List<RawNetElementData> rawList = XML_CONVERTER.getData("E:\\研究生\\GitHub\\GuiZhou_OTN_Backend\\src\\main\\java\\com\\bupt\\webservice\\com\\testSamples\\netElement.txt", XMLConverter.REQUEST_TYPES
+        List<RawNetElementData> rawList = XML_CONVERTER.getData(filepath + "testSamples/netElement.txt", XMLConverter
+                .REQUEST_TYPES
                 .netElement, "file");
         final Float minX = Math.abs(rawList.stream().min(Comparator.comparing(rawData -> rawData
                 .getCoordinateX())).get().getCoordinateX());
@@ -126,7 +136,9 @@ public class WebServiceDataFactory {
 
     public List<ResOsnrAmplifier> listRemoteAmp() {
 //        List<RawLinkData> rawList = XML_CONVERTER.getData(WS.getAllEquipCardByAmp(),XMLConverter.REQUEST_TYPES.amp);
-        List<RawAmpData> rawList = XML_CONVERTER.getData("E:\\研究生\\GitHub\\GuiZhou_OTN_Backend\\src\\main\\java\\com\\bupt\\webservice\\com\\testSamples\\amplifier.txt", XMLConverter.REQUEST_TYPES.amp, "file");
+        List<RawAmpData> rawList = XML_CONVERTER.getData(filepath + "testSamples\\amplifier.txt", XMLConverter
+                .REQUEST_TYPES
+                .amp, "file");
         return rawList.stream().map(rawData -> {
             ResOsnrAmplifier res = new ResOsnrAmplifier();
             BeanUtils.copyProperties(rawData, res);

@@ -2063,7 +2063,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6738 -wdm</channel_id>
         <channel_name>905-两所屯变-904-安顺地调-OCh-6738</channel_name>
-        <main_route>两所屯变、904-安顺地调</main_route>
+        <main_route>905-两所屯变、904-安顺地调</main_route>
         <main_opl_in>-8、5.4</main_opl_in>
         <main_opl_out>10.5、16.9</main_opl_out>
         <spare_route></spare_route>
@@ -4163,7 +4163,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6214 -wdm</channel_id>
         <channel_name>917-信息中心-901-中调-OCh-6214</channel_name>
-        <main_route>917-信息中心-901-中调</main_route>
+        <main_route>917-信息中心、901中调</main_route>
         <main_opl_in>0、9.6</main_opl_in>
         <main_opl_out>6.2、19.5</main_opl_out>
         <spare_route></spare_route>
@@ -8483,7 +8483,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7165 -wdm</channel_id>
         <channel_name>707-鸭溪变-701-毕节变-OCh-7165</channel_name>
-        <main_route>707-鸭溪变、712-黔北电厂-701-毕节变</main_route>
+        <main_route>707-鸭溪变、712-黔北电厂、701-毕节变</main_route>
         <main_opl_in>-4.3、0.1、1.3</main_opl_in>
         <main_opl_out>13.3、23.2、16.1</main_opl_out>
         <spare_route></spare_route>
@@ -11203,7 +11203,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 7035 -wdm</channel_id>
         <channel_name>707-鸭溪变-706-遵义地调-OCh-7035</channel_name>
-        <main_route>07-鸭溪变、706-遵义地调、</main_route>
+        <main_route>07-鸭溪变、706-遵义地调</main_route>
         <main_opl_in>-0.3、-60</main_opl_in>
         <main_opl_out>-17、-60</main_opl_out>
         <spare_route></spare_route>
@@ -12923,7 +12923,7 @@
     <channel>
         <channel_id>2015-08-18 02:35:06 - 6805 -wdm</channel_id>
         <channel_name>703-贵阳变-707-鸭溪变-OCh-6805</channel_name>
-        <main_route>703-贵阳变、715-息烽变2-707-鸭溪变</main_route>
+        <main_route>703-贵阳变、715-息烽变2、707-鸭溪变</main_route>
         <main_opl_in>-5.8、8.3、-3.1</main_opl_in>
         <main_opl_out>12.7、18.3、17</main_opl_out>
         <spare_route></spare_route>

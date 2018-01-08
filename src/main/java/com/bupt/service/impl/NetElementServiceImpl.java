@@ -30,7 +30,8 @@ class NetElementServiceImpl implements NetElementService {
         ResNetElement saveInfo = this.convertToResNetElement(netElementCreateInfo);
         saveInfo.setVersionId(versionId);
         if (resNetElementDao.insertSelective(saveInfo) > 0) {
-            return convertToNetElementDTO(resNetElementDao.selectOne(saveInfo));
+            return convertToNetElementDTO(resNetElementDao.selectByExample(getExample(versionId, netElementCreateInfo
+                    .getNetElementName())).get(0));
         }
         throw new NoneSaveException();
     }

@@ -21,6 +21,9 @@ public class ExampleFactory {
         this.example = new Example(object.getClass());
         Example.Criteria criteria = this.example.createCriteria();
         builder.conditionList.stream().forEach(criterion -> {
+            switch (criterion.condition.size) {
+
+            }
 //            try {
             //todo 修改 getMethod(criteria.getClass(),criterion.getMethodName()).invoke(criteria, criterion.getArgs());
 //            } catch (IllegalAccessException e) {

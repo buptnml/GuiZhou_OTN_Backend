@@ -9,53 +9,62 @@ import java.util.Date;
 
 @Table(name = "sys_back_up")
 public class SysBackUp implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 版本Id
      */
     @Id
     @Column(name = "version_id")
     private Long versionId;
+
     /**
      * 创建时间
      */
     @Column(name = "gmt_create")
     private Date gmtCreate;
+
     /**
      * 最后修改时间
      */
     @Column(name = "gmt_modified")
     private Date gmtModified;
+
     /**
      * 机盘备份数据
      */
     @Column(name = "disk_back_up")
     private byte[] diskBackUp;
+
     /**
      * 链路备份数据
      */
     @Column(name = "link_back_up")
     private byte[] linkBackUp;
+
     /**
      * 网元备份数据
      */
     @Column(name = "net_element_back_up")
     private byte[] netElementBackUp;
+
     /**
      * 链路类型备份数据
      */
     @Column(name = "osnr_link_type_back_up")
     private byte[] osnrLinkTypeBackUp;
+
     /**
      * 放大器备份数据
      */
     @Column(name = "osnr_amplifier_back_up")
     private byte[] osnrAmplifierBackUp;
+
     /**
      * 业务（光通道）备份数据
      */
     @Column(name = "bussiness_back_up")
     private byte[] bussinessBackUp;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取版本Id

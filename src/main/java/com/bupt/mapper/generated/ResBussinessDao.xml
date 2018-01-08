@@ -8,7 +8,7 @@
         <id column="bussiness_id" jdbcType="BIGINT" property="bussinessId"/>
         <result column="bussiness_name" jdbcType="VARCHAR" property="bussinessName"/>
         <result column="bussiness_rate" jdbcType="VARCHAR" property="bussinessRate"/>
-        <result column="mainRoute" jdbcType="VARCHAR" property="mainRoute"/>
+        <result column="main_route" jdbcType="VARCHAR" property="mainRoute"/>
         <result column="main_frequency" jdbcType="VARCHAR" property="mainFrequency"/>
         <result column="main_input_powers" jdbcType="VARCHAR" property="mainInputPowers"/>
         <result column="main_output_powers" jdbcType="VARCHAR" property="mainOutputPowers"/>
@@ -24,7 +24,7 @@
         <!--
           WARNING - @mbg.generated
         -->
-        bussiness_id, bussiness_name, bussiness_rate, mainRoute, main_frequency, main_input_powers,
+        bussiness_id, bussiness_name, bussiness_rate, main_route, main_frequency, main_input_powers,
         main_output_powers, spare_route, spare_frequency, spare_input_powers, spare_output_powers,
         version_id, gmt_create, gmt_modified
     </sql>
