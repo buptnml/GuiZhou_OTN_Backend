@@ -25,12 +25,12 @@ class NetElementCalculatorImpl implements NetElementCalculator {
 
     @Override
     public double[] getInputPowers() {
-        return inputPowers;
+        return inputPowers.clone();
     }
 
     @Override
     public double[] getOutputPowers() {
-        return outputPowers;
+        return outputPowers.clone();
     }
 
     @Override

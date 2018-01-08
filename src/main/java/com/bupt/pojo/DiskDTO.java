@@ -5,7 +5,16 @@ public class DiskDTO {
     private Long slotId;
     private String diskName;
     private String diskType;
+    private String amplifierName;
     private Long netElementId;
+
+    public String getAmplifierName() {
+        return amplifierName;
+    }
+
+    public void setAmplifierName(String amplifierName) {
+        this.amplifierName = amplifierName;
+    }
 
     public Long getSlotId() {
         return slotId;

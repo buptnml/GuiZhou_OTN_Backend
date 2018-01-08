@@ -1,13 +1,13 @@
 package com.bupt.pojo;
 
-public class NodeOSNRDetail {
+public class OSNRNodesDetails {
     private String nodeName;
     private Double inputPower;
     private Double outputPower;
     private Double gain;
     private Double noisePower;
 
-    public NodeOSNRDetail(String nodeName, double inputPower, double outputPower, double gain, double noisePower) {
+    public OSNRNodesDetails(String nodeName, double inputPower, double outputPower, double gain, double noisePower) {
         this.nodeName = nodeName;
         this.inputPower = inputPower;
         this.outputPower = outputPower;
@@ -15,7 +15,7 @@ public class NodeOSNRDetail {
         this.noisePower = noisePower;
     }
 
-    public NodeOSNRDetail() {
+    public OSNRNodesDetails() {
     }
 
     @Override
@@ -23,7 +23,7 @@ public class NodeOSNRDetail {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        NodeOSNRDetail that = (NodeOSNRDetail) o;
+        OSNRNodesDetails that = (OSNRNodesDetails) o;
 
         return Double.compare(that.inputPower, inputPower) == 0 && Double.compare(that.outputPower, outputPower) == 0 && Double.compare(that.gain, gain) == 0 && Double.compare(that.noisePower, noisePower) == 0 && (nodeName != null ? nodeName.equals(that.nodeName) : that.nodeName == null);
     }

@@ -1,10 +1,7 @@
 package com.bupt.facade;
 
 
-import com.bupt.pojo.BussinessDTO;
-import com.bupt.pojo.NodeOSNRDetail;
-import com.bupt.pojo.ResultOSNRDetail;
-import com.bupt.pojo.RouteOSNRDetail;
+import com.bupt.pojo.*;
 
 import java.util.List;
 
@@ -27,7 +24,7 @@ public interface OSNRService {
      * @param versionId
      * @param bussinessId
      */
-    List<NodeOSNRDetail> getNodeOSNRDetail(Long versionId, Long bussinessId);
+    List<OSNRNodesDetails> getNodeOSNRDetail(Long versionId, Long bussinessId);
 
     /**
      * 获取OSNR
@@ -36,7 +33,7 @@ public interface OSNRService {
      * @param bussinessId
      * @return
      */
-    List<RouteOSNRDetail> getRouteOSNRDetail(Long versionId, Long bussinessId);
+    List<OSNRGeneralInfo> getRouteOSNRDetail(Long versionId, Long bussinessId);
 
 
     /**
@@ -47,5 +44,14 @@ public interface OSNRService {
      * @param isMain
      * @return
      */
-    List<ResultOSNRDetail> getOSNRResult(Long versionId, Long bussinessId, Boolean isMain);
+    List<OSNRDetailInfo> getOSNRResult(Long versionId, Long bussinessId, Boolean isMain);
+
+    /**
+     * 给定一个路由，计算是否满足OSNR条件
+     *
+     * @param versionId
+     * @param osnrLegalCheckRequest
+     * @return
+     */
+    void OSNRLegalCheck(Long versionId, OSNRLegalCheckRequest osnrLegalCheckRequest);
 }

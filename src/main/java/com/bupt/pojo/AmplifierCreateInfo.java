@@ -2,10 +2,19 @@ package com.bupt.pojo;
 
 public class AmplifierCreateInfo {
     private String amplifierName;
+    private String diskType;
     private Short gain;
     private Short minimumInputPower;
     private Short maximumInputPower;
     private Short maximumOutputPower;
+
+    public String getDiskType() {
+        return diskType;
+    }
+
+    public void setDiskType(String diskType) {
+        this.diskType = diskType;
+    }
 
     public String getAmplifierName() {
         return amplifierName;

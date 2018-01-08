@@ -1,6 +1,6 @@
 package com.bupt.service.impl;
 
-import com.bupt.facade.VersionService;
+import com.bupt.facade.VersionConcreteService;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -15,9 +15,9 @@ import javax.annotation.Resource;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring.xml"})
 @WebAppConfiguration
-public class VersionServiceTest {
+public class VersionConcreteServiceTest {
     @Resource
-    VersionService versionService;
+    VersionConcreteService versionConcreteService;
 //    @Test
 //    public void saveVersionTest() throws Exception{
 //        VersionSetting versionSetting = new VersionSetting();
@@ -25,7 +25,7 @@ public class VersionServiceTest {
 //        versionQuery.setVersionName("测试版本123123");
 //        versionQuery.setBaseVersionName("测试版本0");
 //        versionQuery.setVersionSetting(versionSetting);
-//        versionService.saveVersion(versionQuery);
+//        versionConcreteService.saveVersion(versionQuery);
 //    }
 
 

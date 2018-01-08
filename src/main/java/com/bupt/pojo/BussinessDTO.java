@@ -8,7 +8,16 @@ public class BussinessDTO {
     private String mainFrequency;
     private String spareRoute;
     private String spareFrequency;
+    private Double inputPower;
 
+
+    public Double getInputPower() {
+        return inputPower;
+    }
+
+    public void setInputPower(Double inputPower) {
+        this.inputPower = inputPower;
+    }
 
     public Long getBussinessId() {
         return bussinessId;

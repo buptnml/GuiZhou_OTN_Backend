@@ -31,6 +31,8 @@ BussinessService {
      */
     BussinessDTO saveBussiness(Long versionId, BussinessCreateInfo bussinessCreateInfo);
 
+    BussinessDTO updateBussiness(Long versionId, Long bussinessId, BussinessCreateInfo bussinessCreateInfo);
+
 
     /**
      * 批量删除现有业务
@@ -55,5 +57,5 @@ BussinessService {
      * @param oldString
      * @param newString
      */
-    void updateReferBussiness(Long versionId, String oldString, String newString);
+    void updateReferBussiness(Long versionId, String oldString, String newString, boolean needRecalculate);
 }

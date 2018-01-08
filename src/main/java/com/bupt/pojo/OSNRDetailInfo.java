@@ -4,14 +4,14 @@ import com.bupt.entity.ResBussiness;
 
 import java.text.DecimalFormat;
 
-public class ResultOSNRDetail {
+public class OSNRDetailInfo {
     private String bussinessName;
     private String frequency;
     private String startNetElementName;
     private String endNetElementName;
     private String result;
 
-    public ResultOSNRDetail(ResBussiness bus, Boolean isMain, String startNetElementName, OSNRResult osnrResult) {
+    public OSNRDetailInfo(ResBussiness bus, Boolean isMain, String startNetElementName, OSNRResult osnrResult) {
         DecimalFormat df = new DecimalFormat("0.0000");
         this.bussinessName = bus.getBussinessName();
         this.frequency = isMain ? bus.getMainFrequency() : bus.getSpareFrequency();
@@ -20,7 +20,7 @@ public class ResultOSNRDetail {
         this.result = osnrResult.getResult() < 18 ? "OSNR值小于18dB" : df.format(osnrResult.getResult());
     }
 
-    public ResultOSNRDetail(ResBussiness bus, Boolean isMain, String startNetElementName, String endNetElementName
+    public OSNRDetailInfo(ResBussiness bus, Boolean isMain, String startNetElementName, String endNetElementName
             , String errorMessage) {
         this.bussinessName = bus.getBussinessName();
         this.frequency = isMain ? bus.getMainFrequency() : bus.getSpareFrequency();

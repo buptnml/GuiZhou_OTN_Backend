@@ -24,12 +24,14 @@ class NetElementServiceImpl implements NetElementService {
     @Resource
     private ResNetElementDao resNetElementDao;
 
+
     @Override
     public NetElementDTO saveNetElement(Long versionId, NetElementCreateInfo netElementCreateInfo) {
         ResNetElement saveInfo = this.convertToResNetElement(netElementCreateInfo);
         saveInfo.setVersionId(versionId);
         if (resNetElementDao.insertSelective(saveInfo) > 0) {
-            return convertToNetElementDTO(resNetElementDao.selectOne(saveInfo));
+            return convertToNetElementDTO(resNetElementDao.selectByExample(getExample(versionId, netElementCreateInfo
+                    .getNetElementName())).get(0));
         }
         throw new NoneSaveException();
     }
@@ -60,7 +62,7 @@ class NetElementServiceImpl implements NetElementService {
     public NetElementDTO updateNetElement(Long versionId, Long netElementId, NetElementCreateInfo netElementCreateInfo) {
         ResNetElement updateInfo = this.convertToResNetElement(netElementCreateInfo);
         if (resNetElementDao.updateByExampleSelective(updateInfo, getExample(versionId, netElementId)) == 1) {
-            return convertToNetElementDTO(resNetElementDao.selectByExample(getExample(versionId, netElementId)).get(0));
+            return convertToNetElementDTO(resNetElementDao.selectByPrimaryKey(netElementId));
         }
         throw new NoneUpdateException();
     }
@@ -97,19 +99,19 @@ class NetElementServiceImpl implements NetElementService {
 
     @Override
     public NetElementDTO getNetElement(Long versionId, long netElementId) {
-        if (null != resNetElementDao.selectByExample(getExample(versionId, netElementId))) {
+        if (resNetElementDao.selectByExample(getExample(versionId, netElementId)).size() != 0) {
             return convertToNetElementDTO(resNetElementDao.selectByExample(getExample(versionId, netElementId)).get(0));
         }
-        throw new NoneGetException();
+        throw new NoneGetException("没有找到对应的网元记录");
     }
 
     @Override
     public NetElementDTO getNetElement(Long versionId, String netElementName) {
         List<ResNetElement> result = resNetElementDao.selectByExample(getExample(versionId, netElementName));
-        if (result.size() != 0) {
-            return convertToNetElementDTO(result.get(0));
+        if (result.size() == 0) {
+            throw new NoneGetException("网元" + netElementName + "不存在");
         }
-        throw new NoneGetException("网元" + netElementName + "不存在");
+        return convertToNetElementDTO(result.get(0));
     }
 
     @Override

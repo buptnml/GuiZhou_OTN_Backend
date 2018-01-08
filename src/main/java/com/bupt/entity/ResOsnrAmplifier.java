@@ -3,16 +3,19 @@ package com.bupt.entity;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Date;
 
 @Table(name = "res_osnr_amplifier")
-public class ResOsnrAmplifier {
+public class ResOsnrAmplifier implements Serializable {
     /**
      * 放大器id
      */
     @Id
     @Column(name = "amplifier_id")
     private Long amplifierId;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 放大器名称
@@ -60,6 +63,11 @@ public class ResOsnrAmplifier {
      */
     @Column(name = "gmt_modified")
     private Date gmtModified;
+    /**
+     * 机盘类型
+     */
+    @Column(name = "disk_type")
+    private String diskType;
 
     /**
      * 获取放大器id
@@ -77,6 +85,24 @@ public class ResOsnrAmplifier {
      */
     public void setAmplifierId(Long amplifierId) {
         this.amplifierId = amplifierId;
+    }
+
+    /**
+     * 获取机盘类型
+     *
+     * @return disk_type - 机盘类型
+     */
+    public String getDiskType() {
+        return diskType;
+    }
+
+    /**
+     * 设置机盘类型
+     *
+     * @param diskType 机盘类型
+     */
+    public void setDiskType(String diskType) {
+        this.diskType = diskType == null ? null : diskType.trim();
     }
 
     /**
@@ -221,5 +247,67 @@ public class ResOsnrAmplifier {
      */
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        }
+        if (that == null) {
+            return false;
+        }
+        if (getClass() != that.getClass()) {
+            return false;
+        }
+        ResOsnrAmplifier other = (ResOsnrAmplifier) that;
+        return (this.getAmplifierId() == null ? other.getAmplifierId() == null : this.getAmplifierId().equals(other.getAmplifierId()))
+                && (this.getDiskType() == null ? other.getDiskType() == null : this.getDiskType().equals(other.getDiskType()))
+                && (this.getAmplifierName() == null ? other.getAmplifierName() == null : this.getAmplifierName().equals(other.getAmplifierName()))
+                && (this.getGain() == null ? other.getGain() == null : this.getGain().equals(other.getGain()))
+                && (this.getMinimumInputPower() == null ? other.getMinimumInputPower() == null : this.getMinimumInputPower().equals(other.getMinimumInputPower()))
+                && (this.getMaximumInputPower() == null ? other.getMaximumInputPower() == null : this.getMaximumInputPower().equals(other.getMaximumInputPower()))
+                && (this.getMaximumOutputPower() == null ? other.getMaximumOutputPower() == null : this.getMaximumOutputPower().equals(other.getMaximumOutputPower()))
+                && (this.getVersionId() == null ? other.getVersionId() == null : this.getVersionId().equals(other.getVersionId()))
+                && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
+                && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((getAmplifierId() == null) ? 0 : getAmplifierId().hashCode());
+        result = prime * result + ((getDiskType() == null) ? 0 : getDiskType().hashCode());
+        result = prime * result + ((getAmplifierName() == null) ? 0 : getAmplifierName().hashCode());
+        result = prime * result + ((getGain() == null) ? 0 : getGain().hashCode());
+        result = prime * result + ((getMinimumInputPower() == null) ? 0 : getMinimumInputPower().hashCode());
+        result = prime * result + ((getMaximumInputPower() == null) ? 0 : getMaximumInputPower().hashCode());
+        result = prime * result + ((getMaximumOutputPower() == null) ? 0 : getMaximumOutputPower().hashCode());
+        result = prime * result + ((getVersionId() == null) ? 0 : getVersionId().hashCode());
+        result = prime * result + ((getGmtCreate() == null) ? 0 : getGmtCreate().hashCode());
+        result = prime * result + ((getGmtModified() == null) ? 0 : getGmtModified().hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", amplifierId=").append(amplifierId);
+        sb.append(", diskType=").append(diskType);
+        sb.append(", amplifierName=").append(amplifierName);
+        sb.append(", gain=").append(gain);
+        sb.append(", minimumInputPower=").append(minimumInputPower);
+        sb.append(", maximumInputPower=").append(maximumInputPower);
+        sb.append(", maximumOutputPower=").append(maximumOutputPower);
+        sb.append(", versionId=").append(versionId);
+        sb.append(", gmtCreate=").append(gmtCreate);
+        sb.append(", gmtModified=").append(gmtModified);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
     }
 }

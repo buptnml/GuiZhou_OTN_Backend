@@ -1,6 +1,6 @@
 package com.bupt.controller;
 
-import com.bupt.controller.utils.VersionCheckException;
+import com.bupt.controller.util.VersionCheckException;
 import com.bupt.pojo.LinkTypeCreateInfo;
 import com.bupt.pojo.LinkTypeDTO;
 import com.bupt.service.LinkTypeService;

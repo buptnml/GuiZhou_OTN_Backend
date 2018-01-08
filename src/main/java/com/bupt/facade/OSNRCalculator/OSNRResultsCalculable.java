@@ -1,6 +1,6 @@
 package com.bupt.facade.OSNRCalculator;
 
-import com.bupt.pojo.NodeOSNRDetail;
+import com.bupt.pojo.OSNRNodesDetails;
 import com.bupt.pojo.OSNRResult;
 
 import java.util.List;
@@ -25,7 +25,7 @@ interface OSNRResultsCalculable {
      *
      * @return
      */
-    List<NodeOSNRDetail> getDetail();
+    List<OSNRNodesDetails> getDetail();
 
 
 }

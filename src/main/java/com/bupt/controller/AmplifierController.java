@@ -1,9 +1,10 @@
 package com.bupt.controller;
 
-import com.bupt.controller.utils.VersionCheckException;
+import com.bupt.controller.util.VersionCheckException;
 import com.bupt.pojo.AmplifierCreateInfo;
 import com.bupt.pojo.AmplifierDTO;
 import com.bupt.service.AmplifierService;
+import com.bupt.util.exception.controller.input.NullArgumentException;
 import com.bupt.util.exception.controller.result.NoneRemoveException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
-//todo  待重构
 
 /**
  * Created by caoxiaohong on 17/9/13.
@@ -39,7 +39,7 @@ public class AmplifierController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteByAmpid(@PathVariable Long versionId, @RequestBody List<Long> amplifierId) {
         if (amplifierId == null || amplifierId.size() == 0)
-            throw new NegativeArraySizeException();
+            throw new NullArgumentException("输入的信息不能为空");
         else {
             if (!amplifierService.deleteByAmpid(versionId, amplifierId)) {
                 throw new NoneRemoveException();

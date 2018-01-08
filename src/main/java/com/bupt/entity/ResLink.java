@@ -3,10 +3,11 @@ package com.bupt.entity;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Date;
 
 @Table(name = "res_link")
-public class ResLink {
+public class ResLink implements Serializable {
     /**
      * 链路ID
      */
@@ -79,6 +80,8 @@ public class ResLink {
      */
     @Column(name = "gmt_modified")
     private Date gmtModified;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取链路ID
@@ -294,5 +297,73 @@ public class ResLink {
      */
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        }
+        if (that == null) {
+            return false;
+        }
+        if (getClass() != that.getClass()) {
+            return false;
+        }
+        ResLink other = (ResLink) that;
+        return (this.getLinkId() == null ? other.getLinkId() == null : this.getLinkId().equals(other.getLinkId()))
+                && (this.getLinkName() == null ? other.getLinkName() == null : this.getLinkName().equals(other.getLinkName()))
+                && (this.getLinkType() == null ? other.getLinkType() == null : this.getLinkType().equals(other.getLinkType()))
+                && (this.getLinkLength() == null ? other.getLinkLength() == null : this.getLinkLength().equals(other.getLinkLength()))
+                && (this.getLinkLoss() == null ? other.getLinkLoss() == null : this.getLinkLoss().equals(other.getLinkLoss()))
+                && (this.getEndAId() == null ? other.getEndAId() == null : this.getEndAId().equals(other.getEndAId()))
+                && (this.getEndAName() == null ? other.getEndAName() == null : this.getEndAName().equals(other.getEndAName()))
+                && (this.getEndZId() == null ? other.getEndZId() == null : this.getEndZId().equals(other.getEndZId()))
+                && (this.getEndZName() == null ? other.getEndZName() == null : this.getEndZName().equals(other.getEndZName()))
+                && (this.getVersionId() == null ? other.getVersionId() == null : this.getVersionId().equals(other.getVersionId()))
+                && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
+                && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((getLinkId() == null) ? 0 : getLinkId().hashCode());
+        result = prime * result + ((getLinkName() == null) ? 0 : getLinkName().hashCode());
+        result = prime * result + ((getLinkType() == null) ? 0 : getLinkType().hashCode());
+        result = prime * result + ((getLinkLength() == null) ? 0 : getLinkLength().hashCode());
+        result = prime * result + ((getLinkLoss() == null) ? 0 : getLinkLoss().hashCode());
+        result = prime * result + ((getEndAId() == null) ? 0 : getEndAId().hashCode());
+        result = prime * result + ((getEndAName() == null) ? 0 : getEndAName().hashCode());
+        result = prime * result + ((getEndZId() == null) ? 0 : getEndZId().hashCode());
+        result = prime * result + ((getEndZName() == null) ? 0 : getEndZName().hashCode());
+        result = prime * result + ((getVersionId() == null) ? 0 : getVersionId().hashCode());
+        result = prime * result + ((getGmtCreate() == null) ? 0 : getGmtCreate().hashCode());
+        result = prime * result + ((getGmtModified() == null) ? 0 : getGmtModified().hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", linkId=").append(linkId);
+        sb.append(", linkName=").append(linkName);
+        sb.append(", linkType=").append(linkType);
+        sb.append(", linkLength=").append(linkLength);
+        sb.append(", linkLoss=").append(linkLoss);
+        sb.append(", endAId=").append(endAId);
+        sb.append(", endAName=").append(endAName);
+        sb.append(", endZId=").append(endZId);
+        sb.append(", endZName=").append(endZName);
+        sb.append(", versionId=").append(versionId);
+        sb.append(", gmtCreate=").append(gmtCreate);
+        sb.append(", gmtModified=").append(gmtModified);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
     }
 }

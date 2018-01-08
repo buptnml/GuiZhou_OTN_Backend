@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * Created by caoxiaohong on 17/9/20.
+ * //TODO 链路类型删除和改名的时候会对链路产生影响！
  */
 public interface LinkTypeService {
 

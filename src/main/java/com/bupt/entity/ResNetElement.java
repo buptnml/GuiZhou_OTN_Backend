@@ -3,10 +3,11 @@ package com.bupt.entity;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Date;
 
 @Table(name = "res_net_element")
-public class ResNetElement {
+public class ResNetElement implements Serializable {
     /**
      * 网元ID
      */
@@ -55,6 +56,8 @@ public class ResNetElement {
      */
     @Column(name = "gmt_modified")
     private Date gmtModified;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取网元ID
@@ -198,5 +201,61 @@ public class ResNetElement {
      */
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        }
+        if (that == null) {
+            return false;
+        }
+        if (getClass() != that.getClass()) {
+            return false;
+        }
+        ResNetElement other = (ResNetElement) that;
+        return (this.getNetElementId() == null ? other.getNetElementId() == null : this.getNetElementId().equals(other.getNetElementId()))
+                && (this.getNetElementName() == null ? other.getNetElementName() == null : this.getNetElementName().equals(other.getNetElementName()))
+                && (this.getNetElementType() == null ? other.getNetElementType() == null : this.getNetElementType().equals(other.getNetElementType()))
+                && (this.getCoordinateX() == null ? other.getCoordinateX() == null : this.getCoordinateX().equals(other.getCoordinateX()))
+                && (this.getCoordinateY() == null ? other.getCoordinateY() == null : this.getCoordinateY().equals(other.getCoordinateY()))
+                && (this.getVersionId() == null ? other.getVersionId() == null : this.getVersionId().equals(other.getVersionId()))
+                && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
+                && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((getNetElementId() == null) ? 0 : getNetElementId().hashCode());
+        result = prime * result + ((getNetElementName() == null) ? 0 : getNetElementName().hashCode());
+        result = prime * result + ((getNetElementType() == null) ? 0 : getNetElementType().hashCode());
+        result = prime * result + ((getCoordinateX() == null) ? 0 : getCoordinateX().hashCode());
+        result = prime * result + ((getCoordinateY() == null) ? 0 : getCoordinateY().hashCode());
+        result = prime * result + ((getVersionId() == null) ? 0 : getVersionId().hashCode());
+        result = prime * result + ((getGmtCreate() == null) ? 0 : getGmtCreate().hashCode());
+        result = prime * result + ((getGmtModified() == null) ? 0 : getGmtModified().hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", netElementId=").append(netElementId);
+        sb.append(", netElementName=").append(netElementName);
+        sb.append(", netElementType=").append(netElementType);
+        sb.append(", coordinateX=").append(coordinateX);
+        sb.append(", coordinateY=").append(coordinateY);
+        sb.append(", versionId=").append(versionId);
+        sb.append(", gmtCreate=").append(gmtCreate);
+        sb.append(", gmtModified=").append(gmtModified);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
     }
 }

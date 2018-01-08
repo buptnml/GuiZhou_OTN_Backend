@@ -3,15 +3,26 @@ package com.bupt.pojo;
 public class DiskCreateInfo {
     private String diskName;
     private String diskType;
+    private String amplifierName;
     private Long slotId;
 
     public DiskCreateInfo() {
     }
 
-    public DiskCreateInfo(String diskName, String diskType, Long slotId) {
+
+    public DiskCreateInfo(String diskName, String diskType, String amplifierName, Long slotId) {
         this.diskName = diskName;
         this.diskType = diskType;
+        this.amplifierName = amplifierName;
         this.slotId = slotId;
+    }
+
+    public String getAmplifierName() {
+        return amplifierName;
+    }
+
+    public void setAmplifierName(String amplifierName) {
+        this.amplifierName = amplifierName;
     }
 
     public Long getSlotId() {

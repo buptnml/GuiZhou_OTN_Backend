@@ -1,6 +1,7 @@
-package com.bupt.facade;
+package com.bupt.facade.util;
 
 import com.bupt.entity.ResLink;
+import com.bupt.facade.BussinessService;
 import com.bupt.pojo.*;
 import com.bupt.service.*;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -17,6 +18,9 @@ import java.util.stream.Collectors;
 
 /**
  * 用来保证数据完整性的切面
+ * 切面的拦截了绝大多数与其他数据产生连带影响的操作
+ * 比如板卡的添加修改会影响网元，连带影响OSNR的计算
+ * 切面之间也互有影响
  */
 @Component
 @Aspect
@@ -49,17 +53,18 @@ public class MessageAspect {
             argNames = "versionId,netElementId")
     public void updateBussinessFromDisk(Long versionId, Long netElementId) {
         NetElementDTO netElementDTO = netElementService.getNetElement(versionId, netElementId);
-        bussinessService.updateReferBussiness(versionId, netElementDTO.getNetElementName(), netElementDTO.getNetElementName());
+        bussinessService.updateReferBussiness(versionId, netElementDTO.getNetElementName(), netElementDTO
+                .getNetElementName(), true);
     }
 
-    /*删除网元的时候要删除链路*/
-    @AfterReturning(value = "execution(* com.bupt.service.NetElementService.listRemoveNetElement(..)) && args(versionId,netElementIdList)",
-            argNames = "versionId,netElementIdList")
-    public void removeLinkFromNetElement(Long versionId, List<Long> netElementIdList) {
-        netElementIdList.forEach(netElementId -> linkService.listRemoveResLink(versionId,
-                linkService.getReferLink(versionId, netElementId).stream().map(ResLink::getLinkId)
-                        .collect(Collectors.toList())));
-    }
+//    /*删除网元的时候要删除链路*/
+//    @AfterReturning(value = "execution(* com.bupt.service.NetElementService.listRemoveNetElement(..)) && args(versionId,netElementIdList)",
+//            argNames = "versionId,netElementIdList")
+//    public void removeLinkFromNetElement(Long versionId, List<Long> netElementIdList) {
+//        netElementIdList.forEach(netElementId -> linkService.listRemoveResLink(versionId,
+//                linkService.getReferLink(versionId, netElementId).stream().map(ResLink::getLinkId)
+//                        .collect(Collectors.toList())));
+//    }
 
     /*网元更新时更新链路*/
     @Around(value = "execution(* com.bupt.service.NetElementService.updateNetElement(..)) && args(versionId," +
@@ -69,7 +74,7 @@ public class MessageAspect {
         NetElementDTO oldNetElement = netElementService.getNetElement(versionId, netElementId);
         NetElementDTO result = (NetElementDTO) point.proceed();
         bussinessService.updateReferBussiness(versionId, oldNetElement.getNetElementName(), netElementCreateInfo
-                .getNetElementName());
+                .getNetElementName(), false);
         linkService.getReferLink(versionId, netElementId).forEach(resLink ->
                 linkService.updateResLink(versionId, resLink.getLinkId(), createUpdateLinkInfo(netElementId,
                         netElementCreateInfo, resLink))
@@ -89,8 +94,10 @@ public class MessageAspect {
         LinkDTO link = linkService.getLink(versionId, linkId);
         String newEndAName = link.getEndAName();
         String newEndZName = link.getEndZName();
-        bussinessService.updateReferBussiness(versionId, oldEndAName + "-" + oldEndZName, newEndAName + "-" + newEndZName);
-        bussinessService.updateReferBussiness(versionId, oldEndZName + "-" + oldEndAName, newEndZName + "-" + newEndAName);
+        bussinessService.updateReferBussiness(versionId, oldEndAName + "-" + oldEndZName, newEndAName + "-" +
+                newEndZName, true);
+        bussinessService.updateReferBussiness(versionId, oldEndZName + "-" + oldEndAName, newEndZName + "-" +
+                newEndAName, true);
         return newLink;
     }
 
@@ -106,10 +113,26 @@ public class MessageAspect {
         deleteList.forEach(linkDTO -> {
             String endAName = linkDTO.getEndAName();
             String endZName = linkDTO.getEndZName();
-            bussinessService.updateReferBussiness(versionId, endAName + "-" + endZName, endAName + "-" + endZName);
-            bussinessService.updateReferBussiness(versionId, endZName + "-" + endAName, endZName + "-" + endAName);
+            bussinessService.updateReferBussiness(versionId, endAName + "-" + endZName, endAName + "-" + endZName,
+                    true);
+            bussinessService.updateReferBussiness(versionId, endZName + "-" + endAName, endZName + "-" + endAName,
+                    true);
         });
     }
+
+    /*添加链路时要重新计算相关的OSNR*/
+    @AfterReturning(value = "execution(* com.bupt.service.LinkService.saveResLink(..)) && args(versionId," +
+            "linkCreateInfo)", argNames = "versionId,linkCreateInfo")
+    public void updateBussinessFromLinkInsert(Long versionId, LinkCreateInfo linkCreateInfo) throws
+            Throwable {
+        String endAName = linkCreateInfo.getEndAName();
+        String endZName = linkCreateInfo.getEndZName();
+        bussinessService.updateReferBussiness(versionId, endAName + "-" + endZName, endAName + "-" + endZName,
+                true);
+        bussinessService.updateReferBussiness(versionId, endZName + "-" + endAName, endZName + "-" + endAName,
+                true);
+    }
+
 
     /*更新放大器的时候要更新机盘*/
     @Around(value = "execution(* com.bupt.service.AmplifierService.updateAmplifiers(..)) && args(versionId," +
@@ -120,19 +143,19 @@ public class MessageAspect {
         AmplifierDTO result = (AmplifierDTO) point.proceed();
         diskService.listDiskByType(versionId, oldAmp.getAmplifierName()).forEach(diskDTO -> diskService
                 .updateDisk(versionId, diskDTO.getNetElementId(), diskDTO.getDiskId(), new DiskCreateInfo(diskDTO
-                        .getDiskName(), amplifierCreateInfo.getAmplifierName(), diskDTO.getSlotId())));
-
+                        .getDiskName(), amplifierCreateInfo.getAmplifierName(), diskDTO.getAmplifierName(), diskDTO
+                        .getSlotId())));
         return result;
-
     }
 
+    /*更新链路类型的时候会更新链路*/
     @Around(value = "execution(* com.bupt.service.LinkTypeService.updateByLinkTypeId(..)) && args(versionId," +
             "linkTypeId,linkTypeCreateInfo)", argNames = "point,versionId,linkTypeId,linkTypeCreateInfo")
     public LinkTypeDTO updateLinkFromLinkTypeId(ProceedingJoinPoint point, Long versionId, Long linkTypeId,
                                                 LinkTypeCreateInfo linkTypeCreateInfo) throws Throwable {
         LinkTypeDTO oldType = linkTypeService.getLinkTypeById(versionId, linkTypeId);
         LinkTypeDTO result = (LinkTypeDTO) point.proceed();
-        linkService.ListLinkByType(versionId, oldType.getLinkType()).forEach(linkDTO -> {
+        linkService.ListLinkByType(versionId, oldType.getLinkType()).parallelStream().forEach(linkDTO -> {
             LinkCreateInfo updateInfo = new LinkCreateInfo();
             BeanUtils.copyProperties(linkDTO, updateInfo);
             updateInfo.setLinkType(linkTypeCreateInfo.getLinkType());

@@ -69,12 +69,11 @@ class AmplifierServiceImpl implements AmplifierService {
     @Override
     @Transactional
     public boolean deleteByAmpid(Long versionId, List<Long> listAmpid) {
-        //只能按照迭代器方式删除,不能for删除
-        for (Long aListAmpid : listAmpid) {
-            if (resOsnrAmplifierDao.deleteByPrimaryKey(aListAmpid) == 0) {
+        listAmpid.forEach(ampId -> {
+            if (resOsnrAmplifierDao.deleteByPrimaryKey(ampId) == 0) {
                 throw new NoneRemoveException();
             }
-        }
+        });
         return true;
     }
 
@@ -143,14 +142,11 @@ class AmplifierServiceImpl implements AmplifierService {
      * @return
      */
     private ResOsnrAmplifier amplifierDtoToDao(AmplifierCreateInfo amplifierCreateInfo) {
+        if (null == amplifierCreateInfo) {
+            return null;
+        }
         ResOsnrAmplifier result = new ResOsnrAmplifier();
-        if (amplifierCreateInfo == null)
-            return result;
-        result.setAmplifierName(amplifierCreateInfo.getAmplifierName());
-        result.setGain(amplifierCreateInfo.getGain());
-        result.setMinimumInputPower(amplifierCreateInfo.getMinimumInputPower());
-        result.setMaximumOutputPower(amplifierCreateInfo.getMaximumOutputPower());
-        result.setMaximumInputPower(amplifierCreateInfo.getMaximumInputPower());
+        BeanUtils.copyProperties(amplifierCreateInfo, result);
         return result;
     }
 
@@ -161,15 +157,11 @@ class AmplifierServiceImpl implements AmplifierService {
      * @return
      */
     private AmplifierDTO amplifierDaoToDto(ResOsnrAmplifier resOsnrAmplifier) {
+        if (resOsnrAmplifier == null) {
+            return null;
+        }
         AmplifierDTO result = new AmplifierDTO();
-        if (resOsnrAmplifier == null)
-            return result;
-        result.setAmplifierId(resOsnrAmplifier.getAmplifierId());
-        result.setAmplifierName(resOsnrAmplifier.getAmplifierName());
-        result.setGain(resOsnrAmplifier.getGain());
-        result.setMaximumInputPower(resOsnrAmplifier.getMaximumInputPower());
-        result.setMaximumOutputPower(resOsnrAmplifier.getMaximumOutputPower());
-        result.setMinimumInputPower(resOsnrAmplifier.getMinimumInputPower());
+        BeanUtils.copyProperties(resOsnrAmplifier, result);
         return result;
     }
 }
