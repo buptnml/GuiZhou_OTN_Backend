@@ -60,12 +60,12 @@
     <!--<mvc:cors>-->
     <!--<mvc:mapping path="/**" allowed-methods="*"/>-->
     <!--</mvc:cors>-->
-    <bean class="com.bupt.util.tools.SwaggerConfig"/>
+    <bean class="com.util.tools.SwaggerConfig"/>
 
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
-            <bean class="com.bupt.util.tools.CommonInterceptor">
+            <bean class="com.util.tools.CommonInterceptor">
                 <property name="excludedUrls">
                     <list>
                         <value>/</value>

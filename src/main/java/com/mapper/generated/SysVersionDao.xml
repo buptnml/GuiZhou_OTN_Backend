@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bupt.mapper.generated.{0}Dao">
+    <resultMap id="BaseResultMap" type="com.entity.SysVersion">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="version_id" jdbcType="BIGINT" property="versionId"/>
+        <result column="version_name" jdbcType="VARCHAR" property="versionName"/>
+        <result column="version_dict_name" jdbcType="VARCHAR" property="versionDictName"/>
+        <result column="creator_name" jdbcType="VARCHAR" property="creatorName"/>
+        <result column="version_description" jdbcType="VARCHAR" property="versionDescription"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.entity.SysVersion">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <result column="version_setting" jdbcType="LONGVARBINARY" property="versionSetting"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        version_id, version_name, version_dict_name, creator_name, version_description, gmt_create,
+        gmt_modified
+    </sql>
+    <sql id="Blob_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        version_setting
+    </sql>
+</mapper>
