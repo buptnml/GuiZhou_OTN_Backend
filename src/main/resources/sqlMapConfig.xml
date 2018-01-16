@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <typeAliases>
-        <package name="com.bupt.dao"/>
+        <package name="com.otn.dao"/>
     </typeAliases>
     <mappers>
         <!-- 在下面放入所有的map文件 -->

@@ -1,2 +1,0 @@
-## webservice层
-用于存放未来远程调用webservice层的数据
