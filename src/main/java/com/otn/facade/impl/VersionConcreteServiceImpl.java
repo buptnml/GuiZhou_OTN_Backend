@@ -11,7 +11,7 @@ import com.otn.pojo.VersionQuery;
 import com.otn.service.*;
 import com.otn.util.exception.controller.result.NoneGetException;
 import com.otn.util.exception.controller.result.NoneRemoveException;
-import com.otn.webservice.WebServiceDataFactory;
+import com.otn.webservice.WebServiceFactory;
 import com.otn.webservice.com.pojo.WebServiceConfigInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -40,7 +40,7 @@ class VersionConcreteServiceImpl implements VersionConcreteService {
     @Resource
     private LinkService linkService;
     @Resource
-    private WebServiceDataFactory webServiceDataFactory;
+    private WebServiceFactory webServiceFactory;
     @Resource
     private NetElementService netElementService;
     @Resource
@@ -124,13 +124,13 @@ class VersionConcreteServiceImpl implements VersionConcreteService {
 
     private void basicVersionDataSynchronize() {
         batchRemove(webServiceConfigInfo.getBASIC_VERSION_ID());
-        webServiceDataFactory.listRemoteNetElement().parallelStream().forEach(resNetElement -> resNetElementDao
+        webServiceFactory.listRemoteNetElementRaw().parallelStream().forEach(resNetElement -> resNetElementDao
                 .insertSelective
                         (resNetElement));
-        webServiceDataFactory.listRemoteDisk().parallelStream().forEach(resDisk -> resDiskDao.insertSelective(resDisk));
-        webServiceDataFactory.listRemoteLink().parallelStream().forEach(resLink -> resLinkDao.insertSelective(resLink));
-        webServiceDataFactory.listRemoteAmp().parallelStream().forEach(resOsnrAmplifier -> resOsnrAmplifierDao.insertSelective(resOsnrAmplifier));
-        webServiceDataFactory.listRemoteBusData().parallelStream().forEach(resBussiness -> resBussinessDao.insertSelective(resBussiness));
+        webServiceFactory.listRemoteDiskRaw().parallelStream().forEach(resDisk -> resDiskDao.insertSelective(resDisk));
+        webServiceFactory.listRemoteLinkRaw().parallelStream().forEach(resLink -> resLinkDao.insertSelective(resLink));
+        webServiceFactory.listRemoteAmpRaw().parallelStream().forEach(resOsnrAmplifier -> resOsnrAmplifierDao.insertSelective(resOsnrAmplifier));
+        webServiceFactory.listRemoteBusDataRaw().parallelStream().forEach(resBussiness -> resBussinessDao.insertSelective(resBussiness));
     }
 
     /**

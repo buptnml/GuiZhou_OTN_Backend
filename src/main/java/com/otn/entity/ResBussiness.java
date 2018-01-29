@@ -8,78 +8,92 @@ import java.util.Date;
 
 @Table(name = "res_bussiness")
 public class ResBussiness implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 业务id
      */
     @Id
     @Column(name = "bussiness_id")
     private Long bussinessId;
+
     /**
      * 业务名
      */
     @Column(name = "bussiness_name")
     private String bussinessName;
+
     /**
      * 主路由速率
      */
     @Column(name = "bussiness_rate")
     private String bussinessRate;
+
     /**
      * 主路由
      */
     @Column(name = "main_route")
     private String mainRoute;
+
     /**
      * 主路由频点
      */
     @Column(name = "main_frequency")
     private String mainFrequency;
+
     /**
      * 主路由上节点的输入功率
      */
     @Column(name = "main_input_powers")
     private String mainInputPowers;
+
     /**
      * 主路由上节点的输出功率
      */
     @Column(name = "main_output_powers")
     private String mainOutputPowers;
+
     /**
      * 备用路由
      */
     @Column(name = "spare_route")
     private String spareRoute;
+
     /**
      * 备用路由频点
      */
     @Column(name = "spare_frequency")
     private String spareFrequency;
+
     /**
      * 备用路由上节点的输入功率
      */
     @Column(name = "spare_input_powers")
     private String spareInputPowers;
+
     /**
      * 备用路由上节点的输出功率
      */
     @Column(name = "spare_output_powers")
     private String spareOutputPowers;
+
     /**
      * 条目所在版本ID
      */
     @Column(name = "version_id")
     private Long versionId;
+
     /**
      * 创建时间
      */
     @Column(name = "gmt_create")
     private Date gmtCreate;
+
     /**
      * 最后修改时间
      */
     @Column(name = "gmt_modified")
     private Date gmtModified;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取业务id

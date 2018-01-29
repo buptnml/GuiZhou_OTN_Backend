@@ -8,43 +8,50 @@ import java.util.Date;
 
 @Table(name = "res_onsr_link_type")
 public class ResOnsrLinkType implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 链路类型ID
      */
     @Id
     @Column(name = "link_type_id")
     private Long linkTypeId;
+
     /**
      * 链路类型
      */
     @Column(name = "link_type")
     private String linkType;
+
     /**
      * 链路损耗，单位dB/km
      */
     @Column(name = "link_loss")
     private Float linkLoss;
+
     /**
      * 链路速率
      */
     @Column(name = "link_rate")
     private String linkRate;
+
     /**
      * 条目所在版本ID
      */
     @Column(name = "version_id")
     private Long versionId;
+
     /**
      * 创建时间
      */
     @Column(name = "gmt_create")
     private Date gmtCreate;
+
     /**
      * 最后修改时间
      */
     @Column(name = "gmt_modified")
     private Date gmtModified;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取链路类型ID

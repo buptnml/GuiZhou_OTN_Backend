@@ -6,93 +6,65 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 
-@Table(name = "sys_user_role")
-public class SysUserRole implements Serializable {
+@Table(name = "sys_sync_log")
+public class SysSyncLog implements Serializable {
+    private static final long serialVersionUID = 1L;
     /**
-     * 角色ID
+     * 同步日志id
      */
     @Id
-    @Column(name = "role_id")
-    private Long roleId;
-
+    @Column(name = "sync_log_id")
+    private Long syncLogId;
     /**
-     * 角色名
+     * 操作员名称
      */
-    @Column(name = "role_name")
-    private String roleName;
-
-    /**
-     * 角色描述
-     */
-    @Column(name = "role_description")
-    private String roleDescription;
-
+    @Column(name = "operator_name")
+    private String operatorName;
     /**
      * 创建时间
      */
     @Column(name = "gmt_create")
     private Date gmtCreate;
-
     /**
      * 最后修改时间
      */
     @Column(name = "gmt_modified")
     private Date gmtModified;
 
-    private static final long serialVersionUID = 1L;
-
     /**
-     * 获取角色ID
+     * 获取同步日志id
      *
-     * @return role_id - 角色ID
+     * @return sync_log_id - 同步日志id
      */
-    public Long getRoleId() {
-        return roleId;
+    public Long getSyncLogId() {
+        return syncLogId;
     }
 
     /**
-     * 设置角色ID
+     * 设置同步日志id
      *
-     * @param roleId 角色ID
+     * @param syncLogId 同步日志id
      */
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
+    public void setSyncLogId(Long syncLogId) {
+        this.syncLogId = syncLogId;
     }
 
     /**
-     * 获取角色名
+     * 获取操作员名称
      *
-     * @return role_name - 角色名
+     * @return operator_name - 操作员名称
      */
-    public String getRoleName() {
-        return roleName;
+    public String getOperatorName() {
+        return operatorName;
     }
 
     /**
-     * 设置角色名
+     * 设置操作员名称
      *
-     * @param roleName 角色名
+     * @param operatorName 操作员名称
      */
-    public void setRoleName(String roleName) {
-        this.roleName = roleName == null ? null : roleName.trim();
-    }
-
-    /**
-     * 获取角色描述
-     *
-     * @return role_description - 角色描述
-     */
-    public String getRoleDescription() {
-        return roleDescription;
-    }
-
-    /**
-     * 设置角色描述
-     *
-     * @param roleDescription 角色描述
-     */
-    public void setRoleDescription(String roleDescription) {
-        this.roleDescription = roleDescription == null ? null : roleDescription.trim();
+    public void setOperatorName(String operatorName) {
+        this.operatorName = operatorName == null ? null : operatorName.trim();
     }
 
     /**
@@ -142,10 +114,9 @@ public class SysUserRole implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        SysUserRole other = (SysUserRole) that;
-        return (this.getRoleId() == null ? other.getRoleId() == null : this.getRoleId().equals(other.getRoleId()))
-                && (this.getRoleName() == null ? other.getRoleName() == null : this.getRoleName().equals(other.getRoleName()))
-                && (this.getRoleDescription() == null ? other.getRoleDescription() == null : this.getRoleDescription().equals(other.getRoleDescription()))
+        SysSyncLog other = (SysSyncLog) that;
+        return (this.getSyncLogId() == null ? other.getSyncLogId() == null : this.getSyncLogId().equals(other.getSyncLogId()))
+                && (this.getOperatorName() == null ? other.getOperatorName() == null : this.getOperatorName().equals(other.getOperatorName()))
                 && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
                 && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
     }
@@ -154,9 +125,8 @@ public class SysUserRole implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((getRoleId() == null) ? 0 : getRoleId().hashCode());
-        result = prime * result + ((getRoleName() == null) ? 0 : getRoleName().hashCode());
-        result = prime * result + ((getRoleDescription() == null) ? 0 : getRoleDescription().hashCode());
+        result = prime * result + ((getSyncLogId() == null) ? 0 : getSyncLogId().hashCode());
+        result = prime * result + ((getOperatorName() == null) ? 0 : getOperatorName().hashCode());
         result = prime * result + ((getGmtCreate() == null) ? 0 : getGmtCreate().hashCode());
         result = prime * result + ((getGmtModified() == null) ? 0 : getGmtModified().hashCode());
         return result;
@@ -168,9 +138,8 @@ public class SysUserRole implements Serializable {
         sb.append(getClass().getSimpleName());
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
-        sb.append(", roleId=").append(roleId);
-        sb.append(", roleName=").append(roleName);
-        sb.append(", roleDescription=").append(roleDescription);
+        sb.append(", syncLogId=").append(syncLogId);
+        sb.append(", operatorName=").append(operatorName);
         sb.append(", gmtCreate=").append(gmtCreate);
         sb.append(", gmtModified=").append(gmtModified);
         sb.append(", serialVersionUID=").append(serialVersionUID);
