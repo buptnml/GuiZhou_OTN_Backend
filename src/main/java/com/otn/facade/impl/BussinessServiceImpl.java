@@ -27,13 +27,12 @@ import java.util.stream.Collectors;
 
 @Service("bussinessService")
 class BussinessServiceImpl implements BussinessService {
+    private static Logger logger = LoggerFactory.getLogger(BussinessServiceImpl.class);
     private UpdateUtils UPDATE_UTILS = new UpdateUtils();
     @Resource
     private ResBussinessDao resBussinessDao;
     @Resource
     private Calculable calculator;
-    private Logger logger = LoggerFactory.getLogger(BussinessServiceImpl.class);
-
 
     @Override
     public List<BussinessDTO> listBussiness(Long versionId) {
@@ -95,11 +94,12 @@ class BussinessServiceImpl implements BussinessService {
 
     @Override
     public void batchCreate(Long baseVersionId, Long newVersionId) {
-        resBussinessDao.selectByExample(getExample(baseVersionId)).forEach(resBussiness -> {
-            resBussiness.setVersionId(newVersionId);
-            resBussiness.setBussinessId(null);
-            resBussinessDao.insertSelective(resBussiness);
-        });
+        resBussinessDao.batchInsert(resBussinessDao.selectByExample(getExample(baseVersionId)).parallelStream().map(
+                resBussiness -> {
+                    resBussiness.setVersionId(newVersionId);
+                    resBussiness.setBussinessId(null);
+                    return resBussiness;
+                }).collect(Collectors.toList()));
     }
 
 
@@ -279,7 +279,7 @@ class BussinessServiceImpl implements BussinessService {
 
         //辅助createUpdateInfo计算OSNR结果
         private String getSubString(String routeString, String newString) {
-            return routeString.substring(routeString.indexOf(newString) == -1 ? 0 : routeString.indexOf(newString));
+            return routeString.substring(!routeString.contains(newString) ? 0 : routeString.indexOf(newString));
         }
 
         //辅助createUpdateInfo计算OSNR结果

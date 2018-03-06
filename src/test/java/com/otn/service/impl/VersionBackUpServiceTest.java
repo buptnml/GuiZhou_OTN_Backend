@@ -1,6 +1,6 @@
 package com.otn.service.impl;
 
-import com.otn.service.VersionBackUpService;
+import com.otn.facade.VersionConcreteService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -15,14 +15,14 @@ import javax.annotation.Resource;
 public class VersionBackUpServiceTest {
     @Resource
     private
-    VersionBackUpService versionBackUpService;
+    VersionConcreteService versionConcreteService;
 
     @Test
     public void nothing() {
         long startTime = System.currentTimeMillis();
 //        versionBackUpService.initBackUp(100000000309L);
 //        versionBackUpService.saveBackUp(100000000309L);
-        versionBackUpService.restoreBackUp(100000000309L);
+        versionConcreteService.dataSynchronize(100000000373L, 100000000373L);
 
         long endTime = System.currentTimeMillis();
         System.out.println("程序运行时间： " + (endTime - startTime) + "ms");

@@ -5,6 +5,7 @@ import com.otn.webservice.com.Strategy;
 import com.otn.webservice.com.StrategyLocal;
 import com.otn.webservice.com.StrategyRemote;
 import com.otn.webservice.com.pojo.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
@@ -59,19 +60,20 @@ public class WebServiceFactory {
 
     private String powerStringConverter(String powerString) {
         if (powerString.equals("")) return "[[0]]";
-        return "[[" + powerString.trim().replace("、", "],[").replace("无数据", "0") + "]]";
+        return "[[" + StringUtils.replaceEach(StringUtils.trim(powerString), new String[]{"、", "无数据"}, new String[]{"]," +
+                "[", "0"}) + "]]";
     }
 
     private String routeStringConverter(String routeString) {
-        return routeString.trim().
-                replace("917-信息中心、901中调", "917-信息中心、901-中调").
-                replace("917-信息中心-901-中调", "917-信息中心、901-中调").
-                replace("712-黔北电厂-701-毕节变", "712-黔北电厂、701-毕节变").
-                replaceAll("\\b07-鸭溪变、706-遵义地调、", "707-鸭溪变、706-遵义地调").
-                replaceAll("\\b07-鸭溪变、706-遵义地调", "707-鸭溪变、706-遵义地调").
-                replace("703-贵阳变、715-息烽变2-707-鸭溪变", "703-贵阳变、715-息烽变2、707-鸭溪变").
-                replaceAll("\\b701-毕节变、707-鸭溪变、712-黔北电厂\\b", "701-毕节变、712-黔北电厂、707-鸭溪变")
-                .replace("-", "_").replace("、", "-");
+        String res = StringUtils.trim(routeString);
+        String[] target = {"917-信息中心、901中调", "917-信息中心-901-中调", "712-黔北电厂-701-毕节变",
+                "\\b07-鸭溪变、706-遵义地调、", "\\b07-鸭溪变、706-遵义地调", "703-贵阳变、715-息烽变2-707-鸭溪变",
+                "\\b701-毕节变、707-鸭溪变、712-黔北电厂\\b"};
+        String[] destination = {"917-信息中心、901-中调", "917-信息中心、901-中调", "712-黔北电厂、701-毕节变", "707-鸭溪变、706-遵义地调",
+                "707-鸭溪变、706-遵义地调", "703-贵阳变、715-息烽变2、707-鸭溪变", "701-毕节变、712-黔北电厂、707-鸭溪变"};
+        res = StringUtils.replaceEach(res, target, destination);
+        res = StringUtils.replace(res, "-", "_");
+        return StringUtils.replace(res, "、", "-");
     }
 
 

@@ -61,7 +61,7 @@ dependencies {
     compile 'org.slf4j:slf4j-log4j12:1.7.25'
     compile 'tk.mybatis:mapper:3.4.0'
     compile 'com.alibaba:druid:1.0.31'
-
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.4'
     compile "io.springfox:springfox-swagger2:2.7.0"
     compile 'io.springfox:springfox-swagger-ui:2.7.0'
 

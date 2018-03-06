@@ -14,6 +14,8 @@ import tk.mybatis.mapper.entity.Example;
 import javax.annotation.Resource;
 import java.io.*;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Service("versionBackUpService")
 public class VersionBackUpServiceImpl implements VersionBackUpService {
@@ -60,7 +62,6 @@ public class VersionBackUpServiceImpl implements VersionBackUpService {
     private SysBackUp backUpObjectFactory(Long versionId) {
         SysBackUp createInfo = new SysBackUp();
         createInfo.setVersionId(versionId);
-        //todo 修改为多线程并发
         createInfo.setBussinessBackUp(ByteTransferFactory.toByteArray(resBussinessDao.selectByExample(getExample(versionId))));
         createInfo.setDiskBackUp(ByteTransferFactory.toByteArray(resDiskDao.selectByExample(getExample(versionId))));
         createInfo.setLinkBackUp(ByteTransferFactory.toByteArray(resLinkDao.selectByExample(getExample(versionId))));
@@ -78,13 +79,19 @@ public class VersionBackUpServiceImpl implements VersionBackUpService {
     @Transactional
     public void restoreBackUp(Long versionId) {
         SysBackUp backUpInfo = sysVersionBackUpDao.selectByPrimaryKey(versionId);
-        restoreMachine(ByteTransferFactory.toObject(backUpInfo.getBussinessBackUp()), versionId,
-                resBussinessDao);
-        restoreMachine(ByteTransferFactory.toObject(backUpInfo.getNetElementBackUp()), versionId, resNetElementDao);
-        restoreMachine(ByteTransferFactory.toObject(backUpInfo.getDiskBackUp()), versionId, resDiskDao);
-        restoreMachine(ByteTransferFactory.toObject(backUpInfo.getLinkBackUp()), versionId, resLinkDao);
-        restoreMachine(ByteTransferFactory.toObject(backUpInfo.getOsnrLinkTypeBackUp()), versionId, resOsnrLinkTypeDao);
-        restoreMachine(ByteTransferFactory.toObject(backUpInfo.getOsnrAmplifierBackUp()), versionId, resOsnrAmplifierDao);
+        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() / 2);
+        executor.submit(() -> restoreMachine(ByteTransferFactory.toObject(backUpInfo.getBussinessBackUp()), versionId,
+                resBussinessDao));
+        executor.submit(() -> {
+            restoreMachine(ByteTransferFactory.toObject(backUpInfo.getNetElementBackUp()), versionId, resNetElementDao);
+            restoreMachine(ByteTransferFactory.toObject(backUpInfo.getDiskBackUp()), versionId, resDiskDao);
+        });
+        executor.submit(() -> restoreMachine(ByteTransferFactory.toObject(backUpInfo.getLinkBackUp()), versionId, resLinkDao));
+        executor.submit(() -> restoreMachine(ByteTransferFactory.toObject(backUpInfo.getOsnrLinkTypeBackUp()), versionId, resOsnrLinkTypeDao));
+        executor.submit(() -> restoreMachine(ByteTransferFactory.toObject(backUpInfo.getOsnrAmplifierBackUp()), versionId, resOsnrAmplifierDao));
+        executor.shutdown();
+        while (!executor.isTerminated()) {
+        }
     }
 
     /**
@@ -105,16 +112,14 @@ public class VersionBackUpServiceImpl implements VersionBackUpService {
         if (newDataList.size() != backUpDataList.size()) {
             //两个列表数据不一致，恢复
             mapperDao.deleteByExample(getExample(versionId));
-            backUpDataList.forEach(obj -> mapperDao.insert(obj));
+            backUpDataList.forEach(mapperDao::insert);
             return;
         }
-        if (newDataList.size() == backUpDataList.size()) {
-            //无法判断的时候，两个列表都是以gmtModified倒序排列
-            //比较第0个条目的时间，如果不一样肯定是不一样的数据，进行恢复操作
-            if (!newDataList.get(0).equals(backUpDataList.get(0))) {
-                mapperDao.deleteByExample(getExample(versionId));
-                backUpDataList.forEach(obj -> mapperDao.insert(obj));
-            }
+        //无法判断的时候，两个列表都是以gmtModified倒序排列
+        //比较第0个条目的时间，如果不一样肯定是不一样的数据，进行恢复操作
+        if (!newDataList.get(0).equals(backUpDataList.get(0))) {
+            mapperDao.deleteByExample(getExample(versionId));
+            backUpDataList.forEach(mapperDao::insert);
         }
     }
 

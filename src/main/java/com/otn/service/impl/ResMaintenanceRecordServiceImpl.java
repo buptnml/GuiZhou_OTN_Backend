@@ -5,6 +5,7 @@ import com.otn.entity.ResMaintenanceRecord;
 import com.otn.pojo.MaintenanceRecordDTO;
 import com.otn.service.ResMaintenanceRecordService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -34,7 +35,11 @@ public class ResMaintenanceRecordServiceImpl implements ResMaintenanceRecordServ
 
     @Override
     public MaintenanceRecordDTO addRecord(MaintenanceRecordDTO record) {
-        recordDao.insertSelective(createDO(record));
+        try {
+            recordDao.insertSelective(createDO(record));
+        } catch (DuplicateKeyException e) {
+            recordDao.updateByPrimaryKeySelective(createDO(record));
+        }
         return createDTO(recordDao.selectByPrimaryKey(createDO(record)));
     }
 }

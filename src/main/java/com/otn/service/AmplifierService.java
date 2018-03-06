@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by caoxiaohong on 17/9/13.
  * 放大器管理模块:service层
- * //TODO 放大器改名和删除的时候会对板卡产生影响！！！！
+ *
  */
 public interface AmplifierService {
     /**

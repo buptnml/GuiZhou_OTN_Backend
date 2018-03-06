@@ -8,78 +8,92 @@ import java.util.Date;
 
 @Table(name = "res_maintenance_record")
 public class ResMaintenanceRecord implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 主键
      */
     @Id
     @Column(name = "maintenance_record_id")
     private Long maintenanceRecordId;
+
     /**
      * 检修票据编号
      */
     @Column(name = "maintenance_record_sub_id")
     private Long maintenanceRecordSubId;
+
     /**
      * 申请单位
      */
     @Column(name = "dept_name")
     private String deptName;
+
     /**
      * 申请人
      */
     @Column(name = "dept_man")
     private String deptMan;
+
     /**
      * 工作地点
      */
     @Column(name = "r_place")
     private String rPlace;
+
     /**
      * 检修类别
      */
     @Column(name = "r_type")
     private String rType;
+
     /**
      * 检修单类型
      */
     @Column(name = "repair_type")
     private String repairType;
+
     /**
      * 设备名称
      */
     @Column(name = "device_name")
     private String deviceName;
+
     /**
      * 工作内容
      */
     @Column(name = "r_content")
     private String rContent;
+
     /**
      * 联系人
      */
     @Column(name = "link_man")
     private String linkMan;
+
     /**
      * 移动电话
      */
     @Column(name = "mobile_phone")
     private String mobilePhone;
+
     /**
      * 工作移动电话
      */
     @Column(name = "link_way_mobile")
     private String linkWayMobile;
+
     /**
      * 创建时间
      */
     @Column(name = "gmt_create")
     private Date gmtCreate;
+
     /**
      * 最后修改时间
      */
     @Column(name = "gmt_modified")
     private Date gmtModified;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取主键

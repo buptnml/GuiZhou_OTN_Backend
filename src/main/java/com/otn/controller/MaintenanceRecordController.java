@@ -18,7 +18,7 @@ public class MaintenanceRecordController {
     private ResMaintenanceRecordService maintenanceRecordService;
 
     @ApiOperation(value = "增加", notes = "新增检修单")
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(value = "/", method = RequestMethod.POST, consumes = "application/json;charset=utf-8")
     @ResponseStatus(HttpStatus.CREATED)
     public MaintenanceRecordDTO createLinkType(@RequestBody MaintenanceRecordDTO recordDTO) {
         return maintenanceRecordService.addRecord(recordDTO);

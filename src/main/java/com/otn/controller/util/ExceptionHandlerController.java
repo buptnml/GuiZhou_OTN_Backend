@@ -15,10 +15,12 @@ import org.springframework.dao.RecoverableDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.ws.WebServiceException;
 
 
 /**
@@ -105,6 +107,12 @@ public class ExceptionHandlerController {
         return "输入的信息中关键内容和数据库记录重复，请重新输入。";
     }
 
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+    public String handleHttpMediaTypeNotSupportedException(HttpServletRequest request, Exception e) {
+        logger.error("Request: " + request.getRequestURL() + " raised:", e);
+        return "发送的body格式不正确，请检查Headers设置！";
+    }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -113,6 +121,12 @@ public class ExceptionHandlerController {
         return "输入信息为空或不合法，请检查输入信息重新输入。";
     }
 
+    @ExceptionHandler(WebServiceException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public String handleWebServiceException(HttpServletRequest request, Exception e) {
+        logger.error("Request: " + request.getRequestURL() + " raised:", e);
+        return "无法访问位于以下位置的 WSDL: http://10.114.223.15/resourceWebService/ResourceServicePort?wsdl";
+    }
 
     @RequestMapping(value = "/error_500")
     public ResponseEntity<String> error_500() {

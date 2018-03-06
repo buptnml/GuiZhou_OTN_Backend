@@ -8,5 +8,6 @@
     </typeAliases>
     <mappers>
         <!-- 在下面放入所有的map文件 -->
+        <package name="com.otn.mapper.manual"/>
     </mappers>
 </configuration>
