@@ -16,6 +16,7 @@ import java.util.concurrent.FutureTask;
 
 public class StrategyRemote implements Strategy {
     private static XMLConverter XML_CONVERTER = new XMLConverter();
+    //todo 再思考这个语句的改进空间
     private static volatile Future<ResourceServiceDelegate> WS = (Future<ResourceServiceDelegate>) Executors
             .newSingleThreadExecutor().submit(new FutureTask<ResourceServiceDelegate>(() -> new ResourceServiceService()
                     .getResourceServicePort()));

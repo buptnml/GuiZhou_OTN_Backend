@@ -23,12 +23,16 @@ import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 @Service("bussinessService")
 class BussinessServiceImpl implements BussinessService {
+    private final static ExecutorService EXECUTOR = Executors.newWorkStealingPool();
     private static Logger logger = LoggerFactory.getLogger(BussinessServiceImpl.class);
-    private UpdateUtils UPDATE_UTILS = new UpdateUtils();
+    private final UpdateUtils UPDATE_UTILS = new UpdateUtils();
     @Resource
     private ResBussinessDao resBussinessDao;
     @Resource
@@ -88,18 +92,44 @@ class BussinessServiceImpl implements BussinessService {
     }
 
     @Override
-    public void batchRemove(Long versionId) {
-        resBussinessDao.deleteByExample(getExample(versionId));
+    public int batchRemove(Long versionId) {
+        return resBussinessDao.deleteByExample(getExample(versionId));
     }
 
     @Override
-    public void batchCreate(Long baseVersionId, Long newVersionId) {
-        resBussinessDao.batchInsert(resBussinessDao.selectByExample(getExample(baseVersionId)).parallelStream().map(
+    public int batchCreate(final Long baseVersionId, final Long newVersionId) {
+        List<ResBussiness> list = resBussinessDao.selectByExample(getExample(baseVersionId)).parallelStream().map(
                 resBussiness -> {
+                    resBussiness.setBussinessId(null);
                     resBussiness.setVersionId(newVersionId);
                     resBussiness.setBussinessId(null);
                     return resBussiness;
-                }).collect(Collectors.toList()));
+                }).collect(Collectors.toList());
+        return batchInsert(list);
+    }
+
+    @Override
+    public int batchInsert(final List<ResBussiness> batchList) {
+        if (batchList.size() <= 500) {
+            batchList.forEach(resBussinessDao::insertSelective);
+        } else {
+            CountDownLatch count = new CountDownLatch(batchList.size());
+            batchList.parallelStream().forEach(bus ->
+                    EXECUTOR.execute(() -> {
+                        resBussinessDao.insertSelective(bus);
+                        count.countDown();
+                    })
+            );
+            try {
+                count.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                //执行完毕以后返回插入的数量
+                return batchList.size();
+            }
+        }
+        return batchList.size();
     }
 
 
@@ -118,12 +148,21 @@ class BussinessServiceImpl implements BussinessService {
                 "%" + oldString + "%"));
         relatedBussiness.addAll(resBussinessDao.selectByExample(getExample(versionId, "spareRoute",
                 "%" + oldString + "%")));
+        CountDownLatch count = new CountDownLatch(relatedBussiness.size());
         relatedBussiness.forEach(bus -> {
             BussinessCreateInfo updateInfo = UPDATE_UTILS.createInfo(bus, oldString, newString);
             ResBussiness updateBus = UPDATE_UTILS.createUpdateInfo(versionId, bus.getBussinessId(), updateInfo,
                     newString);
-            resBussinessDao.updateByPrimaryKeySelective(updateBus);
+            EXECUTOR.execute(() -> {
+                resBussinessDao.updateByPrimaryKeySelective(updateBus);
+                count.countDown();
+            });
         });
+        try {
+            count.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private Example getExample(Long versionId, Long bussinessId) {

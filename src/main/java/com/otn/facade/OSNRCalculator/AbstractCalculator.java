@@ -39,24 +39,24 @@ abstract class AbstractCalculator implements Calculable {
      * @param routeString
      * @param versionId
      */
-    abstract void init(double[][] inputPowers, double[][] outputPowers, String routeString, long versionId);
+    protected abstract void init(double[][] inputPowers, double[][] outputPowers, String routeString, long versionId);
 
     /**
      * 用来计算各个网元的输入和输出
      */
-    abstract void inputsOutputsCalculate();
+    protected abstract void inputsOutputsCalculate();
 
     /**
      * 用来计算各个节点的OSNR值
      */
-    abstract void OSNRCalculate();
+    protected abstract void OSNRCalculate();
 
 
     /**
      * 判断是否有OSNR计算需要的各个节点的输入和输出的函数
      * 继承类应当是可以覆写这个函数的
      */
-    boolean hasInputsOutputs() {
+    protected boolean hasInputsOutputs() {
         return false;
     }
 }

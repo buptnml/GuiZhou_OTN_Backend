@@ -8,7 +8,6 @@ import com.otn.service.LinkTypeService;
 import com.otn.util.exception.controller.result.NoneGetException;
 import com.otn.util.exception.controller.result.NoneRemoveException;
 import com.otn.util.exception.controller.result.NoneSaveException;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
@@ -16,6 +15,9 @@ import tk.mybatis.mapper.entity.Example;
 import javax.annotation.Resource;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 /**
@@ -23,6 +25,8 @@ import java.util.stream.Collectors;
  */
 @Service(value = "linkTypeService")
 class LinkTypeServiceImpl implements LinkTypeService {
+    private final static ExecutorService EXECUTOR = Executors.newWorkStealingPool();
+
     @Resource
     private ResOsnrLinkTypeDao resOsnrLinkTypeDao;
 
@@ -90,8 +94,8 @@ class LinkTypeServiceImpl implements LinkTypeService {
     }
 
     @Override
-    public void batchRemove(Long versionId) {
-        resOsnrLinkTypeDao.deleteByExample(getExample(versionId));
+    public int batchRemove(Long versionId) {
+        return resOsnrLinkTypeDao.deleteByExample(getExample(versionId));
     }
 
     public Example getExample(Long versionId) {
@@ -119,13 +123,35 @@ class LinkTypeServiceImpl implements LinkTypeService {
 
 
     @Override
-    public void batchCreate(Long baseVersionId, Long newVersionId) {
-        List<ResOnsrLinkType> oldInfo = resOsnrLinkTypeDao.selectByExample(getExample(baseVersionId));
-        for (ResOnsrLinkType linkType : oldInfo) {
-            LinkTypeCreateInfo newLinkType = new LinkTypeCreateInfo();
-            BeanUtils.copyProperties(linkType, newLinkType);
-            createLinkType(newVersionId, newLinkType);
+    public int batchCreate(Long baseVersionId, Long newVersionId) {
+        List<ResOnsrLinkType> list = resOsnrLinkTypeDao.selectByExample(getExample(baseVersionId)).stream().map
+                (linkType -> {
+                    linkType.setLinkTypeId(null);
+                    linkType.setVersionId(newVersionId);
+                    linkType.setGmtCreate(null);
+                    linkType.setGmtModified(null);
+                    return linkType;
+                }).collect(Collectors.toList());
+        return batchInsert(list);
+    }
+
+    @Override
+    public int batchInsert(final List<ResOnsrLinkType> batchList) {
+        if (batchList.size() <= 2000) {
+            batchList.forEach(resOsnrLinkTypeDao::insertSelective);
+        } else {
+            CountDownLatch count = new CountDownLatch(batchList.size());
+            batchList.parallelStream().forEach(linkType -> EXECUTOR.execute(() -> {
+                resOsnrLinkTypeDao.insertSelective(linkType);
+                count.countDown();
+            }));
+            try {
+                count.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
+        return batchList.size();
     }
 
     /**

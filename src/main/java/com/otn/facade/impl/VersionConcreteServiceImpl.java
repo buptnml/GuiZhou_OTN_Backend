@@ -1,6 +1,6 @@
 package com.otn.facade.impl;
 
-import com.otn.dao.*;
+import com.otn.dao.SysVersionDao;
 import com.otn.entity.SysVersion;
 import com.otn.facade.BussinessService;
 import com.otn.facade.VersionConcreteService;
@@ -22,9 +22,13 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 @Service("versionConcreteService")
 class VersionConcreteServiceImpl implements VersionConcreteService {
+    private static Object synchronizedLock = new Object();
+    private static ExecutorService versionCreateExecutor = Executors.newWorkStealingPool(Runtime.getRuntime()
+            .availableProcessors() * 3);
     @Resource
     private SysVersionDao sysVersionDao;
     @Resource
@@ -46,18 +50,7 @@ class VersionConcreteServiceImpl implements VersionConcreteService {
     @Resource
     private NetElementService netElementService;
     @Resource
-    private ResDiskDao resDiskDao;
-    @Resource
-    private ResLinkDao resLinkDao;
-    @Resource
-    private ResBussinessDao resBussinessDao;
-    @Resource
-    private ResOsnrAmplifierDao resOsnrAmplifierDao;
-    @Resource
-    private ResNetElementDao resNetElementDao;
-    @Resource
     private WebServiceConfigInfo webServiceConfigInfo;
-
 
     @Override
     @Transactional
@@ -68,9 +61,7 @@ class VersionConcreteServiceImpl implements VersionConcreteService {
     @Override
     @Transactional
     public void listRemoveVersion(List<Long> versionIdList) {
-        versionIdList.forEach(versionId -> {
-            sysVersionDao.deleteByPrimaryKey(versionId);
-        });
+        versionIdList.forEach(sysVersionDao::deleteByPrimaryKey);
     }
 
     @Override
@@ -78,7 +69,6 @@ class VersionConcreteServiceImpl implements VersionConcreteService {
     public List<VersionDTO> listVersion() {
         return versionBasicService.listVersion();
     }
-
 
     @Override
     public VersionDTOWithVersionDictDTO getVersion(Long versionId) {
@@ -103,14 +93,11 @@ class VersionConcreteServiceImpl implements VersionConcreteService {
         if (null == fromVersion || null == toVersion) {
             throw new NoneGetException("同步数据失败！!");
         }
-        if (!toVersionId.equals(webServiceConfigInfo.getBASIC_VERSION_ID())) {
-            batchRemove(toVersionId);
-            batchCreate(fromVersionId, toVersionId);
-        } else {
-            try {
+        synchronized (synchronizedLock) {
+            if (!toVersionId.equals(webServiceConfigInfo.getBASIC_VERSION_ID())) {
+                notBasicVersionDataSynchronize(fromVersionId, toVersionId);
+            } else {
                 basicVersionDataSynchronize();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         }
         updateVersion(toVersionId, versionQueryCreator(toVersion));
@@ -126,69 +113,43 @@ class VersionConcreteServiceImpl implements VersionConcreteService {
     }
 
 
-    private synchronized void basicVersionDataSynchronize() throws InterruptedException {
-        batchRemove(webServiceConfigInfo.getBASIC_VERSION_ID());
-        Thread netEleDiskThread = new Thread(() -> {
-            webServiceFactory.listRemoteNetElementRaw().parallelStream().forEach(resNetElement -> resNetElementDao
-                    .insertSelective(resNetElement));
-            webServiceFactory.listRemoteDiskRaw().parallelStream().forEach(resDisk -> resDiskDao
-                    .insertSelective(resDisk));
-        });
-        netEleDiskThread.start();
-        Thread busThread = new Thread(() -> resBussinessDao.batchInsert(webServiceFactory.listRemoteBusDataRaw()));
-        busThread.start();
-        Thread linkAmpThread = new Thread(() -> {
-            webServiceFactory.listRemoteLinkRaw().parallelStream().forEach(resLink -> resLinkDao.insertSelective(resLink));
-            webServiceFactory.listRemoteAmpRaw().parallelStream().forEach(resOsnrAmplifier -> resOsnrAmplifierDao.insertSelective(resOsnrAmplifier));
-        });
-        linkAmpThread.start();
-        netEleDiskThread.join();
-        busThread.join();
-        linkAmpThread.join();
-    }
-
-    /**
-     * 从指定版本中拷贝数据
-     */
-    private void batchCreate(Long fromVersionId, Long toVersionId) {
+    private void notBasicVersionDataSynchronize(Long fromVersionId, Long toVersionId) {
+        batchRemove(toVersionId);
         SysVersion Version = sysVersionDao.selectByPrimaryKey(toVersionId);
         if (null == Version) {
             throw new NoneGetException("同步数据失败！!");
         }
-        Thread netElementThread = new Thread(() -> netElementService.batchCreate(fromVersionId, toVersionId));
         VersionDictDTO dictSetting = versionDictService.getVersionDictByName(Version.getVersionDictName());
         //创建的时候最先创建网元数据！！！重要！
         if (dictSetting.getHasNetElement()) {
-            netElementThread.start();
+            netElementService.batchCreate(fromVersionId, toVersionId);
         }
-        try {
-            netElementThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        subCreate(fromVersionId, toVersionId, dictSetting);
-    }
-
-    private void subCreate(Long fromVersionId, Long toVersionId, VersionDictDTO dictSetting) {
-        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() / 2);
         if (dictSetting.getHasBussiness()) {
-            executor.execute(new Thread(() -> bussinessService.batchCreate(fromVersionId, toVersionId)));
+            versionCreateExecutor.submit(() -> bussinessService.batchCreate(fromVersionId, toVersionId));
         }
         if (dictSetting.getHasDisk()) {
-            executor.execute(new Thread(() -> diskService.batchCreate(fromVersionId, toVersionId)));
+            versionCreateExecutor.submit(() -> diskService.batchCreate(fromVersionId, toVersionId));
         }
         if (dictSetting.getHasLink()) {
-            executor.execute(new Thread(() -> linkService.batchCreate(fromVersionId, toVersionId)));
+            versionCreateExecutor.submit(() -> linkService.batchCreate(fromVersionId, toVersionId));
         }
         if (dictSetting.getHasAmplifier()) {
-            executor.execute(new Thread(() -> amplifierService.batchCreate(fromVersionId, toVersionId)));
+            versionCreateExecutor.submit(() -> amplifierService.batchCreate(fromVersionId, toVersionId));
         }
         if (dictSetting.getHasLinkType()) {
-            executor.execute(new Thread(() -> linkTypeService.batchCreate(fromVersionId, toVersionId)));
+            versionCreateExecutor.submit(() -> linkTypeService.batchCreate(fromVersionId, toVersionId));
         }
-        executor.shutdown();
-        while (!executor.isTerminated()) {
-        }
+    }
+
+    private void basicVersionDataSynchronize() {
+        batchRemove(webServiceConfigInfo.getBASIC_VERSION_ID());
+        int res1 = netElementService.batchInsert(webServiceFactory.listRemoteNetElementRaw());
+        Future<Integer> res2 = versionCreateExecutor.submit(() -> diskService.batchInsert(webServiceFactory.listRemoteDiskRaw()));
+        Future<Integer> res3 = versionCreateExecutor.submit(() -> bussinessService.batchInsert(webServiceFactory.listRemoteBusDataRaw
+                ()));
+        Future<Integer> res4 = versionCreateExecutor.submit(() -> linkService.batchInsert(webServiceFactory.listRemoteLinkRaw()));
+        Future<Integer> res5 = versionCreateExecutor.submit(() -> amplifierService.batchInsert(webServiceFactory.listRemoteAmpRaw()));
+        while (!(res3.isDone() && res4.isDone() && res2.isDone() && res5.isDone())) ;
     }
 
 
@@ -201,32 +162,28 @@ class VersionConcreteServiceImpl implements VersionConcreteService {
             throw new NoneRemoveException("删除版本数据失败！！");
         }
         VersionDictDTO dictSetting = versionDictService.getVersionDictByName(Version.getVersionDictName());
-        //考虑到机盘和网元的外键冲突，先在主线程中删除机盘
-        if (dictSetting.getHasDisk()) {
-            diskService.batchRemove(versionId);
-        }
         subRemove(versionId, dictSetting);
     }
 
     private void subRemove(Long versionId, VersionDictDTO dictSetting) {
-        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() / 2);
+        //考虑到机盘和网元的外键冲突，先在主线程中删除机盘
+        if (dictSetting.getHasDisk()) {
+            diskService.batchRemove(versionId);
+        }
         if (dictSetting.getHasBussiness()) {
-            executor.execute(new Thread(() -> bussinessService.batchRemove(versionId)));
+            bussinessService.batchRemove(versionId);
         }
         if (dictSetting.getHasLink()) {
-            executor.execute(new Thread(() -> linkService.batchRemove(versionId)));
+            linkService.batchRemove(versionId);
         }
         if (dictSetting.getHasNetElement()) {
-            executor.execute(new Thread(() -> netElementService.batchRemove(versionId)));
+            netElementService.batchRemove(versionId);
         }
         if (dictSetting.getHasAmplifier()) {
-            executor.execute(new Thread(() -> amplifierService.batchRemove(versionId)));
+            amplifierService.batchRemove(versionId);
         }
         if (dictSetting.getHasLinkType() && !versionId.equals(webServiceConfigInfo.getBASIC_VERSION_ID())) {
-            executor.execute(new Thread(() -> linkTypeService.batchRemove(versionId)));
-        }
-        executor.shutdown();
-        while (!executor.isTerminated()) {
+            linkTypeService.batchRemove(versionId);
         }
     }
 

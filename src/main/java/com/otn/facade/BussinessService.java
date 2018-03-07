@@ -41,14 +41,24 @@ BussinessService {
 
     /**
      * 删除指定版本ID下的所有条目
+     * 返回值为删除的条目数量
      */
-    void batchRemove(Long versionId);
+    int batchRemove(Long versionId);
 
     /**
      * 复制一个旧有版本Id中的内容，并将版本Id字段重命名为新Id
      */
-    void batchCreate(Long baseVersionId, Long newVersionId);
+    int batchCreate(Long baseVersionId, Long newVersionId);
 
+    /**
+     * 批量插入业务
+     * 满足一定条件会使用多线程插入
+     * 返回值为插入的条目数量
+     *
+     * @param batchList
+     * @return
+     */
+    int batchInsert(List<ResBussiness> batchList);
 
     /**
      * 更新路由中包含oldString的bussiness路由为newString，重新计算OSNR的输入输出功率

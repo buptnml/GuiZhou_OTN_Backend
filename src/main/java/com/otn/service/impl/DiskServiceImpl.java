@@ -18,10 +18,14 @@ import tk.mybatis.mapper.entity.Example;
 import javax.annotation.Resource;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 @Service("diskService")
 class DiskServiceImpl implements DiskService {
+    private final static ExecutorService EXECUTOR = Executors.newWorkStealingPool();
     @Resource
     private ResDiskDao resDiskDao;
     @Resource
@@ -79,21 +83,40 @@ class DiskServiceImpl implements DiskService {
     }
 
     @Override
-    public void batchRemove(Long versionId) {
-        Example example = getExample(versionId);
-        resDiskDao.deleteByExample(example);
+    public int batchRemove(Long versionId) {
+        return resDiskDao.deleteByExample(getExample(versionId));
     }
 
     @Override
-    public void batchCreate(Long baseVersionId, Long newVersionId) {
-        Example example = getExample(baseVersionId);
-        List<ResDisk> basicVersionList = resDiskDao.selectByExample(example);
-        for (ResDisk disk : basicVersionList) {
-            DiskCreateInfo newDisk = new DiskCreateInfo(disk.getDiskName(), disk.getDiskType(), disk.getAmplifierName
-                    (), disk.getSlotId());
-            saveDisk(newVersionId, getNewElementId(baseVersionId, disk.getNetElementId(),
-                    newVersionId), newDisk);
+    public int batchCreate(Long baseVersionId, Long newVersionId) {
+        List<ResDisk> basicVersionList = resDiskDao.selectByExample(getExample(baseVersionId)).stream().map(resDisk -> {
+            resDisk.setDiskId(null);
+            resDisk.setVersionId(newVersionId);
+            resDisk.setNetElementId(getNewElementId(baseVersionId, resDisk.getNetElementId(), newVersionId));
+            resDisk.setGmtCreate(null);
+            resDisk.setGmtModified(null);
+            return resDisk;
+        }).collect(Collectors.toList());
+        return batchInsert(basicVersionList);
+    }
+
+    @Override
+    public int batchInsert(final List<ResDisk> batchList) {
+        if (batchList.size() <= 2000) {
+            batchList.forEach(resDiskDao::insertSelective);
+        } else {
+            CountDownLatch count = new CountDownLatch(batchList.size());
+            batchList.parallelStream().forEach(disk -> EXECUTOR.execute(() -> {
+                resDiskDao.insertSelective(disk);
+                count.countDown();
+            }));
+            try {
+                count.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
+        return batchList.size();
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.otn.service;
 
+import com.otn.entity.ResNetElement;
 import com.otn.pojo.NetElementCreateInfo;
 import com.otn.pojo.NetElementDTO;
 
@@ -39,12 +40,7 @@ public interface NetElementService {
      */
     NetElementDTO updateNetElement(Long versionId, Long netElementId, NetElementCreateInfo netElementCreateInfo);
 
-    /**
-     * 删除指定版本ID的所有网元
-     *
-     * @param versionId
-     */
-    void batchRemove(long versionId);
+
 
 
     /**
@@ -63,11 +59,25 @@ public interface NetElementService {
      */
     NetElementDTO getNetElement(Long versionId, String netElementName);
 
+    /**
+     * 删除指定版本ID的所有网元
+     *
+     * @param versionId
+     */
+    int batchRemove(long versionId);
 
     /**
      * 复制一个旧有版本Id中的内容，并将版本Id字段重命名为新Id
      */
-    void batchCreate(Long baseVersionId, Long newVersionId);
+    int batchCreate(Long baseVersionId, Long newVersionId);
+
+    /**
+     * 返回值为插入数量
+     *
+     * @param list
+     * @return
+     */
+    int batchInsert(List<ResNetElement> batchList);
 
 }
 

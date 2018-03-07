@@ -17,10 +17,14 @@ import tk.mybatis.mapper.entity.Example;
 import javax.annotation.Resource;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 @Service("netElementService")
 class NetElementServiceImpl implements NetElementService {
+    private final static ExecutorService EXECUTOR = Executors.newWorkStealingPool();
     @Resource
     private ResNetElementDao resNetElementDao;
 
@@ -93,8 +97,8 @@ class NetElementServiceImpl implements NetElementService {
 
 
     @Override
-    public void batchRemove(long versionId) {
-        resNetElementDao.deleteByExample(getExample(versionId));
+    public int batchRemove(long versionId) {
+        return resNetElementDao.deleteByExample(getExample(versionId));
     }
 
     @Override
@@ -115,13 +119,35 @@ class NetElementServiceImpl implements NetElementService {
     }
 
     @Override
-    public void batchCreate(Long baseVersionId, Long newVersionId) {
-        List<ResNetElement> baseVersionList = resNetElementDao.selectByExample(getExample(baseVersionId));
-        for (ResNetElement disk : baseVersionList) {
-            NetElementCreateInfo newNetElement = new NetElementCreateInfo(disk.getCoordinateX(), disk.getCoordinateY()
-                    , disk.getNetElementName(), disk.getNetElementType());
-            saveNetElement(newVersionId, newNetElement);
+    public int batchCreate(Long baseVersionId, Long newVersionId) {
+        List<ResNetElement> baseVersionList = resNetElementDao.selectByExample(getExample(baseVersionId)).stream()
+                .map(netElement -> {
+                    netElement.setNetElementId(null);
+                    netElement.setVersionId(newVersionId);
+                    netElement.setGmtCreate(null);
+                    netElement.setGmtModified(null);
+                    return netElement;
+                }).collect(Collectors.toList());
+        return batchInsert(baseVersionList);
+    }
+
+    @Override
+    public int batchInsert(List<ResNetElement> batchList) {
+        if (batchList.size() <= 2000) {
+            batchList.forEach(resNetElementDao::insertSelective);
+        } else {
+            CountDownLatch count = new CountDownLatch(batchList.size());
+            batchList.parallelStream().forEach(netElement -> EXECUTOR.execute(() -> {
+                resNetElementDao.insertSelective(netElement);
+                count.countDown();
+            }));
+            try {
+                count.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
+        return batchList.size();
     }
 
 

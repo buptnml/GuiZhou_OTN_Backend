@@ -20,10 +20,14 @@ import javax.annotation.Resource;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 @Service("linkService")
 class LinkServiceImpl implements LinkService {
+    private final static ExecutorService EXECUTOR = Executors.newWorkStealingPool();
     @Resource
     private ResLinkDao resLinkDao;
     @Resource
@@ -92,20 +96,41 @@ class LinkServiceImpl implements LinkService {
     }
 
     @Override
-    public void batchRemove(Long versionId) {
-        resLinkDao.deleteByExample(getExample(versionId));
+    public int batchRemove(Long versionId) {
+        return resLinkDao.deleteByExample(getExample(versionId));
     }
 
     @Override
-    public void batchCreate(Long baseVersionId, Long newVersionId) {
-        List<ResLink> resLinksList = resLinkDao.selectByExample(getExample(baseVersionId));
-        for (ResLink link : resLinksList) {
-            LinkCreateInfo newLink = new LinkCreateInfo();
-            BeanUtils.copyProperties(link, newLink);
-            newLink.setEndAId(getNewElementId(baseVersionId, newLink.getEndAId(), newVersionId));
-            newLink.setEndZId(getNewElementId(baseVersionId, newLink.getEndZId(), newVersionId));
-            saveResLink(newVersionId, newLink);
+    public int batchCreate(Long baseVersionId, Long newVersionId) {
+        List<ResLink> resLinksList = resLinkDao.selectByExample(getExample(baseVersionId)).stream().map(link -> {
+            link.setLinkId(null);
+            link.setEndAId(getNewElementId(baseVersionId, link.getEndAId(), newVersionId));
+            link.setEndZId(getNewElementId(baseVersionId, link.getEndZId(), newVersionId));
+            link.setVersionId(newVersionId);
+            link.setGmtCreate(null);
+            link.setGmtModified(null);
+            return link;
+        }).collect(Collectors.toList());
+        return batchInsert(resLinksList);
+    }
+
+    @Override
+    public int batchInsert(final List<ResLink> batchList) {
+        if (batchList.size() <= 2000) {
+            batchList.forEach(resLinkDao::insertSelective);
+        } else {
+            CountDownLatch count = new CountDownLatch(batchList.size());
+            batchList.parallelStream().forEach(link -> EXECUTOR.execute(() -> {
+                resLinkDao.insertSelective(link);
+                count.countDown();
+            }));
+            try {
+                count.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
+        return batchList.size();
     }
 
     /**

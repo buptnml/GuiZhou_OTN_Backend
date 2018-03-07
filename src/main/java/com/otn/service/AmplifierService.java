@@ -1,5 +1,6 @@
 package com.otn.service;
 
+import com.otn.entity.ResOsnrAmplifier;
 import com.otn.pojo.AmplifierCreateInfo;
 import com.otn.pojo.AmplifierDTO;
 
@@ -69,13 +70,19 @@ public interface AmplifierService {
 
     /**
      * 删除指定版本全本链路信息
-     *
+     * 返回值为删除的条目数量
      * @param versionId
      */
-    void batchRemove(Long versionId);
+    int batchRemove(Long versionId);
 
     /**
      * 复制一个旧有版本Id中的内容，并将版本Id字段重命名为新Id
      */
-    void batchCreate(Long baseVersionId, Long newVersionId);
+    int batchCreate(Long baseVersionId, Long newVersionId);
+
+    /**
+     * 批量插入
+     * 返回值为插入条目数量
+     */
+    int batchInsert(List<ResOsnrAmplifier> batchList);
 }

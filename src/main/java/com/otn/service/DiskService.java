@@ -1,5 +1,6 @@
 package com.otn.service;
 
+import com.otn.entity.ResDisk;
 import com.otn.pojo.DiskCreateInfo;
 import com.otn.pojo.DiskDTO;
 
@@ -52,13 +53,24 @@ public interface DiskService {
 
     /**
      * 删除指定版本中的所有机盘信息
-     *
+     * 返回值为删除的数量
      * @param versionId
      */
-    void batchRemove(Long versionId);
+    int batchRemove(Long versionId);
 
     /**
      * 复制一个旧有版本Id中的内容，并将版本Id字段重命名为新Id
+     * 返回值为创建的数量
      */
-    void batchCreate(Long baseVersionId, Long newVersionId);
+    int batchCreate(Long baseVersionId, Long newVersionId);
+
+    /**
+     * 批量插入
+     * 根据数量确定是否使用多线程
+     * 返回值为插入的数量
+     *
+     * @param batchList
+     * @return
+     */
+    int batchInsert(List<ResDisk> batchList);
 }

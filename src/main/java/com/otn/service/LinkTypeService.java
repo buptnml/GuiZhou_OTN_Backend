@@ -1,5 +1,6 @@
 package com.otn.service;
 
+import com.otn.entity.ResOnsrLinkType;
 import com.otn.pojo.LinkTypeCreateInfo;
 import com.otn.pojo.LinkTypeDTO;
 
@@ -67,10 +68,19 @@ public interface LinkTypeService {
      *
      * @param versionId
      */
-    void batchRemove(Long versionId);
+    int batchRemove(Long versionId);
 
     /**
      * 复制一个旧有版本Id中的内容，并将版本Id字段重命名为新Id
      */
-    void batchCreate(Long baseVersionId, Long newVersionId);
+    int batchCreate(Long baseVersionId, Long newVersionId);
+
+    /**
+     * 批量插入
+     * 返回插入的数量
+     *
+     * @param batchList
+     * @return
+     */
+    int batchInsert(List<ResOnsrLinkType> batchList);
 }

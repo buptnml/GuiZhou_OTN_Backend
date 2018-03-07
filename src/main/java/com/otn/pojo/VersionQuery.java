@@ -1,11 +1,24 @@
 package com.otn.pojo;
 
+import java.util.Date;
+
 public class VersionQuery {
     private String versionName;
     private String versionDictName;
     private String creatorName;
     //    private VersionSetting versionSetting;
     private String versionDescription;
+
+
+    private Date gmtModified;
+
+    public Date getGmtModified() {
+        return gmtModified;
+    }
+
+    public void setGmtModified(Date gmtModified) {
+        this.gmtModified = new Date();
+    }
 
     public String getVersionName() {
         return versionName;

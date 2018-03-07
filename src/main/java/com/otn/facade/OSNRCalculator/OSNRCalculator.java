@@ -31,7 +31,7 @@ class OSNRCalculator extends AbstractCalculator {
     /*
       所有的输入和输出要一一对应
      */
-    boolean hasInputsOutputs() {
+    protected boolean hasInputsOutputs() {
         if (null == this.outputPowers) {
             return false;
         }
@@ -51,7 +51,7 @@ class OSNRCalculator extends AbstractCalculator {
     }
 
     @Override
-    void init(double[][] inputPowers, double[][] outputPowers, String routeString, long versionId) {
+    protected void init(double[][] inputPowers, double[][] outputPowers, String routeString, long versionId) {
         this.inputPower = inputPowers[0][0];
         this.inputPowers = inputPowers;
         this.outputPowers = outputPowers;
@@ -63,7 +63,7 @@ class OSNRCalculator extends AbstractCalculator {
 
 
     @Override
-    void inputsOutputsCalculate() throws IllegalArgumentException {
+    protected void inputsOutputsCalculate() throws IllegalArgumentException {
         try {
             inputsOutputsCalculable.calculate(routeString, inputPowers[0][0], versionId);
         } finally {
@@ -73,7 +73,7 @@ class OSNRCalculator extends AbstractCalculator {
     }
 
     @Override
-    void OSNRCalculate() throws OSNRResultOutOfLimitException {
+    protected void OSNRCalculate() throws OSNRResultOutOfLimitException {
         results = osnrResultsCalculable.getResults(routeString, inputPowers, outputPowers);
         nodeResults = osnrResultsCalculable.getDetail();
     }

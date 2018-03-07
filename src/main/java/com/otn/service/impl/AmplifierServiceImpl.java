@@ -17,6 +17,9 @@ import tk.mybatis.mapper.entity.Example;
 import javax.annotation.Resource;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 /**
@@ -24,6 +27,7 @@ import java.util.stream.Collectors;
  */
 @Service(value = "amplifierService")
 class AmplifierServiceImpl implements AmplifierService {
+    private final static ExecutorService EXECUTOR = Executors.newWorkStealingPool();
     @Resource
     private ResOsnrAmplifierDao resOsnrAmplifierDao;
 
@@ -121,19 +125,43 @@ class AmplifierServiceImpl implements AmplifierService {
     }
 
     @Override
-    public void batchRemove(Long versionId) {
-        resOsnrAmplifierDao.deleteByExample(getExample(versionId));
+    public int batchRemove(Long versionId) {
+        return resOsnrAmplifierDao.deleteByExample(getExample(versionId));
     }
 
     @Override
-    public void batchCreate(Long baseVersionId, Long newVersionId) {
-        List<ResOsnrAmplifier> oldInfo = resOsnrAmplifierDao.selectByExample(getExample(baseVersionId));
-        for (ResOsnrAmplifier amplifier : oldInfo) {
-            AmplifierCreateInfo newAmp = new AmplifierCreateInfo();
-            BeanUtils.copyProperties(amplifier, newAmp);
-            insertAmplifier(newVersionId, newAmp);
-        }
+    public int batchCreate(Long baseVersionId, Long newVersionId) {
+        List<ResOsnrAmplifier> list = resOsnrAmplifierDao.selectByExample(getExample(baseVersionId)).stream().map((ResOsnrAmplifier amp) -> {
+            amp.setAmplifierId(null);
+            amp.setGmtCreate(null);
+            amp.setGmtModified(null);
+            amp.setVersionId(newVersionId);
+            return amp;
+        }).collect(Collectors.toList());
+        return batchInsert(list);
     }
+
+    @Override
+    public int batchInsert(List<ResOsnrAmplifier> batchList) {
+        if (batchList.size() <= 2000) {
+            batchList.forEach(resOsnrAmplifierDao::insertSelective);
+        } else {
+            CountDownLatch count = new CountDownLatch(batchList.size());
+            batchList.parallelStream().forEach(amp -> EXECUTOR.execute(() -> {
+                resOsnrAmplifierDao.insertSelective(amp);
+                count.countDown();
+            }));
+            try {
+                count.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                return batchList.size();
+            }
+        }
+        return batchList.size();
+    }
+
 
     /**
      * dto转为dao
