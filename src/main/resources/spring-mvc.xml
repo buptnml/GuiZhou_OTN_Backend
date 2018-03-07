@@ -11,8 +11,8 @@
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd">
 
-    <!-- 自动扫描 com.bupt.controller 下的带有Spring组件注解的类 -->
-    <context:component-scan base-package="com.bupt.controller">
+    <!-- 自动扫描 com.otncontroller 下的带有Spring组件注解的类 -->
+    <context:component-scan base-package="com.otn.controller">
         <context:include-filter type="annotation"
                                 expression="org.springframework.stereotype.Controller"/>
         <context:include-filter type="annotation"
@@ -60,12 +60,12 @@
     <!--<mvc:cors>-->
     <!--<mvc:mapping path="/**" allowed-methods="*"/>-->
     <!--</mvc:cors>-->
-    <bean class="com.bupt.util.tools.SwaggerConfig"/>
+    <bean class="com.otn.util.tools.SwaggerConfig"/>
 
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
-            <bean class="com.bupt.util.tools.CommonInterceptor">
+            <bean class="com.otn.util.tools.CommonInterceptor">
                 <property name="excludedUrls">
                     <list>
                         <value>/</value>

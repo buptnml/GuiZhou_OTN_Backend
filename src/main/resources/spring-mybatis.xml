@@ -81,7 +81,7 @@
 
     <!--配置Mybatis插件通用mapper组件-->
     <bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.bupt.dao"/>
+        <property name="basePackage" value="com.otn.dao"/>
     </bean>
 
     <!--配置mybatis的sqlSession-->
