@@ -5,19 +5,19 @@
     <!--
       WARNING - @mbg.generated
     -->
-    <id column="user_id" jdbcType="BIGINT" property="userId"/>
-    <result column="user_name" jdbcType="VARCHAR" property="userName"/>
-    <result column="password" jdbcType="VARCHAR" property="password"/>
-    <result column="user_role" jdbcType="VARCHAR" property="userRole"/>
-    <result column="user_group" jdbcType="VARCHAR" property="userGroup"/>
-    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
-    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+    <id column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="user_role" jdbcType="VARCHAR" property="userRole" />
+    <result column="user_group" jdbcType="VARCHAR" property="userGroup" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.otn.entity.SysUser">
     <!--
       WARNING - @mbg.generated
     -->
-    <result column="user_setting" jdbcType="BINARY" property="userSetting"/>
+    <result column="user_setting" jdbcType="BINARY" property="userSetting" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
