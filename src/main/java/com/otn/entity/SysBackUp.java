@@ -1,11 +1,9 @@
 package com.otn.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
+import javax.persistence.*;
 
 @Table(name = "sys_back_up")
 public class SysBackUp implements Serializable {
@@ -241,14 +239,14 @@ public class SysBackUp implements Serializable {
         }
         SysBackUp other = (SysBackUp) that;
         return (this.getVersionId() == null ? other.getVersionId() == null : this.getVersionId().equals(other.getVersionId()))
-                && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
-                && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()))
-                && (Arrays.equals(this.getDiskBackUp(), other.getDiskBackUp()))
-                && (Arrays.equals(this.getLinkBackUp(), other.getLinkBackUp()))
-                && (Arrays.equals(this.getNetElementBackUp(), other.getNetElementBackUp()))
-                && (Arrays.equals(this.getOsnrLinkTypeBackUp(), other.getOsnrLinkTypeBackUp()))
-                && (Arrays.equals(this.getOsnrAmplifierBackUp(), other.getOsnrAmplifierBackUp()))
-                && (Arrays.equals(this.getBussinessBackUp(), other.getBussinessBackUp()));
+            && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
+            && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()))
+            && (Arrays.equals(this.getDiskBackUp(), other.getDiskBackUp()))
+            && (Arrays.equals(this.getLinkBackUp(), other.getLinkBackUp()))
+            && (Arrays.equals(this.getNetElementBackUp(), other.getNetElementBackUp()))
+            && (Arrays.equals(this.getOsnrLinkTypeBackUp(), other.getOsnrLinkTypeBackUp()))
+            && (Arrays.equals(this.getOsnrAmplifierBackUp(), other.getOsnrAmplifierBackUp()))
+            && (Arrays.equals(this.getBussinessBackUp(), other.getBussinessBackUp()));
     }
 
     @Override
