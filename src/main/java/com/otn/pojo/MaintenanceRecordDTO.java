@@ -24,6 +24,12 @@ public class MaintenanceRecordDTO {
     @Nullable
     private String linkWayMobile;
 
+    private String isDone;
+
+    public void setIsDone(String isDone) {
+        this.isDone = isDone.equals("0") ? "未检修" : "已检修";
+    }
+
     public Long getId() {
         return id;
     }

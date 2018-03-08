@@ -88,6 +88,7 @@ class VersionConcreteServiceImpl implements VersionConcreteService {
 
     @Override
     public void dataSynchronize(Long fromVersionId, Long toVersionId) {
+        long start = System.currentTimeMillis();
         SysVersion fromVersion = sysVersionDao.selectByPrimaryKey(fromVersionId);
         SysVersion toVersion = sysVersionDao.selectByPrimaryKey(toVersionId);
         if (null == fromVersion || null == toVersion) {
@@ -101,6 +102,7 @@ class VersionConcreteServiceImpl implements VersionConcreteService {
             }
         }
         updateVersion(toVersionId, versionQueryCreator(toVersion));
+        System.out.println(System.currentTimeMillis() - start);
     }
 
     private VersionQuery versionQueryCreator(Object obj) {
@@ -119,6 +121,7 @@ class VersionConcreteServiceImpl implements VersionConcreteService {
         if (null == Version) {
             throw new NoneGetException("同步数据失败！!");
         }
+        //todo 重构多条件分支判断
         VersionDictDTO dictSetting = versionDictService.getVersionDictByName(Version.getVersionDictName());
         //创建的时候最先创建网元数据！！！重要！
         if (dictSetting.getHasNetElement()) {
@@ -143,13 +146,19 @@ class VersionConcreteServiceImpl implements VersionConcreteService {
 
     private void basicVersionDataSynchronize() {
         batchRemove(webServiceConfigInfo.getBASIC_VERSION_ID());
-        int res1 = netElementService.batchInsert(webServiceFactory.listRemoteNetElementRaw());
+        try {
+            int res1 = netElementService.batchInsert(webServiceFactory.listRemoteNetElementRaw());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            int res1 = -1;
+        }
         Future<Integer> res2 = versionCreateExecutor.submit(() -> diskService.batchInsert(webServiceFactory.listRemoteDiskRaw()));
         Future<Integer> res3 = versionCreateExecutor.submit(() -> bussinessService.batchInsert(webServiceFactory.listRemoteBusDataRaw
                 ()));
         Future<Integer> res4 = versionCreateExecutor.submit(() -> linkService.batchInsert(webServiceFactory.listRemoteLinkRaw()));
         Future<Integer> res5 = versionCreateExecutor.submit(() -> amplifierService.batchInsert(webServiceFactory.listRemoteAmpRaw()));
         while (!(res3.isDone() && res4.isDone() && res2.isDone() && res5.isDone())) ;
+
     }
 
 
@@ -167,6 +176,7 @@ class VersionConcreteServiceImpl implements VersionConcreteService {
 
     private void subRemove(Long versionId, VersionDictDTO dictSetting) {
         //考虑到机盘和网元的外键冲突，先在主线程中删除机盘
+        //todo 重构多条件分支判断
         if (dictSetting.getHasDisk()) {
             diskService.batchRemove(versionId);
         }

@@ -69,7 +69,7 @@ public interface LinkService {
      * @param batchList
      * @return
      */
-    int batchInsert(List<ResLink> batchList);
+    int batchInsert(List<ResLink> batchList) throws InterruptedException;
 
     /**
      * 指定两点的网元，获取链路

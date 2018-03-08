@@ -5,6 +5,7 @@ import com.otn.entity.ResOsnrAmplifier;
 import com.otn.pojo.AmplifierCreateInfo;
 import com.otn.pojo.AmplifierDTO;
 import com.otn.service.AmplifierService;
+import com.otn.service.utils.BatchDMLUtils;
 import com.otn.util.exception.controller.result.NoneGetException;
 import com.otn.util.exception.controller.result.NoneRemoveException;
 import com.otn.util.exception.controller.result.NoneSaveException;
@@ -17,7 +18,6 @@ import tk.mybatis.mapper.entity.Example;
 import javax.annotation.Resource;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -138,28 +138,34 @@ class AmplifierServiceImpl implements AmplifierService {
             amp.setVersionId(newVersionId);
             return amp;
         }).collect(Collectors.toList());
-        return batchInsert(list);
+        try {
+            return batchInsert(list);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     @Override
-    public int batchInsert(List<ResOsnrAmplifier> batchList) {
-        if (batchList.size() <= 2000) {
-            batchList.forEach(resOsnrAmplifierDao::insertSelective);
-        } else {
-            CountDownLatch count = new CountDownLatch(batchList.size());
-            batchList.parallelStream().forEach(amp -> EXECUTOR.execute(() -> {
-                resOsnrAmplifierDao.insertSelective(amp);
-                count.countDown();
-            }));
-            try {
-                count.await();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } finally {
-                return batchList.size();
-            }
-        }
-        return batchList.size();
+    public int batchInsert(List<ResOsnrAmplifier> batchList) throws InterruptedException {
+        return BatchDMLUtils.batchDMLAction(batchList, resOsnrAmplifierDao::insertSelective);
+//        if (batchList.size() <= 2000) {
+//            batchList.forEach(resOsnrAmplifierDao::insertSelective);
+//        } else {
+//            CountDownLatch count = new CountDownLatch(batchList.size());
+//            batchList.parallelStream().forEach(amp -> EXECUTOR.execute(() -> {
+//                resOsnrAmplifierDao.insertSelective(amp);
+//                count.countDown();
+//            }));
+//            try {
+//                count.await();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            } finally {
+//                return batchList.size();
+//            }
+//        }
+//        return batchList.size();
     }
 
 

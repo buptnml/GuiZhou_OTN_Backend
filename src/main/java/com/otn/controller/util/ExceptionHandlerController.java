@@ -72,6 +72,14 @@ public class ExceptionHandlerController {
         return e.getMessage();
     }
 
+    @ExceptionHandler(InterruptedException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public String handleInterruptedException(HttpServletRequest request, RuntimeException e) {
+        logger.error("Request: " + request.getRequestURL() + " raised:", e);
+        return "系统内部发生错误，请稍等再试";
+    }
+
+
     @ExceptionHandler(ArgumentOutOfLimitsException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleArgumentOutOfLimitsException(HttpServletRequest request, RuntimeException e) {

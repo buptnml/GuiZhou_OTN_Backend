@@ -72,5 +72,5 @@ public interface DiskService {
      * @param batchList
      * @return
      */
-    int batchInsert(List<ResDisk> batchList);
+    int batchInsert(List<ResDisk> batchList) throws InterruptedException;
 }

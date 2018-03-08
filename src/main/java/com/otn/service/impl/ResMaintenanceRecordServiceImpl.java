@@ -9,6 +9,9 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service("MaintenanceRecordService")
 public class ResMaintenanceRecordServiceImpl implements ResMaintenanceRecordService {
@@ -41,5 +44,19 @@ public class ResMaintenanceRecordServiceImpl implements ResMaintenanceRecordServ
             recordDao.updateByPrimaryKeySelective(createDO(record));
         }
         return createDTO(recordDao.selectByPrimaryKey(createDO(record)));
+    }
+
+    @Override
+    public List<MaintenanceRecordDTO> listRecord() {
+        return recordDao.selectAll().stream().sorted(Comparator.comparing(ResMaintenanceRecord::getGmtModified)
+                .reversed()).map(this::createDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public MaintenanceRecordDTO updateRecord(Long maintenanceRecordId) {
+        ResMaintenanceRecord record = recordDao.selectByPrimaryKey(maintenanceRecordId);
+        record.setIsDone("1");
+        recordDao.updateByPrimaryKeySelective(record);
+        return createDTO(recordDao.selectByPrimaryKey(record));
     }
 }

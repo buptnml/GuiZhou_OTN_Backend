@@ -84,5 +84,5 @@ public interface AmplifierService {
      * 批量插入
      * 返回值为插入条目数量
      */
-    int batchInsert(List<ResOsnrAmplifier> batchList);
+    int batchInsert(List<ResOsnrAmplifier> batchList) throws InterruptedException;
 }

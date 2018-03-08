@@ -16,6 +16,7 @@
         <result column="r_content" jdbcType="VARCHAR" property="rContent"/>
         <result column="link_man" jdbcType="VARCHAR" property="linkMan"/>
         <result column="mobile_phone" jdbcType="VARCHAR" property="mobilePhone"/>
+        <result column="is_done" jdbcType="CHAR" property="isDone"/>
         <result column="link_way_mobile" jdbcType="VARCHAR" property="linkWayMobile"/>
         <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
         <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
@@ -25,7 +26,7 @@
           WARNING - @mbg.generated
         -->
         maintenance_record_id, maintenance_record_sub_id, dept_name, dept_man, r_place, r_type,
-        repair_type, device_name, r_content, link_man, mobile_phone, link_way_mobile, gmt_create,
-        gmt_modified
+        repair_type, device_name, r_content, link_man, mobile_phone, is_done, link_way_mobile,
+        gmt_create, gmt_modified
     </sql>
 </mapper>

@@ -5,6 +5,7 @@ import com.otn.entity.ResNetElement;
 import com.otn.pojo.NetElementCreateInfo;
 import com.otn.pojo.NetElementDTO;
 import com.otn.service.NetElementService;
+import com.otn.service.utils.BatchDMLUtils;
 import com.otn.util.exception.controller.result.NoneGetException;
 import com.otn.util.exception.controller.result.NoneRemoveException;
 import com.otn.util.exception.controller.result.NoneSaveException;
@@ -17,7 +18,6 @@ import tk.mybatis.mapper.entity.Example;
 import javax.annotation.Resource;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -128,26 +128,32 @@ class NetElementServiceImpl implements NetElementService {
                     netElement.setGmtModified(null);
                     return netElement;
                 }).collect(Collectors.toList());
-        return batchInsert(baseVersionList);
+        try {
+            return batchInsert(baseVersionList);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     @Override
-    public int batchInsert(List<ResNetElement> batchList) {
-        if (batchList.size() <= 2000) {
-            batchList.forEach(resNetElementDao::insertSelective);
-        } else {
-            CountDownLatch count = new CountDownLatch(batchList.size());
-            batchList.parallelStream().forEach(netElement -> EXECUTOR.execute(() -> {
-                resNetElementDao.insertSelective(netElement);
-                count.countDown();
-            }));
-            try {
-                count.await();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        return batchList.size();
+    public int batchInsert(List<ResNetElement> batchList) throws InterruptedException {
+        return BatchDMLUtils.batchDMLAction(batchList, resNetElementDao::insertSelective);
+//        if (batchList.size() <= 2000) {
+//            batchList.forEach(resNetElementDao::insertSelective);
+//        } else {
+//            CountDownLatch count = new CountDownLatch(batchList.size());
+//            batchList.parallelStream().forEach(netElement -> EXECUTOR.execute(() -> {
+//                resNetElementDao.insertSelective(netElement);
+//                count.countDown();
+//            }));
+//            try {
+//                count.await();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        return batchList.size();
     }
 
 

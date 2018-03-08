@@ -5,6 +5,7 @@ import com.otn.entity.ResOnsrLinkType;
 import com.otn.pojo.LinkTypeCreateInfo;
 import com.otn.pojo.LinkTypeDTO;
 import com.otn.service.LinkTypeService;
+import com.otn.service.utils.BatchDMLUtils;
 import com.otn.util.exception.controller.result.NoneGetException;
 import com.otn.util.exception.controller.result.NoneRemoveException;
 import com.otn.util.exception.controller.result.NoneSaveException;
@@ -15,7 +16,6 @@ import tk.mybatis.mapper.entity.Example;
 import javax.annotation.Resource;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -132,26 +132,32 @@ class LinkTypeServiceImpl implements LinkTypeService {
                     linkType.setGmtModified(null);
                     return linkType;
                 }).collect(Collectors.toList());
-        return batchInsert(list);
+        try {
+            return batchInsert(list);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     @Override
-    public int batchInsert(final List<ResOnsrLinkType> batchList) {
-        if (batchList.size() <= 2000) {
-            batchList.forEach(resOsnrLinkTypeDao::insertSelective);
-        } else {
-            CountDownLatch count = new CountDownLatch(batchList.size());
-            batchList.parallelStream().forEach(linkType -> EXECUTOR.execute(() -> {
-                resOsnrLinkTypeDao.insertSelective(linkType);
-                count.countDown();
-            }));
-            try {
-                count.await();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        return batchList.size();
+    public int batchInsert(final List<ResOnsrLinkType> batchList) throws InterruptedException {
+        return BatchDMLUtils.batchDMLAction(batchList, resOsnrLinkTypeDao::insertSelective);
+//        if (batchList.size() <= 2000) {
+//            batchList.forEach(resOsnrLinkTypeDao::insertSelective);
+//        } else {
+//            CountDownLatch count = new CountDownLatch(batchList.size());
+//            batchList.parallelStream().forEach(linkType -> EXECUTOR.execute(() -> {
+//                resOsnrLinkTypeDao.insertSelective(linkType);
+//                count.countDown();
+//            }));
+//            try {
+//                count.await();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        return batchList.size();
     }
 
     /**

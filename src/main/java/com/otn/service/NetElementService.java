@@ -77,7 +77,7 @@ public interface NetElementService {
      * @param list
      * @return
      */
-    int batchInsert(List<ResNetElement> batchList);
+    int batchInsert(List<ResNetElement> batchList) throws InterruptedException;
 
 }
 

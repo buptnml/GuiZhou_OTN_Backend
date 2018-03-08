@@ -7,6 +7,7 @@ import com.otn.entity.ResNetElement;
 import com.otn.pojo.DiskCreateInfo;
 import com.otn.pojo.DiskDTO;
 import com.otn.service.DiskService;
+import com.otn.service.utils.BatchDMLUtils;
 import com.otn.util.exception.controller.result.NoneRemoveException;
 import com.otn.util.exception.controller.result.NoneSaveException;
 import com.otn.util.exception.controller.result.NoneUpdateException;
@@ -18,7 +19,6 @@ import tk.mybatis.mapper.entity.Example;
 import javax.annotation.Resource;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -97,26 +97,32 @@ class DiskServiceImpl implements DiskService {
             resDisk.setGmtModified(null);
             return resDisk;
         }).collect(Collectors.toList());
-        return batchInsert(basicVersionList);
+        try {
+            return batchInsert(basicVersionList);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     @Override
-    public int batchInsert(final List<ResDisk> batchList) {
-        if (batchList.size() <= 2000) {
-            batchList.forEach(resDiskDao::insertSelective);
-        } else {
-            CountDownLatch count = new CountDownLatch(batchList.size());
-            batchList.parallelStream().forEach(disk -> EXECUTOR.execute(() -> {
-                resDiskDao.insertSelective(disk);
-                count.countDown();
-            }));
-            try {
-                count.await();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        return batchList.size();
+    public int batchInsert(final List<ResDisk> batchList) throws InterruptedException {
+        return BatchDMLUtils.batchDMLAction(batchList, resDiskDao::insertSelective);
+//        if (batchList.size() <= 2000) {
+//            batchList.forEach(resDiskDao::insertSelective);
+//        } else {
+//            CountDownLatch count = new CountDownLatch(batchList.size());
+//            batchList.parallelStream().forEach(disk -> EXECUTOR.execute(() -> {
+//                resDiskDao.insertSelective(disk);
+//                count.countDown();
+//            }));
+//            try {
+//                count.await();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        return batchList.size();
     }
 
     /**
