@@ -3,6 +3,7 @@ package com.otn.controller;
 import com.otn.controller.util.InputCheckException;
 import com.otn.controller.util.VersionCheckException;
 import com.otn.facade.VersionConcreteService;
+import com.otn.pojo.SyncResultDTO;
 import com.otn.pojo.VersionDTO;
 import com.otn.pojo.VersionDTOWithVersionDictDTO;
 import com.otn.pojo.VersionQuery;
@@ -36,12 +37,12 @@ public class VersionController {
     @RequestMapping(value = "/synchronize/{versionId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     @InputCheckException(reason = "入参允许为null，不需要检查，由函数本身保证入参安全")
-    public ResponseInfo dataSynchronize(@PathVariable Long versionId, Long fromVersionId) {
+    public SyncResultDTO dataSynchronize(@PathVariable Long versionId, Long fromVersionId) {
         if (null == fromVersionId) {
             fromVersionId = webServiceConfigInfo.getBASIC_VERSION_ID();
         }
-        versionConcreteService.dataSynchronize(fromVersionId, versionId);
-        return new ResponseInfo("同步成功！");
+        SyncResultDTO message = versionConcreteService.dataSynchronize(fromVersionId, versionId);
+        return message;
     }
 
 

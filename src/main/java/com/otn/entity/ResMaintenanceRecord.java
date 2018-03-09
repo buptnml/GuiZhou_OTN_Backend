@@ -1,10 +1,8 @@
 package com.otn.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.*;
 
 @Table(name = "res_maintenance_record")
 public class ResMaintenanceRecord implements Serializable {
@@ -76,16 +74,16 @@ public class ResMaintenanceRecord implements Serializable {
     private String mobilePhone;
 
     /**
-     * 是否已过期标记位
-     */
-    @Column(name = "is_done")
-    private String isDone;
-
-    /**
      * 工作移动电话
      */
     @Column(name = "link_way_mobile")
     private String linkWayMobile;
+
+    /**
+     * 是否已过期标记位
+     */
+    @Column(name = "is_done")
+    private String isDone;
 
     /**
      * 创建时间
@@ -300,24 +298,6 @@ public class ResMaintenanceRecord implements Serializable {
     }
 
     /**
-     * 获取是否已过期标记位
-     *
-     * @return is_done - 是否已过期标记位
-     */
-    public String getIsDone() {
-        return isDone;
-    }
-
-    /**
-     * 设置是否已过期标记位
-     *
-     * @param isDone 是否已过期标记位
-     */
-    public void setIsDone(String isDone) {
-        this.isDone = isDone == null ? null : isDone.trim();
-    }
-
-    /**
      * 获取工作移动电话
      *
      * @return link_way_mobile - 工作移动电话
@@ -333,6 +313,24 @@ public class ResMaintenanceRecord implements Serializable {
      */
     public void setLinkWayMobile(String linkWayMobile) {
         this.linkWayMobile = linkWayMobile == null ? null : linkWayMobile.trim();
+    }
+
+    /**
+     * 获取是否已过期标记位
+     *
+     * @return is_done - 是否已过期标记位
+     */
+    public String getIsDone() {
+        return isDone;
+    }
+
+    /**
+     * 设置是否已过期标记位
+     *
+     * @param isDone 是否已过期标记位
+     */
+    public void setIsDone(String isDone) {
+        this.isDone = isDone == null ? null : isDone.trim();
     }
 
     /**
@@ -384,20 +382,20 @@ public class ResMaintenanceRecord implements Serializable {
         }
         ResMaintenanceRecord other = (ResMaintenanceRecord) that;
         return (this.getMaintenanceRecordId() == null ? other.getMaintenanceRecordId() == null : this.getMaintenanceRecordId().equals(other.getMaintenanceRecordId()))
-                && (this.getMaintenanceRecordSubId() == null ? other.getMaintenanceRecordSubId() == null : this.getMaintenanceRecordSubId().equals(other.getMaintenanceRecordSubId()))
-                && (this.getDeptName() == null ? other.getDeptName() == null : this.getDeptName().equals(other.getDeptName()))
-                && (this.getDeptMan() == null ? other.getDeptMan() == null : this.getDeptMan().equals(other.getDeptMan()))
-                && (this.getrPlace() == null ? other.getrPlace() == null : this.getrPlace().equals(other.getrPlace()))
-                && (this.getrType() == null ? other.getrType() == null : this.getrType().equals(other.getrType()))
-                && (this.getRepairType() == null ? other.getRepairType() == null : this.getRepairType().equals(other.getRepairType()))
-                && (this.getDeviceName() == null ? other.getDeviceName() == null : this.getDeviceName().equals(other.getDeviceName()))
-                && (this.getrContent() == null ? other.getrContent() == null : this.getrContent().equals(other.getrContent()))
-                && (this.getLinkMan() == null ? other.getLinkMan() == null : this.getLinkMan().equals(other.getLinkMan()))
-                && (this.getMobilePhone() == null ? other.getMobilePhone() == null : this.getMobilePhone().equals(other.getMobilePhone()))
-                && (this.getIsDone() == null ? other.getIsDone() == null : this.getIsDone().equals(other.getIsDone()))
-                && (this.getLinkWayMobile() == null ? other.getLinkWayMobile() == null : this.getLinkWayMobile().equals(other.getLinkWayMobile()))
-                && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
-                && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
+            && (this.getMaintenanceRecordSubId() == null ? other.getMaintenanceRecordSubId() == null : this.getMaintenanceRecordSubId().equals(other.getMaintenanceRecordSubId()))
+            && (this.getDeptName() == null ? other.getDeptName() == null : this.getDeptName().equals(other.getDeptName()))
+            && (this.getDeptMan() == null ? other.getDeptMan() == null : this.getDeptMan().equals(other.getDeptMan()))
+            && (this.getrPlace() == null ? other.getrPlace() == null : this.getrPlace().equals(other.getrPlace()))
+            && (this.getrType() == null ? other.getrType() == null : this.getrType().equals(other.getrType()))
+            && (this.getRepairType() == null ? other.getRepairType() == null : this.getRepairType().equals(other.getRepairType()))
+            && (this.getDeviceName() == null ? other.getDeviceName() == null : this.getDeviceName().equals(other.getDeviceName()))
+            && (this.getrContent() == null ? other.getrContent() == null : this.getrContent().equals(other.getrContent()))
+            && (this.getLinkMan() == null ? other.getLinkMan() == null : this.getLinkMan().equals(other.getLinkMan()))
+            && (this.getMobilePhone() == null ? other.getMobilePhone() == null : this.getMobilePhone().equals(other.getMobilePhone()))
+            && (this.getLinkWayMobile() == null ? other.getLinkWayMobile() == null : this.getLinkWayMobile().equals(other.getLinkWayMobile()))
+            && (this.getIsDone() == null ? other.getIsDone() == null : this.getIsDone().equals(other.getIsDone()))
+            && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
+            && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
     }
 
     @Override
@@ -415,8 +413,8 @@ public class ResMaintenanceRecord implements Serializable {
         result = prime * result + ((getrContent() == null) ? 0 : getrContent().hashCode());
         result = prime * result + ((getLinkMan() == null) ? 0 : getLinkMan().hashCode());
         result = prime * result + ((getMobilePhone() == null) ? 0 : getMobilePhone().hashCode());
-        result = prime * result + ((getIsDone() == null) ? 0 : getIsDone().hashCode());
         result = prime * result + ((getLinkWayMobile() == null) ? 0 : getLinkWayMobile().hashCode());
+        result = prime * result + ((getIsDone() == null) ? 0 : getIsDone().hashCode());
         result = prime * result + ((getGmtCreate() == null) ? 0 : getGmtCreate().hashCode());
         result = prime * result + ((getGmtModified() == null) ? 0 : getGmtModified().hashCode());
         return result;
@@ -439,8 +437,8 @@ public class ResMaintenanceRecord implements Serializable {
         sb.append(", rContent=").append(rContent);
         sb.append(", linkMan=").append(linkMan);
         sb.append(", mobilePhone=").append(mobilePhone);
-        sb.append(", isDone=").append(isDone);
         sb.append(", linkWayMobile=").append(linkWayMobile);
+        sb.append(", isDone=").append(isDone);
         sb.append(", gmtCreate=").append(gmtCreate);
         sb.append(", gmtModified=").append(gmtModified);
         sb.append(", serialVersionUID=").append(serialVersionUID);

@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.otn.mapper.generated.{0}Dao">
-    <resultMap id="BaseResultMap" type="com.otn.entity.ResMaintenanceRecord">
-        <!--
-          WARNING - @mbg.generated
-        -->
-        <id column="maintenance_record_id" jdbcType="BIGINT" property="maintenanceRecordId"/>
-        <result column="maintenance_record_sub_id" jdbcType="BIGINT" property="maintenanceRecordSubId"/>
-        <result column="dept_name" jdbcType="VARCHAR" property="deptName"/>
-        <result column="dept_man" jdbcType="VARCHAR" property="deptMan"/>
-        <result column="r_place" jdbcType="VARCHAR" property="rPlace"/>
-        <result column="r_type" jdbcType="VARCHAR" property="rType"/>
-        <result column="repair_type" jdbcType="VARCHAR" property="repairType"/>
-        <result column="device_name" jdbcType="VARCHAR" property="deviceName"/>
-        <result column="r_content" jdbcType="VARCHAR" property="rContent"/>
-        <result column="link_man" jdbcType="VARCHAR" property="linkMan"/>
-        <result column="mobile_phone" jdbcType="VARCHAR" property="mobilePhone"/>
-        <result column="is_done" jdbcType="CHAR" property="isDone"/>
-        <result column="link_way_mobile" jdbcType="VARCHAR" property="linkWayMobile"/>
-        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
-        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
-    </resultMap>
-    <sql id="Base_Column_List">
-        <!--
-          WARNING - @mbg.generated
-        -->
-        maintenance_record_id, maintenance_record_sub_id, dept_name, dept_man, r_place, r_type,
-        repair_type, device_name, r_content, link_man, mobile_phone, is_done, link_way_mobile,
-        gmt_create, gmt_modified
-    </sql>
+  <resultMap id="BaseResultMap" type="com.otn.entity.ResMaintenanceRecord">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="maintenance_record_id" jdbcType="BIGINT" property="maintenanceRecordId" />
+    <result column="maintenance_record_sub_id" jdbcType="BIGINT" property="maintenanceRecordSubId" />
+    <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
+    <result column="dept_man" jdbcType="VARCHAR" property="deptMan" />
+    <result column="r_place" jdbcType="VARCHAR" property="rPlace" />
+    <result column="r_type" jdbcType="VARCHAR" property="rType" />
+    <result column="repair_type" jdbcType="VARCHAR" property="repairType" />
+    <result column="device_name" jdbcType="VARCHAR" property="deviceName" />
+    <result column="r_content" jdbcType="VARCHAR" property="rContent" />
+    <result column="link_man" jdbcType="VARCHAR" property="linkMan" />
+    <result column="mobile_phone" jdbcType="VARCHAR" property="mobilePhone" />
+    <result column="link_way_mobile" jdbcType="VARCHAR" property="linkWayMobile" />
+    <result column="is_done" jdbcType="CHAR" property="isDone" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    maintenance_record_id, maintenance_record_sub_id, dept_name, dept_man, r_place, r_type, 
+    repair_type, device_name, r_content, link_man, mobile_phone, link_way_mobile, is_done, 
+    gmt_create, gmt_modified
+  </sql>
 </mapper>
