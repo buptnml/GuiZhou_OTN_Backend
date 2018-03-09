@@ -1,35 +1,37 @@
 package com.otn.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.*;
 
 @Table(name = "sys_sync_log")
 public class SysSyncLog implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 同步日志id
      */
     @Id
     @Column(name = "sync_log_id")
     private Long syncLogId;
+
     /**
      * 操作员名称
      */
     @Column(name = "operator_name")
     private String operatorName;
+
     /**
      * 创建时间
      */
     @Column(name = "gmt_create")
     private Date gmtCreate;
+
     /**
      * 最后修改时间
      */
     @Column(name = "gmt_modified")
     private Date gmtModified;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取同步日志id
@@ -116,9 +118,9 @@ public class SysSyncLog implements Serializable {
         }
         SysSyncLog other = (SysSyncLog) that;
         return (this.getSyncLogId() == null ? other.getSyncLogId() == null : this.getSyncLogId().equals(other.getSyncLogId()))
-                && (this.getOperatorName() == null ? other.getOperatorName() == null : this.getOperatorName().equals(other.getOperatorName()))
-                && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
-                && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
+            && (this.getOperatorName() == null ? other.getOperatorName() == null : this.getOperatorName().equals(other.getOperatorName()))
+            && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
+            && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
     }
 
     @Override
