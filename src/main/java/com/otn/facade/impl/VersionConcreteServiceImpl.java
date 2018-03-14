@@ -1,14 +1,11 @@
 package com.otn.facade.impl;
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.otn.dao.SysVersionDao;
 import com.otn.entity.SysVersion;
 import com.otn.facade.BussinessService;
 import com.otn.facade.VersionConcreteService;
-import com.otn.pojo.VersionDTO;
-import com.otn.pojo.VersionDTOWithVersionDictDTO;
-import com.otn.pojo.VersionDictDTO;
-import com.otn.pojo.VersionQuery;
-import com.otn.pojo.SyncResultDTO;
+import com.otn.pojo.*;
 import com.otn.service.*;
 import com.otn.util.exception.controller.result.NoneGetException;
 import com.otn.util.exception.controller.result.NoneRemoveException;
@@ -20,9 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -33,8 +27,9 @@ import java.util.concurrent.Future;
 @Service("versionConcreteService")
 class VersionConcreteServiceImpl implements VersionConcreteService {
     private static Object synchronizedLock = new Object();
-    private static ExecutorService versionCreateExecutor = Executors.newWorkStealingPool(Runtime.getRuntime()
-            .availableProcessors() * 3);
+    private static ExecutorService versionCreateExecutor = Executors.newCachedThreadPool(new ThreadFactoryBuilder().setNameFormat
+            ("versionCreateExecutor-pool-%d")
+            .build());
     @Resource
     private SysVersionDao sysVersionDao;
     @Resource
@@ -123,37 +118,30 @@ class VersionConcreteServiceImpl implements VersionConcreteService {
 
     private SyncResultDTO notBasicVersionDataSynchronize(Long fromVersionId, Long toVersionId) {
         HashMap<String, Integer> oldInfo = batchRemove(toVersionId);
-        HashMap<String, Future> newInfo = new HashMap<>();
-
+        HashMap<String, Integer> newInfo = new HashMap<>();
         SysVersion Version = sysVersionDao.selectByPrimaryKey(toVersionId);
         if (null == Version) {
             throw new NoneGetException("同步数据失败！!");
         }
         VersionDictDTO dictSetting = versionDictService.getVersionDictByName(Version.getVersionDictName());
         //创建的时候最先创建网元数据！！！重要！
-        if (dictSetting.getHasNetElement()) {
-            Future<Integer> res = versionCreateExecutor.submit(()-> netElementService.batchCreate(fromVersionId, toVersionId));
-            while(!res.isDone());
-            //int num = netElementService.batchCreate(fromVersionId, toVersionId);
-            newInfo.put("NetElement", res);
-        }
-        if (dictSetting.getHasBussiness()) {
-            Future<Integer> res = versionCreateExecutor.submit(() -> bussinessService.batchCreate(fromVersionId, toVersionId));
-            newInfo.put("Business", res);
-        }
-        if (dictSetting.getHasDisk()) {
-            Future<Integer> res = versionCreateExecutor.submit(() -> diskService.batchCreate(fromVersionId, toVersionId));
-            newInfo.put("Disk", res);
-        }
-        if (dictSetting.getHasLink()) {
-            Future<Integer> res = versionCreateExecutor.submit(() -> linkService.batchCreate(fromVersionId, toVersionId));
-            newInfo.put("Link", res);
-        }
         if (dictSetting.getHasAmplifier()) {
             versionCreateExecutor.submit(() -> amplifierService.batchCreate(fromVersionId, toVersionId));
         }
         if (dictSetting.getHasLinkType()) {
             versionCreateExecutor.submit(() -> linkTypeService.batchCreate(fromVersionId, toVersionId));
+        }
+        if (dictSetting.getHasNetElement()) {
+            newInfo.put("NetElement", netElementService.batchCreate(fromVersionId, toVersionId));
+        }
+        if (dictSetting.getHasBussiness()) {
+            newInfo.put("Business", bussinessService.batchCreate(fromVersionId, toVersionId));
+        }
+        if (dictSetting.getHasDisk()) {
+            newInfo.put("Disk", diskService.batchCreate(fromVersionId, toVersionId));
+        }
+        if (dictSetting.getHasLink()) {
+            newInfo.put("Link", linkService.batchCreate(fromVersionId, toVersionId));
         }
 
         return mapTransferFactory(oldInfo, newInfo);
@@ -161,52 +149,43 @@ class VersionConcreteServiceImpl implements VersionConcreteService {
 
     private SyncResultDTO basicVersionDataSynchronize() {
         HashMap<String, Integer> oldInfo = batchRemove(webServiceConfigInfo.getBASIC_VERSION_ID());
-        HashMap<String, Future> newInfo = new HashMap<>();
-
-        Future<Integer> res1 = versionCreateExecutor.submit(() -> netElementService.batchInsert(webServiceFactory.listRemoteNetElementRaw()));
-        while(!res1.isDone());
-        Future<Integer> res2 = versionCreateExecutor.submit(() -> diskService.batchInsert(webServiceFactory.listRemoteDiskRaw()));
-        Future<Integer> res3 = versionCreateExecutor.submit(() -> bussinessService.batchInsert(webServiceFactory.listRemoteBusDataRaw
-                ()));
-        Future<Integer> res4 = versionCreateExecutor.submit(() -> linkService.batchInsert(webServiceFactory.listRemoteLinkRaw()));
-        Future<Integer> res5 = versionCreateExecutor.submit(() -> amplifierService.batchInsert(webServiceFactory.listRemoteAmpRaw()));
-        while (!(res2.isDone() && res3.isDone() && res4.isDone() && res5.isDone()));
-        newInfo.put("NetElement",res1);
-        newInfo.put("Disk",res2);
-        newInfo.put("Business",res3);
-        newInfo.put("Link",res4);
-
+        HashMap<String, Integer> newInfo = new HashMap<>();
+        Future<Integer> busFuture = versionCreateExecutor.submit(() -> bussinessService.batchInsert(webServiceFactory
+                .listRemoteBusDataRaw()));
+        versionCreateExecutor.submit(() -> amplifierService.batchInsert(webServiceFactory.listRemoteAmpRaw()));
+        try {
+            newInfo.put("NetElement", netElementService.batchInsert(webServiceFactory.listRemoteNetElementRaw()));
+            newInfo.put("Disk", diskService.batchInsert(webServiceFactory.listRemoteDiskRaw()));
+            newInfo.put("Link", linkService.batchInsert(webServiceFactory.listRemoteLinkRaw()));
+            newInfo.put("Business", busFuture.get());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
         return mapTransferFactory(oldInfo, newInfo);
     }
 
-    private SyncResultDTO mapTransferFactory(HashMap<String, Integer> oldInfo, HashMap<String, Future> newInfo){
+    private SyncResultDTO mapTransferFactory(HashMap<String, Integer> oldInfo, HashMap<String, Integer> newInfo) {
         SyncResultDTO res = new SyncResultDTO();
-        newInfo.forEach((key, value)->{
-            System.out.println(key);
-            try{
-                int newValue = (int)value.get();
-                int oldValue = oldInfo.get(key).intValue();
-                if(key == "Business")
-                    res.setBusinessChange(newValue - oldValue);
-                else if(key == "Disk")
-                    res.setDiskChange(newValue - oldValue);
-                else if(key == "NetElement")
-                    res.setNetElementChange(newValue - oldValue);
-                else if(key == "Link")
-                    res.setLinkChange(newValue - oldValue);
-                //System.out.println(String.format("oldValue:%s, newValue:%s", oldValue, newValue));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
+        newInfo.forEach((key, newValue) -> {
+            int oldValue = oldInfo.get(key);
+            if (key == "Business")
+                res.setBusinessChange(newValue - oldValue);
+            if (key == "Disk")
+                res.setDiskChange(newValue - oldValue);
+            if (key == "NetElement")
+                res.setNetElementChange(newValue - oldValue);
+            if (key == "Link")
+                res.setLinkChange(newValue - oldValue);
         });
         return res;
     }
+
     /***
      * 根据版本设置批量删除该版本所用资源
      */
-    private HashMap<String,Integer> batchRemove(Long versionId) {
+    private HashMap<String, Integer> batchRemove(Long versionId) {
         SysVersion Version = sysVersionDao.selectByPrimaryKey(versionId);
         if (null == Version) {
             throw new NoneRemoveException("删除版本数据失败！！");
@@ -215,9 +194,9 @@ class VersionConcreteServiceImpl implements VersionConcreteService {
         return subRemove(versionId, dictSetting);
     }
 
-    private HashMap<String,Integer> subRemove(Long versionId, VersionDictDTO dictSetting) {
+    private HashMap<String, Integer> subRemove(Long versionId, VersionDictDTO dictSetting) {
         //考虑到机盘和网元的外键冲突，先在主线程中删除机盘
-        HashMap<String,Integer> res = new HashMap<>();
+        HashMap<String, Integer> res = new HashMap<>();
         int num;
         if (dictSetting.getHasDisk()) {
             num = diskService.batchRemove(versionId);

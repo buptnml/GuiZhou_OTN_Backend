@@ -8,60 +8,39 @@ import com.otn.webservice.com.pojo.RawLinkData;
 import com.otn.webservice.com.pojo.RawNetElementData;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.FutureTask;
 
 
 public class StrategyRemote implements Strategy {
     private static XMLConverter XML_CONVERTER = new XMLConverter();
     //todo 再思考这个语句的改进空间
-    private static volatile Future<ResourceServiceDelegate> WS = (Future<ResourceServiceDelegate>) Executors
-            .newSingleThreadExecutor().submit(new FutureTask<ResourceServiceDelegate>(() -> new ResourceServiceService()
-                    .getResourceServicePort()));
-
+    ResourceServiceService rs = new ResourceServiceService();
+    ResourceServiceDelegate WS = rs.getResourceServicePort();
 
 
     @Override
     public List<RawLinkData> getRawLinkData() {
-        try {
-            return XML_CONVERTER.getData(WS.get().getAllEquipLink(), XMLConverter.REQUEST_TYPES.link);
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return XML_CONVERTER.getData(WS.getAllEquipLink(), XMLConverter.REQUEST_TYPES.link);
+
     }
 
     @Override
     public List<RawAmpData> getRawAmpData() {
-        try {
-            return XML_CONVERTER.getData(WS.get().getAllEquipCardByAmp(), XMLConverter.REQUEST_TYPES.amp);
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return XML_CONVERTER.getData(WS.getAllEquipCardByAmp(), XMLConverter.REQUEST_TYPES.amp);
+
     }
 
     @Override
     public List<RawBussinessData> getRawBusData() {
-        try {
-            return XML_CONVERTER.getData(WS.get().getChannel(), XMLConverter.REQUEST_TYPES.bussiness);
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-        return null;
+
+        return XML_CONVERTER.getData(WS.getChannel(), XMLConverter.REQUEST_TYPES.bussiness);
+
     }
 
     @Override
     public List<RawNetElementData> getRawNetElementData() {
-        try {
-            return XML_CONVERTER.getData(WS.get().getAllEquip(), XMLConverter.REQUEST_TYPES
-                    .netElement);
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-        return null;
+
+        return XML_CONVERTER.getData(WS.getAllEquip(), XMLConverter.REQUEST_TYPES
+                .netElement);
 
     }
 

@@ -7,6 +7,7 @@ import com.otn.entity.ResNetElement;
 import com.otn.pojo.LinkCreateInfo;
 import com.otn.pojo.LinkDTO;
 import com.otn.service.LinkService;
+import com.otn.service.utils.BatchDMLUtils;
 import com.otn.util.exception.controller.result.NoneGetException;
 import com.otn.util.exception.controller.result.NoneRemoveException;
 import com.otn.util.exception.controller.result.NoneSaveException;
@@ -20,14 +21,10 @@ import javax.annotation.Resource;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 @Service("linkService")
 class LinkServiceImpl implements LinkService {
-    private final static ExecutorService EXECUTOR = Executors.newWorkStealingPool();
     @Resource
     private ResLinkDao resLinkDao;
     @Resource
@@ -111,26 +108,32 @@ class LinkServiceImpl implements LinkService {
             link.setGmtModified(null);
             return link;
         }).collect(Collectors.toList());
-        return batchInsert(resLinksList);
+        try {
+            return batchInsert(resLinksList);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     @Override
-    public int batchInsert(final List<ResLink> batchList) {
-        if (batchList.size() <= 2000) {
-            batchList.forEach(resLinkDao::insertSelective);
-        } else {
-            CountDownLatch count = new CountDownLatch(batchList.size());
-            batchList.parallelStream().forEach(link -> EXECUTOR.execute(() -> {
-                resLinkDao.insertSelective(link);
-                count.countDown();
-            }));
-            try {
-                count.await();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        return batchList.size();
+    public int batchInsert(final List<ResLink> batchList) throws InterruptedException {
+        return BatchDMLUtils.batchDMLActionForEach(batchList, resLinkDao::insertSelective);
+//        if (batchList.size() <= 2000) {
+//            batchList.forEach(resLinkDao::insertSelective);
+//        } else {
+//            CountDownLatch count = new CountDownLatch(batchList.size());
+//            batchList.parallelStream().forEach(link -> EXECUTOR.execute(() -> {
+//                resLinkDao.insertSelective(link);
+//                count.countDown();
+//            }));
+//            try {
+//                count.await();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        return batchList.size();
     }
 
     /**

@@ -82,5 +82,5 @@ public interface LinkTypeService {
      * @param batchList
      * @return
      */
-    int batchInsert(List<ResOnsrLinkType> batchList);
+    int batchInsert(List<ResOnsrLinkType> batchList) throws InterruptedException;
 }

@@ -1,40 +1,41 @@
 package com.otn.pojo;
 
 public class SyncResultDTO {
-    private String netElementChange;
-    private String diskChange;
-    private String businessChange;
-    private String linkChange;
+    private int netElementChange = Integer.MIN_VALUE;
+    private int diskChange = Integer.MIN_VALUE;
+    private int businessChange = Integer.MIN_VALUE;
+    private int linkChange = Integer.MIN_VALUE;
 
-    public String getNetElementChange() {
+
+    public int getNetElementChange() {
         return netElementChange;
     }
 
-    public void setNetElementChange(int res) {
-        this.netElementChange = res == 0 ? "无变化" : (res + "");
+    public void setNetElementChange(int netElementChange) {
+        this.netElementChange = netElementChange;
     }
 
-    public String getDiskChange() {
+    public int getDiskChange() {
         return diskChange;
     }
 
-    public void setDiskChange(int res) {
-        this.diskChange = res == 0 ? "无变化" : (res + "");
+    public void setDiskChange(int diskChange) {
+        this.diskChange = diskChange;
     }
 
-    public String getBusinessChange() {
+    public int getBusinessChange() {
         return businessChange;
     }
 
-    public void setBusinessChange(int res) {
-        this.businessChange = res == 0 ? "无变化" : (res + "");
+    public void setBusinessChange(int businessChange) {
+        this.businessChange = businessChange;
     }
 
-    public String getLinkChange() {
+    public int getLinkChange() {
         return linkChange;
     }
 
-    public void setLinkChange(int res) {
-        this.linkChange = res == 0 ? "无变化" : (res + "");
+    public void setLinkChange(int linkChange) {
+        this.linkChange = linkChange;
     }
 }
