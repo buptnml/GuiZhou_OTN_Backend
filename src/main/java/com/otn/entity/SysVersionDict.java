@@ -1,10 +1,8 @@
 package com.otn.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.*;
 
 @Table(name = "sys_version_dict")
 public class SysVersionDict implements Serializable {
@@ -312,17 +310,17 @@ public class SysVersionDict implements Serializable {
         }
         SysVersionDict other = (SysVersionDict) that;
         return (this.getVersionDictId() == null ? other.getVersionDictId() == null : this.getVersionDictId().equals(other.getVersionDictId()))
-                && (this.getVersionDictName() == null ? other.getVersionDictName() == null : this.getVersionDictName().equals(other.getVersionDictName()))
-                && (this.getVersionDictDescription() == null ? other.getVersionDictDescription() == null : this.getVersionDictDescription().equals(other.getVersionDictDescription()))
-                && (this.getCreatorName() == null ? other.getCreatorName() == null : this.getCreatorName().equals(other.getCreatorName()))
-                && (this.getHasBussiness() == null ? other.getHasBussiness() == null : this.getHasBussiness().equals(other.getHasBussiness()))
-                && (this.getHasDisk() == null ? other.getHasDisk() == null : this.getHasDisk().equals(other.getHasDisk()))
-                && (this.getHasLink() == null ? other.getHasLink() == null : this.getHasLink().equals(other.getHasLink()))
-                && (this.getHasNetElement() == null ? other.getHasNetElement() == null : this.getHasNetElement().equals(other.getHasNetElement()))
-                && (this.getHasLinkType() == null ? other.getHasLinkType() == null : this.getHasLinkType().equals(other.getHasLinkType()))
-                && (this.getHasAmplifier() == null ? other.getHasAmplifier() == null : this.getHasAmplifier().equals(other.getHasAmplifier()))
-                && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
-                && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
+            && (this.getVersionDictName() == null ? other.getVersionDictName() == null : this.getVersionDictName().equals(other.getVersionDictName()))
+            && (this.getVersionDictDescription() == null ? other.getVersionDictDescription() == null : this.getVersionDictDescription().equals(other.getVersionDictDescription()))
+            && (this.getCreatorName() == null ? other.getCreatorName() == null : this.getCreatorName().equals(other.getCreatorName()))
+            && (this.getHasBussiness() == null ? other.getHasBussiness() == null : this.getHasBussiness().equals(other.getHasBussiness()))
+            && (this.getHasDisk() == null ? other.getHasDisk() == null : this.getHasDisk().equals(other.getHasDisk()))
+            && (this.getHasLink() == null ? other.getHasLink() == null : this.getHasLink().equals(other.getHasLink()))
+            && (this.getHasNetElement() == null ? other.getHasNetElement() == null : this.getHasNetElement().equals(other.getHasNetElement()))
+            && (this.getHasLinkType() == null ? other.getHasLinkType() == null : this.getHasLinkType().equals(other.getHasLinkType()))
+            && (this.getHasAmplifier() == null ? other.getHasAmplifier() == null : this.getHasAmplifier().equals(other.getHasAmplifier()))
+            && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
+            && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
     }
 
     @Override

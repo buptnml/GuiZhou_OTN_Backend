@@ -1,6 +1,7 @@
 package com.otn.facade;
 
 
+import com.otn.pojo.SyncResultDTO;
 import com.otn.pojo.VersionDTO;
 import com.otn.pojo.VersionDTOWithVersionDictDTO;
 import com.otn.pojo.VersionQuery;
@@ -53,7 +54,7 @@ public interface VersionConcreteService {
     /**
      * 同步数据
      */
-    void dataSynchronize(Long fromVersionId, Long toVersionId);
+    SyncResultDTO dataSynchronize(Long fromVersionId, Long toVersionId);
 
 
 }

@@ -22,6 +22,7 @@ import java.util.List;
 @Api(tags = "Bussiness", description = "光通道（业务）相关操作")
 @RequestMapping(value = "/bussiness")
 public class BussinessController {
+
     @Resource
     private BussinessService bussinessService;
 

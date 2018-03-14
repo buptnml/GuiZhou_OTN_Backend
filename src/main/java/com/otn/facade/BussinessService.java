@@ -58,7 +58,7 @@ BussinessService {
      * @param batchList
      * @return
      */
-    int batchInsert(List<ResBussiness> batchList);
+    int batchInsert(List<ResBussiness> batchList) throws InterruptedException;
 
     /**
      * 更新路由中包含oldString的bussiness路由为newString，重新计算OSNR的输入输出功率

@@ -1,5 +1,7 @@
 package com.otn.pojo;
 
+import org.springframework.lang.Nullable;
+
 import java.util.Date;
 
 public class VersionQuery {
@@ -9,7 +11,7 @@ public class VersionQuery {
     //    private VersionSetting versionSetting;
     private String versionDescription;
 
-
+    @Nullable
     private Date gmtModified;
 
     public Date getGmtModified() {

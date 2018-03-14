@@ -9,8 +9,8 @@ import java.util.List;
 
 
 public class StrategyLocal implements Strategy {
-    static XMLConverter XML_CONVERTER = new XMLConverter();
-    String filepath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
+    private final static String filepath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
+    private static XMLConverter XML_CONVERTER = new XMLConverter();
 
     @Override
     public List<RawLinkData> getRawLinkData() {

@@ -1,11 +1,9 @@
 package com.otn.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
+import javax.persistence.*;
 
 @Table(name = "sys_version")
 public class SysVersion implements Serializable {
@@ -217,13 +215,13 @@ public class SysVersion implements Serializable {
         }
         SysVersion other = (SysVersion) that;
         return (this.getVersionId() == null ? other.getVersionId() == null : this.getVersionId().equals(other.getVersionId()))
-                && (this.getVersionName() == null ? other.getVersionName() == null : this.getVersionName().equals(other.getVersionName()))
-                && (this.getVersionDictName() == null ? other.getVersionDictName() == null : this.getVersionDictName().equals(other.getVersionDictName()))
-                && (this.getCreatorName() == null ? other.getCreatorName() == null : this.getCreatorName().equals(other.getCreatorName()))
-                && (this.getVersionDescription() == null ? other.getVersionDescription() == null : this.getVersionDescription().equals(other.getVersionDescription()))
-                && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
-                && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()))
-                && (Arrays.equals(this.getVersionSetting(), other.getVersionSetting()));
+            && (this.getVersionName() == null ? other.getVersionName() == null : this.getVersionName().equals(other.getVersionName()))
+            && (this.getVersionDictName() == null ? other.getVersionDictName() == null : this.getVersionDictName().equals(other.getVersionDictName()))
+            && (this.getCreatorName() == null ? other.getCreatorName() == null : this.getCreatorName().equals(other.getCreatorName()))
+            && (this.getVersionDescription() == null ? other.getVersionDescription() == null : this.getVersionDescription().equals(other.getVersionDescription()))
+            && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
+            && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()))
+            && (Arrays.equals(this.getVersionSetting(), other.getVersionSetting()));
     }
 
     @Override

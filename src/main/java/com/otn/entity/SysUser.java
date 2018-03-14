@@ -1,11 +1,9 @@
 package com.otn.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
+import javax.persistence.*;
 
 @Table(name = "sys_user")
 public class SysUser implements Serializable {
@@ -216,13 +214,13 @@ public class SysUser implements Serializable {
         }
         SysUser other = (SysUser) that;
         return (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
-                && (this.getUserName() == null ? other.getUserName() == null : this.getUserName().equals(other.getUserName()))
-                && (this.getPassword() == null ? other.getPassword() == null : this.getPassword().equals(other.getPassword()))
-                && (this.getUserRole() == null ? other.getUserRole() == null : this.getUserRole().equals(other.getUserRole()))
-                && (this.getUserGroup() == null ? other.getUserGroup() == null : this.getUserGroup().equals(other.getUserGroup()))
-                && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
-                && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()))
-                && (Arrays.equals(this.getUserSetting(), other.getUserSetting()));
+            && (this.getUserName() == null ? other.getUserName() == null : this.getUserName().equals(other.getUserName()))
+            && (this.getPassword() == null ? other.getPassword() == null : this.getPassword().equals(other.getPassword()))
+            && (this.getUserRole() == null ? other.getUserRole() == null : this.getUserRole().equals(other.getUserRole()))
+            && (this.getUserGroup() == null ? other.getUserGroup() == null : this.getUserGroup().equals(other.getUserGroup()))
+            && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
+            && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()))
+            && (Arrays.equals(this.getUserSetting(), other.getUserSetting()));
     }
 
     @Override

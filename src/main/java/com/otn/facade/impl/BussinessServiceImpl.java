@@ -105,30 +105,17 @@ class BussinessServiceImpl implements BussinessService {
                     resBussiness.setBussinessId(null);
                     return resBussiness;
                 }).collect(Collectors.toList());
-        return batchInsert(list);
+        try {
+            return batchInsert(list);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     @Override
-    public int batchInsert(final List<ResBussiness> batchList) {
-        if (batchList.size() <= 500) {
-            batchList.forEach(resBussinessDao::insertSelective);
-        } else {
-            CountDownLatch count = new CountDownLatch(batchList.size());
-            batchList.parallelStream().forEach(bus ->
-                    EXECUTOR.execute(() -> {
-                        resBussinessDao.insertSelective(bus);
-                        count.countDown();
-                    })
-            );
-            try {
-                count.await();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } finally {
-                //执行完毕以后返回插入的数量
-                return batchList.size();
-            }
-        }
+    public int batchInsert(final List<ResBussiness> batchList) throws InterruptedException {
+        resBussinessDao.batchInsert(batchList);
         return batchList.size();
     }
 
