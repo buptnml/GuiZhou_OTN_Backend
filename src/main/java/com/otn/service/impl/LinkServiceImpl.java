@@ -21,13 +21,10 @@ import javax.annotation.Resource;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 @Service("linkService")
 class LinkServiceImpl implements LinkService {
-    private final static ExecutorService EXECUTOR = Executors.newWorkStealingPool();
     @Resource
     private ResLinkDao resLinkDao;
     @Resource
@@ -121,7 +118,7 @@ class LinkServiceImpl implements LinkService {
 
     @Override
     public int batchInsert(final List<ResLink> batchList) throws InterruptedException {
-        return BatchDMLUtils.batchDMLAction(batchList, resLinkDao::insertSelective);
+        return BatchDMLUtils.batchDMLActionForEach(batchList, resLinkDao::insertSelective);
 //        if (batchList.size() <= 2000) {
 //            batchList.forEach(resLinkDao::insertSelective);
 //        } else {

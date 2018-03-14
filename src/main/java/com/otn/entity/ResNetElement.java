@@ -1,8 +1,10 @@
 package com.otn.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.*;
 
 @Table(name = "res_net_element")
 public class ResNetElement implements Serializable {
@@ -36,6 +38,12 @@ public class ResNetElement implements Serializable {
      */
     @Column(name = "coordinate_y")
     private Float coordinateY;
+
+    /**
+     * 所在环
+     */
+    @Column(name = "circle_id")
+    private String circleId;
 
     /**
      * 条目所在版本ID
@@ -148,6 +156,24 @@ public class ResNetElement implements Serializable {
     }
 
     /**
+     * 获取所在环
+     *
+     * @return circle_id - 所在环
+     */
+    public String getCircleId() {
+        return circleId;
+    }
+
+    /**
+     * 设置所在环
+     *
+     * @param circleId 所在环
+     */
+    public void setCircleId(String circleId) {
+        this.circleId = circleId == null ? null : circleId.trim();
+    }
+
+    /**
      * 获取条目所在版本ID
      *
      * @return version_id - 条目所在版本ID
@@ -218,6 +244,7 @@ public class ResNetElement implements Serializable {
             && (this.getNetElementType() == null ? other.getNetElementType() == null : this.getNetElementType().equals(other.getNetElementType()))
             && (this.getCoordinateX() == null ? other.getCoordinateX() == null : this.getCoordinateX().equals(other.getCoordinateX()))
             && (this.getCoordinateY() == null ? other.getCoordinateY() == null : this.getCoordinateY().equals(other.getCoordinateY()))
+                && (this.getCircleId() == null ? other.getCircleId() == null : this.getCircleId().equals(other.getCircleId()))
             && (this.getVersionId() == null ? other.getVersionId() == null : this.getVersionId().equals(other.getVersionId()))
             && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
             && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
@@ -232,6 +259,7 @@ public class ResNetElement implements Serializable {
         result = prime * result + ((getNetElementType() == null) ? 0 : getNetElementType().hashCode());
         result = prime * result + ((getCoordinateX() == null) ? 0 : getCoordinateX().hashCode());
         result = prime * result + ((getCoordinateY() == null) ? 0 : getCoordinateY().hashCode());
+        result = prime * result + ((getCircleId() == null) ? 0 : getCircleId().hashCode());
         result = prime * result + ((getVersionId() == null) ? 0 : getVersionId().hashCode());
         result = prime * result + ((getGmtCreate() == null) ? 0 : getGmtCreate().hashCode());
         result = prime * result + ((getGmtModified() == null) ? 0 : getGmtModified().hashCode());
@@ -249,6 +277,7 @@ public class ResNetElement implements Serializable {
         sb.append(", netElementType=").append(netElementType);
         sb.append(", coordinateX=").append(coordinateX);
         sb.append(", coordinateY=").append(coordinateY);
+        sb.append(", circleId=").append(circleId);
         sb.append(", versionId=").append(versionId);
         sb.append(", gmtCreate=").append(gmtCreate);
         sb.append(", gmtModified=").append(gmtModified);

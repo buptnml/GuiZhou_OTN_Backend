@@ -1,9 +1,6 @@
 package com.otn.service.utils;
 
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
 /**
@@ -26,19 +23,17 @@ public class BatchDMLUtils {
      * @param <K>
      * @return
      */
-    static public <K> int batchDMLAction(final List<K> list, final Consumer<K> action) throws InterruptedException {
+    static public <K> int batchDMLActionForEach(final List<K> list, final Consumer<K> action) throws
+            InterruptedException {
         if (list.size() <= MULTI_THREAD_LIMIT) {
             list.forEach(action::accept);
         } else {
-            final ExecutorService pool = Executors.newWorkStealingPool(Runtime.getRuntime()
-                    .availableProcessors() * 3);
-            CountDownLatch count = new CountDownLatch(list.size());
-            list.parallelStream().forEach((item) -> pool.execute(() -> {
-                action.accept(item);
-                count.countDown();
-            }));
-            count.await();
+            list.parallelStream().forEach(item ->
+                    action.accept(item)
+            );
         }
         return list.size();
     }
+
+
 }

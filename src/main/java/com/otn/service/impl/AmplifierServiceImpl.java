@@ -148,7 +148,7 @@ class AmplifierServiceImpl implements AmplifierService {
 
     @Override
     public int batchInsert(List<ResOsnrAmplifier> batchList) throws InterruptedException {
-        return BatchDMLUtils.batchDMLAction(batchList, resOsnrAmplifierDao::insertSelective);
+        return BatchDMLUtils.batchDMLActionForEach(batchList, resOsnrAmplifierDao::insertSelective);
 //        if (batchList.size() <= 2000) {
 //            batchList.forEach(resOsnrAmplifierDao::insertSelective);
 //        } else {

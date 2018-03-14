@@ -11,7 +11,7 @@
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd">
 
-    <!-- 自动扫描 com.otncontroller 下的带有Spring组件注解的类 -->
+    <!-- 自动扫描 com.otn.controller 下的带有Spring组件注解的类 -->
     <context:component-scan base-package="com.otn.controller">
         <context:include-filter type="annotation"
                                 expression="org.springframework.stereotype.Controller"/>

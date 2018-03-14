@@ -107,7 +107,7 @@ class DiskServiceImpl implements DiskService {
 
     @Override
     public int batchInsert(final List<ResDisk> batchList) throws InterruptedException {
-        return BatchDMLUtils.batchDMLAction(batchList, resDiskDao::insertSelective);
+        return BatchDMLUtils.batchDMLActionForEach(batchList, resDiskDao::insertSelective);
 //        if (batchList.size() <= 2000) {
 //            batchList.forEach(resDiskDao::insertSelective);
 //        } else {

@@ -138,22 +138,7 @@ class NetElementServiceImpl implements NetElementService {
 
     @Override
     public int batchInsert(List<ResNetElement> batchList) throws InterruptedException {
-        return BatchDMLUtils.batchDMLAction(batchList, resNetElementDao::insertSelective);
-//        if (batchList.size() <= 2000) {
-//            batchList.forEach(resNetElementDao::insertSelective);
-//        } else {
-//            CountDownLatch count = new CountDownLatch(batchList.size());
-//            batchList.parallelStream().forEach(netElement -> EXECUTOR.execute(() -> {
-//                resNetElementDao.insertSelective(netElement);
-//                count.countDown();
-//            }));
-//            try {
-//                count.await();
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        return batchList.size();
+        return BatchDMLUtils.batchDMLActionForEach(batchList, resNetElementDao::insertSelective);
     }
 
 

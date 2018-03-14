@@ -142,7 +142,7 @@ class LinkTypeServiceImpl implements LinkTypeService {
 
     @Override
     public int batchInsert(final List<ResOnsrLinkType> batchList) throws InterruptedException {
-        return BatchDMLUtils.batchDMLAction(batchList, resOsnrLinkTypeDao::insertSelective);
+        return BatchDMLUtils.batchDMLActionForEach(batchList, resOsnrLinkTypeDao::insertSelective);
 //        if (batchList.size() <= 2000) {
 //            batchList.forEach(resOsnrLinkTypeDao::insertSelective);
 //        } else {

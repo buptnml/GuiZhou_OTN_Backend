@@ -29,7 +29,7 @@ public class SwaggerConfig {
     private ApiInfo buildApiInf() {
         return new ApiInfoBuilder()
                 //页面标题
-                .title("OTN项目")
+                .title("贵州OTN项目")
                 //版本号
                 .version("1.0.2")
                 //描述
