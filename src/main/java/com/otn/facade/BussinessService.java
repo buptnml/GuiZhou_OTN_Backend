@@ -17,6 +17,7 @@ BussinessService {
      */
     List<BussinessDTO> listBussiness(Long versionId);
 
+    List<BussinessDTO> listBussiness(Long versionId,String circleId);
     /**
      * 获取单个业务信息
      *
