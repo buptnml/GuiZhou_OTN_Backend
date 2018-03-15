@@ -12,6 +12,7 @@ import java.util.List;
  *
  */
 public interface AmplifierService {
+
     /**
      * 修改放大器: 根据  放大器id
      * 请求路径:/amplifiers/:versionId/:amplifierId

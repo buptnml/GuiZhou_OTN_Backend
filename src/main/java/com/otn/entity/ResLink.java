@@ -1,8 +1,10 @@
 package com.otn.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.*;
 
 @Table(name = "res_link")
 public class ResLink implements Serializable {
@@ -78,6 +80,12 @@ public class ResLink implements Serializable {
      */
     @Column(name = "gmt_modified")
     private Date gmtModified;
+
+    /**
+     * 所在环
+     */
+    @Column(name = "circle_id")
+    private String circleId;
 
     private static final long serialVersionUID = 1L;
 
@@ -297,6 +305,24 @@ public class ResLink implements Serializable {
         this.gmtModified = gmtModified;
     }
 
+    /**
+     * 获取所在环
+     *
+     * @return circle_id - 所在环
+     */
+    public String getCircleId() {
+        return circleId;
+    }
+
+    /**
+     * 设置所在环
+     *
+     * @param circleId 所在环
+     */
+    public void setCircleId(String circleId) {
+        this.circleId = circleId == null ? null : circleId.trim();
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -320,7 +346,8 @@ public class ResLink implements Serializable {
             && (this.getEndZName() == null ? other.getEndZName() == null : this.getEndZName().equals(other.getEndZName()))
             && (this.getVersionId() == null ? other.getVersionId() == null : this.getVersionId().equals(other.getVersionId()))
             && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
-            && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
+                && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()))
+                && (this.getCircleId() == null ? other.getCircleId() == null : this.getCircleId().equals(other.getCircleId()));
     }
 
     @Override
@@ -339,6 +366,7 @@ public class ResLink implements Serializable {
         result = prime * result + ((getVersionId() == null) ? 0 : getVersionId().hashCode());
         result = prime * result + ((getGmtCreate() == null) ? 0 : getGmtCreate().hashCode());
         result = prime * result + ((getGmtModified() == null) ? 0 : getGmtModified().hashCode());
+        result = prime * result + ((getCircleId() == null) ? 0 : getCircleId().hashCode());
         return result;
     }
 
@@ -360,6 +388,7 @@ public class ResLink implements Serializable {
         sb.append(", versionId=").append(versionId);
         sb.append(", gmtCreate=").append(gmtCreate);
         sb.append(", gmtModified=").append(gmtModified);
+        sb.append(", circleId=").append(circleId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

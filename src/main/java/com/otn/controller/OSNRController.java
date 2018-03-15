@@ -30,6 +30,14 @@ public class OSNRController {
         return osnrService.listErrorBussiness(versionId);
     }
 
+    @ApiOperation(value = "查询某个版本下的所有不合格的光通道信息")
+    @RequestMapping(value = "/falseList/{versionId}/{circleId}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public List<BussinessDTO> listErrorBussiness(@PathVariable Long versionId, @PathVariable String circleId) {
+        return osnrService.listErrorBussiness(versionId, circleId);
+    }
+
+
     @ApiOperation(value = "查询某个版本下的某光通道中所有可以计算出的节点的功率数据")
     @RequestMapping(value = "/nodesDetails/{versionId}/{bussinessId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)

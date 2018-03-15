@@ -18,6 +18,14 @@ public interface OSNRService {
      */
     List<BussinessDTO> listErrorBussiness(Long versionId);
 
+
+    /**
+     * 获取OSNR计算不合格的业务列表
+     *
+     * @return
+     */
+    List<BussinessDTO> listErrorBussiness(Long versionId, String circleId);
+
     /**
      * 获取OSNR计算细节数据
      *
