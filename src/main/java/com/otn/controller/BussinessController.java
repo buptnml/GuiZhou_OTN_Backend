@@ -32,15 +32,26 @@ public class BussinessController {
     @ResponseStatus(HttpStatus.CREATED)
     public BussinessDTO updateBussiness(@PathVariable Long versionId, @PathVariable Long bussinessId, @RequestBody BussinessCreateInfo
             bussinessCreateInfo) {
+        checkBussinessCreateInfo(bussinessCreateInfo);
         return bussinessService.updateBussiness(versionId, bussinessId, bussinessCreateInfo);
     }
 
+
     @ApiOperation(value = "查询某个版本下的所有光通道信息")
-    @RequestMapping(value = "/{versionId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{versionId}/", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     @VersionCheckException(reason = "获取信息的时候不需要进行版本检查")
     public List<BussinessDTO> listBussiness(@PathVariable Long versionId) {
         return bussinessService.listBussiness(versionId);
+    }
+
+
+    @ApiOperation(value = "查询某个版本下的所有光通道信息")
+    @RequestMapping(value = "/{versionId}/{circleId}/", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    @VersionCheckException(reason = "获取信息的时候不需要进行版本检查")
+    public List<BussinessDTO> listBussiness(@PathVariable Long versionId, @PathVariable String circleId) {
+        return bussinessService.listBussiness(versionId,circleId);
     }
 
 
@@ -52,6 +63,7 @@ public class BussinessController {
         checkBussinessCreateInfo(bussinessCreateInfo);
         return bussinessService.saveBussiness(versionId, bussinessCreateInfo);
     }
+
 
     @ApiOperation(value = "批量删除某版本下指定Id的光通道条目")
     @RequestMapping(value = "/{versionId}", method = RequestMethod.DELETE)
@@ -67,7 +79,9 @@ public class BussinessController {
                 throw new NullArgumentException("有备用路由时备用频点不能为空！");
             }
         }
-
+        if (null == bussinessCreateInfo.getCircleId()) {
+            throw new NullArgumentException("环的ID不能为空！");
+        }
     }
 
 

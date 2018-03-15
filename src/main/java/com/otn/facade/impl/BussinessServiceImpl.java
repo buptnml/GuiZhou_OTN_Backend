@@ -50,6 +50,17 @@ class BussinessServiceImpl implements BussinessService {
     }
 
     @Override
+    public List<BussinessDTO> listBussiness(Long versionId,String circleId) {
+        List<BussinessDTO> result = resBussinessDao.selectByExample(getExample(versionId,circleId)).stream().sorted(Comparator
+                .comparing(ResBussiness::getGmtModified).reversed()).map(this::createBussinessDTO).collect
+                (Collectors.toList());
+        if (result.size() == 0) {
+            throw new NoneGetException("没有查询到光通道相关记录！");
+        }
+        return result;
+    }
+
+    @Override
     public ResBussiness getBussiness(Long versionId, Long bussinessId) {
         List<ResBussiness> bussiness = resBussinessDao.selectByExample(getExample(versionId, bussinessId));
         if (bussiness.size() != 1) {
@@ -60,7 +71,7 @@ class BussinessServiceImpl implements BussinessService {
 
     @Override
     public BussinessDTO saveBussiness(Long versionId, BussinessCreateInfo bussinessCreateInfo) {
-        if (resBussinessDao.selectByExample(getExampleByBusName(versionId, bussinessCreateInfo.getBussinessName()))
+        if (resBussinessDao.selectByExample(getExampleByBusName(versionId, bussinessCreateInfo.getBussinessName(),bussinessCreateInfo.getCircleId()))
                 .size() != 0) {
             throw new DuplicateKeyException("光通道名称重复！");
         }
@@ -79,7 +90,6 @@ class BussinessServiceImpl implements BussinessService {
         resBussinessDao.insertSelective(updateBus);
         return createBussinessDTO(resBussinessDao.selectByPrimaryKey(bussinessId));
     }
-
 
     @Override
     @Transactional
@@ -167,11 +177,28 @@ class BussinessServiceImpl implements BussinessService {
         return example;
     }
 
+    private Example getExample(Long versionId,String circleId) {
+        Example example = new Example(ResBussiness.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("versionId", versionId);
+        criteria.andEqualTo("circleId", circleId);
+        return example;
+    }
+
     private Example getExampleByBusName(Long versionId, String busName) {
         Example example = new Example(ResBussiness.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("versionId", versionId);
         criteria.andEqualTo("bussinessName", busName);
+        return example;
+    }
+
+    private Example getExampleByBusName(Long versionId, String busName,String circleId) {
+        Example example = new Example(ResBussiness.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("versionId", versionId);
+        criteria.andEqualTo("bussinessName", busName);
+        criteria.andEqualTo("circleId", circleId);
         return example;
     }
 
