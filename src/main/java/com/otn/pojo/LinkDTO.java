@@ -7,9 +7,18 @@ public class LinkDTO {
     private Float linkLength;
     private Float linkLoss;
     private Long endAId;
+    private String circleId;
     private String endAName;
     private Long endZId;
     private String endZName;
+
+    public String getCircleId() {
+        return circleId;
+    }
+
+    public void setCircleId(String circleId) {
+        this.circleId = circleId;
+    }
 
     public Float getLinkLength() {
         return linkLength;

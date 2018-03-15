@@ -93,6 +93,12 @@ class LinkServiceImpl implements LinkService {
     }
 
     @Override
+    public List<LinkDTO> listLinks(Long versionId, String circleId) {
+        return listLinks(versionId).stream().filter(linkDTO -> linkDTO.getCircleId().equals(circleId)).collect
+                (Collectors.toList());
+    }
+
+    @Override
     public int batchRemove(Long versionId) {
         return resLinkDao.deleteByExample(getExample(versionId));
     }
@@ -119,21 +125,6 @@ class LinkServiceImpl implements LinkService {
     @Override
     public int batchInsert(final List<ResLink> batchList) throws InterruptedException {
         return BatchDMLUtils.batchDMLActionForEach(batchList, resLinkDao::insertSelective);
-//        if (batchList.size() <= 2000) {
-//            batchList.forEach(resLinkDao::insertSelective);
-//        } else {
-//            CountDownLatch count = new CountDownLatch(batchList.size());
-//            batchList.parallelStream().forEach(link -> EXECUTOR.execute(() -> {
-//                resLinkDao.insertSelective(link);
-//                count.countDown();
-//            }));
-//            try {
-//                count.await();
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        return batchList.size();
     }
 
     /**

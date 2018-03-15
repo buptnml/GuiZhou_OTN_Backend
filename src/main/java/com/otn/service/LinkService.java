@@ -50,6 +50,14 @@ public interface LinkService {
     List<LinkDTO> listLinks(Long versionId);
 
     /**
+     * 获取当前版本所有链路
+     *
+     * @param versionId
+     * @return
+     */
+    List<LinkDTO> listLinks(Long versionId, String circleId);
+
+    /**
      * 删除指定版本全本链路信息
      * 返回值为删除的数量
      * @param versionId

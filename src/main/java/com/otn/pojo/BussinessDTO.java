@@ -8,8 +8,17 @@ public class BussinessDTO {
     private String mainFrequency;
     private String spareRoute;
     private String spareFrequency;
+    private String circleId;
     private Double inputPower;
 
+
+    public String getCircleId() {
+        return circleId;
+    }
+
+    public void setCircleId(String circleId) {
+        this.circleId = circleId;
+    }
 
     public Double getInputPower() {
         return inputPower;

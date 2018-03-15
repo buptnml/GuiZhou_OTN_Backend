@@ -30,13 +30,19 @@ class OSNRServiceImpl implements OSNRService {
 
     @Override
     public List<BussinessDTO> listErrorBussiness(Long versionId) {
-        return bussinessService.listBussiness(versionId).stream().filter(bussinessDTO ->
+        return bussinessService.listBussiness(versionId).parallelStream().filter(bussinessDTO ->
                 (BussinessPowerStringTransfer.stringTransfer(getBussiness(versionId, bussinessDTO.getBussinessId())
                         .getMainInputPowers()).length < bussinessDTO.getMainRoute().split("-").length)
                         || ((null != bussinessDTO.getSpareRoute())
                         && BussinessPowerStringTransfer.stringTransfer(getBussiness(versionId, bussinessDTO.getBussinessId()).getSpareInputPowers
                         ()).length < bussinessDTO.getSpareRoute().split("-").length)
         ).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BussinessDTO> listErrorBussiness(Long versionId, String circleId) {
+        return listErrorBussiness(versionId).parallelStream().filter(bus -> bus.getCircleId().equals(circleId)).collect
+                (Collectors.toList());
     }
 
     @Override
