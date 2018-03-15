@@ -12,7 +12,6 @@ public class BussinessCreateInfo {
     @Nullable
     private String spareFrequency;
     private Double inputPower;
-    @Nullable
     private String circleId;
 
     public String getBussinessName() {
@@ -73,7 +72,6 @@ public class BussinessCreateInfo {
         this.inputPower = inputPower;
     }
 
-    @Nullable
     public String getCircleId() {
         return circleId;
     }
