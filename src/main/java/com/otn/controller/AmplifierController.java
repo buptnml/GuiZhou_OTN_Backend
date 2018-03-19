@@ -17,6 +17,7 @@ import java.util.List;
 /**
  * Created by caoxiaohong on 17/9/13.
  * 放大器:控制层
+ * test github
  */
 @RestController
 @Api(tags = "Amplifier", description = "放大器相关操作")
