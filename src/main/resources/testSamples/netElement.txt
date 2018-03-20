@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<data>
+    <equip>
+        <equip_id>4063233</equip_id>
+        <equip_name>901-中调</equip_name>
+        <equip_model>OptiX DWDM OTM</equip_model>
+        <location_x>335</location_x>
+        <location_y>526</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>西环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063237</equip_id>
+        <equip_name>807-中调</equip_name>
+        <equip_model>OptiX DWDM OTM</equip_model>
+        <location_x>727</location_x>
+        <location_y>530</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>东环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063238</equip_id>
+        <equip_name>705-中调</equip_name>
+        <equip_model>OptiX DWDM OTM</equip_model>
+        <location_x>844</location_x>
+        <location_y>159</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>北环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063241</equip_id>
+        <equip_name>704-贵阳地调</equip_name>
+        <equip_model>OptiX DWDM OTM</equip_model>
+        <location_x>703</location_x>
+        <location_y>172</location_y>
+        <pack_type>12OBU1(1561)</pack_type>
+        <equip_domain>北环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063247</equip_id>
+        <equip_name>917-信息中心</equip_name>
+        <equip_model>OptiX DWDM OTM</equip_model>
+        <location_x>219</location_x>
+        <location_y>377</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>西环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063249</equip_id>
+        <equip_name>815-信息中心</equip_name>
+        <equip_model>OptiX DWDM OTM</equip_model>
+        <location_x>594</location_x>
+        <location_y>530</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>东环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063250</equip_id>
+        <equip_name>708-信息中心</equip_name>
+        <equip_model>OptiX DWDM OTM</equip_model>
+        <location_x>705</location_x>
+        <location_y>116</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>北环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063251</equip_id>
+        <equip_name>808-醒狮变</equip_name>
+        <equip_model>OptiX DWDM OLA</equip_model>
+        <location_x>849</location_x>
+        <location_y>528</location_y>
+        <pack_type>13OAU1(2298)</pack_type>
+        <equip_domain>东环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063253</equip_id>
+        <equip_name>918-八河变</equip_name>
+        <equip_model>OptiX DWDM OLA</equip_model>
+        <location_x>223</location_x>
+        <location_y>150</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>西环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063254</equip_id>
+        <equip_name>919-兴仁换流站</equip_name>
+        <equip_model>OptiX DWDM OLA</equip_model>
+        <location_x>217</location_x>
+        <location_y>40</location_y>
+        <pack_type>13OAU1(2298)</pack_type>
+        <equip_domain>西环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063255</equip_id>
+        <equip_name>920-金州变</equip_name>
+        <equip_model>OptiX DWDM OLA</equip_model>
+        <location_x>127</location_x>
+        <location_y>40</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>西环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063258</equip_id>
+        <equip_name>703-贵阳变</equip_name>
+        <equip_model>OptiX DWDM OTM</equip_model>
+        <location_x>581</location_x>
+        <location_y>146</location_y>
+        <pack_type>12OBU1(1561)</pack_type>
+        <equip_domain>北环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063259</equip_id>
+        <equip_name>904-安顺地调</equip_name>
+        <equip_model>OptiX DWDM OTM</equip_model>
+        <location_x>329</location_x>
+        <location_y>274</location_y>
+        <pack_type>12OBU1(1561)</pack_type>
+        <equip_domain>西环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063260</equip_id>
+        <equip_name>905-两所屯变</equip_name>
+        <equip_model>OptiX DWDM OTM</equip_model>
+        <location_x>220</location_x>
+        <location_y>261</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>西环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063261</equip_id>
+        <equip_name>903-安顺变</equip_name>
+        <equip_model>OptiX DWDM OLA</equip_model>
+        <location_x>329</location_x>
+        <location_y>361</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>西环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063262</equip_id>
+        <equip_name>908-兴义变</equip_name>
+        <equip_model>OptiX DWDM OTM</equip_model>
+        <location_x>24</location_x>
+        <location_y>43</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>西环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063263</equip_id>
+        <equip_name>910-香田变</equip_name>
+        <equip_model>OptiX DWDM OLA</equip_model>
+        <location_x>20</location_x>
+        <location_y>139</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>西环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063264</equip_id>
+        <equip_name>911-红果变</equip_name>
+        <equip_model>OptiX DWDM OLA</equip_model>
+        <location_x>19</location_x>
+        <location_y>213</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>西环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063265</equip_id>
+        <equip_name>916-贵阳变</equip_name>
+        <equip_model>OptiX DWDM OLA</equip_model>
+        <location_x>232</location_x>
+        <location_y>522</location_y>
+        <pack_type>13OAU1(2298)</pack_type>
+        <equip_domain>西环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063266</equip_id>
+        <equip_name>715-息烽变2</equip_name>
+        <equip_model>OptiX DWDM OLA</equip_model>
+        <location_x>459</location_x>
+        <location_y>147</location_y>
+        <pack_type>13OAU1(2298)</pack_type>
+        <equip_domain>北环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063267</equip_id>
+        <equip_name>707-鸭溪变</equip_name>
+        <equip_model>OptiX DWDM OTM</equip_model>
+        <location_x>461</location_x>
+        <location_y>39</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>北环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063268</equip_id>
+        <equip_name>706-遵义地调</equip_name>
+        <equip_model>OptiX DWDM OTM</equip_model>
+        <location_x>350</location_x>
+        <location_y>38</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>北环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063269</equip_id>
+        <equip_name>712-黔北电厂</equip_name>
+        <equip_model>OptiX DWDM OLA</equip_model>
+        <location_x>608</location_x>
+        <location_y>35</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>北环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063270</equip_id>
+        <equip_name>701-毕节变</equip_name>
+        <equip_model>OptiX DWDM OTM</equip_model>
+        <location_x>735</location_x>
+        <location_y>33</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>北环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063271</equip_id>
+        <equip_name>兴义地调</equip_name>
+        <equip_model>OptiX DWDM OTM</equip_model>
+        <location_x>112</location_x>
+        <location_y>128</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>西环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063272</equip_id>
+        <equip_name>702-毕节地调</equip_name>
+        <equip_model>OptiX DWDM OTM</equip_model>
+        <location_x>844</location_x>
+        <location_y>87</location_y>
+        <pack_type>13OAU1(2298)</pack_type>
+        <equip_domain>北环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063273</equip_id>
+        <equip_name>713-黔西变</equip_name>
+        <equip_model>OptiX DWDM OLA</equip_model>
+        <location_x>881</location_x>
+        <location_y>34</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>北环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063274</equip_id>
+        <equip_name>902-青岩变</equip_name>
+        <equip_model>OptiX DWDM OLA</equip_model>
+        <location_x>333</location_x>
+        <location_y>438</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>西环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063275</equip_id>
+        <equip_name>814-青岩变</equip_name>
+        <equip_model>OptiX DWDM OLA</equip_model>
+        <location_x>460</location_x>
+        <location_y>531</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>东环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063276</equip_id>
+        <equip_name>813-独山变</equip_name>
+        <equip_model>OptiX DWDM OLA</equip_model>
+        <location_x>458</location_x>
+        <location_y>434</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>东环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063277</equip_id>
+        <equip_name>801-都匀变</equip_name>
+        <equip_model>OptiX DWDM OTM</equip_model>
+        <location_x>459</location_x>
+        <location_y>351</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>东环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063278</equip_id>
+        <equip_name>802-都匀地调</equip_name>
+        <equip_model>OptiX DWDM OTM</equip_model>
+        <location_x>574</location_x>
+        <location_y>396</location_y>
+        <pack_type>13OAU1(2298)</pack_type>
+        <equip_domain>东环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063279</equip_id>
+        <equip_name>803-凯里变</equip_name>
+        <equip_model>OptiX DWDM OTM</equip_model>
+        <location_x>458</location_x>
+        <location_y>264</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>东环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063280</equip_id>
+        <equip_name>812-黄平变</equip_name>
+        <equip_model>OptiX DWDM OLA</equip_model>
+        <location_x>600</location_x>
+        <location_y>261</location_y>
+        <pack_type>13OAU1(2298)</pack_type>
+        <equip_domain>东环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063281</equip_id>
+        <equip_name>811-镇远变</equip_name>
+        <equip_model>OptiX DWDM OLA</equip_model>
+        <location_x>728</location_x>
+        <location_y>259</location_y>
+        <pack_type>13OAU1(2298)</pack_type>
+        <equip_domain>东环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063282</equip_id>
+        <equip_name>809-福泉变</equip_name>
+        <equip_model>OptiX DWDM OLA</equip_model>
+        <location_x>848</location_x>
+        <location_y>428</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>东环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063283</equip_id>
+        <equip_name>810-施秉变</equip_name>
+        <equip_model>OptiX DWDM OLA</equip_model>
+        <location_x>848</location_x>
+        <location_y>352</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>东环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063285</equip_id>
+        <equip_name>805-铜仁变</equip_name>
+        <equip_model>OptiX DWDM OTM</equip_model>
+        <location_x>850</location_x>
+        <location_y>260</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>东环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063286</equip_id>
+        <equip_name>806-铜仁地调</equip_name>
+        <equip_model>OptiX DWDM OTM</equip_model>
+        <location_x>746</location_x>
+        <location_y>353</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>东环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063287</equip_id>
+        <equip_name>804-凯里地调</equip_name>
+        <equip_model>OptiX DWDM OTM</equip_model>
+        <location_x>566</location_x>
+        <location_y>324</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>东环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063288</equip_id>
+        <equip_name>915-夏云变</equip_name>
+        <equip_model>OptiX DWDM OLA</equip_model>
+        <location_x>129</location_x>
+        <location_y>520</location_y>
+        <pack_type>13OAU1(2298)</pack_type>
+        <equip_domain>西环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063289</equip_id>
+        <equip_name>914-普定变</equip_name>
+        <equip_model>OptiX DWDM OLA</equip_model>
+        <location_x>20</location_x>
+        <location_y>519</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>西环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063290</equip_id>
+        <equip_name>913-六枝变</equip_name>
+        <equip_model>OptiX DWDM OLA</equip_model>
+        <location_x>19</location_x>
+        <location_y>431</location_y>
+        <pack_type>12OBU1(1561)</pack_type>
+        <equip_domain>西环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063292</equip_id>
+        <equip_name>906-六盘水变</equip_name>
+        <equip_model>OptiX DWDM OTM</equip_model>
+        <location_x>19</location_x>
+        <location_y>361</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>西环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063293</equip_id>
+        <equip_name>907-六盘水地调</equip_name>
+        <equip_model>OptiX DWDM OTM</equip_model>
+        <location_x>109</location_x>
+        <location_y>432</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>西环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063294</equip_id>
+        <equip_name>711-金阳变</equip_name>
+        <equip_model>OptiX DWDM OLA</equip_model>
+        <location_x>977</location_x>
+        <location_y>151</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>北环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063295</equip_id>
+        <equip_name>912-台沙变</equip_name>
+        <equip_model>OptiX DWDM OLA</equip_model>
+        <location_x>17</location_x>
+        <location_y>286</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>西环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063296</equip_id>
+        <equip_name>714-站街变</equip_name>
+        <equip_model>OptiX DWDM OLA</equip_model>
+        <location_x>968</location_x>
+        <location_y>31</location_y>
+        <pack_type>12OBU1(1561),13OAU1(2298)</pack_type>
+        <equip_domain>北环</equip_domain>
+    </equip>
+    <equip>
+        <equip_id>4063297</equip_id>
+        <equip_name>921-林卡变</equip_name>
+        <equip_model>OptiX DWDM OTM</equip_model>
+        <location_x>75</location_x>
+        <location_y>92</location_y>
+        <pack_type>12OBU1(1561)</pack_type>
+        <equip_domain>西环</equip_domain>
+    </equip>
+</data>

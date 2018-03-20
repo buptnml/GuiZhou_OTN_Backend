@@ -1,5 +1,5 @@
-group 'GuiZhou_OTN_Backend'
-version '0.1.2.1'
+group 'OTN_Backend'
+version '1.0'
 
 apply plugin: 'java'
 apply plugin: 'war'
@@ -10,6 +10,17 @@ task wrapper(type: Wrapper) {
     gradleVersion = '3.5'
 }
 
+ext {
+    jdkLevel = 1.8
+    encoding = 'UTF-8'
+}
+
+tasks.withType(JavaCompile) {
+    sourceCompatibility = jdkLevel
+    targetCompatibility = jdkLevel
+//    options.compilerArgs << '-parameters'
+    options.encoding = encoding
+}
 
 repositories {
     mavenCentral()
@@ -19,9 +30,6 @@ configurations {
     mybatisGenerator
 }
 
-
-//统一编码为utf-8
-[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 dependencies {
     testCompile 'com.jayway.restassured:rest-assured:2.9.0'
@@ -53,13 +61,14 @@ dependencies {
     compile 'org.slf4j:slf4j-log4j12:1.7.25'
     compile 'tk.mybatis:mapper:3.4.0'
     compile 'com.alibaba:druid:1.0.31'
-
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.4'
     compile "io.springfox:springfox-swagger2:2.7.0"
     compile 'io.springfox:springfox-swagger-ui:2.7.0'
 
     providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
 
     mybatisGenerator 'org.mybatis.generator:mybatis-generator-core:1.3.5'
+    mybatisGenerator 'org.mybatis.generator:mybatis-generator-maven-plugin:1.3.5'
     mybatisGenerator 'mysql:mysql-connector-java:5.1.38'
     mybatisGenerator 'tk.mybatis:mapper:3.4.0'
 }
@@ -104,6 +113,7 @@ task mybatisGenerate  {
             propertyref(name: 'sqlMapperPackage')
         }
     }
+
 
 }
 

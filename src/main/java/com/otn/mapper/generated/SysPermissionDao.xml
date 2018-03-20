@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.otn.mapper.generated.{0}Dao">
+    <resultMap id="BaseResultMap" type="com.otn.entity.SysPermission">
+    <!--
+      WARNING - @mbg.generated
+    -->
+        <id column="permission_id" jdbcType="BIGINT" property="permissionId"/>
+        <result column="permission_content" jdbcType="VARCHAR" property="permissionContent"/>
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+      permission_id, permission_content, gmt_create, gmt_modified
+  </sql>
+</mapper>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:context="http://www.springframework.org/schema/context"
+<beans xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
 
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
@@ -11,8 +11,8 @@
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd">
 
-    <!-- 自动扫描 com.bupt.controller 下的带有Spring组件注解的类 -->
-    <context:component-scan base-package="com.bupt.controller">
+    <!-- 自动扫描 com.otn.controller 下的带有Spring组件注解的类 -->
+    <context:component-scan base-package="com.otn.controller">
         <context:include-filter type="annotation"
                                 expression="org.springframework.stereotype.Controller"/>
         <context:include-filter type="annotation"
@@ -56,17 +56,16 @@
     </mvc:annotation-driven>
 
 
-
     <!--跨域访问配置-->
     <!--<mvc:cors>-->
     <!--<mvc:mapping path="/**" allowed-methods="*"/>-->
     <!--</mvc:cors>-->
-    <bean class="com.bupt.util.tools.SwaggerConfig"/>
+    <bean class="com.otn.util.tools.SwaggerConfig"/>
 
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
-            <bean class="com.bupt.util.tools.CommonInterceptor">
+            <bean class="com.otn.util.tools.CommonInterceptor">
                 <property name="excludedUrls">
                     <list>
                         <value>/</value>
