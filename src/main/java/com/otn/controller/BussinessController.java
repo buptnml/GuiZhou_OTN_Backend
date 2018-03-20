@@ -38,7 +38,7 @@ public class BussinessController {
 
 
     @ApiOperation(value = "查询某个版本下的所有光通道信息")
-    @RequestMapping(value = "/{versionId}/", method = RequestMethod.GET)
+    @RequestMapping(value = "/{versionId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     @VersionCheckException(reason = "获取信息的时候不需要进行版本检查")
     public List<BussinessDTO> listBussiness(@PathVariable Long versionId) {
@@ -46,7 +46,7 @@ public class BussinessController {
     }
 
 
-    @ApiOperation(value = "查询某个版本下的所有光通道信息")
+    @ApiOperation(value = "查询某个版本下的某个环的光通道信息")
     @RequestMapping(value = "/{versionId}/{circleId}/", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     @VersionCheckException(reason = "获取信息的时候不需要进行版本检查")

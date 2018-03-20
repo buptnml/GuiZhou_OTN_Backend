@@ -1,7 +1,9 @@
 package com.otn.controller;
 
 
+import com.otn.controller.util.InputCheckException;
 import com.otn.pojo.MaintenanceRecordDTO;
+import com.otn.pojo.MaintenanceRecordQuery;
 import com.otn.service.ResMaintenanceRecordService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,7 +23,8 @@ public class MaintenanceRecordController {
     @ApiOperation(value = "增加", notes = "新增检修单")
     @RequestMapping(value = "/", method = RequestMethod.POST, consumes = "application/json;charset=utf-8")
     @ResponseStatus(HttpStatus.CREATED)
-    public MaintenanceRecordDTO createLinkType(@RequestBody MaintenanceRecordDTO recordDTO) {
+    @InputCheckException(reason = "入参允许为null，不需要检查，由函数本身保证入参安全")
+    public MaintenanceRecordDTO createLinkType(@RequestBody MaintenanceRecordQuery recordDTO) {
         return maintenanceRecordService.addRecord(recordDTO);
     }
 

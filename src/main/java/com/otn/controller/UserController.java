@@ -32,10 +32,17 @@ public class UserController {
     @Resource
     private UserRoleService userRoleService;
 
-    @ApiOperation(value = "查询全部用户信息")
+    @ApiOperation(value = "获取该用户能查到的所有用户")
+    @RequestMapping(value = "/{userName}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public List<UserDTO> listUserByName(@PathVariable String userName) {
+        return userService.listUserByName(userName);
+    }
+
+    @ApiOperation(value = "获取该用户能查到的所有用户")
     @RequestMapping(value = "/", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<UserDTO> listUser() {
+    public List<UserDTO> listUserByName() {
         return userService.listUser();
     }
 
@@ -82,13 +89,8 @@ public class UserController {
     }
 
     private boolean checkUserRole(String userRole) {
-        List<UserRoleDTO> userRoleDTOList = userRoleService.listUserRole();
-        for (UserRoleDTO role : userRoleDTOList) {
-            if (role.getRoleName().equals(userRole)) {
-                return false;
-            }
-        }
-        return true;
+        List<UserRoleDTO> userRoleDTOList = userRoleService.listUserRole(userRole);
+        return userRoleDTOList.size() > 0;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.otn.service;
 
 import com.otn.pojo.MaintenanceRecordDTO;
+import com.otn.pojo.MaintenanceRecordQuery;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ public interface ResMaintenanceRecordService {
      * @param record
      * @return
      */
-    MaintenanceRecordDTO addRecord(MaintenanceRecordDTO record);
+    MaintenanceRecordDTO addRecord(MaintenanceRecordQuery record);
 
     /**
      * 获取所有记录

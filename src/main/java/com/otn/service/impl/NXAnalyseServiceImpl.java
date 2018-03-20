@@ -17,6 +17,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by zhangminchao on 2017/10/23.
@@ -35,10 +36,12 @@ class NXAnalyseServiceImpl implements NXAnalyseService {
     private ResBussinessDao bussinessDao;
 
     @Override
-    public List<NXAnalyseItemDTO> analyseEquip(long versionId, int num) {
+    public List<NXAnalyseItemDTO> analyseEquip(long versionId, int num, String circleId) {
 
-        List<ResNetElement> netElements = netElementDao.selectByExample(getExampleByVersion(versionId, ResNetElement.class));
-        List<ResBussiness> bussiness = bussinessDao.selectByExample(getExampleByVersion(versionId, ResBussiness.class));
+        List<ResNetElement> netElements = netElementDao.selectByExample(getExampleByVersion(versionId, ResNetElement.class)).stream().filter
+                (netElement -> netElement.getCircleId().equals(circleId)).collect(Collectors.toList());
+        List<ResBussiness> bussiness = bussinessDao.selectByExample(getExampleByVersion(versionId, ResBussiness.class)).stream().filter
+                (bus -> bus.getCircleId().equals(circleId)).collect(Collectors.toList());
 
         List<NXAnalyseItemDTO> result = new LinkedList<>();
         if (netElements.size() == 0 || bussiness.size() == 0) return null;
@@ -69,9 +72,11 @@ class NXAnalyseServiceImpl implements NXAnalyseService {
     }
 
     @Override
-    public List<NXAnalyseItemDTO> analyseLink(long versionId, int num) {
-        List<ResLink> links = linkDao.selectByExample(getExampleByVersion(versionId, ResLink.class));
-        List<ResBussiness> bussiness = bussinessDao.selectByExample(getExampleByVersion(versionId, ResBussiness.class));
+    public List<NXAnalyseItemDTO> analyseLink(long versionId, int num, String circleId) {
+        List<ResLink> links = linkDao.selectByExample(getExampleByVersion(versionId, ResLink.class)).stream().filter
+                (link -> link.getCircleId().equals(circleId)).collect(Collectors.toList());
+        List<ResBussiness> bussiness = bussinessDao.selectByExample(getExampleByVersion(versionId, ResBussiness.class)).stream().filter
+                (bus -> bus.getCircleId().equals(circleId)).collect(Collectors.toList());
         if (links.size() == 0 || bussiness.size() == 0)
             throw new NoneGetException();
         // 结果
@@ -107,10 +112,12 @@ class NXAnalyseServiceImpl implements NXAnalyseService {
     }
 
     @Override
-    public List<NXAnalyseItemDTO> analyseEquipAndLink(long versionId, int num) {
+    public List<NXAnalyseItemDTO> analyseEquipAndLink(long versionId, int num, String circleId) {
         List<ResLink> links = linkDao.selectByExample(getExampleByVersion(versionId, ResLink.class));
-        List<ResBussiness> bussinesses = bussinessDao.selectByExample(getExampleByVersion(versionId, ResBussiness.class));
-        List<ResNetElement> netElements = netElementDao.selectByExample(getExampleByVersion(versionId, ResNetElement.class));
+        List<ResBussiness> bussinesses = bussinessDao.selectByExample(getExampleByVersion(versionId, ResBussiness.class)).stream().filter
+                (bus -> bus.getCircleId().equals(circleId)).collect(Collectors.toList());
+        List<ResNetElement> netElements = netElementDao.selectByExample(getExampleByVersion(versionId, ResNetElement.class)).stream().filter
+                (netElement -> netElement.getCircleId().equals(circleId)).collect(Collectors.toList());
         if (netElements.size() == 0 || bussinesses.size() == 0 || links.size() == 0) return null;
         // 结果
         List<NXAnalyseItemDTO> result = new LinkedList<>();
@@ -186,7 +193,6 @@ class NXAnalyseServiceImpl implements NXAnalyseService {
         Example example = new Example(className);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("versionId", versionId);
-
         return example;
     }
 

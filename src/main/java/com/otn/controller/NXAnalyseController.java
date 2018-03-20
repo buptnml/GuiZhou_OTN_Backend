@@ -35,15 +35,17 @@ public class NXAnalyseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "versionId", value = "版本id", required = true, paramType = "query", dataType = "long"),
             @ApiImplicitParam(name = "num", value = "故障数量", required = true, paramType = "query", dataType = "int"),
-            @ApiImplicitParam(name = "type", value = "故障种类", required = true, paramType = "query", dataType = "int")
+            @ApiImplicitParam(name = "type", value = "故障种类", required = true, paramType = "query", dataType = "int"),
+            @ApiImplicitParam(name = "circleId", value = "环路", required = true, paramType = "query", dataType =
+                    "String")
     })
-    public List<NXAnalyseItemDTO> analyseEquip(long versionId, int num, int type) {
+    public List<NXAnalyseItemDTO> analyseEquip(long versionId, int num, int type, String circleId) {
         if (type == EQUIP)
-            return nxAnalyseService.analyseEquip(versionId, num);
+            return nxAnalyseService.analyseEquip(versionId, num, circleId);
         if (type == LINK)
-            return nxAnalyseService.analyseLink(versionId, num);
+            return nxAnalyseService.analyseLink(versionId, num, circleId);
         if (type == BOTH)
-            return nxAnalyseService.analyseEquipAndLink(versionId, num);
+            return nxAnalyseService.analyseEquipAndLink(versionId, num, circleId);
         else {
             throw new IllegalArgumentException("类型参数出错！");
         }
