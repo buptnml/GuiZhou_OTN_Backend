@@ -8,6 +8,7 @@
       <result column="bussiness_id" jdbcType="BIGINT" property="bussinessId"/>
     <result column="bussiness_name" jdbcType="VARCHAR" property="bussinessName" />
     <result column="bussiness_rate" jdbcType="VARCHAR" property="bussinessRate" />
+      <result column="circle_id" jdbcType="CHAR" property="circleId"/>
     <result column="main_route" jdbcType="VARCHAR" property="mainRoute" />
     <result column="main_frequency" jdbcType="VARCHAR" property="mainFrequency" />
     <result column="main_input_powers" jdbcType="VARCHAR" property="mainInputPowers" />
@@ -19,6 +20,5 @@
     <result column="version_id" jdbcType="BIGINT" property="versionId" />
     <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
     <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
-      <result column="circle_id" jdbcType="CHAR" property="circleId"/>
   </resultMap>
 </mapper>

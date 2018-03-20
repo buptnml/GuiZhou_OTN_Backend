@@ -1,7 +1,6 @@
 package com.otn.pojo;
 
-
-public class MaintenanceRecordDTO {
+public class MaintenanceRecordQuery {
     private Long id;
     private Long idNo;
     private String rContent;
@@ -113,7 +112,7 @@ public class MaintenanceRecordDTO {
     }
 
     public String getIsDone() {
-        return isDone.equals("0") ? "已检修" : "未检修";
+        return isDone;
     }
 
     public void setIsDone(String isDone) {

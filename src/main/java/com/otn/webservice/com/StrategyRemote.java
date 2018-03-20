@@ -12,7 +12,6 @@ import java.util.List;
 
 public class StrategyRemote implements Strategy {
     private static XMLConverter XML_CONVERTER = new XMLConverter();
-    //todo 再思考这个语句的改进空间
     ResourceServiceService rs = new ResourceServiceService();
     ResourceServiceDelegate WS = rs.getResourceServicePort();
 

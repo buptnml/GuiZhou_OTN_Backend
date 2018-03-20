@@ -4,16 +4,15 @@ public class NetElementCreateInfo {
     private Float coordinateX;
     private Float coordinateY;
     private String netElementName;
+    private String circleId;
     private String netElementType;
 
-    public NetElementCreateInfo(Float coordinateX, Float coordinateY, String netElementName, String netElementType) {
-        this.coordinateX = coordinateX;
-        this.coordinateY = coordinateY;
-        this.netElementName = netElementName;
-        this.netElementType = netElementType;
+    public String getCircleId() {
+        return circleId;
     }
 
-    public NetElementCreateInfo() {
+    public void setCircleId(String circleId) {
+        this.circleId = circleId;
     }
 
     public Float getCoordinateX() {

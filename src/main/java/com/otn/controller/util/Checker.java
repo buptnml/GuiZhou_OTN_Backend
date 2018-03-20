@@ -55,9 +55,9 @@ public class Checker {
         }
         /*字符串需要单独判断是否为空字符串*/
         if (object instanceof String) {
-            if (object.equals("")) {
-                throw new NullArgumentException("输入的信息不能为空！");
-            }
+//            if (object.equals("")) {
+//                throw new NullArgumentException("输入的信息不能为空！");
+//            }
             return;
         }
         if (object instanceof Collection) {
@@ -101,7 +101,7 @@ public class Checker {
                     /*2.判断是否为null，若为null检查是否有Nullable注解，没有则该参数不允许为空*/
                     if (null == getMethod(object, f).invoke(object)) {
                         if (null == f.getAnnotation(Nullable.class)) {
-                            throw new NullArgumentException("输入的信息不能为空！");
+                            throw new NullArgumentException("输入的信息不能为空！" + f.getName());
                         }
                     } else {
                         checkObject(getMethod(object, f).invoke(object));

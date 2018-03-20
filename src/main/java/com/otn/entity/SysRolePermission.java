@@ -1,96 +1,68 @@
 package com.otn.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.*;
 
-@Table(name = "sys_user_role")
-public class SysUserRole implements Serializable {
+@Table(name = "sys_role_permission")
+public class SysRolePermission implements Serializable {
+    private static final long serialVersionUID = 1L;
     /**
-     * 角色ID
+     * 角色id
      */
-    @Id
     @Column(name = "role_id")
     private Long roleId;
-
     /**
-     * 角色名
+     * 权限id
      */
-    @Column(name = "role_name")
-    private String roleName;
-
-    /**
-     * 角色描述
-     */
-    @Column(name = "role_description")
-    private String roleDescription;
-
+    @Column(name = "permission_id")
+    private String permissionId;
     /**
      * 创建时间
      */
     @Column(name = "gmt_create")
     private Date gmtCreate;
-
     /**
      * 最后修改时间
      */
     @Column(name = "gmt_modified")
     private Date gmtModified;
 
-    private static final long serialVersionUID = 1L;
-
     /**
-     * 获取角色ID
+     * 获取角色id
      *
-     * @return role_id - 角色ID
+     * @return role_id - 角色id
      */
     public Long getRoleId() {
         return roleId;
     }
 
     /**
-     * 设置角色ID
+     * 设置角色id
      *
-     * @param roleId 角色ID
+     * @param roleId 角色id
      */
     public void setRoleId(Long roleId) {
         this.roleId = roleId;
     }
 
     /**
-     * 获取角色名
+     * 获取权限id
      *
-     * @return role_name - 角色名
+     * @return permission_id - 权限id
      */
-    public String getRoleName() {
-        return roleName;
+    public String getPermissionId() {
+        return permissionId;
     }
 
     /**
-     * 设置角色名
+     * 设置权限id
      *
-     * @param roleName 角色名
+     * @param permissionId 权限id
      */
-    public void setRoleName(String roleName) {
-        this.roleName = roleName == null ? null : roleName.trim();
-    }
-
-    /**
-     * 获取角色描述
-     *
-     * @return role_description - 角色描述
-     */
-    public String getRoleDescription() {
-        return roleDescription;
-    }
-
-    /**
-     * 设置角色描述
-     *
-     * @param roleDescription 角色描述
-     */
-    public void setRoleDescription(String roleDescription) {
-        this.roleDescription = roleDescription == null ? null : roleDescription.trim();
+    public void setPermissionId(String permissionId) {
+        this.permissionId = permissionId == null ? null : permissionId.trim();
     }
 
     /**
@@ -140,12 +112,11 @@ public class SysUserRole implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        SysUserRole other = (SysUserRole) that;
+        SysRolePermission other = (SysRolePermission) that;
         return (this.getRoleId() == null ? other.getRoleId() == null : this.getRoleId().equals(other.getRoleId()))
-            && (this.getRoleName() == null ? other.getRoleName() == null : this.getRoleName().equals(other.getRoleName()))
-            && (this.getRoleDescription() == null ? other.getRoleDescription() == null : this.getRoleDescription().equals(other.getRoleDescription()))
-            && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
-            && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
+                && (this.getPermissionId() == null ? other.getPermissionId() == null : this.getPermissionId().equals(other.getPermissionId()))
+                && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
+                && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
     }
 
     @Override
@@ -153,8 +124,7 @@ public class SysUserRole implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getRoleId() == null) ? 0 : getRoleId().hashCode());
-        result = prime * result + ((getRoleName() == null) ? 0 : getRoleName().hashCode());
-        result = prime * result + ((getRoleDescription() == null) ? 0 : getRoleDescription().hashCode());
+        result = prime * result + ((getPermissionId() == null) ? 0 : getPermissionId().hashCode());
         result = prime * result + ((getGmtCreate() == null) ? 0 : getGmtCreate().hashCode());
         result = prime * result + ((getGmtModified() == null) ? 0 : getGmtModified().hashCode());
         return result;
@@ -167,8 +137,7 @@ public class SysUserRole implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", roleId=").append(roleId);
-        sb.append(", roleName=").append(roleName);
-        sb.append(", roleDescription=").append(roleDescription);
+        sb.append(", permissionId=").append(permissionId);
         sb.append(", gmtCreate=").append(gmtCreate);
         sb.append(", gmtModified=").append(gmtModified);
         sb.append(", serialVersionUID=").append(serialVersionUID);

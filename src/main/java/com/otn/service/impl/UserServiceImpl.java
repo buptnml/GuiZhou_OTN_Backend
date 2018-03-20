@@ -1,6 +1,8 @@
 package com.otn.service.impl;
 
+import com.otn.dao.SysRoleDao;
 import com.otn.dao.SysUserDao;
+import com.otn.entity.SysRole;
 import com.otn.entity.SysUser;
 import com.otn.pojo.UserCreateInfo;
 import com.otn.pojo.UserDTO;
@@ -29,6 +31,8 @@ class UserServiceImpl implements UserService {
 
     @Resource
     private SysUserDao sysUserDao;
+    @Resource
+    private SysRoleDao sysRoleDao;
 
     @Override
     public UserDTO saveUser(UserCreateInfo userCreateInfo) {
@@ -75,6 +79,28 @@ class UserServiceImpl implements UserService {
             throw new NoneGetException("没有查询到用户相关记录！");
         }
         return resultList;
+    }
+
+    @Override
+    public List<UserDTO> listUserByName(String userName) {
+        SysUser temp = sysUserDao.selectByExample(getExample(userName)).get(0);
+        List<SysRole> yourRoleList = sysRoleDao.selectByExample(getRoleExample(temp.getUserRole()));
+        List<String> resultList = sysRoleDao.selectAll().stream().filter(role -> role.getRoleId() >= yourRoleList.get(0).getRoleId()).map(SysRole::getRoleName).collect(Collectors.toList());
+        return listUser().stream().filter(user -> resultList.contains(user.getUserRole())).collect(Collectors.toList());
+    }
+
+    private Example getRoleExample(String roleName) {
+        Example example = new Example(SysRole.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("roleName", roleName);
+        return example;
+    }
+
+    private Example getExample(String userName) {
+        Example example = new Example(SysUser.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("userName", userName);
+        return example;
     }
 
 

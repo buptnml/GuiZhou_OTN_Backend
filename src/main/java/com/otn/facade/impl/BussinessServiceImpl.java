@@ -24,13 +24,10 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 @Service("bussinessService")
 class BussinessServiceImpl implements BussinessService {
-    private final static ExecutorService EXECUTOR = Executors.newWorkStealingPool();
     private static Logger logger = LoggerFactory.getLogger(BussinessServiceImpl.class);
     private final UpdateUtils UPDATE_UTILS = new UpdateUtils();
     @Resource
@@ -150,16 +147,8 @@ class BussinessServiceImpl implements BussinessService {
             BussinessCreateInfo updateInfo = UPDATE_UTILS.createInfo(bus, oldString, newString);
             ResBussiness updateBus = UPDATE_UTILS.createUpdateInfo(versionId, bus.getBussinessId(), updateInfo,
                     newString);
-            EXECUTOR.execute(() -> {
-                resBussinessDao.updateByPrimaryKeySelective(updateBus);
-                count.countDown();
-            });
+            resBussinessDao.updateByPrimaryKeySelective(updateBus);
         });
-        try {
-            count.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     private Example getExample(Long versionId, Long bussinessId) {
@@ -351,7 +340,7 @@ class BussinessServiceImpl implements BussinessService {
             double[][] resultArr = new double[index + subPowerArr.length][];
             for (int i = 0; i < resultArr.length; i++) {
                 if (i < index) {
-                    resultArr[i] = oldPowerArr[i];
+                    if (i < oldPowerArr.length) resultArr[i] = oldPowerArr[i];
                 } else {
                     resultArr[i] = subPowerArr[i - index];
                 }

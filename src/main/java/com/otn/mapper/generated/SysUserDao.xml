@@ -13,22 +13,10 @@
     <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
     <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
   </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.otn.entity.SysUser">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <result column="user_setting" jdbcType="BINARY" property="userSetting" />
-  </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
     user_id, user_name, password, user_role, user_group, gmt_create, gmt_modified
-  </sql>
-  <sql id="Blob_Column_List">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    user_setting
   </sql>
 </mapper>

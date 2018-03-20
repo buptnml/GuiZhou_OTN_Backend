@@ -6,13 +6,14 @@ public class NetElementDTO {
     private String netElementType;
     private Float coordinateX;
     private Float coordinateY;
+    private String circleId;
 
-    public NetElementDTO(Long netElementId, String netElementName, String netElementType, Float coordinateX, Float coordinateY) {
-        this.netElementId = netElementId;
-        this.netElementName = netElementName;
-        this.netElementType = netElementType;
-        this.coordinateX = coordinateX;
-        this.coordinateY = coordinateY;
+    public String getCircleId() {
+        return circleId;
+    }
+
+    public void setCircleId(String circleId) {
+        this.circleId = circleId;
     }
 
     public NetElementDTO() {

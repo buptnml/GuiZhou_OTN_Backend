@@ -19,6 +19,7 @@ public interface ResBussinessDao extends Mapper<ResBussiness> {
             "insert into res_bussiness(\n" +
             "        bussiness_name,\n" +
             "        bussiness_rate,\n" +
+            "        circle_id,\n" +
             "        main_route,\n" +
             "        main_frequency,\n" +
             "        main_input_powers,\n" +
@@ -33,6 +34,7 @@ public interface ResBussinessDao extends Mapper<ResBussiness> {
             "            (\n" +
             "            #{item.bussinessName},\n" +
             "            #{item.bussinessRate},\n" +
+            "            #{item.circleId},\n" +
             "            #{item.mainRoute},\n" +
             "            #{item.mainFrequency},\n" +
             "            #{item.mainInputPowers},\n" +
