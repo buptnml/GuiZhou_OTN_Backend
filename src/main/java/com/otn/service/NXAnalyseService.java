@@ -31,4 +31,10 @@ public interface NXAnalyseService {
 
     List<NXAnalyseItemDTO> analyseEquipAndLink(long versionId, int num, String circleId);
 
+    List<NXAnalyseItemDTO> analyseSomeEquip(long versionId, int num,String circleId, List<Long> elementIds);
+
+    List<NXAnalyseItemDTO> analyseSomeLink(long versionId, int num,String circleId, List<Long> linkIds);
+
+    List<NXAnalyseItemDTO> analyseSomeEquipAndLink(long versionId, int num, String circleId, List<Long> elementIds, List<Long> linkIds);
+
 }
