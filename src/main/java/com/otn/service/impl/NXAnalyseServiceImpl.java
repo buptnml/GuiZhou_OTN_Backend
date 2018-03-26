@@ -35,6 +35,8 @@ class NXAnalyseServiceImpl implements NXAnalyseService {
     @Autowired
     private ResBussinessDao bussinessDao;
 
+    //用来标记分析所有设备链路时的circleId取值
+    private static final String ALLGRAPH = "全图";
     /**
      * 分析所有的设备
      * @param versionId
@@ -44,11 +46,11 @@ class NXAnalyseServiceImpl implements NXAnalyseService {
      */
     @Override
     public List<NXAnalyseItemDTO> analyseEquip(long versionId, int num, String circleId) {
-
+        //筛选设备和业务时，因为可能是分析某一个环，也可能是分析全图，故在circleId上添加‘全图’字段用来标记。
         List<ResNetElement> netElements = netElementDao.selectByExample(getExampleByVersion(versionId, ResNetElement.class)).stream().filter
-                (netElement -> netElement.getCircleId().equals(circleId)).collect(Collectors.toList());
+                (netElement ->circleId.equals(ALLGRAPH) || netElement.getCircleId().equals(circleId) ).collect(Collectors.toList());
         List<ResBussiness> bussiness = bussinessDao.selectByExample(getExampleByVersion(versionId, ResBussiness.class)).stream().filter
-                (bus -> bus.getCircleId().equals(circleId)).collect(Collectors.toList());
+                (bus ->circleId.equals(ALLGRAPH) || bus.getCircleId().equals(circleId)).collect(Collectors.toList());
 
 
         return analyseEquipRes(netElements, bussiness, num);
@@ -67,7 +69,7 @@ class NXAnalyseServiceImpl implements NXAnalyseService {
         List<ResNetElement> netElements = netElementDao.selectByExample(getExampleByVersion(versionId, ResNetElement.class)).stream().filter
                 (netElement -> equipIds.contains(netElement.getNetElementId())).collect(Collectors.toList());
         List<ResBussiness> bussiness = bussinessDao.selectByExample(getExampleByVersion(versionId, ResBussiness.class)).stream().filter
-                (bus -> bus.getCircleId().equals(circleId)).collect(Collectors.toList());
+                (bus ->circleId.equals(ALLGRAPH) || bus.getCircleId().equals(circleId)).collect(Collectors.toList());
 
         return analyseEquipRes(netElements, bussiness, num);
     }
@@ -106,9 +108,9 @@ class NXAnalyseServiceImpl implements NXAnalyseService {
     @Override
     public List<NXAnalyseItemDTO> analyseLink(long versionId, int num, String circleId) {
         List<ResLink> links = linkDao.selectByExample(getExampleByVersion(versionId, ResLink.class)).stream().filter
-                (link -> link.getCircleId().equals(circleId)).collect(Collectors.toList());
+                (link ->circleId.equals(ALLGRAPH) || link.getCircleId().equals(circleId)).collect(Collectors.toList());
         List<ResBussiness> bussiness = bussinessDao.selectByExample(getExampleByVersion(versionId, ResBussiness.class)).stream().filter
-                (bus -> bus.getCircleId().equals(circleId)).collect(Collectors.toList());
+                (bus ->circleId.equals(ALLGRAPH) || bus.getCircleId().equals(circleId)).collect(Collectors.toList());
         if (links.size() == 0 || bussiness.size() == 0)
             throw new NoneGetException();
 
@@ -129,7 +131,7 @@ class NXAnalyseServiceImpl implements NXAnalyseService {
         List<ResLink> links = linkDao.selectByExample(getExampleByVersion(versionId, ResLink.class)).stream().filter
                 (link -> linkIds.contains(link.getLinkId())).collect(Collectors.toList());
         List<ResBussiness> bussiness = bussinessDao.selectByExample(getExampleByVersion(versionId, ResBussiness.class)).stream().filter
-                (bus -> bus.getCircleId().equals(circleId)).collect(Collectors.toList());
+                (bus ->circleId.equals(ALLGRAPH) || bus.getCircleId().equals(circleId)).collect(Collectors.toList());
         if (links.size() == 0 || bussiness.size() == 0)
             throw new NoneGetException();
 
@@ -178,11 +180,11 @@ class NXAnalyseServiceImpl implements NXAnalyseService {
     public List<NXAnalyseItemDTO> analyseEquipAndLink(long versionId, int num, String circleId) {
         //List<ResLink> links = linkDao.selectByExample(getExampleByVersion(versionId, ResLink.class));
         List<ResLink> links = linkDao.selectByExample(getExampleByVersion(versionId, ResLink.class)).stream().filter
-                (link -> link.getCircleId().equals(circleId)).collect(Collectors.toList());
+                (link ->circleId.equals(ALLGRAPH) || link.getCircleId().equals(circleId)).collect(Collectors.toList());
         List<ResBussiness> bussinesses = bussinessDao.selectByExample(getExampleByVersion(versionId, ResBussiness.class)).stream().filter
-                (bus -> bus.getCircleId().equals(circleId)).collect(Collectors.toList());
+                (bus ->circleId.equals(ALLGRAPH) || bus.getCircleId().equals(circleId)).collect(Collectors.toList());
         List<ResNetElement> netElements = netElementDao.selectByExample(getExampleByVersion(versionId, ResNetElement.class)).stream().filter
-                (netElement -> netElement.getCircleId().equals(circleId)).collect(Collectors.toList());
+                (netElement ->circleId.equals(ALLGRAPH) || netElement.getCircleId().equals(circleId)).collect(Collectors.toList());
 
         return analyseSomeEquipAndLinkRes(netElements, links, bussinesses);
     }
@@ -192,7 +194,7 @@ class NXAnalyseServiceImpl implements NXAnalyseService {
         List<ResLink> links = linkDao.selectByExample(getExampleByVersion(versionId, ResLink.class)).stream().filter
                 (link -> linkIds.contains(link.getLinkId())).collect(Collectors.toList());
         List<ResBussiness> bussinesses = bussinessDao.selectByExample(getExampleByVersion(versionId, ResBussiness.class)).stream().filter
-                (bus -> bus.getCircleId().equals(circleId)).collect(Collectors.toList());
+                (bus ->circleId.equals(ALLGRAPH) || bus.getCircleId().equals(circleId)).collect(Collectors.toList());
         List<ResNetElement> netElements = netElementDao.selectByExample(getExampleByVersion(versionId, ResNetElement.class)).stream().filter
                 (netElement -> equipIds.contains(netElement.getNetElementId())).collect(Collectors.toList());
 
