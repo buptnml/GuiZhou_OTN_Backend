@@ -28,8 +28,8 @@ public class AmplifierController {
     @ApiOperation(value = "更新", notes = "修改放大器")
     @RequestMapping(value = "/{versionId}/{amplifierId}", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.OK)
-    public AmplifierDTO updateAmplifiers(@PathVariable Long versionId, @PathVariable Long amplifierId,
-                                         @RequestBody AmplifierCreateInfo amplifierCreateInfo) {
+    public synchronized AmplifierDTO updateAmplifiers(@PathVariable Long versionId, @PathVariable Long amplifierId,
+                                                      @RequestBody AmplifierCreateInfo amplifierCreateInfo) {
         return amplifierService.updateAmplifiers(versionId, amplifierId, amplifierCreateInfo);
     }
 

@@ -8,6 +8,7 @@
     <id column="link_id" jdbcType="BIGINT" property="linkId" />
     <result column="link_name" jdbcType="VARCHAR" property="linkName" />
     <result column="link_type" jdbcType="VARCHAR" property="linkType" />
+      <result column="circle_id" jdbcType="CHAR" property="circleId"/>
     <result column="link_length" jdbcType="REAL" property="linkLength" />
     <result column="link_loss" jdbcType="REAL" property="linkLoss" />
     <result column="end_a_id" jdbcType="BIGINT" property="endAId" />
@@ -22,7 +23,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    link_id, link_name, link_type, link_length, link_loss, end_a_id, end_a_name, end_z_id, 
-    end_z_name, version_id, gmt_create, gmt_modified
+      link_id, link_name, link_type, circle_id, link_length, link_loss, end_a_id, end_a_name,
+      end_z_id, end_z_name, version_id, gmt_create, gmt_modified
   </sql>
 </mapper>

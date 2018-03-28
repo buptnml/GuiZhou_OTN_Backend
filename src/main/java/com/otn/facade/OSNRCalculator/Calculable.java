@@ -14,7 +14,7 @@ public interface Calculable {
     /**
      * 规定计算流程的函数
      */
-    void calculate(double[][] inputPowers, double[][] outputPowers, String routeString, long versionId);
+    void calculate(double[][] inputPowers, double[][] outputPowers, String routeString, long versionId) throws IllegalArgumentException;
 
     /**
      * 计算函数

@@ -73,12 +73,16 @@ public class MessageAspect {
                                                               NetElementCreateInfo netElementCreateInfo) throws Throwable {
         NetElementDTO oldNetElement = netElementService.getNetElement(versionId, netElementId);
         NetElementDTO result = (NetElementDTO) point.proceed();
-        bussinessService.updateReferBussiness(versionId, oldNetElement.getNetElementName(), netElementCreateInfo
-                .getNetElementName(), false);
-        linkService.getReferLink(versionId, netElementId).forEach(resLink ->
-                linkService.updateResLink(versionId, resLink.getLinkId(), createUpdateLinkInfo(netElementId,
-                        netElementCreateInfo, resLink))
-        );
+        if (!oldNetElement.getNetElementType().equals(result.getNetElementType())) {
+            new Thread(() -> {
+                bussinessService.updateReferBussiness(versionId, oldNetElement.getNetElementName(), netElementCreateInfo
+                        .getNetElementName(), false);
+                linkService.getReferLink(versionId, netElementId).forEach(resLink ->
+                        linkService.updateResLink(versionId, resLink.getLinkId(), createUpdateLinkInfo(netElementId,
+                                netElementCreateInfo, resLink))
+                );
+            }).start();
+        }
         return result;
     }
 
@@ -94,10 +98,12 @@ public class MessageAspect {
         LinkDTO link = linkService.getLink(versionId, linkId);
         String newEndAName = link.getEndAName();
         String newEndZName = link.getEndZName();
-        bussinessService.updateReferBussiness(versionId, oldEndAName + "-" + oldEndZName, newEndAName + "-" +
-                newEndZName, true);
-        bussinessService.updateReferBussiness(versionId, oldEndZName + "-" + oldEndAName, newEndZName + "-" +
-                newEndAName, true);
+        new Thread(() -> {
+            bussinessService.updateReferBussiness(versionId, oldEndAName + "-" + oldEndZName, newEndAName + "-" +
+                    newEndZName, true);
+            bussinessService.updateReferBussiness(versionId, oldEndZName + "-" + oldEndAName, newEndZName + "-" +
+                    newEndAName, true);
+        }).start();
         return newLink;
     }
 
@@ -141,10 +147,10 @@ public class MessageAspect {
                                                  AmplifierCreateInfo amplifierCreateInfo) throws Throwable {
         AmplifierDTO oldAmp = amplifierService.getAmpById(versionId, amplifierID);
         AmplifierDTO result = (AmplifierDTO) point.proceed();
-        diskService.listDiskByType(versionId, oldAmp.getAmplifierName()).forEach(diskDTO -> diskService
+        new Thread(() -> diskService.listDiskByType(versionId, oldAmp.getAmplifierName()).forEach(diskDTO -> diskService
                 .updateDisk(versionId, diskDTO.getNetElementId(), diskDTO.getDiskId(), new DiskCreateInfo(diskDTO
                         .getDiskName(), amplifierCreateInfo.getAmplifierName(), diskDTO.getAmplifierName(), diskDTO
-                        .getSlotId())));
+                        .getSlotId())))).start();
         return result;
     }
 

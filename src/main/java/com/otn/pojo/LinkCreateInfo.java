@@ -8,7 +8,16 @@ public class LinkCreateInfo {
     private Long endAId;
     private String endAName;
     private Long endZId;
+    private String circleId;
     private String endZName;
+
+    public String getCircleId() {
+        return circleId;
+    }
+
+    public void setCircleId(String circleId) {
+        this.circleId = circleId;
+    }
 
     public String getLinkName() {
         return linkName;

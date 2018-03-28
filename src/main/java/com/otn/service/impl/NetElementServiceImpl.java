@@ -63,6 +63,12 @@ class NetElementServiceImpl implements NetElementService {
     }
 
     @Override
+    public List<NetElementDTO> listNetElement(Long versionId, String circleId) {
+        return listNetElement(versionId).stream().filter(netElement -> netElement.getCircleId().equals(circleId))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public NetElementDTO updateNetElement(Long versionId, Long netElementId, NetElementCreateInfo netElementCreateInfo) {
         ResNetElement updateInfo = this.convertToResNetElement(netElementCreateInfo);
         if (resNetElementDao.updateByExampleSelective(updateInfo, getExample(versionId, netElementId)) == 1) {

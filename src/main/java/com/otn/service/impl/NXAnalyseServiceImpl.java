@@ -17,6 +17,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by zhangminchao on 2017/10/23.
@@ -34,27 +35,56 @@ class NXAnalyseServiceImpl implements NXAnalyseService {
     @Autowired
     private ResBussinessDao bussinessDao;
 
+    //用来标记分析所有设备链路时的circleId取值
+    private static final String ALLGRAPH = "全图";
+    /**
+     * 分析所有的设备
+     * @param versionId
+     * @param num 故障数量，1或者2
+     * @param circleId
+     * @return
+     */
     @Override
-    public List<NXAnalyseItemDTO> analyseEquip(long versionId, int num) {
+    public List<NXAnalyseItemDTO> analyseEquip(long versionId, int num, String circleId) {
+        //筛选设备和业务时，因为可能是分析某一个环，也可能是分析全图，故在circleId上添加‘全图’字段用来标记。
+        List<ResNetElement> netElements = netElementDao.selectByExample(getExampleByVersion(versionId, ResNetElement.class)).stream().filter
+                (netElement ->circleId.equals(ALLGRAPH) || netElement.getCircleId().equals(circleId) ).collect(Collectors.toList());
+        List<ResBussiness> bussiness = bussinessDao.selectByExample(getExampleByVersion(versionId, ResBussiness.class)).stream().filter
+                (bus ->circleId.equals(ALLGRAPH) || bus.getCircleId().equals(circleId)).collect(Collectors.toList());
 
-        List<ResNetElement> netElements = netElementDao.selectByExample(getExampleByVersion(versionId, ResNetElement.class));
-        List<ResBussiness> bussiness = bussinessDao.selectByExample(getExampleByVersion(versionId, ResBussiness.class));
 
-        List<NXAnalyseItemDTO> result = new LinkedList<>();
+        return analyseEquipRes(netElements, bussiness, num);
+    }
+
+    /**
+     * 分析部分设备
+     * @param versionId
+     * @param num
+     * @param circleId
+     * @param equipIds
+     * @return
+     */
+    @Override
+    public List<NXAnalyseItemDTO> analyseSomeEquip(long versionId, int num, String circleId, List<Long> equipIds){
+        List<ResNetElement> netElements = netElementDao.selectByExample(getExampleByVersion(versionId, ResNetElement.class)).stream().filter
+                (netElement -> equipIds.contains(netElement.getNetElementId())).collect(Collectors.toList());
+        List<ResBussiness> bussiness = bussinessDao.selectByExample(getExampleByVersion(versionId, ResBussiness.class)).stream().filter
+                (bus ->circleId.equals(ALLGRAPH) || bus.getCircleId().equals(circleId)).collect(Collectors.toList());
+
+        return analyseEquipRes(netElements, bussiness, num);
+    }
+
+    private List<NXAnalyseItemDTO> analyseEquipRes(List<ResNetElement> netElements,List<ResBussiness> bussiness, int num){
         if (netElements.size() == 0 || bussiness.size() == 0) return null;
-
+        List<NXAnalyseItemDTO> result = new LinkedList<>();
         if (1 == num) {
             for (ResNetElement netElement : netElements) {
-
                 NXAnalyseItemDTO nxAnalyseItem = analyse(bussiness, new String[]{netElement.getNetElementName()});
-
                 result.add(nxAnalyseItem);
             }
-
         } else if (num == 2) {
             for (int i = 0; i < netElements.size(); i++) {
                 for (int j = i + 1; j < netElements.size(); j++) {
-
                     String eleA = netElements.get(i).getNetElementName();
                     String eleB = netElements.get(j).getNetElementName();
 
@@ -63,17 +93,51 @@ class NXAnalyseServiceImpl implements NXAnalyseService {
                     result.add(nxAnalyseItem);
                 }
             }
-
         }
         return result;
     }
 
+
+    /**
+     * 分析所有链接
+     * @param versionId
+     * @param num
+     * @param circleId
+     * @return
+     */
     @Override
-    public List<NXAnalyseItemDTO> analyseLink(long versionId, int num) {
-        List<ResLink> links = linkDao.selectByExample(getExampleByVersion(versionId, ResLink.class));
-        List<ResBussiness> bussiness = bussinessDao.selectByExample(getExampleByVersion(versionId, ResBussiness.class));
+    public List<NXAnalyseItemDTO> analyseLink(long versionId, int num, String circleId) {
+        List<ResLink> links = linkDao.selectByExample(getExampleByVersion(versionId, ResLink.class)).stream().filter
+                (link ->circleId.equals(ALLGRAPH) || link.getCircleId().equals(circleId)).collect(Collectors.toList());
+        List<ResBussiness> bussiness = bussinessDao.selectByExample(getExampleByVersion(versionId, ResBussiness.class)).stream().filter
+                (bus ->circleId.equals(ALLGRAPH) || bus.getCircleId().equals(circleId)).collect(Collectors.toList());
         if (links.size() == 0 || bussiness.size() == 0)
             throw new NoneGetException();
+
+        return analyseLinkRes(links, bussiness, num);
+    }
+
+    /**
+     * 分析部分链接，根据参数的链接id来选择
+     * @param versionId
+     * @param num
+     * @param circleId
+     * @param linkIds
+     * @return
+     */
+
+    @Override
+    public List<NXAnalyseItemDTO> analyseSomeLink(long versionId, int num,String circleId, List<Long> linkIds){
+        List<ResLink> links = linkDao.selectByExample(getExampleByVersion(versionId, ResLink.class)).stream().filter
+                (link -> linkIds.contains(link.getLinkId())).collect(Collectors.toList());
+        List<ResBussiness> bussiness = bussinessDao.selectByExample(getExampleByVersion(versionId, ResBussiness.class)).stream().filter
+                (bus ->circleId.equals(ALLGRAPH) || bus.getCircleId().equals(circleId)).collect(Collectors.toList());
+        if (links.size() == 0 || bussiness.size() == 0)
+            throw new NoneGetException();
+
+        return analyseLinkRes(links, bussiness, num);
+    }
+    private List<NXAnalyseItemDTO> analyseLinkRes(List<ResLink> links,List<ResBussiness> bussiness, int num){
         // 结果
         List<NXAnalyseItemDTO> result = new LinkedList<>();
 
@@ -98,19 +162,47 @@ class NXAnalyseServiceImpl implements NXAnalyseService {
 
                     nxAnalyseItem.setItemName(pathA1 + "," + pathZ1);
                     result.add(nxAnalyseItem);
-
                 }
             }
         }
-
         return result;
     }
 
+
+    /**
+     * 分析所有设备和链接的组合
+     * @param versionId
+     * @param num
+     * @param circleId
+     * @return
+     */
     @Override
-    public List<NXAnalyseItemDTO> analyseEquipAndLink(long versionId, int num) {
-        List<ResLink> links = linkDao.selectByExample(getExampleByVersion(versionId, ResLink.class));
-        List<ResBussiness> bussinesses = bussinessDao.selectByExample(getExampleByVersion(versionId, ResBussiness.class));
-        List<ResNetElement> netElements = netElementDao.selectByExample(getExampleByVersion(versionId, ResNetElement.class));
+    public List<NXAnalyseItemDTO> analyseEquipAndLink(long versionId, int num, String circleId) {
+        //List<ResLink> links = linkDao.selectByExample(getExampleByVersion(versionId, ResLink.class));
+        List<ResLink> links = linkDao.selectByExample(getExampleByVersion(versionId, ResLink.class)).stream().filter
+                (link ->circleId.equals(ALLGRAPH) || link.getCircleId().equals(circleId)).collect(Collectors.toList());
+        List<ResBussiness> bussinesses = bussinessDao.selectByExample(getExampleByVersion(versionId, ResBussiness.class)).stream().filter
+                (bus ->circleId.equals(ALLGRAPH) || bus.getCircleId().equals(circleId)).collect(Collectors.toList());
+        List<ResNetElement> netElements = netElementDao.selectByExample(getExampleByVersion(versionId, ResNetElement.class)).stream().filter
+                (netElement ->circleId.equals(ALLGRAPH) || netElement.getCircleId().equals(circleId)).collect(Collectors.toList());
+
+        return analyseSomeEquipAndLinkRes(netElements, links, bussinesses);
+    }
+
+    @Override
+    public List<NXAnalyseItemDTO> analyseSomeEquipAndLink(long versionId, int num, String circleId, List<Long> equipIds, List<Long> linkIds){
+        List<ResLink> links = linkDao.selectByExample(getExampleByVersion(versionId, ResLink.class)).stream().filter
+                (link -> linkIds.contains(link.getLinkId())).collect(Collectors.toList());
+        List<ResBussiness> bussinesses = bussinessDao.selectByExample(getExampleByVersion(versionId, ResBussiness.class)).stream().filter
+                (bus ->circleId.equals(ALLGRAPH) || bus.getCircleId().equals(circleId)).collect(Collectors.toList());
+        List<ResNetElement> netElements = netElementDao.selectByExample(getExampleByVersion(versionId, ResNetElement.class)).stream().filter
+                (netElement -> equipIds.contains(netElement.getNetElementId())).collect(Collectors.toList());
+
+        return analyseSomeEquipAndLinkRes(netElements, links, bussinesses);
+
+    }
+
+    private List<NXAnalyseItemDTO> analyseSomeEquipAndLinkRes(List<ResNetElement> netElements ,List<ResLink> links, List<ResBussiness> bussinesses){
         if (netElements.size() == 0 || bussinesses.size() == 0 || links.size() == 0) return null;
         // 结果
         List<NXAnalyseItemDTO> result = new LinkedList<>();
@@ -186,7 +278,6 @@ class NXAnalyseServiceImpl implements NXAnalyseService {
         Example example = new Example(className);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("versionId", versionId);
-
         return example;
     }
 

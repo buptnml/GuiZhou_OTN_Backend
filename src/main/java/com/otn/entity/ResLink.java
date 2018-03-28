@@ -1,8 +1,10 @@
 package com.otn.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.*;
 
 @Table(name = "res_link")
 public class ResLink implements Serializable {
@@ -24,6 +26,12 @@ public class ResLink implements Serializable {
      */
     @Column(name = "link_type")
     private String linkType;
+
+    /**
+     * 所在环
+     */
+    @Column(name = "circle_id")
+    private String circleId;
 
     /**
      * 链路长度
@@ -133,6 +141,24 @@ public class ResLink implements Serializable {
      */
     public void setLinkType(String linkType) {
         this.linkType = linkType == null ? null : linkType.trim();
+    }
+
+    /**
+     * 获取所在环
+     *
+     * @return circle_id - 所在环
+     */
+    public String getCircleId() {
+        return circleId;
+    }
+
+    /**
+     * 设置所在环
+     *
+     * @param circleId 所在环
+     */
+    public void setCircleId(String circleId) {
+        this.circleId = circleId == null ? null : circleId.trim();
     }
 
     /**
@@ -312,6 +338,7 @@ public class ResLink implements Serializable {
         return (this.getLinkId() == null ? other.getLinkId() == null : this.getLinkId().equals(other.getLinkId()))
             && (this.getLinkName() == null ? other.getLinkName() == null : this.getLinkName().equals(other.getLinkName()))
             && (this.getLinkType() == null ? other.getLinkType() == null : this.getLinkType().equals(other.getLinkType()))
+                && (this.getCircleId() == null ? other.getCircleId() == null : this.getCircleId().equals(other.getCircleId()))
             && (this.getLinkLength() == null ? other.getLinkLength() == null : this.getLinkLength().equals(other.getLinkLength()))
             && (this.getLinkLoss() == null ? other.getLinkLoss() == null : this.getLinkLoss().equals(other.getLinkLoss()))
             && (this.getEndAId() == null ? other.getEndAId() == null : this.getEndAId().equals(other.getEndAId()))
@@ -320,7 +347,7 @@ public class ResLink implements Serializable {
             && (this.getEndZName() == null ? other.getEndZName() == null : this.getEndZName().equals(other.getEndZName()))
             && (this.getVersionId() == null ? other.getVersionId() == null : this.getVersionId().equals(other.getVersionId()))
             && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
-            && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
+                && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
     }
 
     @Override
@@ -330,6 +357,7 @@ public class ResLink implements Serializable {
         result = prime * result + ((getLinkId() == null) ? 0 : getLinkId().hashCode());
         result = prime * result + ((getLinkName() == null) ? 0 : getLinkName().hashCode());
         result = prime * result + ((getLinkType() == null) ? 0 : getLinkType().hashCode());
+        result = prime * result + ((getCircleId() == null) ? 0 : getCircleId().hashCode());
         result = prime * result + ((getLinkLength() == null) ? 0 : getLinkLength().hashCode());
         result = prime * result + ((getLinkLoss() == null) ? 0 : getLinkLoss().hashCode());
         result = prime * result + ((getEndAId() == null) ? 0 : getEndAId().hashCode());
@@ -351,6 +379,7 @@ public class ResLink implements Serializable {
         sb.append(", linkId=").append(linkId);
         sb.append(", linkName=").append(linkName);
         sb.append(", linkType=").append(linkType);
+        sb.append(", circleId=").append(circleId);
         sb.append(", linkLength=").append(linkLength);
         sb.append(", linkLoss=").append(linkLoss);
         sb.append(", endAId=").append(endAId);

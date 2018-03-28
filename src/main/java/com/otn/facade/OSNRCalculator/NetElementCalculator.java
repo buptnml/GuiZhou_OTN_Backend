@@ -14,7 +14,7 @@ interface NetElementCalculator {
      * @param versionId
      * @param firstInput
      */
-    void calculate(String netElementName, long versionId, double firstInput);
+    void calculate(String netElementName, long versionId, double firstInput) throws IllegalArgumentException;
 
     /**
      * 计算并获取网元的输入功率

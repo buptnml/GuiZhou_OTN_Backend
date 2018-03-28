@@ -43,6 +43,13 @@ public interface UserService {
      */
     List<UserDTO> listUser();
 
+    /**
+     * 查询所有用户
+     *
+     * @return
+     */
+    List<UserDTO> listUserByName(String userName);
+
 
     /**
      * 更新用户信息（通过ID）

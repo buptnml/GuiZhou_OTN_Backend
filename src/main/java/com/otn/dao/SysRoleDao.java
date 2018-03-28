@@ -1,9 +1,9 @@
 package com.otn.dao;
 
-import com.otn.entity.SysSyncLog;
+import com.otn.entity.SysRole;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 
 @Repository
-public interface SysSyncLogDao extends Mapper<SysSyncLog> {
+public interface SysRoleDao extends Mapper<SysRole> {
 }

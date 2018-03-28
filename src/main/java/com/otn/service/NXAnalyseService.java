@@ -18,7 +18,7 @@ public interface NXAnalyseService {
      * @param num 故障数量，1或者2
      * @return
      */
-    List<NXAnalyseItemDTO> analyseEquip(long versionId, int num);
+    List<NXAnalyseItemDTO> analyseEquip(long versionId, int num, String circleId);
 
 
     /**
@@ -27,8 +27,14 @@ public interface NXAnalyseService {
      * @param num
      * @return
      */
-    List<NXAnalyseItemDTO> analyseLink(long versionId, int num);
+    List<NXAnalyseItemDTO> analyseLink(long versionId, int num, String circleId);
 
-    List<NXAnalyseItemDTO> analyseEquipAndLink(long versionId, int num);
+    List<NXAnalyseItemDTO> analyseEquipAndLink(long versionId, int num, String circleId);
+
+    List<NXAnalyseItemDTO> analyseSomeEquip(long versionId, int num,String circleId, List<Long> elementIds);
+
+    List<NXAnalyseItemDTO> analyseSomeLink(long versionId, int num,String circleId, List<Long> linkIds);
+
+    List<NXAnalyseItemDTO> analyseSomeEquipAndLink(long versionId, int num, String circleId, List<Long> elementIds, List<Long> linkIds);
 
 }

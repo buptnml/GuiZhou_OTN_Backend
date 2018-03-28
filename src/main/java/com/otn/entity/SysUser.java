@@ -1,9 +1,10 @@
 package com.otn.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Date;
-import javax.persistence.*;
 
 @Table(name = "sys_user")
 public class SysUser implements Serializable {
@@ -48,12 +49,6 @@ public class SysUser implements Serializable {
      */
     @Column(name = "gmt_modified")
     private Date gmtModified;
-
-    /**
-     * 用户的设置文件，Java的二进制流
-     */
-    @Column(name = "user_setting")
-    private byte[] userSetting;
 
     private static final long serialVersionUID = 1L;
 
@@ -183,24 +178,6 @@ public class SysUser implements Serializable {
         this.gmtModified = gmtModified;
     }
 
-    /**
-     * 获取用户的设置文件，Java的二进制流
-     *
-     * @return user_setting - 用户的设置文件，Java的二进制流
-     */
-    public byte[] getUserSetting() {
-        return userSetting;
-    }
-
-    /**
-     * 设置用户的设置文件，Java的二进制流
-     *
-     * @param userSetting 用户的设置文件，Java的二进制流
-     */
-    public void setUserSetting(byte[] userSetting) {
-        this.userSetting = userSetting;
-    }
-
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -219,8 +196,7 @@ public class SysUser implements Serializable {
             && (this.getUserRole() == null ? other.getUserRole() == null : this.getUserRole().equals(other.getUserRole()))
             && (this.getUserGroup() == null ? other.getUserGroup() == null : this.getUserGroup().equals(other.getUserGroup()))
             && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
-            && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()))
-            && (Arrays.equals(this.getUserSetting(), other.getUserSetting()));
+                && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
     }
 
     @Override
@@ -234,7 +210,6 @@ public class SysUser implements Serializable {
         result = prime * result + ((getUserGroup() == null) ? 0 : getUserGroup().hashCode());
         result = prime * result + ((getGmtCreate() == null) ? 0 : getGmtCreate().hashCode());
         result = prime * result + ((getGmtModified() == null) ? 0 : getGmtModified().hashCode());
-        result = prime * result + (Arrays.hashCode(getUserSetting()));
         return result;
     }
 
@@ -251,7 +226,6 @@ public class SysUser implements Serializable {
         sb.append(", userGroup=").append(userGroup);
         sb.append(", gmtCreate=").append(gmtCreate);
         sb.append(", gmtModified=").append(gmtModified);
-        sb.append(", userSetting=").append(userSetting);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
