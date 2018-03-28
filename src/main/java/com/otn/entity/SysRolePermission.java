@@ -7,27 +7,31 @@ import java.util.Date;
 
 @Table(name = "sys_role_permission")
 public class SysRolePermission implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 角色id
      */
     @Column(name = "role_id")
     private Long roleId;
+
     /**
      * 权限id
      */
     @Column(name = "permission_id")
     private String permissionId;
+
     /**
      * 创建时间
      */
     @Column(name = "gmt_create")
     private Date gmtCreate;
+
     /**
      * 最后修改时间
      */
     @Column(name = "gmt_modified")
     private Date gmtModified;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取角色id

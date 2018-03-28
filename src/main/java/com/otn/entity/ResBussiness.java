@@ -1,6 +1,7 @@
 package com.otn.entity;
 
 import javax.persistence.Column;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
@@ -10,6 +11,7 @@ public class ResBussiness implements Serializable {
     /**
      * 业务id
      */
+    @Id
     @Column(name = "bussiness_id")
     private Long bussinessId;
 

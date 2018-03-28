@@ -90,7 +90,7 @@ public class UserController {
 
     private boolean checkUserRole(String userRole) {
         List<UserRoleDTO> userRoleDTOList = userRoleService.listUserRole(userRole);
-        return userRoleDTOList.size() > 0;
+        return userRoleDTOList.size() <= 0;
     }
 
 }

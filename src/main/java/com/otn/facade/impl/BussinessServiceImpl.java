@@ -82,9 +82,10 @@ class BussinessServiceImpl implements BussinessService {
     @Override
     public BussinessDTO updateBussiness(Long versionId, Long bussinessId, BussinessCreateInfo bussinessCreateInfo) {
         ResBussiness updateBus = UPDATE_UTILS.createBussiness(versionId, bussinessCreateInfo);
+        ResBussiness oldBus = resBussinessDao.selectByExample(getExample(versionId, bussinessId)).get(0);
         updateBus.setBussinessId(bussinessId);
-        resBussinessDao.deleteByPrimaryKey(updateBus);
-        resBussinessDao.insertSelective(updateBus);
+        updateBus.setCircleId(oldBus.getCircleId());
+        resBussinessDao.updateByExampleSelective(updateBus, getExample(versionId, bussinessId));
         return createBussinessDTO(resBussinessDao.selectByPrimaryKey(bussinessId));
     }
 

@@ -1,6 +1,7 @@
 package com.otn.facade.OSNRCalculator;
 
 
+import com.otn.facade.OSNRCalculator.exceptions.OutOfInputLimitsException;
 import com.otn.pojo.DiskDTO;
 
 /**
@@ -15,7 +16,7 @@ interface DiskCalculator {
      * @param inputPower
      * @param versionId
      */
-    void calculate(DiskDTO disk, double inputPower, long versionId);
+    void calculate(DiskDTO disk, double inputPower, long versionId) throws OutOfInputLimitsException;
 
     /**
      * 获取计算后的输出功率

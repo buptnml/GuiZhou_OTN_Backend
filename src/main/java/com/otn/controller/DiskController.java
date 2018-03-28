@@ -53,8 +53,9 @@ public class DiskController {
     @ApiOperation(value = "更新某个版本下的某设备的某机盘条目")
     @RequestMapping(value = "/{versionId}/{netElementId}/{diskId}", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.CREATED)
-    public DiskDTO updateDisk(@PathVariable Long versionId, @PathVariable Long netElementId, @PathVariable Long diskId,
-                              @RequestBody DiskCreateInfo diskCreateInfo) {
+    public synchronized DiskDTO updateDisk(@PathVariable Long versionId, @PathVariable Long netElementId,
+                                           @PathVariable Long diskId,
+                                           @RequestBody DiskCreateInfo diskCreateInfo) {
         checkNetElementId(versionId, netElementId);
         checkDiskCreateInfo(versionId, diskCreateInfo);
         return diskService.updateDisk(versionId, netElementId, diskId, diskCreateInfo);
