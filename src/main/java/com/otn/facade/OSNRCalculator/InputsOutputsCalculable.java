@@ -13,7 +13,7 @@ interface InputsOutputsCalculable {
      * @param firstInput
      * @param versionId
      */
-    void calculate(String routeString, double firstInput, long versionId);
+    void calculate(String routeString, double firstInput, long versionId) throws IllegalArgumentException;
 
     /**
      * 用来返回所有节点输入功率计算结果的函数

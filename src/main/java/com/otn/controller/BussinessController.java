@@ -30,7 +30,8 @@ public class BussinessController {
     @ApiOperation(value = "更新某个版本下的某设备的某机盘条目")
     @RequestMapping(value = "/{versionId}/{bussinessId}", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.CREATED)
-    public BussinessDTO updateBussiness(@PathVariable Long versionId, @PathVariable Long bussinessId, @RequestBody BussinessCreateInfo
+    public synchronized BussinessDTO updateBussiness(@PathVariable Long versionId, @PathVariable Long bussinessId,
+                                                     @RequestBody BussinessCreateInfo
             bussinessCreateInfo) {
         checkBussinessCreateInfo(bussinessCreateInfo);
         return bussinessService.updateBussiness(versionId, bussinessId, bussinessCreateInfo);

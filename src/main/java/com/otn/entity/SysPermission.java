@@ -8,28 +8,32 @@ import java.util.Date;
 
 @Table(name = "sys_permission")
 public class SysPermission implements Serializable {
-    private static final long serialVersionUID = 1L;
     /**
      * 权限id
      */
     @Id
     @Column(name = "permission_id")
     private Long permissionId;
+
     /**
      * 权限内容
      */
     @Column(name = "permission_content")
     private String permissionContent;
+
     /**
      * 创建时间
      */
     @Column(name = "gmt_create")
     private Date gmtCreate;
+
     /**
      * 最后修改时间
      */
     @Column(name = "gmt_modified")
     private Date gmtModified;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取权限id

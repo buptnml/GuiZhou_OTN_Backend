@@ -57,7 +57,7 @@ public class LinkController {
     @ApiOperation(value = "更新某个版本下的某链路条目")
     @RequestMapping(value = "/{versionId}/{linkId}", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.CREATED)
-    public LinkDTO updateResLink(@PathVariable Long versionId, @PathVariable Long linkId, @RequestBody LinkCreateInfo
+    public synchronized LinkDTO updateResLink(@PathVariable Long versionId, @PathVariable Long linkId, @RequestBody LinkCreateInfo
             linkCreateInfo) {
         checkLinkCreateInfo(versionId, linkCreateInfo);
         return linkService.updateResLink(versionId, linkId, linkCreateInfo);

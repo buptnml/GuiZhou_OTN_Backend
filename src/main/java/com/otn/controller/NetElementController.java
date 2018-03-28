@@ -77,9 +77,9 @@ public class NetElementController {
     @ApiOperation(value = "更新某个版本下的某网元条目")
     @RequestMapping(value = "/{versionId}/{netElementId}", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.CREATED)
-    public NetElementDTO updateNetElement(@PathVariable Long versionId, @PathVariable Long netElementId,
-                                          @RequestBody NetElementCreateInfo
-                                                  netElementCreateInfo) {
+    public synchronized NetElementDTO updateNetElement(@PathVariable Long versionId, @PathVariable Long
+            netElementId, @RequestBody NetElementCreateInfo netElementCreateInfo) {
+
         checkNetElementCreateInfo(netElementCreateInfo);
         return netElementService.updateNetElement(versionId, netElementId, netElementCreateInfo);
     }

@@ -40,11 +40,11 @@ class DIskCalculatorImpl implements DiskCalculator {
           均属于设计错误
           */
         if (this.inputPower > amplifier.getMaximumInputPower()) {
-            throw new OutOfInputLimitsException("输入功率大于机盘" + disk.getDiskName
+            throw new OutOfInputLimitsException("输入功率为" + this.inputPower + "，大于机盘" + disk.getDiskName
                     () + "能支持的最大功率！");
         }
         if (this.inputPower < amplifier.getMinimumInputPower()) {
-            throw new OutOfInputLimitsException("输入功率小于机盘" + disk.getDiskName
+            throw new OutOfInputLimitsException("输入功率" + this.inputPower + ",小于机盘" + disk.getDiskName
                     () + "能支持的最小功率！");
         }
         this.inputPower = amplifier.getMaximumInputPower() > inputPower ? inputPower : amplifier.getMaximumInputPower();
