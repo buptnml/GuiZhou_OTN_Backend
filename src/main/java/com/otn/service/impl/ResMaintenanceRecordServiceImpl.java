@@ -5,6 +5,7 @@ import com.otn.entity.ResMaintenanceRecord;
 import com.otn.pojo.MaintenanceRecordDTO;
 import com.otn.pojo.MaintenanceRecordQuery;
 import com.otn.service.ResMaintenanceRecordService;
+import com.otn.util.exception.controller.result.NoneRemoveException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
@@ -68,5 +69,17 @@ public class ResMaintenanceRecordServiceImpl implements ResMaintenanceRecordServ
         record.setIsDone("1");
         recordDao.updateByPrimaryKeySelective(record);
         return createDTO(recordDao.selectByPrimaryKey(record));
+    }
+
+    @Override
+    public boolean deleteByMaintenanceRecordId( List<Long> maintenanceRecordIds){
+        if (maintenanceRecordIds.size() == 0)
+            return true;
+        for (Long maintenanceRecordId : maintenanceRecordIds) {
+            if (recordDao.deleteByPrimaryKey(maintenanceRecordId) == 0) {
+                throw new NoneRemoveException();
+            }
+        }
+        return true;
     }
 }
