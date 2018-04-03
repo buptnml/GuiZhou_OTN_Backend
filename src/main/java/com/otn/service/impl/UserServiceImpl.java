@@ -82,9 +82,9 @@ class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> listUserByName(String userName) {
-        SysUser temp = sysUserDao.selectByExample(getExample(userName)).get(0);
-        List<SysRole> yourRoleList = sysRoleDao.selectByExample(getRoleExample(temp.getUserRole()));
+    public List<UserDTO> listUserById(Long userId) {
+        UserDTO info = getUserById(userId);
+        List<SysRole> yourRoleList = sysRoleDao.selectByExample(getRoleExample(info.getUserRole()));
         List<String> resultList = sysRoleDao.selectAll().stream().filter(role -> role.getRoleId() >= yourRoleList.get(0).getRoleId()).map(SysRole::getRoleName).collect(Collectors.toList());
         return listUser().stream().filter(user -> resultList.contains(user.getUserRole())).collect(Collectors.toList());
     }
@@ -96,12 +96,6 @@ class UserServiceImpl implements UserService {
         return example;
     }
 
-    private Example getExample(String userName) {
-        Example example = new Example(SysUser.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("userName", userName);
-        return example;
-    }
 
 
     @Override
@@ -122,6 +116,13 @@ class UserServiceImpl implements UserService {
             userNameList.add(userDTO.getUserName());
         }
         return userNameList;
+    }
+
+    @Override
+    public UserDTO getUserById(Long userId) {
+        UserDTO resultDTO = convertToUserDTO(sysUserDao.selectByPrimaryKey(userId));
+        if (resultDTO == null) throw new IllegalArgumentException("找不到操作员的身份");
+        return resultDTO;
     }
 
 

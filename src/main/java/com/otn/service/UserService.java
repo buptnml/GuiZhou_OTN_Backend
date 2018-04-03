@@ -48,7 +48,7 @@ public interface UserService {
      *
      * @return
      */
-    List<UserDTO> listUserByName(String userName);
+    List<UserDTO> listUserById(Long userId);
 
 
     /**
@@ -67,6 +67,12 @@ public interface UserService {
      * @return
      */
     List<String> listUserNames();
+
+
+    /**
+     * 根据ID获取用户
+     */
+    UserDTO getUserById(Long userId);
 
 
 }

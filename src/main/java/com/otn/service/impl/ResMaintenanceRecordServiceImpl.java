@@ -9,9 +9,11 @@ import com.otn.util.exception.controller.result.NoneRemoveException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,19 +32,14 @@ public class ResMaintenanceRecordServiceImpl implements ResMaintenanceRecordServ
         return result;
     }
 
-    ResMaintenanceRecord createDO(MaintenanceRecordDTO recordDTO) {
-        ResMaintenanceRecord result = new ResMaintenanceRecord();
-        BeanUtils.copyProperties(recordDTO, result);
-        result.setMaintenanceRecordId(recordDTO.getId());
-        result.setMaintenanceRecordSubId(recordDTO.getIdNo());
-        return result;
-    }
 
     ResMaintenanceRecord createDO(MaintenanceRecordQuery recordDTO) {
         ResMaintenanceRecord result = new ResMaintenanceRecord();
         BeanUtils.copyProperties(recordDTO, result);
         result.setMaintenanceRecordId(recordDTO.getId());
         result.setMaintenanceRecordSubId(recordDTO.getIdNo());
+        result.setGmtCreate(new Date());
+        result.setGmtModified(new Date());
         return result;
     }
 
@@ -54,7 +51,15 @@ public class ResMaintenanceRecordServiceImpl implements ResMaintenanceRecordServ
         } catch (DuplicateKeyException e) {
             recordDao.updateByPrimaryKeySelective(createDO(record));
         }
-        return createDTO(recordDao.selectByPrimaryKey(createDO(record)));
+        return createDTO(recordDao.selectByExample(getExample(record.getIdNo(), record.getrPlace())).get(0));
+    }
+
+    private Example getExample(Long maintenanceRecordSubId, String rPlace) {
+        Example example = new Example(ResMaintenanceRecord.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("maintenanceRecordSubId", maintenanceRecordSubId);
+        criteria.andEqualTo("rPlace", rPlace);
+        return example;
     }
 
     @Override
