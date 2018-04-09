@@ -47,28 +47,28 @@ public class ExceptionHandlerController {
     @ExceptionHandler(NoneGetException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleNoneGetException(HttpServletRequest request, RuntimeException e) {
-        logger.error("Request: " + request.getRequestURL() + " raised:", e);
+        logger.warn("Request: " + request.getRequestURL() + " raised:", e);
         return e.getMessage();
     }
 
     @ExceptionHandler(NoneRemoveException.class)
     @ResponseStatus(HttpStatus.GONE)
     public String handleNoneRemoveException(HttpServletRequest request, RuntimeException e) {
-        logger.error("Request: " + request.getRequestURL() + " raised:", e);
+        logger.warn("Request: " + request.getRequestURL() + " raised:", e);
         return e.getMessage();
     }
 
     @ExceptionHandler(NoneSaveException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public String handleNoneSaveException(HttpServletRequest request, RuntimeException e) {
-        logger.error("Request: " + request.getRequestURL() + " raised:", e);
+        logger.warn("Request: " + request.getRequestURL() + " raised:", e);
         return e.getMessage();
     }
 
     @ExceptionHandler(NoneUpdateException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public String handleNoneUpdateException(HttpServletRequest request, RuntimeException e) {
-        logger.error("Request: " + request.getRequestURL() + " raised:", e);
+        logger.warn("Request: " + request.getRequestURL() + " raised:", e);
         return e.getMessage();
     }
 
