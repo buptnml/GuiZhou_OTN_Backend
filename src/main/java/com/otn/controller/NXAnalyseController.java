@@ -7,6 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import jdk.nashorn.internal.parser.JSONParser;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -54,35 +55,31 @@ public class NXAnalyseController {
     }
     @ApiImplicitParams({
             @ApiImplicitParam(name = "versionId", value = "版本id", required = true, paramType = "query", dataType = "long"),
-            @ApiImplicitParam(name = "num", value = "故障数量", required = true, paramType = "query", dataType = "int"),
             @ApiImplicitParam(name = "type", value = "故障种类", required = true, paramType = "query", dataType = "int"),
             @ApiImplicitParam(name = "circleId", value = "环路", required = true, paramType = "query", dataType =
                     "String"),
-            @ApiImplicitParam(name = "equipIds", value = "设备id", required = false, allowMultiple = true, paramType = "query", dataType =
-                    "array"),
-            @ApiImplicitParam(name = "linkIds", value = "链接id", required = false, allowMultiple = true, paramType = "query", dataType =
+            @ApiImplicitParam(name = "elements", value = "名称", required = false, allowMultiple = true, paramType = "query", dataType =
                     "array")
     })
     @RequestMapping(value = "/analyse/some", method = RequestMethod.GET)
     @ApiOperation(value = "设备N-X分析")
-    public List<NXAnalyseItemDTO> analyse(long versionId, int num, int type, String circleId, @RequestParam("equipIds") String[] equipIds,@RequestParam("linkIds") String[] linkIds) {
+    public List<NXAnalyseItemDTO> analyse(long versionId, int type, String circleId, @RequestParam("elements") String[] elements) {
         if (type == EQUIP)
-            return nxAnalyseService.analyseSomeEquip(versionId, num, circleId, parseLong(equipIds));
+            return nxAnalyseService.analyseSomeEquip(versionId, circleId, parse(elements));
         if (type == LINK)
-            return nxAnalyseService.analyseSomeLink(versionId, num, circleId, parseLong(linkIds));
+            return nxAnalyseService.analyseSomeLink(versionId, circleId, parse(elements));
         if (type == BOTH)
-            return nxAnalyseService.analyseSomeEquipAndLink(versionId, num, circleId,parseLong(equipIds), parseLong(linkIds));
+            return nxAnalyseService.analyseSomeEquipAndLink(versionId, circleId,parse(elements));
         else {
             throw new IllegalArgumentException("类型参数出错！");
         }
 
     }
 
-    private List<Long> parseLong(String[] nums){
+    private List<String> parse(String[] strs){
 
-        List<Long> res = new ArrayList<>();
-        for(String num : nums){
-            String str = num;
+        List<String> res = new ArrayList<>();
+        for(String str : strs){
             if(str.contains("[")&&str.contains("]")){
                 str = str.substring(1,str.length()-1);
             }else if(str.contains("[")){
@@ -90,7 +87,7 @@ public class NXAnalyseController {
             }else if(str.contains("]")){
                 str = str.substring(0, str.length()-1);
             }
-            res.add(Long.parseLong(str));
+            res.add(str.substring(1,str.length()-1));   //json序列化的字符串会带引号需要手动去除
         }
         return res;
     }
