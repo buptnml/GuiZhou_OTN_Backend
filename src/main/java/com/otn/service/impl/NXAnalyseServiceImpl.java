@@ -17,6 +17,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by zhangminchao on 2017/10/23.
@@ -34,117 +35,129 @@ class NXAnalyseServiceImpl implements NXAnalyseService {
     @Autowired
     private ResBussinessDao bussinessDao;
 
+    //用来标记分析所有设备链路时的circleId取值
+    private static final String ALLGRAPH = "全图";
+    /**
+     * 分析所有的设备
+     * @param versionId
+     * @param num 故障数量，1或者2
+     * @param circleId
+     * @return
+     */
     @Override
-    public List<NXAnalyseItemDTO> analyseEquip(long versionId, int num) {
+    public List<NXAnalyseItemDTO> analyseEquip(long versionId, int num, String circleId) {
+        //筛选设备和业务时，因为可能是分析某一个环，也可能是分析全图，故在circleId上添加‘全图’字段用来标记。
+        List<String> netElements = getNetElemetName(versionId, circleId);
+        List<ResBussiness> bussiness = getBusiness(versionId, circleId);
 
-        List<ResNetElement> netElements = netElementDao.selectByExample(getExampleByVersion(versionId, ResNetElement.class));
-        List<ResBussiness> bussiness = bussinessDao.selectByExample(getExampleByVersion(versionId, ResBussiness.class));
+        if(num == 2){
+            netElements = getTwoEles(netElements, netElements);
+        }
+        return analyseElements(netElements, bussiness);
+    }
+    /**
+     * 分析选定的设备
+     * @param versionId
+     * @param circleId
+     * @param equips
+     * @return
+     */
+    @Override
+    public List<NXAnalyseItemDTO> analyseSomeEquip(long versionId, String circleId, List<String> equips){
+        List<ResBussiness> bussiness = getBusiness(versionId, circleId);
 
+        return analyseElements(equips, bussiness);
+    }
+
+    /**
+     * 分析所有链接
+     * @param versionId
+     * @param num
+     * @param circleId
+     * @return
+     */
+    @Override
+    public List<NXAnalyseItemDTO> analyseLink(long versionId, int num, String circleId) {
+        List<String> links = getLinkName(versionId, circleId);
+        List<ResBussiness> bussiness = getBusiness(versionId, circleId);
+
+        if(num == 2){
+            links = getTwoEles(links, links);
+        }
+        return analyseElements(links, bussiness);
+    }
+
+    @Override
+    public List<NXAnalyseItemDTO> analyseSomeLink(long versionId, String circleId, List<String> elenemts){
+        List<ResBussiness> bussiness = getBusiness(versionId,circleId);
+
+        return analyseElements(elenemts, bussiness);
+    }
+
+    /**
+     * 分析所有设备和链接的组合
+     * @param versionId
+     * @param num
+     * @param circleId
+     * @return
+     */
+    @Override
+    public List<NXAnalyseItemDTO> analyseEquipAndLink(long versionId, int num, String circleId) {
+        List<String> links = getLinkName(versionId, circleId);
+        List<ResBussiness> bussinesses = getBusiness(versionId, circleId);
+        List<String> netElements = getNetElemetName(versionId, circleId);
+
+        List<String> elements = getTwoEles(links, netElements);
+        return analyseElements(elements, bussinesses);
+    }
+
+    @Override
+    public List<NXAnalyseItemDTO> analyseSomeEquipAndLink(long versionId, String circleId, List<String> elements){
+        List<ResBussiness> bussinesses = getBusiness(versionId, circleId);
+
+        return analyseElements(elements, bussinesses);
+    }
+
+    private List<NXAnalyseItemDTO> analyseElements(List<String> eles, List<ResBussiness> bussinesses){
         List<NXAnalyseItemDTO> result = new LinkedList<>();
-        if (netElements.size() == 0 || bussiness.size() == 0) return null;
-
-        if (1 == num) {
-            for (ResNetElement netElement : netElements) {
-
-                NXAnalyseItemDTO nxAnalyseItem = analyse(bussiness, new String[]{netElement.getNetElementName()});
-
-                result.add(nxAnalyseItem);
-            }
-
-        } else if (num == 2) {
-            for (int i = 0; i < netElements.size(); i++) {
-                for (int j = i + 1; j < netElements.size(); j++) {
-
-                    String eleA = netElements.get(i).getNetElementName();
-                    String eleB = netElements.get(j).getNetElementName();
-
-                    NXAnalyseItemDTO nxAnalyseItem = analyse(bussiness, new String[]{eleA, eleB});
-
-                    result.add(nxAnalyseItem);
+        for(String ele : eles){
+            List<String> strs = new ArrayList<>();
+            String[] elements = ele.contains("~") ? ele.split("~") : new String[]{ele};
+            for(String s : elements){
+                if(s.contains("-")){
+                    String[] tmp = s.split("-");
+                    strs.add(tmp[1]+"-"+tmp[0]);
                 }
+                strs.add(s);
             }
-
+            NXAnalyseItemDTO nxAnalyseItem = analyse(bussinesses, strs);
+            nxAnalyseItem.setItemName(elements.length==2?(elements[0]+","+elements[1]): elements[0]);
+            result.add(nxAnalyseItem);
         }
         return result;
     }
 
-    @Override
-    public List<NXAnalyseItemDTO> analyseLink(long versionId, int num) {
-        List<ResLink> links = linkDao.selectByExample(getExampleByVersion(versionId, ResLink.class));
-        List<ResBussiness> bussiness = bussinessDao.selectByExample(getExampleByVersion(versionId, ResBussiness.class));
-        if (links.size() == 0 || bussiness.size() == 0)
-            throw new NoneGetException();
-        // 结果
-        List<NXAnalyseItemDTO> result = new LinkedList<>();
-
-        if (num == 1) {
-            for (ResLink link : links) {
-                //                链路的起止点在路由中不能确定，故有两种情况
-                String path1 = link.getEndAName() + "-" + link.getEndZName();
-                String path2 = link.getEndZName() + "-" + link.getEndAName();
-                NXAnalyseItemDTO nxAnalyseItem = analyse(bussiness, new String[]{path1, path2});
-                nxAnalyseItem.setItemName(link.getLinkName());
-
-                result.add(nxAnalyseItem);
-            }
-        } else if (num == 2) {
-            for (int i = 0; i < links.size(); i++) {
-                for (int j = i + 1; j < links.size(); j++) {
-                    String pathA1 = links.get(i).getEndAName() + "-" + links.get(i).getEndZName();
-                    String pathA2 = links.get(i).getEndZName() + "-" + links.get(i).getEndAName();
-                    String pathZ1 = links.get(j).getEndAName() + "-" + links.get(j).getEndZName();
-                    String pathZ2 = links.get(j).getEndZName() + "-" + links.get(j).getEndAName();
-                    NXAnalyseItemDTO nxAnalyseItem = analyse(bussiness, new String[]{pathA1, pathA2, pathZ1, pathZ2});
-
-                    nxAnalyseItem.setItemName(pathA1 + "," + pathZ1);
-                    result.add(nxAnalyseItem);
-
+    private List<String> getTwoEles(List<String> eles1, List<String> eles2){
+        List<String> elements = new ArrayList<>();
+        for(String ele : eles1){
+            for(String ele2 : eles2){
+                if(ele.equals(ele2)){
+                    break;
                 }
+                elements.add(ele+"~"+ele2);
             }
         }
-
-        return result;
+        return elements;
     }
 
-    @Override
-    public List<NXAnalyseItemDTO> analyseEquipAndLink(long versionId, int num) {
-        List<ResLink> links = linkDao.selectByExample(getExampleByVersion(versionId, ResLink.class));
-        List<ResBussiness> bussinesses = bussinessDao.selectByExample(getExampleByVersion(versionId, ResBussiness.class));
-        List<ResNetElement> netElements = netElementDao.selectByExample(getExampleByVersion(versionId, ResNetElement.class));
-        if (netElements.size() == 0 || bussinesses.size() == 0 || links.size() == 0) return null;
-        // 结果
-        List<NXAnalyseItemDTO> result = new LinkedList<>();
-        for (ResNetElement netElement : netElements) {
-            for (ResLink link : links) {
-//                链路的起止点在路由中不能确定，故有两种情况
-                String pathA = link.getEndAName() + "-" + link.getEndZName();
-                String pathZ = link.getEndZName() + "-" + link.getEndAName();
-                NXAnalyseItemDTO nxAnalyseItem = analyse(bussinesses, new String[]{netElement.getNetElementName(), pathA, pathZ});
-
-                nxAnalyseItem.setItemName(netElement.getNetElementName() + "," + pathA);
-                result.add(nxAnalyseItem);
-            }
-        }
-        return result;
-    }
-
-    private NXAnalyseItemDTO analyse(List<ResBussiness> resBussinesses, String items[]) {
+    private NXAnalyseItemDTO analyse(List<ResBussiness> resBussinesses,List<String> items) {
         NXAnalyseItemDTO nxAnalyseItem = new NXAnalyseItemDTO();
-
         DecimalFormat decimalFormat = new DecimalFormat("0.00%");
 
         List<String> affectBusiness = new ArrayList<>();
         List<String> recoveryBusiness = new ArrayList<>();
         nxAnalyseItem.setAffectBussiness(affectBusiness);
         nxAnalyseItem.setRecoveryBussiness(recoveryBusiness);
-
-        //设置故障名称
-        String itemName = items[0];
-        for (int i = 1; i < items.length; i++) {
-            itemName = itemName + "," + items[i];
-        }
-        nxAnalyseItem.setItemName(itemName);
-
         //遍历每个业务
         for (ResBussiness resBussiness : resBussinesses) {
             String mainRoute = resBussiness.getMainRoute();
@@ -153,7 +166,7 @@ class NXAnalyseServiceImpl implements NXAnalyseService {
             boolean recFlag = true;
 //            要是主路由里找到某一个故障设备或链路则业务会受影响
             for (String item : items) {
-                if (mainRoute.indexOf(item) != -1) {
+                if (mainRoute.contains(item)) {
                     affectBusiness.add(resBussiness.getBussinessName());
                     affectFlag = true;
                     break;
@@ -163,14 +176,13 @@ class NXAnalyseServiceImpl implements NXAnalyseService {
 //            或者备用路由里也有某个故障设备或链路，则判定为不可恢复
             if (affectFlag) {
                 for (String item : items) {
-                    if (spareRoute == null || spareRoute.indexOf(item) != -1) {
+                    if (spareRoute == null || spareRoute.contains(item)) {
                         recFlag = false;
                         break;
                     }
                 }
                 if (recFlag) recoveryBusiness.add(resBussiness.getBussinessName());
             }
-
         }
 //        计算恢复率
         if (affectBusiness.size() == 0)
@@ -182,12 +194,25 @@ class NXAnalyseServiceImpl implements NXAnalyseService {
         return nxAnalyseItem;
     }
 
+    private List<ResBussiness> getBusiness(long versionId, String circleId){
+        return bussinessDao.selectByExample(getExampleByVersion(versionId, ResBussiness.class))
+                .stream().filter(bus ->circleId.equals(ALLGRAPH) || bus.getCircleId().equals(circleId))
+                .collect(Collectors.toList());
+    }
+    private List<String> getLinkName(long versionId, String circleId){
+        return linkDao.selectByExample(getExampleByVersion(versionId, ResLink.class))
+                .stream().filter(link ->circleId.equals(ALLGRAPH) || link.getCircleId().equals(circleId))
+                .map(ResLink::getLinkName).collect(Collectors.toList());
+    }
+    private List<String> getNetElemetName(long versionId, String circleId){
+        return netElementDao.selectByExample(getExampleByVersion(versionId, ResNetElement.class))
+                .stream().filter(netElement ->circleId.equals(ALLGRAPH) || netElement.getCircleId().equals(circleId))
+                .map(ResNetElement::getNetElementName).collect(Collectors.toList());
+    }
     private Example getExampleByVersion(Long versionId, Class<?> className) {
         Example example = new Example(className);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("versionId", versionId);
-
         return example;
     }
-
 }

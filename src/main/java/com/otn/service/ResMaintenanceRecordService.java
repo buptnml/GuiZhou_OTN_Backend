@@ -1,6 +1,7 @@
 package com.otn.service;
 
 import com.otn.pojo.MaintenanceRecordDTO;
+import com.otn.pojo.MaintenanceRecordQuery;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ public interface ResMaintenanceRecordService {
      * @param record
      * @return
      */
-    MaintenanceRecordDTO addRecord(MaintenanceRecordDTO record);
+    MaintenanceRecordDTO addRecord(MaintenanceRecordQuery record);
 
     /**
      * 获取所有记录
@@ -28,5 +29,12 @@ public interface ResMaintenanceRecordService {
      * @return
      */
     MaintenanceRecordDTO updateRecord(Long maintenanceRecordId);
+
+    /**
+     * 批量删除检修单, 根据 检修单ID
+     *
+     * @param maintenanceRecordIds
+     */
+    boolean deleteByMaintenanceRecordId( List<Long> maintenanceRecordIds);
 
 }

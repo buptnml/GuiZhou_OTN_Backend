@@ -1,6 +1,7 @@
 package com.otn.entity;
 
 import javax.persistence.Column;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
@@ -10,6 +11,7 @@ public class ResBussiness implements Serializable {
     /**
      * 业务id
      */
+    @Id
     @Column(name = "bussiness_id")
     private Long bussinessId;
 
@@ -24,6 +26,12 @@ public class ResBussiness implements Serializable {
      */
     @Column(name = "bussiness_rate")
     private String bussinessRate;
+
+    /**
+     * 所属的环
+     */
+    @Column(name = "circle_id")
+    private String circleId;
 
     /**
      * 主路由
@@ -91,12 +99,6 @@ public class ResBussiness implements Serializable {
     @Column(name = "gmt_modified")
     private Date gmtModified;
 
-    /**
-     * 所属的环
-     */
-    @Column(name = "circle_id")
-    private String circleId;
-
     private static final long serialVersionUID = 1L;
 
     /**
@@ -151,6 +153,24 @@ public class ResBussiness implements Serializable {
      */
     public void setBussinessRate(String bussinessRate) {
         this.bussinessRate = bussinessRate == null ? null : bussinessRate.trim();
+    }
+
+    /**
+     * 获取所属的环
+     *
+     * @return circle_id - 所属的环
+     */
+    public String getCircleId() {
+        return circleId;
+    }
+
+    /**
+     * 设置所属的环
+     *
+     * @param circleId 所属的环
+     */
+    public void setCircleId(String circleId) {
+        this.circleId = circleId == null ? null : circleId.trim();
     }
 
     /**
@@ -351,24 +371,6 @@ public class ResBussiness implements Serializable {
         this.gmtModified = gmtModified;
     }
 
-    /**
-     * 获取所属的环
-     *
-     * @return circle_id - 所属的环
-     */
-    public String getCircleId() {
-        return circleId;
-    }
-
-    /**
-     * 设置所属的环
-     *
-     * @param circleId 所属的环
-     */
-    public void setCircleId(String circleId) {
-        this.circleId = circleId == null ? null : circleId.trim();
-    }
-
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -384,6 +386,7 @@ public class ResBussiness implements Serializable {
         return (this.getBussinessId() == null ? other.getBussinessId() == null : this.getBussinessId().equals(other.getBussinessId()))
             && (this.getBussinessName() == null ? other.getBussinessName() == null : this.getBussinessName().equals(other.getBussinessName()))
             && (this.getBussinessRate() == null ? other.getBussinessRate() == null : this.getBussinessRate().equals(other.getBussinessRate()))
+                && (this.getCircleId() == null ? other.getCircleId() == null : this.getCircleId().equals(other.getCircleId()))
             && (this.getMainRoute() == null ? other.getMainRoute() == null : this.getMainRoute().equals(other.getMainRoute()))
             && (this.getMainFrequency() == null ? other.getMainFrequency() == null : this.getMainFrequency().equals(other.getMainFrequency()))
             && (this.getMainInputPowers() == null ? other.getMainInputPowers() == null : this.getMainInputPowers().equals(other.getMainInputPowers()))
@@ -394,8 +397,7 @@ public class ResBussiness implements Serializable {
             && (this.getSpareOutputPowers() == null ? other.getSpareOutputPowers() == null : this.getSpareOutputPowers().equals(other.getSpareOutputPowers()))
             && (this.getVersionId() == null ? other.getVersionId() == null : this.getVersionId().equals(other.getVersionId()))
             && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
-                && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()))
-                && (this.getCircleId() == null ? other.getCircleId() == null : this.getCircleId().equals(other.getCircleId()));
+                && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
     }
 
     @Override
@@ -405,6 +407,7 @@ public class ResBussiness implements Serializable {
         result = prime * result + ((getBussinessId() == null) ? 0 : getBussinessId().hashCode());
         result = prime * result + ((getBussinessName() == null) ? 0 : getBussinessName().hashCode());
         result = prime * result + ((getBussinessRate() == null) ? 0 : getBussinessRate().hashCode());
+        result = prime * result + ((getCircleId() == null) ? 0 : getCircleId().hashCode());
         result = prime * result + ((getMainRoute() == null) ? 0 : getMainRoute().hashCode());
         result = prime * result + ((getMainFrequency() == null) ? 0 : getMainFrequency().hashCode());
         result = prime * result + ((getMainInputPowers() == null) ? 0 : getMainInputPowers().hashCode());
@@ -416,7 +419,6 @@ public class ResBussiness implements Serializable {
         result = prime * result + ((getVersionId() == null) ? 0 : getVersionId().hashCode());
         result = prime * result + ((getGmtCreate() == null) ? 0 : getGmtCreate().hashCode());
         result = prime * result + ((getGmtModified() == null) ? 0 : getGmtModified().hashCode());
-        result = prime * result + ((getCircleId() == null) ? 0 : getCircleId().hashCode());
         return result;
     }
 
@@ -429,6 +431,7 @@ public class ResBussiness implements Serializable {
         sb.append(", bussinessId=").append(bussinessId);
         sb.append(", bussinessName=").append(bussinessName);
         sb.append(", bussinessRate=").append(bussinessRate);
+        sb.append(", circleId=").append(circleId);
         sb.append(", mainRoute=").append(mainRoute);
         sb.append(", mainFrequency=").append(mainFrequency);
         sb.append(", mainInputPowers=").append(mainInputPowers);
@@ -440,7 +443,6 @@ public class ResBussiness implements Serializable {
         sb.append(", versionId=").append(versionId);
         sb.append(", gmtCreate=").append(gmtCreate);
         sb.append(", gmtModified=").append(gmtModified);
-        sb.append(", circleId=").append(circleId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

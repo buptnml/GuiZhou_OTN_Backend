@@ -24,7 +24,16 @@ public class RawBussinessData {
     private String spareInputPowers;
     @XmlElement(name = "spare_opl_out")
     private String spareOutputPowers;
+    @XmlElement(name = "domain")
+    private String circleId;
 
+    public String getCircleId() {
+        return circleId;
+    }
+
+    public void setCircleId(String circleId) {
+        this.circleId = circleId;
+    }
 
     public Long getBussinessId() {
         return bussinessId;

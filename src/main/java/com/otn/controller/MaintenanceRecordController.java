@@ -1,8 +1,11 @@
 package com.otn.controller;
 
 
+import com.otn.controller.util.InputCheckException;
 import com.otn.pojo.MaintenanceRecordDTO;
+import com.otn.pojo.MaintenanceRecordQuery;
 import com.otn.service.ResMaintenanceRecordService;
+import com.otn.util.exception.controller.result.NoneRemoveException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
@@ -18,10 +21,11 @@ public class MaintenanceRecordController {
     @Resource
     private ResMaintenanceRecordService maintenanceRecordService;
 
-    @ApiOperation(value = "增加", notes = "新增检修单")
+    @ApiOperation(value = "增加", notes = "新增检修单（不需要传isDone）")
     @RequestMapping(value = "/", method = RequestMethod.POST, consumes = "application/json;charset=utf-8")
     @ResponseStatus(HttpStatus.CREATED)
-    public MaintenanceRecordDTO createLinkType(@RequestBody MaintenanceRecordDTO recordDTO) {
+    @InputCheckException(reason = "入参允许为null，不需要检查，由函数本身保证入参安全")
+    public MaintenanceRecordDTO createLinkType(@RequestBody MaintenanceRecordQuery recordDTO) {
         return maintenanceRecordService.addRecord(recordDTO);
     }
 
@@ -37,12 +41,23 @@ public class MaintenanceRecordController {
         return maintenanceRecordService.listRecord();
     }
 
-    @ApiOperation(value = "更新", notes = "修改链路类型")
+    @ApiOperation(value = "更新", notes = "修改检修单")
     @RequestMapping(value = "/{maintenanceRecordId}", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.OK)
     public MaintenanceRecordDTO updateByLinkTypeId(@PathVariable Long maintenanceRecordId) {
         return maintenanceRecordService.updateRecord(maintenanceRecordId);
     }
 
-
+    /**
+     * 批量删除, 根据maintenanceRecordId
+     *
+     * @param maintenanceRecordIds
+     */
+    @ApiOperation(value = "删除", notes = "批量删除,根据maintenanceRecordId")
+    @RequestMapping(value = "/{versionId}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteByLinkTypeId( @RequestBody List<Long> maintenanceRecordIds) {
+        if (!maintenanceRecordService.deleteByMaintenanceRecordId(maintenanceRecordIds))
+            throw new NoneRemoveException();
+    }
 }

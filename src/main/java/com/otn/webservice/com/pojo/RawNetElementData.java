@@ -17,7 +17,27 @@ public class RawNetElementData {
     private Float coordinateY;
     @XmlElement(name = "pack_type")
     private String amplifierNames;
+    @XmlElement(name = "equip_domain")
+    private String circleId;
+    @XmlElement(name = "equip_model")
+    private String netElementType;
 
+
+    public String getCircleId() {
+        return circleId;
+    }
+
+    public void setCircleId(String circleId) {
+        this.circleId = circleId;
+    }
+
+    public String getNetElementType() {
+        return netElementType;
+    }
+
+    public void setNetElementType(String netElementType) {
+        this.netElementType = netElementType;
+    }
 
     public Long getNetElementId() {
         return netElementId;

@@ -33,6 +33,15 @@ public interface NetElementService {
 
 
     /**
+     * 查询当前版本所有网元信息
+     *
+     * @param versionId
+     * @return
+     */
+    List<NetElementDTO> listNetElement(Long versionId, String circleId);
+
+
+    /**
      * 更新/修改网元信息
      *
      * @param netElementCreateInfo

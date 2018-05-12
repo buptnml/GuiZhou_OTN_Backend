@@ -42,6 +42,7 @@ public class WebServiceFactory {
             ResBussiness res = new ResBussiness();
             BeanUtils.copyProperties(rawData, res);
             res.setVersionId(CONFIG.getBASIC_VERSION_ID());
+            res.setBussinessId(null);
             res.setMainRoute(routeStringConverter(res.getMainRoute()));
             res.setMainInputPowers(powerStringConverter(res.getMainInputPowers()));
             res.setMainOutputPowers(powerStringConverter(res.getMainOutputPowers()));
@@ -91,7 +92,8 @@ public class WebServiceFactory {
 
     public List<ResLink> listRemoteLinkRaw() {
         List<RawLinkData> rawList = strategy.getRawLinkData();
-        return rawList.stream().distinct().map(rawData -> {
+        List<RawNetElementData> ralList2 = strategy.getRawNetElementData();
+        return rawList.stream().map(rawData -> {
             ResLink res = new ResLink();
             BeanUtils.copyProperties(rawData, res);
             res.setVersionId(CONFIG.getBASIC_VERSION_ID());
@@ -100,6 +102,10 @@ public class WebServiceFactory {
             res.setLinkName(res.getEndAName() + "-" + res.getEndZName());
             if (res.getLinkType().equals("")) res.setLinkType(CONFIG
                     .getDEFAULT_LINK_TYPE());
+            ralList2.forEach(netElement -> {
+                if (res.getEndAId().equals(netElement.getNetElementId())) res.setCircleId
+                        (netElement.getCircleId());
+            });
             if (res.getLinkLoss() == null) res.setLinkLoss(CONFIG.getDEFAULT_LINK_LOSS());
             if (res.getLinkLength() == null) res.setLinkLength(CONFIG.getDEFAULT_LINK_LENGTH());
             return res;
@@ -122,7 +128,7 @@ public class WebServiceFactory {
             //格式转化
             ResNetElement res = new ResNetElement();
             BeanUtils.copyProperties(rawData, res);
-            res.setNetElementType(CONFIG.getDEFAULT_NET_ELEMENT_TYPE());
+            if (res.getNetElementType() == null) res.setNetElementType(CONFIG.getDEFAULT_NET_ELEMENT_TYPE());
             res.setVersionId(CONFIG.getBASIC_VERSION_ID());
             return res;
         }).collect(Collectors.toList());

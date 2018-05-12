@@ -39,6 +39,21 @@ public class NetElementController {
     }
 
     /**
+     * 查询某个环下的网元
+     *
+     * @return
+     */
+    @ApiOperation(value = "查询某个版本下环的所有网元信息")
+    @RequestMapping(value = "/{versionId}/{circleId}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    @VersionCheckException(reason = "获取信息时不需要进行版本检查")
+    public List<NetElementDTO> listNetElement(@PathVariable Long versionId, @PathVariable String circleId) {
+        return netElementService.listNetElement(versionId, circleId);
+    }
+
+
+
+    /**
      * 创建新网元
      *
      * @param netElementCreateInfo
@@ -62,9 +77,9 @@ public class NetElementController {
     @ApiOperation(value = "更新某个版本下的某网元条目")
     @RequestMapping(value = "/{versionId}/{netElementId}", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.CREATED)
-    public NetElementDTO updateNetElement(@PathVariable Long versionId, @PathVariable Long netElementId,
-                                          @RequestBody NetElementCreateInfo
-                                                  netElementCreateInfo) {
+    public synchronized NetElementDTO updateNetElement(@PathVariable Long versionId, @PathVariable Long
+            netElementId, @RequestBody NetElementCreateInfo netElementCreateInfo) {
+
         checkNetElementCreateInfo(netElementCreateInfo);
         return netElementService.updateNetElement(versionId, netElementId, netElementCreateInfo);
     }

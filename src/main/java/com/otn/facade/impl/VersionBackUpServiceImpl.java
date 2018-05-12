@@ -1,9 +1,11 @@
-package com.otn.service.impl;
+package com.otn.facade.impl;
 
 import com.otn.dao.*;
 import com.otn.entity.SysBackUp;
 import com.otn.entity.SysVersion;
-import com.otn.service.VersionBackUpService;
+import com.otn.facade.BussinessService;
+import com.otn.facade.VersionBackUpService;
+import com.otn.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,8 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -33,6 +37,20 @@ public class VersionBackUpServiceImpl implements VersionBackUpService {
     private ResNetElementDao resNetElementDao;
     @Resource
     private SysVersionBackUpDao sysVersionBackUpDao;
+
+    @Resource
+    private NetElementService netElementService;
+    @Resource
+    private LinkService linkService;
+    @Resource
+    private BussinessService bussinessService;
+    @Resource
+    private AmplifierService amplifierService;
+    @Resource
+    private LinkTypeService linkTypeService;
+    @Resource
+    private DiskService diskService;
+
 
     @Override
     public void initBackUp(Long versionId) {
@@ -79,16 +97,20 @@ public class VersionBackUpServiceImpl implements VersionBackUpService {
     @Transactional
     public void restoreBackUp(Long versionId) {
         SysBackUp backUpInfo = sysVersionBackUpDao.selectByPrimaryKey(versionId);
-        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() / 2);
+        ExecutorService executor = Executors.newCachedThreadPool();
         executor.submit(() -> restoreMachine(ByteTransferFactory.toObject(backUpInfo.getBussinessBackUp()), versionId,
-                resBussinessDao));
+                resBussinessDao, bussinessService));
         executor.submit(() -> {
-            restoreMachine(ByteTransferFactory.toObject(backUpInfo.getNetElementBackUp()), versionId, resNetElementDao);
-            restoreMachine(ByteTransferFactory.toObject(backUpInfo.getDiskBackUp()), versionId, resDiskDao);
+            restoreMachine(ByteTransferFactory.toObject(backUpInfo.getNetElementBackUp()), versionId,
+                    resNetElementDao, netElementService);
+            restoreMachine(ByteTransferFactory.toObject(backUpInfo.getDiskBackUp()), versionId, resDiskDao, diskService);
         });
-        executor.submit(() -> restoreMachine(ByteTransferFactory.toObject(backUpInfo.getLinkBackUp()), versionId, resLinkDao));
-        executor.submit(() -> restoreMachine(ByteTransferFactory.toObject(backUpInfo.getOsnrLinkTypeBackUp()), versionId, resOsnrLinkTypeDao));
-        executor.submit(() -> restoreMachine(ByteTransferFactory.toObject(backUpInfo.getOsnrAmplifierBackUp()), versionId, resOsnrAmplifierDao));
+        executor.submit(() -> restoreMachine(ByteTransferFactory.toObject(backUpInfo.getLinkBackUp()), versionId,
+                resLinkDao, linkService));
+        executor.submit(() -> restoreMachine(ByteTransferFactory.toObject(backUpInfo.getOsnrLinkTypeBackUp()),
+                versionId, resOsnrLinkTypeDao, linkTypeService));
+        executor.submit(() -> restoreMachine(ByteTransferFactory.toObject(backUpInfo.getOsnrAmplifierBackUp()),
+                versionId, resOsnrAmplifierDao, amplifierService));
         executor.shutdown();
         while (!executor.isTerminated()) {
         }
@@ -102,7 +124,7 @@ public class VersionBackUpServiceImpl implements VersionBackUpService {
      * @param mapperDao
      * @param <K>
      */
-    private <K> void restoreMachine(List<K> backUpDataList, Long versionId, Mapper mapperDao) {
+    private <K> void restoreMachine(List<K> backUpDataList, Long versionId, Mapper mapperDao, Object service) {
         if (null == backUpDataList) return;
         List<K> newDataList = mapperDao.selectByExample(getExample(versionId));
         if (backUpDataList.size() == 0 && newDataList.size() == 0) {
@@ -111,16 +133,33 @@ public class VersionBackUpServiceImpl implements VersionBackUpService {
         }
         if (newDataList.size() != backUpDataList.size()) {
             //两个列表数据不一致，恢复
-            mapperDao.deleteByExample(getExample(versionId));
-            backUpDataList.forEach(mapperDao::insert);
+            doRestore(backUpDataList, versionId, mapperDao, service);
             return;
         }
         //无法判断的时候，两个列表都是以gmtModified倒序排列
         //比较第0个条目的时间，如果不一样肯定是不一样的数据，进行恢复操作
         if (!newDataList.get(0).equals(backUpDataList.get(0))) {
-            mapperDao.deleteByExample(getExample(versionId));
+            doRestore(backUpDataList, versionId, mapperDao, service);
+        }
+    }
+
+    private <K> void doRestore(List<K> backUpDataList, Long versionId, Mapper mapperDao, Object service) {
+        mapperDao.deleteByExample(getExample(versionId));
+        if (mapperDao.getClass().getName().toLowerCase().contains("bussiness")) {
+            try {
+                Method batchInsert = service.getClass().getMethod("batchInsert", List.class);
+                batchInsert.invoke(mapperDao, backUpDataList);
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        } else {
             backUpDataList.forEach(mapperDao::insert);
         }
+        return;
     }
 
 

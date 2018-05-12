@@ -23,25 +23,34 @@ public class UserRoleController {
     @Resource
     private UserRoleService userRoleService;
 
-    @ApiOperation(value = "获取全部角色")
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @ApiOperation(value = "根据你的角色获取可选的角色")
+    @RequestMapping(value = "/{roleName}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<UserRoleDTO> listUserRole() {
-        return userRoleService.listUserRole();
+    public List<UserRoleDTO> listUserRole(@PathVariable String roleName) {
+        return userRoleService.listUserRole(roleName);
     }
+
 
     @ApiOperation(value = "创建新角色")
     @RequestMapping(value = "/", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public UserRoleDTO saveUserRole(@RequestBody UserRoleCreateInfo userRoleCreateInfo) {
-        return this.userRoleService.saveUserRole(userRoleCreateInfo);
+//        return this.userRoleService.saveUserRole(userRoleCreateInfo);
+        return null;
     }
 
-    @ApiOperation(value = "批量删除指定角色")
-    @RequestMapping(value = "/", method = RequestMethod.DELETE)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void listRemoveUserRole(@RequestBody List<Long> userRoleIdList) {
-        this.userRoleService.listRemoveUserRole(userRoleIdList);
-    }
+//    @ApiOperation(value = "创建新角色")
+//    @RequestMapping(value = "/", method = RequestMethod.POST)
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public UserRoleDTO saveUserRole(@RequestBody UserRoleCreateInfo userRoleCreateInfo) {
+//        return this.userRoleService.saveUserRole(userRoleCreateInfo);
+//    }
+//
+//    @ApiOperation(value = "批量删除指定角色")
+//    @RequestMapping(value = "/", method = RequestMethod.DELETE)
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
+//    public void listRemoveUserRole(@RequestBody List<Long> userRoleIdList) {
+//        this.userRoleService.listRemoveUserRole(userRoleIdList);
+//    }
 
 }

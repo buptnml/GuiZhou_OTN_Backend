@@ -12,6 +12,7 @@ public class BussinessCreateInfo {
     @Nullable
     private String spareFrequency;
     private Double inputPower;
+    @Nullable
     private String circleId;
 
     public String getBussinessName() {
@@ -61,6 +62,10 @@ public class BussinessCreateInfo {
     }
 
     public void setSpareFrequency(@Nullable String spareFrequency) {
+        if (null == spareFrequency) {
+            this.spareFrequency = (int) (100 * Math.random()) + "";
+            return;
+        }
         this.spareFrequency = spareFrequency;
     }
 
@@ -72,11 +77,12 @@ public class BussinessCreateInfo {
         this.inputPower = inputPower;
     }
 
+    @Nullable
     public String getCircleId() {
         return circleId;
     }
 
-    public void setCircleId(String circleId) {
+    public void setCircleId(@Nullable String circleId) {
         this.circleId = circleId;
     }
 }
