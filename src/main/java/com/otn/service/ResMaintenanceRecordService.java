@@ -30,4 +30,11 @@ public interface ResMaintenanceRecordService {
      */
     MaintenanceRecordDTO updateRecord(Long maintenanceRecordId);
 
+    /**
+     * 批量删除检修单, 根据 检修单ID
+     *
+     * @param maintenanceRecordIds
+     */
+    boolean deleteByMaintenanceRecordId( List<Long> maintenanceRecordIds);
+
 }
