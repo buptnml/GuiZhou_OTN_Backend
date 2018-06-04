@@ -54,7 +54,7 @@ public class MaintenanceRecordController {
      * @param maintenanceRecordIds
      */
     @ApiOperation(value = "删除", notes = "批量删除,根据maintenanceRecordId")
-    @RequestMapping(value = "/{versionId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteByLinkTypeId( @RequestBody List<Long> maintenanceRecordIds) {
         if (!maintenanceRecordService.deleteByMaintenanceRecordId(maintenanceRecordIds))
