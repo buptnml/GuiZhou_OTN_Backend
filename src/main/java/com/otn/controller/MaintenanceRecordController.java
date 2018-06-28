@@ -40,12 +40,12 @@ public class MaintenanceRecordController {
         return maintenanceRecordService.listRecord();
     }
 
-//    @ApiOperation(value = "更新", notes = "修改检修单")
-//    @RequestMapping(value = "/{maintenanceRecordId}", method = RequestMethod.PATCH)
-//    @ResponseStatus(HttpStatus.OK)
-//    public MaintenanceRecordDTO updateByLinkTypeId(@PathVariable Long maintenanceRecordId) {
-//        return maintenanceRecordService.updateRecord(maintenanceRecordId);
-//    }
+    @ApiOperation(value = "更新", notes = "修改检修单")
+    @RequestMapping(value = "/{maintenanceRecordId}", method = RequestMethod.PATCH)
+    @ResponseStatus(HttpStatus.OK)
+    public MaintenanceRecordDTO updateByLinkTypeId(@PathVariable Long maintenanceRecordId) {
+        return maintenanceRecordService.updateRecord(maintenanceRecordId);
+    }
 
 //    /**
 //     * 批量删除, 根据maintenanceRecordId
