@@ -2,10 +2,7 @@ package com.otn.controller;
 
 
 import com.otn.controller.util.VersionCheckException;
-import com.otn.pojo.UserCreateInfo;
-import com.otn.pojo.UserDTO;
-import com.otn.pojo.UserQuery;
-import com.otn.pojo.UserRoleDTO;
+import com.otn.pojo.*;
 import com.otn.service.UserRoleService;
 import com.otn.service.UserService;
 import com.otn.util.exception.controller.input.IllegalArgumentException;
@@ -35,8 +32,9 @@ public class UserController {
     @ApiOperation(value = "获取该用户能查到的所有用户")
     @RequestMapping(value = "/{operatorId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<UserDTO> listUserByName(@PathVariable Long operatorId) {
-        return userService.listUserById(operatorId);
+    public List<BaseUserDTO> listUserByName(@PathVariable Long operatorId) {
+        List<BaseUserDTO> res = userService.listUserById(operatorId);
+        return res;
     }
 
 //    @ApiOperation(value = "获取该用户能查到的所有用户")
@@ -50,7 +48,7 @@ public class UserController {
     @ApiOperation(value = "按条件查询用户")
     @RequestMapping(value = "/{userName}/{password}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public UserDTO getUserByUserQuery(@PathVariable String userName, @PathVariable String password) {
+    public BaseUserDTO getUserByUserQuery(@PathVariable String userName, @PathVariable String password) {
         return userService.getUserByUserQuery(new UserQuery(userName, password));
     }
 
@@ -58,10 +56,10 @@ public class UserController {
     @ApiOperation(value = "创建新用户")
     @RequestMapping(value = "/{operatorId}", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDTO saveUserByName(@PathVariable Long operatorId, @RequestBody UserCreateInfo userCreateInfo) {
+    public AdminUserDTO saveUserByName(@PathVariable Long operatorId, @RequestBody UserCreateInfo userCreateInfo) {
         if (!userService.getUserById(operatorId).getUserRole().equals("管理员"))
             throw new IllegalArgumentException("非管理员不允许新增用户信息！");
-        this.checkUserDTO(new UserDTO(null, userCreateInfo.getUserName(), userCreateInfo.getPassword(),
+        this.checkUserDTO(new AdminUserDTO(null, userCreateInfo.getUserName(), userCreateInfo.getPassword(),
                 userCreateInfo.getUserRole(), userCreateInfo.getUserGroup()));
         return userService.saveUser(userCreateInfo);
     }
@@ -79,11 +77,11 @@ public class UserController {
     @ApiOperation(value = "更新用户")
     @RequestMapping(value = "/{operatorId}/{userId}", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDTO updateUser(@PathVariable Long operatorId, @PathVariable Long userId, @RequestBody UserCreateInfo
+    public AdminUserDTO updateUser(@PathVariable Long operatorId, @PathVariable Long userId, @RequestBody UserCreateInfo
             userCreateInfo) {
-        UserDTO info = userService.getUserById(operatorId);
+        AdminUserDTO info = userService.getUserById(operatorId);
         if (operatorId.equals(userId) || info.getUserRole().equals("管理员")) {
-            this.checkUserDTO(new UserDTO(userId, userCreateInfo.getUserName(), userCreateInfo.getPassword(),
+            this.checkUserDTO(new AdminUserDTO(userId, userCreateInfo.getUserName(), userCreateInfo.getPassword(),
                     userCreateInfo.getUserRole(), userCreateInfo.getUserGroup()));
             return userService.updateUser(userId, userCreateInfo);
         }
@@ -110,7 +108,7 @@ public class UserController {
 //    }
 
 
-    private void checkUserDTO(UserDTO userDTO) {
+    private void checkUserDTO(BaseUserDTO userDTO) {
         if (checkUserRole(userDTO.getUserRole())) {
             throw new IllegalArgumentException("userRole");
         }
