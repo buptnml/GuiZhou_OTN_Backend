@@ -1,9 +1,8 @@
 package com.otn.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.*;
 
 @Table(name = "sys_role_permission")
 public class SysRolePermission implements Serializable {
@@ -118,9 +117,9 @@ public class SysRolePermission implements Serializable {
         }
         SysRolePermission other = (SysRolePermission) that;
         return (this.getRoleId() == null ? other.getRoleId() == null : this.getRoleId().equals(other.getRoleId()))
-                && (this.getPermissionId() == null ? other.getPermissionId() == null : this.getPermissionId().equals(other.getPermissionId()))
-                && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
-                && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
+            && (this.getPermissionId() == null ? other.getPermissionId() == null : this.getPermissionId().equals(other.getPermissionId()))
+            && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
+            && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
     }
 
     @Override
