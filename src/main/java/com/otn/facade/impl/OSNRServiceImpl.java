@@ -55,7 +55,7 @@ class OSNRServiceImpl implements OSNRService {
                 BussinessPowerStringTransfer.stringTransfer(bus.getMainOutputPowers()),
                 bus.getMainRoute(),
                 versionId));
-        if (null != bus.getSpareRoute()) {
+        if (null != bus.getSpareRoute() && !bus.getSpareRoute().equals("")) {
             results.addAll(getNodeResults(
                     BussinessPowerStringTransfer.stringTransfer(bus.getSpareInputPowers()),
                     BussinessPowerStringTransfer.stringTransfer(bus.getSpareOutputPowers()),
@@ -81,7 +81,7 @@ class OSNRServiceImpl implements OSNRService {
         List<OSNRGeneralInfo> results = new ArrayList<>();
         results.add(new OSNRGeneralInfo(bus, true, getRealRouteString(bus, true, getOSNRResult(versionId,
                 bussinessId, true))));
-        if (null != bus.getSpareRoute()) {
+        if (null != bus.getSpareRoute() && !bus.getSpareRoute().equals("")) {
             results.add(new OSNRGeneralInfo(bus, false, getRealRouteString(bus, false, getOSNRResult(versionId,
                     bussinessId, false))));
         }
