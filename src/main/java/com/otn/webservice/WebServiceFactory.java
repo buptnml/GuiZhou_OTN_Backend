@@ -28,6 +28,10 @@ public class WebServiceFactory {
     }
 
 
+    public String uploadFile(String data) {
+        return strategy.uploadFile(data);
+    }
+
     public List<ResBussiness> listRemoteBusDataRaw() {
         List<RawBussinessData> rawList = strategy.getRawBusData();
         return rawList.parallelStream().distinct().map(

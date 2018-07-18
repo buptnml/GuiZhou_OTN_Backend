@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for getAllEquipCardByAmpResponse complex type.
- * <p>
+ * 
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * <p>
+ * 
  * <pre>
  * &lt;complexType name=&quot;getAllEquipCardByAmpResponse&quot;&gt;
  *   &lt;complexContent&gt;
@@ -24,6 +24,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent&gt;
  * &lt;/complexType&gt;
  * </pre>
+ *
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "getAllEquipCardByAmpResponse", propOrder = {"_return"})

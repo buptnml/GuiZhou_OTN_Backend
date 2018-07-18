@@ -16,14 +16,15 @@ import java.util.logging.Logger;
  * Generated source version: 2.0
  * <p>
  * An example of how this class may be used:
- * <p>
+ * 
  * <pre>
  * ResourceServiceService service = new ResourceServiceService();
  * ResourceServiceDelegate portType = service.getResourceServicePort();
  * portType.getChannel(...);
  * </pre>
- * <p>
+ * 
  * </p>
+ * 
  */
 @WebServiceClient(name = "ResourceServiceService", targetNamespace = "http://inspur.com/", wsdlLocation = "http://10.114.223.15/resourceWebService/ResourceServicePort?wsdl")
 public class ResourceServiceService extends Service {

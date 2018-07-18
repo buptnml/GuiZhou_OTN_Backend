@@ -14,8 +14,12 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
-import java.util.Comparator;
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.nio.charset.Charset;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service("MaintenanceRecordService")
@@ -33,13 +37,6 @@ public class ResMaintenanceRecordServiceImpl implements ResMaintenanceRecordServ
         return result;
     }
 
-    ResMaintenanceRecord createDO(MaintenanceRecordDTO recordDTO) {
-        ResMaintenanceRecord result = new ResMaintenanceRecord();
-        BeanUtils.copyProperties(recordDTO, result);
-        result.setMaintenanceRecordId(recordDTO.getId());
-        result.setMaintenanceRecordSubId(recordDTO.getIdNo());
-        return result;
-    }
 
     ResMaintenanceRecord createDO(MaintenanceRecordQuery recordDTO) {
         ResMaintenanceRecord result = new ResMaintenanceRecord();
@@ -51,59 +48,6 @@ public class ResMaintenanceRecordServiceImpl implements ResMaintenanceRecordServ
         return result;
     }
 
-
-    @Override
-    public MaintenanceRecordDTO addRecord(MaintenanceRecordQuery record) {
-        try {
-            recordDao.insertSelective(createDO(record));
-        } catch (DuplicateKeyException e) {
-            recordDao.updateByPrimaryKeySelective(createDO(record));
-        }
-
-        ResMaintenanceRecord data = recordDao.selectByPrimaryKey(createDO(record));
-        List<ResMaintenanceRecord> list = new ArrayList<>();
-        list.add(data);
-
-        String csvFilePath =System.getProperty("catalina.home")+"/csv/"+data.getMaintenanceRecordId() + ".csv";
-
-        //获取类属性，用于csv的表头
-        Field[] fields = data.getClass().getDeclaredFields();
-        String[] csvHeaders = new String[fields.length];
-        for (short i = 0; i < fields.length; i++) {
-            Field field = fields[i];
-            String fieldName = field.getName();
-            csvHeaders[i] = fieldName;
-        }
-
-        writeCSV(list, csvFilePath, csvHeaders);
-        return createDTO(data);
-    }
-
-    @Override
-    public List<MaintenanceRecordDTO> listRecord() {
-        return recordDao.selectAll().stream().sorted(Comparator.comparing(ResMaintenanceRecord::getGmtModified)
-                .reversed()).map(this::createDTO).collect(Collectors.toList());
-    }
-
-    @Override
-    public MaintenanceRecordDTO updateRecord(Long maintenanceRecordId) {
-        ResMaintenanceRecord record = recordDao.selectByPrimaryKey(maintenanceRecordId);
-        record.setIsDone("1");
-        recordDao.updateByPrimaryKeySelective(record);
-        return createDTO(recordDao.selectByPrimaryKey(record));
-    }
-
-    @Override
-    public boolean deleteByMaintenanceRecordId( List<Long> maintenanceRecordIds){
-        if (maintenanceRecordIds.size() == 0)
-            return true;
-        for (Long maintenanceRecordId : maintenanceRecordIds) {
-            if (recordDao.deleteByPrimaryKey(maintenanceRecordId) == 0) {
-                throw new NoneRemoveException();
-            }
-        }
-        return true;
-    }
 
     public static <T> void writeCSV(Collection<T> dataSet, String csvFilePath, String[] csvHeaders)  {
         try {
@@ -123,7 +67,7 @@ public class ResMaintenanceRecordServiceImpl implements ResMaintenanceRecordServ
         //遍历集合 写内容
         Iterator<T> it = dataSet.iterator();
         while (it.hasNext()) {
-            T t = (T) it.next();
+            T t = it.next();
             //获取类属性
             Field[] fields = t.getClass().getDeclaredFields();
             String[] csvContent = new String[fields.length];
@@ -136,8 +80,8 @@ public class ResMaintenanceRecordServiceImpl implements ResMaintenanceRecordServ
                         + fieldName.substring(1);
                 try {
                     Class tCls = t.getClass();
-                    Method getMethod = tCls.getMethod(getMethodName, new Class[]{});
-                    Object value = getMethod.invoke(t, new Object[]{});
+                    Method getMethod = tCls.getMethod(getMethodName);
+                    Object value = getMethod.invoke(t);
                     if (value == null) {
                         continue;
                     }
@@ -159,5 +103,62 @@ public class ResMaintenanceRecordServiceImpl implements ResMaintenanceRecordServ
             e.printStackTrace();
             throw new RequestResultErrorException("请先关闭已经打开的文件！");
         }
+    }
+
+    @Override
+    public MaintenanceRecordDTO addRecord(MaintenanceRecordQuery record) {
+        try {
+            recordDao.insertSelective(createDO(record));
+        } catch (DuplicateKeyException e) {
+            recordDao.updateByPrimaryKeySelective(createDO(record));
+        }
+        return createDTO(recordDao.selectByExample(getExample(record.getIdNo(), record.getrPlace())).get(0));
+    }
+
+    private void saveFile(ResMaintenanceRecord data, List<ResMaintenanceRecord> list) {
+        String csvFilePath = System.getProperty("catalina.home") + "\\csv\\" + data.getMaintenanceRecordId() + ".csv";
+        //获取类属性，用于csv的表头
+        Field[] fields = data.getClass().getDeclaredFields();
+        String[] csvHeaders = new String[fields.length];
+        for (short i = 0; i < fields.length; i++) {
+            Field field = fields[i];
+            String fieldName = field.getName();
+            csvHeaders[i] = fieldName;
+        }
+        writeCSV(list, csvFilePath, csvHeaders);
+    }
+
+    @Override
+    public List<MaintenanceRecordDTO> listRecord() {
+        return recordDao.selectAll().stream().sorted(Comparator.comparing(ResMaintenanceRecord::getGmtModified)
+                .reversed()).map(this::createDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public MaintenanceRecordDTO updateRecord(Long maintenanceRecordId) {
+        ResMaintenanceRecord record = recordDao.selectByPrimaryKey(maintenanceRecordId);
+        record.setIsDone("1");
+        recordDao.updateByPrimaryKeySelective(record);
+        return createDTO(recordDao.selectByPrimaryKey(record));
+    }
+
+    @Override
+    public boolean deleteByMaintenanceRecordId(List<Long> maintenanceRecordIds) {
+        if (maintenanceRecordIds.size() == 0)
+            return true;
+        for (Long maintenanceRecordId : maintenanceRecordIds) {
+            if (recordDao.deleteByPrimaryKey(maintenanceRecordId) == 0) {
+                throw new NoneRemoveException();
+            }
+        }
+        return true;
+    }
+
+    private Example getExample(Long maintenanceRecordSubId, String rPlace) {
+        Example example = new Example(ResMaintenanceRecord.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("maintenanceRecordSubId", maintenanceRecordSubId);
+        criteria.andEqualTo("rPlace", rPlace);
+        return example;
     }
 }

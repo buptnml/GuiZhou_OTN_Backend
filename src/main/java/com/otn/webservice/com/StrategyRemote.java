@@ -35,12 +35,19 @@ public class StrategyRemote implements Strategy {
 
     }
 
+
     @Override
     public List<RawNetElementData> getRawNetElementData() {
 
         return XML_CONVERTER.getData(WS.getAllEquip(), XMLConverter.REQUEST_TYPES
                 .netElement);
 
+    }
+
+
+    @Override
+    public String uploadFile(String data) {
+        return WS.fileUp(data);
     }
 
 }

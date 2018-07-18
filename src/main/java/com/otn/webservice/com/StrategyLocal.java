@@ -36,4 +36,9 @@ public class StrategyLocal implements Strategy {
                 .REQUEST_TYPES
                 .netElement, "file");
     }
+
+    @Override
+    public String uploadFile(String data) {
+        return "success";
+    }
 }
