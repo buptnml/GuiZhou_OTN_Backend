@@ -14,10 +14,15 @@ import javax.xml.namespace.QName;
  * can consist of schema derived interfaces and classes representing the binding
  * of schema type definitions, element declarations and model groups. Factory
  * methods for each of these are provided in this class.
+ * 
  */
 @XmlRegistry
 public class ObjectFactory {
 
+    private final static QName _FileUp_QNAME = new QName("http://inspur.com/",
+            "fileUp");
+    private final static QName _FileUpResponse_QNAME = new QName(
+            "http://inspur.com/", "fileUpResponse");
     private final static QName _GetChannelResponse_QNAME = new QName(
             "http://inspur.com/", "getChannelResponse");
     private final static QName _GetAllEquipCardByAmp_QNAME = new QName(
@@ -43,17 +48,10 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetAllEquipLinkResponse }
+     * Create an instance of {@link GetChannelResponse }
      */
-    public GetAllEquipLinkResponse createGetAllEquipLinkResponse() {
-        return new GetAllEquipLinkResponse();
-    }
-
-    /**
-     * Create an instance of {@link GetAllEquipLink }
-     */
-    public GetAllEquipLink createGetAllEquipLink() {
-        return new GetAllEquipLink();
+    public GetChannelResponse createGetChannelResponse() {
+        return new GetChannelResponse();
     }
 
     /**
@@ -64,10 +62,17 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetChannel }
+     * Create an instance of {@link GetAllEquipLink }
      */
-    public GetChannel createGetChannel() {
-        return new GetChannel();
+    public GetAllEquipLink createGetAllEquipLink() {
+        return new GetAllEquipLink();
+    }
+
+    /**
+     * Create an instance of {@link GetAllEquipCardByAmp }
+     */
+    public GetAllEquipCardByAmp createGetAllEquipCardByAmp() {
+        return new GetAllEquipCardByAmp();
     }
 
     /**
@@ -78,6 +83,13 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link FileUp }
+     */
+    public FileUp createFileUp() {
+        return new FileUp();
+    }
+
+    /**
      * Create an instance of {@link GetAllEquipResponse }
      */
     public GetAllEquipResponse createGetAllEquipResponse() {
@@ -85,17 +97,41 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetChannelResponse }
+     * Create an instance of {@link FileUpResponse }
      */
-    public GetChannelResponse createGetChannelResponse() {
-        return new GetChannelResponse();
+    public FileUpResponse createFileUpResponse() {
+        return new FileUpResponse();
     }
 
     /**
-     * Create an instance of {@link GetAllEquipCardByAmp }
+     * Create an instance of {@link GetChannel }
      */
-    public GetAllEquipCardByAmp createGetAllEquipCardByAmp() {
-        return new GetAllEquipCardByAmp();
+    public GetChannel createGetChannel() {
+        return new GetChannel();
+    }
+
+    /**
+     * Create an instance of {@link GetAllEquipLinkResponse }
+     */
+    public GetAllEquipLinkResponse createGetAllEquipLinkResponse() {
+        return new GetAllEquipLinkResponse();
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link FileUp }{@code >}}
+     */
+    @XmlElementDecl(namespace = "http://inspur.com/", name = "fileUp")
+    public JAXBElement<FileUp> createFileUp(FileUp value) {
+        return new JAXBElement<FileUp>(_FileUp_QNAME, FileUp.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link FileUpResponse }{@code >}}
+     */
+    @XmlElementDecl(namespace = "http://inspur.com/", name = "fileUpResponse")
+    public JAXBElement<FileUpResponse> createFileUpResponse(FileUpResponse value) {
+        return new JAXBElement<FileUpResponse>(_FileUpResponse_QNAME,
+                FileUpResponse.class, null, value);
     }
 
     /**

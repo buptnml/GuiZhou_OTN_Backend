@@ -85,7 +85,7 @@ class OSNRResultsCalculator implements OSNRResultsCalculable {
                     sigmaP_Ase = sigmaP_Ase_last;
                     P = P_last;
                 }
-                P_Asei = toMw(outputPowers[i][j] - inputPowers[i][j] - 54);
+                P_Asei = toMw(outputPowers[i][j] - inputPowers[i][j] - 44);
                 alpha = (toMw(outputPowers[i][j]) - P_Asei) / toMw(inputPowers[i][j]);
                 sigmaP_Ase_last = sigmaP_Ase * alpha + P_Asei;
                 P_last = P * alpha;
