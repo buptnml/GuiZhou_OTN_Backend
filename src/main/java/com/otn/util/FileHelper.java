@@ -136,6 +136,23 @@ public class FileHelper {
         return fileName;
     }
 
+    public static boolean deleteFile(String fileName) {
+        File file = new File(fileName);
+        // 如果文件路径所对应的文件存在，并且是一个文件，则直接删除
+        if (file.exists() && file.isFile()) {
+            if (file.delete()) {
+                LOGGER.info("delete file--" + fileName + "--success!");
+                return true;
+            } else {
+                LOGGER.warn("delete file--" + fileName + "fail!");
+                return false;
+            }
+        } else {
+            LOGGER.warn("delete file fail--" + fileName + "--not found!");
+            return false;
+        }
+    }
+
     private static String getFilePath(String url, String filePath) {
         String[] strArr = url.split("/");
         String fileName = strArr[strArr.length - 1];

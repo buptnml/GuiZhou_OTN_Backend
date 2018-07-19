@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.io.File;
 
 
 @RestController
@@ -17,7 +18,6 @@ import javax.annotation.Resource;
 public class UtilController {
     @Resource
     private WebServiceFactory webServiceFactory;
-
 
     @ApiOperation(value = "增加", notes = "添加新链路类型")
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
@@ -32,7 +32,8 @@ public class UtilController {
         }
         String response = webServiceFactory.uploadFile(FileHelper.createXMLStreamForUpload(uploadFileInfo
                 .getFileName(), uploadFileInfo.getFileType(), data));
+
+        FileHelper.deleteFile(path);
         return response != null;
     }
-
 }
