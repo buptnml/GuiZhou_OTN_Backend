@@ -46,6 +46,7 @@ public class WrappedXml { // 泛化, 聚合
         return linkDataList;
     }
 
+
     public void setlinkDataList(List<RawLinkData> linkDataList) {
         this.linkDataList = linkDataList;
     }

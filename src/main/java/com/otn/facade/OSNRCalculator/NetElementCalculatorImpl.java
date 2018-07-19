@@ -16,6 +16,7 @@ class NetElementCalculatorImpl implements NetElementCalculator {
     private long versionId;
     private double[] inputPowers;
     private double[] outputPowers;
+    private boolean OLA_MARK;
     @Resource
     private NetElementService netElementService;
     @Resource
@@ -41,6 +42,11 @@ class NetElementCalculatorImpl implements NetElementCalculator {
     @Override
     public void calculate(String netElementName, long versionId, double firstInput) throws IllegalArgumentException {
         init(netElementName, versionId, firstInput);
+        if (OLA_MARK) {
+            this.inputPowers = new double[]{this.inputPowers[0]};
+            this.outputPowers = new double[]{this.inputPowers[0]};
+            return;
+        }
         for (int i = 0; i < this.disks.size() - 1; i++) {
             diskCalculator.calculate(this.disks.get(i), this.inputPowers[i], this.versionId);
             setPowers(i);
@@ -57,6 +63,7 @@ class NetElementCalculatorImpl implements NetElementCalculator {
         if (null == netElementService.getNetElement(versionId, netElementName)) {
             throw new NetElementNotFoundException(netElementName);
         }
+        OLA_MARK = netElementService.getNetElement(versionId, netElementName).getNetElementType().contains("OLA");
         this.disks = diskService.listDiskByNetElement(versionId, netElementService.getNetElement(versionId, netElementName)
                 .getNetElementId());
         if (disks.size() == 0) {

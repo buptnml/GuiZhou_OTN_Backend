@@ -5,7 +5,6 @@ import com.otn.controller.util.InputCheckException;
 import com.otn.pojo.MaintenanceRecordDTO;
 import com.otn.pojo.MaintenanceRecordQuery;
 import com.otn.service.ResMaintenanceRecordService;
-import com.otn.util.exception.controller.result.NoneRemoveException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
@@ -48,16 +47,16 @@ public class MaintenanceRecordController {
         return maintenanceRecordService.updateRecord(maintenanceRecordId);
     }
 
-    /**
-     * 批量删除, 根据maintenanceRecordId
-     *
-     * @param maintenanceRecordIds
-     */
-    @ApiOperation(value = "删除", notes = "批量删除,根据maintenanceRecordId")
-    @RequestMapping(value = "/", method = RequestMethod.DELETE)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteByLinkTypeId( @RequestBody List<Long> maintenanceRecordIds) {
-        if (!maintenanceRecordService.deleteByMaintenanceRecordId(maintenanceRecordIds))
-            throw new NoneRemoveException();
-    }
+//    /**
+//     * 批量删除, 根据maintenanceRecordId
+//     *
+//     * @param maintenanceRecordIds
+//     */
+//    @ApiOperation(value = "删除", notes = "批量删除,根据maintenanceRecordId")
+//    @RequestMapping(value = "/{versionId}", method = RequestMethod.DELETE)
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
+//    public void deleteByLinkTypeId( @RequestBody List<Long> maintenanceRecordIds) {
+//        if (!maintenanceRecordService.deleteByMaintenanceRecordId(maintenanceRecordIds))
+//            throw new NoneRemoveException();
+//    }
 }

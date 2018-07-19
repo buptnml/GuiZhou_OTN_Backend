@@ -64,6 +64,8 @@ class UserRoleServiceImpl implements UserRoleService {
 
     @Override
     public List<UserRoleDTO> listUserRole(String roleName) {
+        List roleList = sysRoleDao.selectByExample(getExample(roleName));
+        if (roleList.size() == 0) throw new IllegalArgumentException("输入的用户角色不合法");
         SysRole yourRole = sysRoleDao.selectByExample(getExample(roleName)).get(0);
         List<UserRoleDTO> resultList = sysRoleDao.selectAll().stream().filter(role -> role.getRoleId() >= yourRole.getRoleId()).map
                 (this::DOtoDTO).collect(Collectors.toList());

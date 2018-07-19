@@ -113,7 +113,7 @@ public class MaintenanceRecordDTO {
     }
 
     public String getIsDone() {
-        return isDone.equals("0") ? "已检修" : "未检修";
+        return isDone.equals("0") ? "未检修":"已检修" ;
     }
 
     public void setIsDone(String isDone) {
