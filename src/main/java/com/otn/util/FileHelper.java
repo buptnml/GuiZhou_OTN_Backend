@@ -1,11 +1,19 @@
 package com.otn.util;
 
+import com.otn.pojo.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import sun.misc.BASE64Encoder;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -37,50 +45,33 @@ public class FileHelper {
     }
 
 
-    public static String createXMLStreamForUpload(String fileName, String fileType, String data) {
-        String xmlString = "";
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+
+
+    public static String convertToXml(Object obj) {
+        // 创建输出流
+        StringWriter sw = new StringWriter();
         try {
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document document = builder.newDocument();
-            document.setXmlStandalone(true);
+            // 利用jdk中自带的转换类实现
+            JAXBContext context = JAXBContext.newInstance(obj.getClass());
 
-            Element root = document.createElement("data");
-            document.appendChild(root);
-
-            Element childFile = document.createElement("file");
-            root.appendChild(childFile);
-
-
-            Element file_name = document.createElement("file_name");
-            file_name.setTextContent(fileName);
-
-            Element file_type = document.createElement("file_type");
-            file_type.setTextContent(fileType);
-
-            Element file_steam = document.createElement("file_steam");
-            file_steam.setTextContent(data);
-
-
-            childFile.appendChild(file_name);
-            childFile.appendChild(file_type);
-            childFile.appendChild(file_steam);
-
-            TransformerFactory transFactory = TransformerFactory.newInstance();
-            Transformer transformer = transFactory.newTransformer();
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            DOMSource domSource = new DOMSource(document);
-
-            // xml transform String
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            transformer.transform(domSource, new StreamResult(bos));
-            xmlString = bos.toString("utf-8");
-            LOGGER.warn(xmlString.toString());
-        } catch (Exception e) {
-            LOGGER.warn(e.getMessage());
+            Marshaller marshaller = context.createMarshaller();
+            // 格式化xml输出的格式
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
+                    Boolean.TRUE);
+            // 将对象转换成输出流形式的xml
+            marshaller.marshal(obj, sw);
+        } catch (JAXBException e) {
+            e.printStackTrace();
         }
-        return xmlString;
+        LOGGER.info(sw.toString());
+        return sw.toString();
     }
+
+    public static String createXMLStreamForUpload(String fileName, String fileType, String data) {
+        return FileHelper.convertToXml(new Data(fileName,"检修",data));
+    }
+
 
     public static String saveUrlAs(String url) {
         String filePath = System.getProperty("catalina.home") + "\\csvURL\\";

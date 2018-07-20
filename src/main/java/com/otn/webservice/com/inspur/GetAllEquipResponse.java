@@ -1,4 +1,4 @@
-package com.otn.webservice.com.inspur;
+package com.inspur;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -24,32 +24,35 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent&gt;
  * &lt;/complexType&gt;
  * </pre>
- *
+ * 
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "getAllEquipResponse", propOrder = {"_return"})
+@XmlType(name = "getAllEquipResponse", propOrder = { "_return" })
 public class GetAllEquipResponse {
 
-    @XmlElement(name = "return")
-    protected String _return;
+	@XmlElement(name = "return")
+	protected String _return;
 
-    /**
-     * Gets the value of the return property.
-     *
-     * @return possible object is {@link String }
-     */
-    public String getReturn() {
-        return _return;
-    }
+	/**
+	 * Gets the value of the return property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getReturn() {
+		return _return;
+	}
 
-    /**
-     * Sets the value of the return property.
-     *
-     * @param value allowed object is {@link String }
-     */
-    public void setReturn(String value) {
-        this._return = value;
-    }
+	/**
+	 * Sets the value of the return property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setReturn(String value) {
+		this._return = value;
+	}
 
 }
