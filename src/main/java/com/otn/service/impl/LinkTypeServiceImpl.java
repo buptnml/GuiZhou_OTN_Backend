@@ -84,8 +84,19 @@ class LinkTypeServiceImpl implements LinkTypeService {
     }
 
     @Override
+    public double calculateLoss(long versionId, String linkType, long length) {
+        double loss = 0;
+        LinkTypeDTO linkTypeDTO = getLinkType(versionId, linkType);
+        if (linkTypeDTO != null) {
+            loss = length * linkTypeDTO.getLinkLoss();
+        }
+        return loss;
+    }
+
+    @Override
     public LinkTypeDTO getLinkType(Long versionId, String linkType) {
-        return linkTypeDaoToDto(resOsnrLinkTypeDao.selectByExample(getExample(versionId, linkType)).get(0));
+        List<ResOnsrLinkType> list=resOsnrLinkTypeDao.selectByExample(getExample(versionId, linkType));
+        return linkTypeDaoToDto(list.get(0));
     }
 
     @Override
