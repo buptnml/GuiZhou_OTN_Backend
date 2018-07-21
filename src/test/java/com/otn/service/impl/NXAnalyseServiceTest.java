@@ -26,7 +26,7 @@ public class NXAnalyseServiceTest {
     public void equipAnaTest() {
 
         List<NXAnalyseItemDTO> list =
-                nxAnalyseService.analyseEquip(100000000000L, 1);
+                nxAnalyseService.analyseEquip(100000000000L, 1,"");
         NXAnalyseItemDTO nxAna = list.get(1);
         System.out.println("------------------------------" + list.size() + nxAna.getItemName() + "---");
     }

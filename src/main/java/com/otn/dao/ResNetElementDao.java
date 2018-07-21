@@ -5,6 +5,7 @@ import com.otn.entity.ResNetElement;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 
+
 /**
  * 网元
  */

@@ -7,14 +7,14 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>
- * Java class for getChannelResponse complex type.
+ * Java class for fileUpResponse complex type.
  * 
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
  * 
  * <pre>
- * &lt;complexType name=&quot;getChannelResponse&quot;&gt;
+ * &lt;complexType name=&quot;fileUpResponse&quot;&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base=&quot;{http://www.w3.org/2001/XMLSchema}anyType&quot;&gt;
  *       &lt;sequence&gt;
@@ -28,8 +28,8 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "getChannelResponse", propOrder = { "_return" })
-public class GetChannelResponse {
+@XmlType(name = "fileUpResponse", propOrder = { "_return" })
+public class FileUpResponse {
 
 	@XmlElement(name = "return")
 	protected String _return;

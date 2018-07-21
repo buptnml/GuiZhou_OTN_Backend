@@ -6,7 +6,7 @@
       WARNING - @mbg.generated
     -->
     <id column="net_element_id" jdbcType="BIGINT" property="netElementId" />
-      <result column="circle_id" jdbcType="CHAR" property="circleId"/>
+    <result column="circle_id" jdbcType="CHAR" property="circleId" />
     <result column="net_element_name" jdbcType="VARCHAR" property="netElementName" />
     <result column="net_element_type" jdbcType="VARCHAR" property="netElementType" />
     <result column="coordinate_x" jdbcType="REAL" property="coordinateX" />
@@ -19,7 +19,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-      net_element_id, circle_id, net_element_name, net_element_type, coordinate_x, coordinate_y,
-      version_id, gmt_create, gmt_modified
+    net_element_id, circle_id, net_element_name, net_element_type, coordinate_x, coordinate_y, 
+    version_id, gmt_create, gmt_modified
   </sql>
 </mapper>

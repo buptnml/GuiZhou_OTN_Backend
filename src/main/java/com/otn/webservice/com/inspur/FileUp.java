@@ -2,23 +2,22 @@ package com.inspur;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>
- * Java class for getChannelResponse complex type.
+ * Java class for fileUp complex type.
  * 
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
  * 
  * <pre>
- * &lt;complexType name=&quot;getChannelResponse&quot;&gt;
+ * &lt;complexType name=&quot;fileUp&quot;&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base=&quot;{http://www.w3.org/2001/XMLSchema}anyType&quot;&gt;
  *       &lt;sequence&gt;
- *         &lt;element name=&quot;return&quot; type=&quot;{http://www.w3.org/2001/XMLSchema}string&quot; minOccurs=&quot;0&quot;/&gt;
+ *         &lt;element name=&quot;arg0&quot; type=&quot;{http://www.w3.org/2001/XMLSchema}string&quot; minOccurs=&quot;0&quot;/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -28,31 +27,30 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "getChannelResponse", propOrder = { "_return" })
-public class GetChannelResponse {
+@XmlType(name = "fileUp", propOrder = { "arg0" })
+public class FileUp {
 
-	@XmlElement(name = "return")
-	protected String _return;
+	protected String arg0;
 
 	/**
-	 * Gets the value of the return property.
+	 * Gets the value of the arg0 property.
 	 * 
 	 * @return possible object is {@link String }
 	 * 
 	 */
-	public String getReturn() {
-		return _return;
+	public String getArg0() {
+		return arg0;
 	}
 
 	/**
-	 * Sets the value of the return property.
+	 * Sets the value of the arg0 property.
 	 * 
 	 * @param value
 	 *            allowed object is {@link String }
 	 * 
 	 */
-	public void setReturn(String value) {
-		this._return = value;
+	public void setArg0(String value) {
+		this.arg0 = value;
 	}
 
 }
