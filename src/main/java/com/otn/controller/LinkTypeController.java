@@ -86,7 +86,6 @@ public class LinkTypeController {
     @ApiOperation(value = "查询", notes = "计算链路损耗")
     @RequestMapping(value = "/{versionId}/{linkType}/{length}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    @VersionCheckException(reason = "获取信息的时候不需要进行版本检查")
     public Loss calculateLoss(@PathVariable Long versionId, @PathVariable("linkType") String linkType, @PathVariable Long length) {
         return new Loss(linkTypeService.calculateLoss(versionId, linkType,length));
     }
