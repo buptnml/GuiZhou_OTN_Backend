@@ -77,5 +77,31 @@ public class LinkTypeController {
         return linkTypeService.listLinkTypes(versionId);
     }
 
+    /**
+     * 获取所有链路信息
+     *
+     * @param versionId
+     * @return
+     */
+    @ApiOperation(value = "查询", notes = "计算链路损耗")
+    @RequestMapping(value = "/{versionId}/{linkType}/{length}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public Loss calculateLoss(@PathVariable Long versionId, @PathVariable("linkType") String linkType, @PathVariable Long length) {
+        return new Loss(linkTypeService.calculateLoss(versionId, linkType,length));
+    }
+    private class Loss {
+        double loss;
 
+        public double getLoss() {
+            return loss;
+        }
+
+        public void setLoss(double loss) {
+            this.loss = loss;
+        }
+
+        public Loss(double loss) {
+            this.loss = loss;
+        }
+    }
 }

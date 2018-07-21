@@ -48,6 +48,15 @@ public interface LinkTypeService {
     List<LinkTypeDTO> listLinkTypes(Long versionId);
 
     /**
+     * 功能描述: 计算链路损耗
+     * @param: [versionId, linkType, length]
+     * @return: long
+     * @auther: 李景然
+     * @date: 2018/7/21 9:53
+     */
+    double calculateLoss(long versionId,String linkType,long length);
+
+    /**
      * 获取指定链路类型的具体信息
      *
      * @param versionId
