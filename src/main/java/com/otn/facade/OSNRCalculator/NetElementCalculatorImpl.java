@@ -42,11 +42,11 @@ class NetElementCalculatorImpl implements NetElementCalculator {
     @Override
     public void calculate(String netElementName, long versionId, double firstInput) throws IllegalArgumentException {
         init(netElementName, versionId, firstInput);
-        if (OLA_MARK) {
-            this.inputPowers = new double[]{this.inputPowers[0]};
-            this.outputPowers = new double[]{this.inputPowers[0]};
-            return;
-        }
+//        if (OLA_MARK) {
+//            this.inputPowers = new double[]{this.inputPowers[0]};
+//            this.outputPowers = new double[]{this.inputPowers[0]};
+//            return;
+//        }
         for (int i = 0; i < this.disks.size() - 1; i++) {
             diskCalculator.calculate(this.disks.get(i), this.inputPowers[i], this.versionId);
             setPowers(i);
