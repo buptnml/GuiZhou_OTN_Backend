@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -86,14 +87,16 @@ public class LinkTypeController {
     @ApiOperation(value = "查询", notes = "计算链路损耗")
     @RequestMapping(value = "/{versionId}/{linkType}/{length}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
+    @VersionCheckException
     public Loss calculateLoss(@PathVariable Long versionId, @PathVariable("linkType") String linkType, @PathVariable Long length) {
         return new Loss(linkTypeService.calculateLoss(versionId, linkType,length));
     }
     private class Loss {
+        private DecimalFormat df = new DecimalFormat("0.00");
         double loss;
 
         public double getLoss() {
-            return loss;
+            return Double.parseDouble(df.format(loss));
         }
 
         public void setLoss(double loss) {
