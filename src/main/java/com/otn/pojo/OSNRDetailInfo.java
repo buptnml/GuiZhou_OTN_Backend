@@ -10,6 +10,15 @@ public class OSNRDetailInfo {
     private String startNetElementName;
     private String endNetElementName;
     private String result;
+    private String advice = "";
+
+    public String getAdvice() {
+        return advice;
+    }
+
+    public void setAdvice(String advice) {
+        this.advice = advice;
+    }
 
     public OSNRDetailInfo(ResBussiness bus, Boolean isMain, String startNetElementName, OSNRResult osnrResult) {
         DecimalFormat df = new DecimalFormat("0.0000");
