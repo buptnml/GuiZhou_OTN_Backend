@@ -8,6 +8,15 @@ package com.otn.pojo;
 final public class OSNRResult {
     private final String netElementName;
     private final Double result;
+    private String advice;
+
+    public String getAdvice() {
+        return advice;
+    }
+
+    public void setAdvice(String advice) {
+        this.advice = advice;
+    }
 
     public OSNRResult(String netElementName, Double result) {
         this.netElementName = netElementName;

@@ -147,7 +147,23 @@ class OSNRServiceImpl implements OSNRService {
                 }
             }
         }
-        return results;
+        return adviceHandler(results);
+    }
+
+    private List<OSNRDetailInfo> adviceHandler(List<OSNRDetailInfo> calculatorResult) {
+        String advice = null;
+        List<OSNRDetailInfo> res = new LinkedList<>();
+        for (int i = 0; i < calculatorResult.size(); i++) {
+            OSNRDetailInfo tmp = calculatorResult.get(i);
+            if (tmp.getResult().contains("能支持的最小功率") || tmp.getResult().contains("放大器的输入范围")) {
+                if (i == 0) advice = "请提高输入功率";
+                else advice = "缩小" + tmp.getEndNetElementName() + "和" + calculatorResult.get(i - 1)
+                        .getEndNetElementName() + "之间的链路长度或者在两者之间增加光放大器\n";
+            }
+            if (null != advice) tmp.setAdvice(advice);
+            res.add(tmp);
+        }
+        return res;
     }
 
     private String getErrorMessage(Long versionId, String nodeName1, String nodeName2) {

@@ -88,7 +88,8 @@ public class LinkTypeController {
     @RequestMapping(value = "/{versionId}/{linkType}/{length}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     @VersionCheckException
-    public Loss calculateLoss(@PathVariable Long versionId, @PathVariable("linkType") String linkType, @PathVariable Long length) {
+    public Loss calculateLoss(@PathVariable Long versionId, @PathVariable("linkType") String linkType, @PathVariable
+            Double length) {
         return new Loss(linkTypeService.calculateLoss(versionId, linkType,length));
     }
     private class Loss {

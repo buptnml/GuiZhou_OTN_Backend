@@ -54,7 +54,7 @@ public interface LinkTypeService {
      * @auther: 李景然
      * @date: 2018/7/21 9:53
      */
-    double calculateLoss(long versionId,String linkType,long length);
+    double calculateLoss(long versionId, String linkType, double length);
 
     /**
      * 获取指定链路类型的具体信息
