@@ -1,7 +1,6 @@
 package com.otn.webservice;
 
 import com.otn.entity.*;
-import com.otn.service.LinkTypeService;
 import com.otn.webservice.com.Strategy;
 import com.otn.webservice.com.StrategyLocal;
 import com.otn.webservice.com.StrategyRemote;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,9 +20,6 @@ import java.util.stream.Collectors;
 public class WebServiceFactory {
     private WebServiceConfigInfo CONFIG;
     private Strategy strategy;
-
-    @Resource
-    LinkTypeService linkTypeService;
 
     @Autowired
     public WebServiceFactory(WebServiceConfigInfo config) {
@@ -115,9 +110,10 @@ public class WebServiceFactory {
                 if (res.getEndAId().equals(netElement.getNetElementId())) res.setCircleId
                         (netElement.getCircleId());
             });
+            if (res.getLinkLoss() == null) res.setLinkLoss(CONFIG.getDEFAULT_LINK_LOSS());
             if (res.getLinkLength() == null) res.setLinkLength(CONFIG.getDEFAULT_LINK_LENGTH());
-            if (res.getLinkLoss() == null) res.setLinkLoss((float) linkTypeService.calculateLoss(100000000373L, "OPGW",
-                    res.getLinkLength()));
+            if (res.getLinkLoss() == null) res.setLinkLoss((float) linkTypeService.calculateLoss(CONFIG.getBASIC_VERSION_ID()
+                    ,"OPGW",res.getLinkLength()));
             return res;
         }).collect(Collectors.toList());
     }
