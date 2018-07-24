@@ -84,7 +84,7 @@ class LinkTypeServiceImpl implements LinkTypeService {
     }
 
     @Override
-    public double calculateLoss(long versionId, String linkType, long length) {
+    public double calculateLoss(long versionId, String linkType, Float length) {
         double loss = 0;
         LinkTypeDTO linkTypeDTO = getLinkType(versionId, linkType);
         if (linkTypeDTO != null) {
