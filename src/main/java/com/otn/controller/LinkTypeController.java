@@ -89,7 +89,7 @@ public class LinkTypeController {
     @ResponseStatus(HttpStatus.OK)
     @VersionCheckException
     public Loss calculateLoss(@PathVariable Long versionId, @PathVariable("linkType") String linkType, @PathVariable Long length) {
-        return new Loss(linkTypeService.calculateLoss(versionId, linkType,length));
+        return new Loss(linkTypeService.calculateLoss(versionId, linkType,(float)length));
     }
     private class Loss {
         private DecimalFormat df = new DecimalFormat("0.00");
