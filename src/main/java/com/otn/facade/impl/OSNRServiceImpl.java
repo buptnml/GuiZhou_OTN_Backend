@@ -3,6 +3,7 @@ package com.otn.facade.impl;
 import com.otn.entity.ResBussiness;
 import com.otn.facade.BussinessService;
 import com.otn.facade.OSNRCalculator.Calculable;
+import com.otn.facade.OSNRCalculator.exceptions.OutOfInputLimitsException;
 import com.otn.facade.OSNRService;
 import com.otn.facade.util.BussinessPowerStringTransfer;
 import com.otn.pojo.*;
@@ -118,7 +119,7 @@ class OSNRServiceImpl implements OSNRService {
     }
 
     @Override
-    public synchronized void OSNRLegalCheck(Long versionId, OSNRLegalCheckRequest osnrLegalCheckRequest) {
+    public synchronized void OSNRLegalCheck(Long versionId, OSNRLegalCheckRequest osnrLegalCheckRequest) throws OutOfInputLimitsException {
         calculator.calculate(osnrLegalCheckRequest.getInputPower(), osnrLegalCheckRequest.getRouteString(), versionId);
     }
 

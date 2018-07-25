@@ -1,6 +1,8 @@
 package com.otn.facade.OSNRCalculator;
 
 
+import com.otn.facade.OSNRCalculator.exceptions.OutOfInputLimitsException;
+
 /**
  * 用来计算所有节点的输入输出功率接口
  * 标记性接口
@@ -13,7 +15,7 @@ interface InputsOutputsCalculable {
      * @param firstInput
      * @param versionId
      */
-    void calculate(String routeString, double firstInput, long versionId) throws IllegalArgumentException;
+    void calculate(String routeString, double firstInput, long versionId) throws IllegalArgumentException, OutOfInputLimitsException;
 
     /**
      * 用来返回所有节点输入功率计算结果的函数
