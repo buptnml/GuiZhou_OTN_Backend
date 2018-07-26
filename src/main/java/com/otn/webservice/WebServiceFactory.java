@@ -114,7 +114,6 @@ public class WebServiceFactory {
                 if (res.getEndAId().equals(netElement.getNetElementId())) res.setCircleId
                         (netElement.getCircleId());
             });
-            if (res.getLinkLoss() == null) res.setLinkLoss(CONFIG.getDEFAULT_LINK_LOSS());
             if (res.getLinkLength() == null) res.setLinkLength(CONFIG.getDEFAULT_LINK_LENGTH());
             if (res.getLinkLoss() == null) res.setLinkLoss((float) linkTypeService.calculateLoss(CONFIG.getBASIC_VERSION_ID()
                     ,"OPGW",res.getLinkLength()));

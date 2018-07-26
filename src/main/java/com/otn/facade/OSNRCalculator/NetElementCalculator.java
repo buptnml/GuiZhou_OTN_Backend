@@ -1,5 +1,7 @@
 package com.otn.facade.OSNRCalculator;
 
+import com.otn.facade.OSNRCalculator.exceptions.OutOfInputLimitsException;
+
 /**
  * 计算网元中输入和输出功率的接口
  * 网元的职责是做一层封装，对上面的算法来说，只要知道网元的粒度就可以
@@ -14,7 +16,7 @@ interface NetElementCalculator {
      * @param versionId
      * @param firstInput
      */
-    void calculate(String netElementName, long versionId, double firstInput) throws IllegalArgumentException;
+    void calculate(String netElementName, long versionId, double firstInput) throws OutOfInputLimitsException;
 
     /**
      * 计算并获取网元的输入功率

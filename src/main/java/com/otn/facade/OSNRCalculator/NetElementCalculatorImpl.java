@@ -2,6 +2,7 @@ package com.otn.facade.OSNRCalculator;
 
 import com.otn.facade.OSNRCalculator.exceptions.DiskNotFoundException;
 import com.otn.facade.OSNRCalculator.exceptions.NetElementNotFoundException;
+import com.otn.facade.OSNRCalculator.exceptions.OutOfInputLimitsException;
 import com.otn.pojo.DiskDTO;
 import com.otn.service.DiskService;
 import com.otn.service.NetElementService;
@@ -40,7 +41,7 @@ class NetElementCalculatorImpl implements NetElementCalculator {
     }
 
     @Override
-    public void calculate(String netElementName, long versionId, double firstInput) throws IllegalArgumentException {
+    public void calculate(String netElementName, long versionId, double firstInput) throws OutOfInputLimitsException {
         init(netElementName, versionId, firstInput);
 //        if (OLA_MARK) {
 //            this.inputPowers = new double[]{this.inputPowers[0]};
@@ -55,6 +56,7 @@ class NetElementCalculatorImpl implements NetElementCalculator {
         }
         diskCalculator.calculate(this.disks.get(this.disks.size() - 1), this.inputPowers[this.disks.size() - 1],
                 this.versionId);
+
         setPowers(this.disks.size() - 1);
     }
 

@@ -2,6 +2,7 @@ package com.otn.controller;
 
 import com.otn.controller.util.InputCheckException;
 import com.otn.controller.util.VersionCheckException;
+import com.otn.facade.OSNRCalculator.exceptions.OutOfInputLimitsException;
 import com.otn.facade.OSNRService;
 import com.otn.pojo.*;
 import io.swagger.annotations.Api;
@@ -64,7 +65,7 @@ public class OSNRController {
     @RequestMapping(value = "/OSNRLegalCheck/{versionId}", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     @InputCheckException()
-    public OSNRLegalCheckRequest OSNRLegalCheck(@PathVariable Long versionId, @RequestBody OSNRLegalCheckRequest osnrLegalCheckRequest) {
+    public OSNRLegalCheckRequest OSNRLegalCheck(@PathVariable Long versionId, @RequestBody OSNRLegalCheckRequest osnrLegalCheckRequest) throws OutOfInputLimitsException {
         if (osnrLegalCheckRequest.getRouteString().equals("")) return osnrLegalCheckRequest;
         osnrService.OSNRLegalCheck(versionId, osnrLegalCheckRequest);
         return osnrLegalCheckRequest;
