@@ -210,6 +210,7 @@ class BussinessServiceImpl implements BussinessService {
     //辅助类：主要用来承载OSNR计算的一些相关辅助函数，帮助光通道计算OSNR条件
     private class UpdateUtils {
         //根据所给的信息，计算出该条光通道所有节点的输入输出功率以及是否满足OSNR条件
+        //todo ONSR计算修改
         ResBussiness createBussiness(Long versionId, BussinessCreateInfo bussinessCreateInfo) {
             ResBussiness result = new ResBussiness();
             result.setVersionId(versionId);
@@ -268,6 +269,7 @@ class BussinessServiceImpl implements BussinessService {
         }
 
         //辅助createUpdateInfo计算OSNR结果
+        // todo ONSR计算修改
         private PowerResults calculateResult(double inputPower, String routeString, Long versionId) {
             try {
                 calculator.calculate(inputPower, routeString, versionId);

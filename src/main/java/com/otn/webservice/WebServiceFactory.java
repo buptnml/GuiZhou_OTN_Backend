@@ -20,10 +20,10 @@ import java.util.stream.Collectors;
 @Component
 @DependsOn("WebServiceConfigInfo")
 public class WebServiceFactory {
-    private WebServiceConfigInfo CONFIG;
-    private Strategy strategy;
     @Resource
     LinkTypeService linkTypeService;
+    private WebServiceConfigInfo CONFIG;
+    private Strategy strategy;
 
     @Autowired
     public WebServiceFactory(WebServiceConfigInfo config) {
@@ -46,7 +46,13 @@ public class WebServiceFactory {
                         rawData.setSpareOutputPowers(null);
                     }
                     return rawData;
-                }).map(rawData -> {
+                }).filter(rawData -> {
+            if (null == rawData.getMainRoute() || (rawData.getMainInputPowers().equals("") || rawData
+                    .getMainOutputPowers().equals("")))
+                return false;
+            return null == rawData.getSpareRoute() || (!rawData.getSpareInputPowers().equals("") && !rawData
+                    .getSpareOutputPowers().equals(""));
+        }).map(rawData -> {
             ResBussiness res = new ResBussiness();
             BeanUtils.copyProperties(rawData, res);
             res.setVersionId(CONFIG.getBASIC_VERSION_ID());
@@ -115,8 +121,9 @@ public class WebServiceFactory {
                         (netElement.getCircleId());
             });
             if (res.getLinkLength() == null) res.setLinkLength(CONFIG.getDEFAULT_LINK_LENGTH());
-            if (res.getLinkLoss() == null) res.setLinkLoss((float) linkTypeService.calculateLoss(CONFIG.getBASIC_VERSION_ID()
-                    ,"OPGW",res.getLinkLength()));
+            if (res.getLinkLoss() == null)
+                res.setLinkLoss((float) linkTypeService.calculateLoss(CONFIG.getBASIC_VERSION_ID()
+                        , "OPGW", res.getLinkLength()));
             return res;
         }).collect(Collectors.toList());
     }
