@@ -75,7 +75,7 @@ class OSNRCalculator extends AbstractCalculator {
 
     @Override
     protected void OSNRCalculate() throws OSNRResultOutOfLimitException {
-        results = osnrResultsCalculable.getResults(routeString, inputPowers, outputPowers);
+        results = osnrResultsCalculable.getResults(this.versionId, routeString, inputPowers, outputPowers);
         nodeResults = osnrResultsCalculable.getDetail();
     }
 

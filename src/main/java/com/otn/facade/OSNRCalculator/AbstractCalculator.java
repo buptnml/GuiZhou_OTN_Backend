@@ -18,7 +18,7 @@ abstract class AbstractCalculator implements Calculable {
      */
     @Override
     public synchronized final void calculate(double[][] inputPowers, double[][] outputPowers, String routeString, long
-            versionId) throws IllegalArgumentException, OutOfInputLimitsException {
+            versionId) throws OutOfInputLimitsException {
         init(inputPowers, outputPowers, routeString, versionId);
         if (!hasInputsOutputs()) {
             inputsOutputsCalculate();
@@ -27,7 +27,7 @@ abstract class AbstractCalculator implements Calculable {
     }
 
     @Override
-    public final void calculate(double inputPower, String routeString, long versionId) throws IllegalArgumentException, OutOfInputLimitsException {
+    public final void calculate(double inputPower, String routeString, long versionId) throws OutOfInputLimitsException {
         double[][] inputPowers = new double[1][1];
         inputPowers[0][0] = inputPower;
         calculate(inputPowers, null, routeString, versionId);
