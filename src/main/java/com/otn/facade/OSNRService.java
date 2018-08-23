@@ -1,6 +1,7 @@
 package com.otn.facade;
 
 
+import com.otn.facade.OSNRCalculator.exceptions.OutOfInputLimitsException;
 import com.otn.pojo.*;
 
 import java.util.List;
@@ -61,5 +62,5 @@ public interface OSNRService {
      * @param osnrLegalCheckRequest
      * @return
      */
-    void OSNRLegalCheck(Long versionId, OSNRLegalCheckRequest osnrLegalCheckRequest);
+    void OSNRLegalCheck(Long versionId, OSNRLegalCheckRequest osnrLegalCheckRequest) throws OutOfInputLimitsException;
 }

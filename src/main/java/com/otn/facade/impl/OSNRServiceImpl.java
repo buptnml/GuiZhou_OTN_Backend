@@ -3,6 +3,7 @@ package com.otn.facade.impl;
 import com.otn.entity.ResBussiness;
 import com.otn.facade.BussinessService;
 import com.otn.facade.OSNRCalculator.Calculable;
+import com.otn.facade.OSNRCalculator.exceptions.OutOfInputLimitsException;
 import com.otn.facade.OSNRService;
 import com.otn.facade.util.BussinessPowerStringTransfer;
 import com.otn.pojo.*;
@@ -15,6 +16,7 @@ import javax.annotation.Resource;
 import java.util.*;
 import java.util.stream.Collectors;
 
+//todo ONSR重构调整
 @Service("OSNRService")
 class OSNRServiceImpl implements OSNRService {
     @Resource
@@ -31,11 +33,24 @@ class OSNRServiceImpl implements OSNRService {
     @Override
     public List<BussinessDTO> listErrorBussiness(Long versionId) {
         return bussinessService.listBussiness(versionId).parallelStream().filter(bussinessDTO ->
-                (BussinessPowerStringTransfer.stringTransfer(getBussiness(versionId, bussinessDTO.getBussinessId())
-                        .getMainInputPowers()).length < bussinessDTO.getMainRoute().split("-").length)
-                        || ((null != bussinessDTO.getSpareRoute())
-                        && BussinessPowerStringTransfer.stringTransfer(getBussiness(versionId, bussinessDTO.getBussinessId()).getSpareInputPowers
-                        ()).length < bussinessDTO.getSpareRoute().split("-").length)
+                {
+                    if ((BussinessPowerStringTransfer.stringTransfer(getBussiness(versionId, bussinessDTO.getBussinessId())
+                            .getMainInputPowers()).length < bussinessDTO.getMainRoute().split("-").length)
+                            || ((null != bussinessDTO.getSpareRoute())
+                            && BussinessPowerStringTransfer.stringTransfer(getBussiness(versionId, bussinessDTO.getBussinessId()).getSpareInputPowers
+                            ()).length < bussinessDTO.getSpareRoute().split("-").length)) return true;
+                    List<OSNRDetailInfo> main = getOSNRResult(versionId, bussinessDTO.getBussinessId(), true);
+                    boolean mainMark = !main.get(main.size() - 1).getAdvice().equals("") || main.get(main.size() - 1).getResult()
+                            .contains("小于18dB");
+                    boolean spareMark = false;
+                    if (null != bussinessDTO.getSpareRoute()) {
+                        List<OSNRDetailInfo> back = getOSNRResult(versionId, bussinessDTO.getBussinessId(), false);
+                        spareMark = !back.get(back.size() - 1).getAdvice().equals("") || back.get(back.size() - 1).getResult()
+                                .contains("小于18dB");
+                    }
+                    boolean isError = (mainMark) || (spareMark);
+                    return isError;
+                }
         ).collect(Collectors.toList());
     }
 
@@ -91,7 +106,8 @@ class OSNRServiceImpl implements OSNRService {
     private String getRealRouteString(ResBussiness bus, boolean isMain, List<OSNRDetailInfo> details) {
         String[] nodes = isMain ? bus.getMainRoute().split("-") : bus.getSpareRoute().split("-");
         StringBuilder results = new StringBuilder("");
-        for (int i = 0; i < BussinessPowerStringTransfer.stringTransfer(isMain ? bus.getMainInputPowers() : bus.getSpareInputPowers()).length; i++) {
+        for (int i = 0; i < Math.min(BussinessPowerStringTransfer.stringTransfer(isMain ? bus.getMainInputPowers() : bus
+                .getSpareInputPowers()).length, nodes.length); i++) {
             if (!details.get(i).getResult().contains("小于18dB")) {
                 results.append(nodes[i]);
                 results.append("-");
@@ -118,7 +134,7 @@ class OSNRServiceImpl implements OSNRService {
     }
 
     @Override
-    public synchronized void OSNRLegalCheck(Long versionId, OSNRLegalCheckRequest osnrLegalCheckRequest) {
+    public synchronized void OSNRLegalCheck(Long versionId, OSNRLegalCheckRequest osnrLegalCheckRequest) throws OutOfInputLimitsException {
         calculator.calculate(osnrLegalCheckRequest.getInputPower(), osnrLegalCheckRequest.getRouteString(), versionId);
     }
 
@@ -147,7 +163,23 @@ class OSNRServiceImpl implements OSNRService {
                 }
             }
         }
-        return results;
+        return adviceHandler(results);
+    }
+
+    private List<OSNRDetailInfo> adviceHandler(List<OSNRDetailInfo> calculatorResult) {
+        String advice = null;
+        List<OSNRDetailInfo> res = new LinkedList<>();
+        for (int i = 0; i < calculatorResult.size(); i++) {
+            OSNRDetailInfo tmp = calculatorResult.get(i);
+            if (tmp.getResult().contains("能支持的最小功率") || tmp.getResult().contains("放大器的输入范围")) {
+                if (i == 0) advice = "请提高输入功率";
+                else advice = "缩小" + tmp.getEndNetElementName() + "和" + calculatorResult.get(i - 1)
+                        .getEndNetElementName() + "之间的链路长度或者在两者之间增加光放大器\n";
+            }
+            if (null != advice) tmp.setAdvice(advice);
+            res.add(tmp);
+        }
+        return res;
     }
 
     private String getErrorMessage(Long versionId, String nodeName1, String nodeName2) {

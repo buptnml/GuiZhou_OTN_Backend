@@ -1,6 +1,8 @@
 package com.otn.facade.OSNRCalculator;
 
 
+import com.otn.facade.OSNRCalculator.exceptions.OutOfInputLimitsException;
+import com.otn.service.NetElementService;
 import com.otn.util.exception.controller.input.IllegalArgumentException;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +16,9 @@ class InputsOutputsCalculator implements InputsOutputsCalculable {
     @Resource
     private
     NetElementCalculator netElementCalculator;
+    @Resource
+    private NetElementService netElementService;
+
     @Resource
     private LinkLossCalculator linkLossCalculator;
     private String[] nodes;
@@ -60,14 +65,25 @@ class InputsOutputsCalculator implements InputsOutputsCalculable {
         return count;
     }
 
-    public void calculate(String routeString, double firstInput, long versionId) throws IllegalArgumentException {
+    public void calculate(String routeString, double firstInput, long versionId) throws IllegalArgumentException, OutOfInputLimitsException {
         init(routeString, firstInput);
         for (int i = 0; i < nodes.length - 1; i++) {
-            netElementCalculator.calculate(nodes[i], versionId, this.firstInput);
+            try {
+                netElementCalculator.calculate(nodes[i], versionId, this.firstInput);
+            } catch (OutOfInputLimitsException e) {
+                if (i == 0) throw new OutOfInputLimitsException("输入功率过小!建议增大输入功率。");
+                else throw new OutOfInputLimitsException(e.getMessage()
+                        + "建议：缩小" + nodes[i - 1] + "和" + nodes[i] + "之间的链路长度或者在两者之间增加光放大器");
+            }
             setPowers(i);
             this.firstInput = this.lastOutput - linkLossCalculator.getLinkLoss(versionId, nodes[i], nodes[i + 1]);
         }
-        netElementCalculator.calculate(nodes[nodes.length - 1], versionId, this.firstInput);
+        try {
+            netElementCalculator.calculate(nodes[nodes.length - 1], versionId, this.firstInput);
+        } catch (OutOfInputLimitsException e) {
+            throw new OutOfInputLimitsException(e.getMessage() + "建议：缩小" + nodes[nodes.length -
+                    2] + "和" + nodes[nodes.length - 1] + "之间的链路长度或者在两者之间增加光放大器");
+        }
         setPowers(nodes.length - 1);
     }
 

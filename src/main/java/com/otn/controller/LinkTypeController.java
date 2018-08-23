@@ -29,6 +29,7 @@ public class LinkTypeController {
     @ApiOperation(value = "更新", notes = "修改链路类型")
     @RequestMapping(value = "/{versionId}/{linkTypeId}", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.OK)
+    @VersionCheckException
     public LinkTypeDTO updateByLinkTypeId(@PathVariable Long versionId, @PathVariable Long linkTypeId, @RequestBody
             LinkTypeCreateInfo linkTypeCreateInfo) {
         LinkTypeDTO result = linkTypeService.updateByLinkTypeId(versionId, linkTypeId, linkTypeCreateInfo);
@@ -46,6 +47,7 @@ public class LinkTypeController {
     @ApiOperation(value = "删除", notes = "批量删除,根据linkTypeId")
     @RequestMapping(value = "/{versionId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @VersionCheckException
     public void deleteByLinkTypeId(@PathVariable Long versionId, @RequestBody List<Long> linkTypeId) {
         if (!linkTypeService.deleteByLinkTypeId(versionId, linkTypeId))
             throw new NoneRemoveException();
@@ -89,7 +91,7 @@ public class LinkTypeController {
     @ResponseStatus(HttpStatus.OK)
     @VersionCheckException
     public Loss calculateLoss(@PathVariable Long versionId, @PathVariable("linkType") String linkType, @PathVariable Long length) {
-        return new Loss(linkTypeService.calculateLoss(versionId, linkType,length));
+        return new Loss(linkTypeService.calculateLoss(versionId, linkType,(float)length));
     }
     private class Loss {
         private DecimalFormat df = new DecimalFormat("0.00");

@@ -1,6 +1,7 @@
 package com.otn.controller.util;
 
 
+import com.otn.facade.OSNRCalculator.exceptions.OutOfInputLimitsException;
 import com.otn.util.exception.controller.input.ArgumentOutOfLimitsException;
 import com.otn.util.exception.controller.input.IllegalArgumentException;
 import com.otn.util.exception.controller.input.NullArgumentException;
@@ -120,6 +121,13 @@ public class ExceptionHandlerController {
     public String handleHttpMediaTypeNotSupportedException(HttpServletRequest request, Exception e) {
         logger.error("Request: " + request.getRequestURL() + " raised:", e);
         return "发送的body格式不正确，请检查Headers设置！";
+    }
+
+    @ExceptionHandler(OutOfInputLimitsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleOutOfInputLimitsException(HttpServletRequest request, Exception e) {
+        logger.error("Request: " + request.getRequestURL() + " raised:", e);
+        return e.getMessage();
     }
 
     @ExceptionHandler(Exception.class)
