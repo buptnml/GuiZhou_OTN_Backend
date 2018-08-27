@@ -27,6 +27,7 @@ public class OSNRDetailInfo {
         this.startNetElementName = startNetElementName;
         this.endNetElementName = osnrResult.getNetElementName();
         this.result = osnrResult.getResult() < 18 ? "OSNR值小于18dB" : df.format(osnrResult.getResult());
+        if (result.equals("OSNR值小于18dB")) setAdvice("调整" + endNetElementName + "的放大器");
     }
 
     public OSNRDetailInfo(ResBussiness bus, Boolean isMain, String startNetElementName, String endNetElementName
