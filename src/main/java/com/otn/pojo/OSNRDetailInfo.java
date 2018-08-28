@@ -26,7 +26,13 @@ public class OSNRDetailInfo {
         this.frequency = isMain ? bus.getMainFrequency() : bus.getSpareFrequency();
         this.startNetElementName = startNetElementName;
         this.endNetElementName = osnrResult.getNetElementName();
-        this.result = osnrResult.getResult() < 18 ? "OSNR值小于18dB" : df.format(osnrResult.getResult());
+        if(osnrResult.getResult() < 18 ){
+            this.result = "OSNR值小于18dB";
+            this.advice = "建议：增大"+bussinessName+"光通道的输入功率";
+        }
+        else{
+            this.result = df.format(osnrResult.getResult());
+        }
     }
 
     public OSNRDetailInfo(ResBussiness bus, Boolean isMain, String startNetElementName, String endNetElementName
