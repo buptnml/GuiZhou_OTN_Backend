@@ -28,7 +28,7 @@ public class RecordController {
     @ResponseStatus(HttpStatus.OK)
     @VersionCheckException(reason = "加入该注解的目的是为了协助输入参数检查")
     @InputCheckException
-    public List<RecordDTO> listResLink(
+    public List<RecordDTO> listRecord(
             @PathVariable Long versionId,
             @RequestParam(value = "target", required = false) String target,
             @RequestParam(value = "startTime", required = false) Date startTime,
@@ -42,7 +42,7 @@ public class RecordController {
     @ResponseStatus(HttpStatus.CREATED)
     @VersionCheckException(reason = "")
     @InputCheckException
-    public RecordDTO add(
+    public RecordDTO addRecord(
             @PathVariable Long versionId,
             @RequestBody RecordCreateQuery recordCreateQuery) {
         return recordService.addRecord(versionId, recordCreateQuery);
