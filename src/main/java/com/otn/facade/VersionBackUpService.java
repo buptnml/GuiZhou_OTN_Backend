@@ -24,6 +24,13 @@ public interface VersionBackUpService {
     void saveBackUp(Long versionId);
 
     /**
+     * 保存备份---只保存光通道信息
+     *
+     * @param versionId
+     */
+    void saveBackUpBussiness(Long versionId);
+
+    /**
      * 恢复某个版本的备份
      *
      * @param versionId
