@@ -39,7 +39,10 @@ class OSNRServiceImpl implements OSNRService {
 
     @Override
     public List<BussinessDTO> listErrorBussiness(Long versionId, String circleId) {
-        return listErrorBussiness(versionId).parallelStream().filter(bus -> bus.getCircleId().equals(circleId)).collect
+        return listErrorBussiness(versionId).parallelStream().filter(bus -> {
+            if (!circleId.equals("全网")) return bus.getCircleId().equals(circleId);
+            return true;
+        }).collect
                 (Collectors.toList());
     }
 
