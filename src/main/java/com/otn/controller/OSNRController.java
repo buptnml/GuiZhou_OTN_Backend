@@ -35,7 +35,12 @@ public class OSNRController {
     @RequestMapping(value = "/falseList/{versionId}/{circleId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public List<BussinessDTO> listErrorBussiness(@PathVariable Long versionId, @PathVariable String circleId) {
-        return osnrService.listErrorBussiness(versionId, circleId);
+        long start=System.currentTimeMillis();
+        System.out.println();
+        List<BussinessDTO> list= osnrService.listErrorBussiness(versionId, circleId);
+        long end=System.currentTimeMillis();
+        System.out.println("用时 ---"+(end-start));
+        return list;
     }
 
 
