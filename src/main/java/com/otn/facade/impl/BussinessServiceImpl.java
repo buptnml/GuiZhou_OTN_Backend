@@ -198,6 +198,7 @@ class BussinessServiceImpl implements BussinessService {
         }
         BussinessDTO bussinessInfo = new BussinessDTO();
         BeanUtils.copyProperties(bussiness, bussinessInfo);
+        bussinessInfo.setValid(bussiness.getIsValid());
         try {
             bussinessInfo.setInputPower(UPDATE_UTILS.findInputPower(bussiness.getMainInputPowers(), 0));
         } catch (Exception e) {
