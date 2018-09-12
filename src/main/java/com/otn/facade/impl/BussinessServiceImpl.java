@@ -238,6 +238,7 @@ class BussinessServiceImpl implements BussinessService {
         ResBussiness createUpdateInfo(Long versionId, Long bussinessId, BussinessCreateInfo bussinessCreateInfo, String
                 newString) {
             ResBussiness createdBus = new ResBussiness();
+            createdBus.setIsValid(true);
             ResBussiness oldBus = resBussinessDao.selectByExample(getExample(versionId, bussinessId)).get(0);
             BeanUtils.copyProperties(bussinessCreateInfo, createdBus);
             if (true) {
@@ -250,7 +251,7 @@ class BussinessServiceImpl implements BussinessService {
                         .getMainInputPowers(), index));
                 createdBus.setMainOutputPowers(buildNewPowerString(mainSubResults.getOutputPowerResult(), oldBus
                         .getMainOutputPowers(), index));
-
+                createdBus.setIsValid(mainSubResults.isvalid && createdBus.getIsValid());
                 //备用路由
                 if (null != bussinessCreateInfo.getSpareRoute()) {
                     index = findIndex(bussinessCreateInfo.getSpareRoute(), newString, oldBus, false);
@@ -261,6 +262,7 @@ class BussinessServiceImpl implements BussinessService {
                             oldBus.getSpareInputPowers(), index));
                     createdBus.setSpareOutputPowers(buildNewPowerString(mainSubResults.getOutputPowerResult()
                             , oldBus.getSpareOutputPowers(), index));
+                    createdBus.setIsValid(mainSubResults.isvalid && createdBus.getIsValid());
                 }
             }
             createdBus.setBussinessId(bussinessId);
@@ -354,6 +356,15 @@ class BussinessServiceImpl implements BussinessService {
         private class PowerResults {
             private final String inputPowerResult;
             private final String outputPowerResult;
+            private boolean isvalid = true;
+
+            public boolean isIsvalid() {
+                return isvalid;
+            }
+
+            public void setIsvalid(boolean isvalid) {
+                this.isvalid = isvalid;
+            }
 
             PowerResults(String inputPowerResult, String outputPowerResult) {
                 this.inputPowerResult = inputPowerResult;

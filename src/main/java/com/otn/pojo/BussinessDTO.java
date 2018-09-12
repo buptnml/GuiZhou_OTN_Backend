@@ -8,9 +8,17 @@ public class BussinessDTO {
     private String mainFrequency;
     private String spareRoute;
     private String spareFrequency;
+    private boolean isValid;
     private String circleId;
     private Double inputPower;
 
+    public boolean isValid() {
+        return isValid;
+    }
+
+    public void setValid(boolean valid) {
+        isValid = valid;
+    }
 
     public String getCircleId() {
         return circleId;

@@ -32,25 +32,8 @@ class OSNRServiceImpl implements OSNRService {
 
     @Override
     public List<BussinessDTO> listErrorBussiness(Long versionId) {
-        return bussinessService.listBussiness(versionId).parallelStream().filter(bussinessDTO ->
-                {
-                    if ((BussinessPowerStringTransfer.stringTransfer(getBussiness(versionId, bussinessDTO.getBussinessId())
-                            .getMainInputPowers()).length < bussinessDTO.getMainRoute().split("-").length)
-                            || ((null != bussinessDTO.getSpareRoute())
-                            && BussinessPowerStringTransfer.stringTransfer(getBussiness(versionId, bussinessDTO.getBussinessId()).getSpareInputPowers
-                            ()).length < bussinessDTO.getSpareRoute().split("-").length)) return true;
-                    List<OSNRDetailInfo> main = getOSNRResult(versionId, bussinessDTO.getBussinessId(), true);
-                    boolean mainMark = !main.get(main.size() - 1).getAdvice().equals("") || main.get(main.size() - 1).getResult()
-                            .contains("小于18dB");
-                    boolean spareMark = false;
-                    if (null != bussinessDTO.getSpareRoute()) {
-                        List<OSNRDetailInfo> back = getOSNRResult(versionId, bussinessDTO.getBussinessId(), false);
-                        spareMark = !back.get(back.size() - 1).getAdvice().equals("") || back.get(back.size() - 1).getResult()
-                                .contains("小于18dB");
-                    }
-                    boolean isError = (mainMark) || (spareMark);
-                    return isError;
-                }
+        return bussinessService.listBussiness(versionId).parallelStream().filter(
+                bussinessDTO -> !bussinessDTO.isValid()
         ).collect(Collectors.toList());
     }
 

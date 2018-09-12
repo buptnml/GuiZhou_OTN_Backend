@@ -4,7 +4,7 @@ public class BussinessPowerStringTransfer {
     /*考虑到设计简单的原则，输入输出功率是以字符串的形式存储在数据库的，这里需要转换
     */
     public static double[][] stringTransfer(String powerString) {
-        if (null == powerString || powerString.equals("[]")) {
+        if (null == powerString || powerString.equals("[]") || powerString.equals("")) {
             return new double[0][0];
         }
         if (powerString.contains("[")) {

@@ -1,51 +1,46 @@
 package com.otn.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.*;
 
 @Table(name = "res_record")
 public class ResRecord implements Serializable {
+    private static final long serialVersionUID = 1L;
     /**
      * 记录id
      */
     @Id
     @Column(name = "record_id")
     private Long recordId;
-
     /**
      * 检修对象id
      */
     private String target;
-
     @Column(name = "version_id")
     private Long versionId;
-
     /**
      * 创建时间
      */
     @Column(name = "gmt_create")
     private Date gmtCreate;
-
     /**
      * 最后修改时间
      */
     @Column(name = "gmt_modified")
     private Date gmtModified;
-
     /**
      * 中断业务
      */
     @Column(name = "interrupt_bus")
     private String interruptBus;
-
     /**
      * 受影响业务
      */
     @Column(name = "affect_bus")
     private String affectBus;
-
-    private static final long serialVersionUID = 1L;
 
     /**
      * 获取记录id
@@ -182,12 +177,12 @@ public class ResRecord implements Serializable {
         }
         ResRecord other = (ResRecord) that;
         return (this.getRecordId() == null ? other.getRecordId() == null : this.getRecordId().equals(other.getRecordId()))
-            && (this.getTarget() == null ? other.getTarget() == null : this.getTarget().equals(other.getTarget()))
-            && (this.getVersionId() == null ? other.getVersionId() == null : this.getVersionId().equals(other.getVersionId()))
-            && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
-            && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()))
-            && (this.getInterruptBus() == null ? other.getInterruptBus() == null : this.getInterruptBus().equals(other.getInterruptBus()))
-            && (this.getAffectBus() == null ? other.getAffectBus() == null : this.getAffectBus().equals(other.getAffectBus()));
+                && (this.getTarget() == null ? other.getTarget() == null : this.getTarget().equals(other.getTarget()))
+                && (this.getVersionId() == null ? other.getVersionId() == null : this.getVersionId().equals(other.getVersionId()))
+                && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
+                && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()))
+                && (this.getInterruptBus() == null ? other.getInterruptBus() == null : this.getInterruptBus().equals(other.getInterruptBus()))
+                && (this.getAffectBus() == null ? other.getAffectBus() == null : this.getAffectBus().equals(other.getAffectBus()));
     }
 
     @Override
