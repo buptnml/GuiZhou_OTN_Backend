@@ -80,6 +80,12 @@ public class ResBussiness implements Serializable {
     private String spareOutputPowers;
 
     /**
+     * 是否为有效光通道
+     */
+    @Column(name = "is_valid")
+    private Boolean isValid;
+
+    /**
      * 条目所在版本ID
      */
     @Column(name = "version_id")
@@ -316,6 +322,24 @@ public class ResBussiness implements Serializable {
     }
 
     /**
+     * 获取是否为有效光通道
+     *
+     * @return is_valid - 是否为有效光通道
+     */
+    public Boolean getIsValid() {
+        return isValid;
+    }
+
+    /**
+     * 设置是否为有效光通道
+     *
+     * @param isValid 是否为有效光通道
+     */
+    public void setIsValid(Boolean isValid) {
+        this.isValid = isValid;
+    }
+
+    /**
      * 获取条目所在版本ID
      *
      * @return version_id - 条目所在版本ID
@@ -393,6 +417,7 @@ public class ResBussiness implements Serializable {
             && (this.getSpareFrequency() == null ? other.getSpareFrequency() == null : this.getSpareFrequency().equals(other.getSpareFrequency()))
             && (this.getSpareInputPowers() == null ? other.getSpareInputPowers() == null : this.getSpareInputPowers().equals(other.getSpareInputPowers()))
             && (this.getSpareOutputPowers() == null ? other.getSpareOutputPowers() == null : this.getSpareOutputPowers().equals(other.getSpareOutputPowers()))
+            && (this.getIsValid() == null ? other.getIsValid() == null : this.getIsValid().equals(other.getIsValid()))
             && (this.getVersionId() == null ? other.getVersionId() == null : this.getVersionId().equals(other.getVersionId()))
             && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
             && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
@@ -414,6 +439,7 @@ public class ResBussiness implements Serializable {
         result = prime * result + ((getSpareFrequency() == null) ? 0 : getSpareFrequency().hashCode());
         result = prime * result + ((getSpareInputPowers() == null) ? 0 : getSpareInputPowers().hashCode());
         result = prime * result + ((getSpareOutputPowers() == null) ? 0 : getSpareOutputPowers().hashCode());
+        result = prime * result + ((getIsValid() == null) ? 0 : getIsValid().hashCode());
         result = prime * result + ((getVersionId() == null) ? 0 : getVersionId().hashCode());
         result = prime * result + ((getGmtCreate() == null) ? 0 : getGmtCreate().hashCode());
         result = prime * result + ((getGmtModified() == null) ? 0 : getGmtModified().hashCode());
@@ -438,6 +464,7 @@ public class ResBussiness implements Serializable {
         sb.append(", spareFrequency=").append(spareFrequency);
         sb.append(", spareInputPowers=").append(spareInputPowers);
         sb.append(", spareOutputPowers=").append(spareOutputPowers);
+        sb.append(", isValid=").append(isValid);
         sb.append(", versionId=").append(versionId);
         sb.append(", gmtCreate=").append(gmtCreate);
         sb.append(", gmtModified=").append(gmtModified);
