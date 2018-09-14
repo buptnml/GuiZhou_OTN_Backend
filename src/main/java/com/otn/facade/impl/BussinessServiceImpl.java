@@ -39,12 +39,8 @@ class BussinessServiceImpl implements BussinessService {
 
     @Override
     public List<BussinessDTO> listBussiness(Long versionId) {
-<<<<<<< HEAD
         List<BussinessDTO> result = resBussinessDao.selectByExample(getExample(versionId)).parallelStream().sorted(Comparator
                 .comparing(ResBussiness::getGmtModified).reversed()).map(this::busFilter).map(this::createBussinessDTO).collect(Collectors.toList());
-=======
-        List<BussinessDTO> result = resBussinessDao.selectByExample(getExample(versionId)).parallelStream().map(this::busFilter).map(this::createBussinessDTO).collect(Collectors.toList());
->>>>>>> 03df997... bussiness表中加入isValid字段后，修改同步数据 和 新增光通道 bug
         if (result.size() == 0) {
             throw new NoneGetException("没有查询到光通道相关记录！");
         }
