@@ -39,7 +39,8 @@ class BussinessServiceImpl implements BussinessService {
 
     @Override
     public List<BussinessDTO> listBussiness(Long versionId) {
-        List<BussinessDTO> result = resBussinessDao.selectByExample(getExample(versionId)).parallelStream().map(this::busFilter).map(this::createBussinessDTO).collect(Collectors.toList());
+        List<BussinessDTO> result = resBussinessDao.selectByExample(getExample(versionId)).parallelStream().sorted(Comparator
+                .comparing(ResBussiness::getGmtModified).reversed()).map(this::busFilter).map(this::createBussinessDTO).collect(Collectors.toList());
         if (result.size() == 0) {
             throw new NoneGetException("没有查询到光通道相关记录！");
         }
@@ -97,7 +98,7 @@ class BussinessServiceImpl implements BussinessService {
         ResBussiness insertInfo = UPDATE_UTILS.createBussiness(versionId, bussinessCreateInfo);
         insertInfo.setIsValid(true);
         if (resBussinessDao.insertSelective(insertInfo) > 0) {
-            BussinessDTO obj= createBussinessDTO(resBussinessDao.selectOne(insertInfo));
+            BussinessDTO obj = createBussinessDTO(resBussinessDao.selectOne(insertInfo));
             return obj;
         }
         throw new NoneSaveException();
