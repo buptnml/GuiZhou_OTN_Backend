@@ -1,6 +1,7 @@
 package com.otn.facade.OSNRCalculator;
 
 import com.otn.facade.OSNRCalculator.exceptions.OSNRResultOutOfLimitException;
+import com.otn.facade.OSNRCalculator.exceptions.OutOfInputLimitsException;
 import com.otn.pojo.OSNRNodesDetails;
 import com.otn.pojo.OSNRResult;
 import org.springframework.stereotype.Component;
@@ -63,7 +64,7 @@ class OSNRCalculator extends AbstractCalculator {
 
 
     @Override
-    protected void inputsOutputsCalculate() throws IllegalArgumentException {
+    protected void inputsOutputsCalculate() throws IllegalArgumentException, OutOfInputLimitsException {
         try {
             inputsOutputsCalculable.calculate(routeString, inputPowers[0][0], versionId);
         } finally {
@@ -74,7 +75,7 @@ class OSNRCalculator extends AbstractCalculator {
 
     @Override
     protected void OSNRCalculate() throws OSNRResultOutOfLimitException {
-        results = osnrResultsCalculable.getResults(routeString, inputPowers, outputPowers);
+        results = osnrResultsCalculable.getResults(this.versionId, routeString, inputPowers, outputPowers);
         nodeResults = osnrResultsCalculable.getDetail();
     }
 

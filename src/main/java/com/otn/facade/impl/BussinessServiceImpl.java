@@ -5,12 +5,14 @@ import com.otn.dao.ResBussinessDao;
 import com.otn.entity.ResBussiness;
 import com.otn.facade.BussinessService;
 import com.otn.facade.OSNRCalculator.Calculable;
+import com.otn.facade.OSNRCalculator.exceptions.OutOfInputLimitsException;
 import com.otn.facade.util.BussinessPowerStringTransfer;
 import com.otn.pojo.BussinessCreateInfo;
 import com.otn.pojo.BussinessDTO;
 import com.otn.util.exception.controller.result.NoneGetException;
 import com.otn.util.exception.controller.result.NoneRemoveException;
 import com.otn.util.exception.controller.result.NoneSaveException;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -37,18 +39,39 @@ class BussinessServiceImpl implements BussinessService {
 
     @Override
     public List<BussinessDTO> listBussiness(Long versionId) {
-        List<BussinessDTO> result = resBussinessDao.selectByExample(getExample(versionId)).stream().sorted(Comparator
-                .comparing(ResBussiness::getGmtModified).reversed()).map(this::createBussinessDTO).collect
-                (Collectors.toList());
+        List<BussinessDTO> result = resBussinessDao.selectByExample(getExample(versionId)).parallelStream().sorted(Comparator
+                .comparing(ResBussiness::getGmtModified).reversed()).map(this::busFilter).map(this::createBussinessDTO).collect(Collectors.toList());
         if (result.size() == 0) {
             throw new NoneGetException("没有查询到光通道相关记录！");
         }
         return result;
     }
 
+    private ResBussiness busFilter(ResBussiness bus) {
+        if (bus.getIsValid() == null) {
+            bus.setIsValid(true);
+            double[][] mainInputPowers = BussinessPowerStringTransfer.stringTransfer(bus.getMainInputPowers());
+            double[][] mainOutputPowers = BussinessPowerStringTransfer.stringTransfer(bus.getMainOutputPowers());
+            try {
+                calculator.calculate(mainInputPowers, mainOutputPowers, bus.getMainRoute(), bus.getVersionId());
+                if (bus.getSpareRoute() != null) {
+                    double[][] spareInputPower = BussinessPowerStringTransfer.stringTransfer(bus.getSpareInputPowers());
+                    double[][] spareOutputPower = BussinessPowerStringTransfer.stringTransfer(bus.getSpareOutputPowers());
+                    calculator.calculate(spareInputPower, spareOutputPower, bus.getSpareRoute(), bus.getVersionId());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                bus.setIsValid(false);
+            }
+            resBussinessDao.updateByPrimaryKey(bus);
+        }
+        return bus;
+    }
+
+
     @Override
-    public List<BussinessDTO> listBussiness(Long versionId,String circleId) {
-        List<BussinessDTO> result = resBussinessDao.selectByExample(getExample(versionId,circleId)).stream().sorted(Comparator
+    public List<BussinessDTO> listBussiness(Long versionId, String circleId) {
+        List<BussinessDTO> result = resBussinessDao.selectByExample(getExample(versionId, circleId)).stream().sorted(Comparator
                 .comparing(ResBussiness::getGmtModified).reversed()).map(this::createBussinessDTO).collect
                 (Collectors.toList());
         if (result.size() == 0) {
@@ -68,13 +91,15 @@ class BussinessServiceImpl implements BussinessService {
 
     @Override
     public BussinessDTO saveBussiness(Long versionId, BussinessCreateInfo bussinessCreateInfo) {
-        if (resBussinessDao.selectByExample(getExampleByBusName(versionId, bussinessCreateInfo.getBussinessName(),bussinessCreateInfo.getCircleId()))
+        if (resBussinessDao.selectByExample(getExampleByBusName(versionId, bussinessCreateInfo.getBussinessName(), bussinessCreateInfo.getCircleId()))
                 .size() != 0) {
             throw new DuplicateKeyException("光通道名称重复！");
         }
         ResBussiness insertInfo = UPDATE_UTILS.createBussiness(versionId, bussinessCreateInfo);
+        insertInfo.setIsValid(true);
         if (resBussinessDao.insertSelective(insertInfo) > 0) {
-            return createBussinessDTO(resBussinessDao.selectOne(insertInfo));
+            BussinessDTO obj= createBussinessDTO(resBussinessDao.selectOne(insertInfo));
+            return obj;
         }
         throw new NoneSaveException();
     }
@@ -123,6 +148,9 @@ class BussinessServiceImpl implements BussinessService {
 
     @Override
     public int batchInsert(final List<ResBussiness> batchList) throws InterruptedException {
+
+        // todo  检查batchList 如果isvalid为null 要通过osnr计算判断是否是有效光通道并将计算结果存入isvalid
+
         resBussinessDao.batchInsert(batchList);
         return batchList.size();
     }
@@ -167,7 +195,7 @@ class BussinessServiceImpl implements BussinessService {
         return example;
     }
 
-    private Example getExample(Long versionId,String circleId) {
+    private Example getExample(Long versionId, String circleId) {
         Example example = new Example(ResBussiness.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("versionId", versionId);
@@ -183,7 +211,7 @@ class BussinessServiceImpl implements BussinessService {
         return example;
     }
 
-    private Example getExampleByBusName(Long versionId, String busName,String circleId) {
+    private Example getExampleByBusName(Long versionId, String busName, String circleId) {
         Example example = new Example(ResBussiness.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("versionId", versionId);
@@ -198,6 +226,7 @@ class BussinessServiceImpl implements BussinessService {
         }
         BussinessDTO bussinessInfo = new BussinessDTO();
         BeanUtils.copyProperties(bussiness, bussinessInfo);
+        bussinessInfo.setValid(bussiness.getIsValid());
         try {
             bussinessInfo.setInputPower(UPDATE_UTILS.findInputPower(bussiness.getMainInputPowers(), 0));
         } catch (Exception e) {
@@ -210,6 +239,7 @@ class BussinessServiceImpl implements BussinessService {
     //辅助类：主要用来承载OSNR计算的一些相关辅助函数，帮助光通道计算OSNR条件
     private class UpdateUtils {
         //根据所给的信息，计算出该条光通道所有节点的输入输出功率以及是否满足OSNR条件
+        //todo ONSR计算修改
         ResBussiness createBussiness(Long versionId, BussinessCreateInfo bussinessCreateInfo) {
             ResBussiness result = new ResBussiness();
             result.setVersionId(versionId);
@@ -237,6 +267,7 @@ class BussinessServiceImpl implements BussinessService {
         ResBussiness createUpdateInfo(Long versionId, Long bussinessId, BussinessCreateInfo bussinessCreateInfo, String
                 newString) {
             ResBussiness createdBus = new ResBussiness();
+            createdBus.setIsValid(true);
             ResBussiness oldBus = resBussinessDao.selectByExample(getExample(versionId, bussinessId)).get(0);
             BeanUtils.copyProperties(bussinessCreateInfo, createdBus);
             if (true) {
@@ -249,7 +280,7 @@ class BussinessServiceImpl implements BussinessService {
                         .getMainInputPowers(), index));
                 createdBus.setMainOutputPowers(buildNewPowerString(mainSubResults.getOutputPowerResult(), oldBus
                         .getMainOutputPowers(), index));
-
+                createdBus.setIsValid(mainSubResults.isvalid && createdBus.getIsValid());
                 //备用路由
                 if (null != bussinessCreateInfo.getSpareRoute()) {
                     index = findIndex(bussinessCreateInfo.getSpareRoute(), newString, oldBus, false);
@@ -260,6 +291,7 @@ class BussinessServiceImpl implements BussinessService {
                             oldBus.getSpareInputPowers(), index));
                     createdBus.setSpareOutputPowers(buildNewPowerString(mainSubResults.getOutputPowerResult()
                             , oldBus.getSpareOutputPowers(), index));
+                    createdBus.setIsValid(mainSubResults.isvalid && createdBus.getIsValid());
                 }
             }
             createdBus.setBussinessId(bussinessId);
@@ -268,6 +300,7 @@ class BussinessServiceImpl implements BussinessService {
         }
 
         //辅助createUpdateInfo计算OSNR结果
+        // todo ONSR计算修改
         private PowerResults calculateResult(double inputPower, String routeString, Long versionId) {
             try {
                 calculator.calculate(inputPower, routeString, versionId);
@@ -352,6 +385,15 @@ class BussinessServiceImpl implements BussinessService {
         private class PowerResults {
             private final String inputPowerResult;
             private final String outputPowerResult;
+            private boolean isvalid = true;
+
+            public boolean isIsvalid() {
+                return isvalid;
+            }
+
+            public void setIsvalid(boolean isvalid) {
+                this.isvalid = isvalid;
+            }
 
             PowerResults(String inputPowerResult, String outputPowerResult) {
                 this.inputPowerResult = inputPowerResult;

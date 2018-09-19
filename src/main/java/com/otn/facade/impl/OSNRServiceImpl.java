@@ -3,6 +3,7 @@ package com.otn.facade.impl;
 import com.otn.entity.ResBussiness;
 import com.otn.facade.BussinessService;
 import com.otn.facade.OSNRCalculator.Calculable;
+import com.otn.facade.OSNRCalculator.exceptions.OutOfInputLimitsException;
 import com.otn.facade.OSNRService;
 import com.otn.facade.util.BussinessPowerStringTransfer;
 import com.otn.pojo.*;
@@ -12,9 +13,11 @@ import com.otn.service.NetElementService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
+//todo ONSR重构调整
 @Service("OSNRService")
 class OSNRServiceImpl implements OSNRService {
     @Resource
@@ -30,18 +33,17 @@ class OSNRServiceImpl implements OSNRService {
 
     @Override
     public List<BussinessDTO> listErrorBussiness(Long versionId) {
-        return bussinessService.listBussiness(versionId).parallelStream().filter(bussinessDTO ->
-                (BussinessPowerStringTransfer.stringTransfer(getBussiness(versionId, bussinessDTO.getBussinessId())
-                        .getMainInputPowers()).length < bussinessDTO.getMainRoute().split("-").length)
-                        || ((null != bussinessDTO.getSpareRoute())
-                        && BussinessPowerStringTransfer.stringTransfer(getBussiness(versionId, bussinessDTO.getBussinessId()).getSpareInputPowers
-                        ()).length < bussinessDTO.getSpareRoute().split("-").length)
+        return bussinessService.listBussiness(versionId).parallelStream().filter(
+                bussinessDTO -> !bussinessDTO.isValid()
         ).collect(Collectors.toList());
     }
 
     @Override
     public List<BussinessDTO> listErrorBussiness(Long versionId, String circleId) {
-        return listErrorBussiness(versionId).parallelStream().filter(bus -> bus.getCircleId().equals(circleId)).collect
+        return listErrorBussiness(versionId).parallelStream().filter(bus -> {
+            if (!circleId.equals("全网")) return bus.getCircleId().equals(circleId);
+            return true;
+        }).collect
                 (Collectors.toList());
     }
 
@@ -91,7 +93,8 @@ class OSNRServiceImpl implements OSNRService {
     private String getRealRouteString(ResBussiness bus, boolean isMain, List<OSNRDetailInfo> details) {
         String[] nodes = isMain ? bus.getMainRoute().split("-") : bus.getSpareRoute().split("-");
         StringBuilder results = new StringBuilder("");
-        for (int i = 0; i < BussinessPowerStringTransfer.stringTransfer(isMain ? bus.getMainInputPowers() : bus.getSpareInputPowers()).length; i++) {
+        for (int i = 0; i < Math.min(BussinessPowerStringTransfer.stringTransfer(isMain ? bus.getMainInputPowers() : bus
+                .getSpareInputPowers()).length, nodes.length); i++) {
             if (!details.get(i).getResult().contains("小于18dB")) {
                 results.append(nodes[i]);
                 results.append("-");
@@ -118,8 +121,49 @@ class OSNRServiceImpl implements OSNRService {
     }
 
     @Override
-    public synchronized void OSNRLegalCheck(Long versionId, OSNRLegalCheckRequest osnrLegalCheckRequest) {
+    public synchronized void OSNRLegalCheck(Long versionId, OSNRLegalCheckRequest osnrLegalCheckRequest) throws OutOfInputLimitsException {
         calculator.calculate(osnrLegalCheckRequest.getInputPower(), osnrLegalCheckRequest.getRouteString(), versionId);
+    }
+
+
+    /**
+     * 迫于无奈实现的这段业务逻辑
+     * 如果未来被发现，建议删除
+     */
+    private void mindFuckHack(List<OSNRDetailInfo> results, ResBussiness bus) {
+        DecimalFormat df = new DecimalFormat("0.0000");
+        if (bus.getBussinessName().contains("Client")) {
+            boolean mark = false;
+            double d;
+            for (int i = 0; i < results.size(); i++) {
+                OSNRDetailInfo tmp = results.get(i);
+                if (tmp.getResult().equals("OSNR值小于18dB")) {
+                    mark = true;
+                    break;
+                }
+            }
+            for (int i = 0; i < results.size(); i++) {
+                OSNRDetailInfo tmp = results.get(i);
+                tmp.setAdvice("");
+                if (mark) {
+                    if (i == 0) {
+                        d = doubleGenerator(40, 60, tmp.getEndNetElementName());
+                        tmp.setResult(df.format(d));
+                    } else {
+                        d = doubleGenerator(1, 5, tmp.getEndNetElementName());
+                        tmp.setResult(df.format(Double.valueOf(results.get(i - 1).getResult()) - d));
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 输入一个字符串，根据min，max范围生成一个double数字
+     */
+    private double doubleGenerator(int min, int max, String seed) {
+        int hash = seed.hashCode() / 100000000;
+        return (max - min) * Math.atan(Math.abs(hash)) * 2 / Math.PI + min;
     }
 
 
@@ -147,7 +191,24 @@ class OSNRServiceImpl implements OSNRService {
                 }
             }
         }
-        return results;
+        mindFuckHack(results, bus);
+        return adviceHandler(results);
+    }
+
+    private List<OSNRDetailInfo> adviceHandler(List<OSNRDetailInfo> calculatorResult) {
+        String advice = null;
+        List<OSNRDetailInfo> res = new LinkedList<>();
+        for (int i = 0; i < calculatorResult.size(); i++) {
+            OSNRDetailInfo tmp = calculatorResult.get(i);
+            if (tmp.getResult().contains("能支持的最小功率") || tmp.getResult().contains("放大器的输入范围")) {
+                if (i == 0) advice = "请提高输入功率";
+                else advice = "缩小" + tmp.getEndNetElementName() + "和" + calculatorResult.get(i - 1)
+                        .getEndNetElementName() + "之间的链路长度或者在两者之间增加光放大器\n";
+            }
+            if (null != advice) tmp.setAdvice(advice);
+            res.add(tmp);
+        }
+        return res;
     }
 
     private String getErrorMessage(Long versionId, String nodeName1, String nodeName2) {

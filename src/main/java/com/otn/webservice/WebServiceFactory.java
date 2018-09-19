@@ -1,6 +1,7 @@
 package com.otn.webservice;
 
 import com.otn.entity.*;
+import com.otn.service.LinkTypeService;
 import com.otn.webservice.com.Strategy;
 import com.otn.webservice.com.StrategyLocal;
 import com.otn.webservice.com.StrategyRemote;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +20,8 @@ import java.util.stream.Collectors;
 @Component
 @DependsOn("WebServiceConfigInfo")
 public class WebServiceFactory {
+    @Resource
+    LinkTypeService linkTypeService;
     private WebServiceConfigInfo CONFIG;
     private Strategy strategy;
 
@@ -42,7 +46,13 @@ public class WebServiceFactory {
                         rawData.setSpareOutputPowers(null);
                     }
                     return rawData;
-                }).map(rawData -> {
+                }).filter(rawData -> {
+            if (null == rawData.getMainRoute() || (rawData.getMainInputPowers().equals("") || rawData
+                    .getMainOutputPowers().equals("")))
+                return false;
+            return null == rawData.getSpareRoute() || (!rawData.getSpareInputPowers().equals("") && !rawData
+                    .getSpareOutputPowers().equals(""));
+        }).map(rawData -> {
             ResBussiness res = new ResBussiness();
             BeanUtils.copyProperties(rawData, res);
             res.setVersionId(CONFIG.getBASIC_VERSION_ID());
@@ -110,8 +120,10 @@ public class WebServiceFactory {
                 if (res.getEndAId().equals(netElement.getNetElementId())) res.setCircleId
                         (netElement.getCircleId());
             });
-            if (res.getLinkLoss() == null) res.setLinkLoss(CONFIG.getDEFAULT_LINK_LOSS());
             if (res.getLinkLength() == null) res.setLinkLength(CONFIG.getDEFAULT_LINK_LENGTH());
+            if (res.getLinkLoss() == null)
+                res.setLinkLoss((float) linkTypeService.calculateLoss(CONFIG.getBASIC_VERSION_ID()
+                        , "OPGW", res.getLinkLength()));
             return res;
         }).collect(Collectors.toList());
     }

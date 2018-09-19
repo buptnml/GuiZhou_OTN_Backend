@@ -17,6 +17,7 @@
     <result column="spare_frequency" jdbcType="VARCHAR" property="spareFrequency" />
     <result column="spare_input_powers" jdbcType="VARCHAR" property="spareInputPowers" />
     <result column="spare_output_powers" jdbcType="VARCHAR" property="spareOutputPowers" />
+      <result column="is_valid" jdbcType="BIT" property="isValid"/>
     <result column="version_id" jdbcType="BIGINT" property="versionId" />
     <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
     <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
@@ -26,7 +27,7 @@
       WARNING - @mbg.generated
     -->
     bussiness_id, bussiness_name, bussiness_rate, circle_id, main_route, main_frequency, 
-    main_input_powers, main_output_powers, spare_route, spare_frequency, spare_input_powers, 
-    spare_output_powers, version_id, gmt_create, gmt_modified
+    main_input_powers, main_output_powers, spare_route, spare_frequency, spare_input_powers,
+      spare_output_powers, is_valid, version_id, gmt_create, gmt_modified
   </sql>
 </mapper>

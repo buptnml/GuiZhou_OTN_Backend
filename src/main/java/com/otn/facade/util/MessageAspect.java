@@ -165,6 +165,7 @@ public class MessageAspect {
             LinkCreateInfo updateInfo = new LinkCreateInfo();
             BeanUtils.copyProperties(linkDTO, updateInfo);
             updateInfo.setLinkType(linkTypeCreateInfo.getLinkType());
+            updateInfo.setLinkLoss((float) linkTypeService.calculateLoss(versionId, updateInfo.getLinkType(), updateInfo.getLinkLength()));
             linkService.updateResLink(versionId, linkDTO.getLinkId(), updateInfo);
         });
         return result;

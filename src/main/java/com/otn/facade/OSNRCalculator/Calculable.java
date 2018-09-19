@@ -1,5 +1,6 @@
 package com.otn.facade.OSNRCalculator;
 
+import com.otn.facade.OSNRCalculator.exceptions.OutOfInputLimitsException;
 import com.otn.pojo.OSNRNodesDetails;
 import com.otn.pojo.OSNRResult;
 
@@ -14,7 +15,7 @@ public interface Calculable {
     /**
      * 规定计算流程的函数
      */
-    void calculate(double[][] inputPowers, double[][] outputPowers, String routeString, long versionId) throws IllegalArgumentException;
+    void calculate(double[][] inputPowers, double[][] outputPowers, String routeString, long versionId) throws IllegalArgumentException, OutOfInputLimitsException;
 
     /**
      * 计算函数
@@ -23,7 +24,7 @@ public interface Calculable {
      * @param routeString
      * @param versionId
      */
-    void calculate(double inputPower, String routeString, long versionId);
+    void calculate(double inputPower, String routeString, long versionId) throws OutOfInputLimitsException;
 
     /**
      * 获取计算结果的接口
