@@ -67,4 +67,19 @@ public class RecordServiceImpl implements RecordService {
         }
         throw new NoneSaveException();
     }
+
+    @Override
+    public String getRecord(Long id,String type) {
+        Example example = new Example(ResRecord.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("recordId", id);
+        ResRecord obj= resRecordDao.selectByExample(example).get(0);
+        if(type.equals("influence")){
+            return obj.getAffectBus();
+        }
+        if(type.equals("interrupt")){
+            return obj.getInterruptBus();
+        }
+        return "";
+    }
 }

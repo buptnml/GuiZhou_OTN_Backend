@@ -36,7 +36,6 @@ public class RecordController {
         return recordService.listRecords(versionId, target, startTime, endTime);
     }
 
-
     @ApiOperation(value = "新增检修记录")
     @RequestMapping(value = "/{versionId}/", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
@@ -48,5 +47,11 @@ public class RecordController {
         return recordService.addRecord(versionId, recordCreateQuery);
     }
 
-
+    @ApiOperation(value = "查看检修记录")
+    @RequestMapping(value = "/{id}/{type}/", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public String getRecord(
+            @PathVariable Long id,@PathVariable String type) {
+        return recordService.getRecord(id,type);
+    }
 }
