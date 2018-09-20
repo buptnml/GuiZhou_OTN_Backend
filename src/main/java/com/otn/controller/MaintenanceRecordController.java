@@ -2,6 +2,7 @@ package com.otn.controller;
 
 
 import com.otn.controller.util.InputCheckException;
+import com.otn.entity.ResMaintenanceRecord;
 import com.otn.pojo.MaintenanceRecordDTO;
 import com.otn.pojo.MaintenanceRecordQuery;
 import com.otn.service.ResMaintenanceRecordService;
@@ -43,6 +44,18 @@ public class MaintenanceRecordController {
     @ResponseStatus(HttpStatus.OK)
     public List<MaintenanceRecordDTO> listNetElement() {
         return maintenanceRecordService.listRecord();
+    }
+
+    /**
+     * 查询最新记录
+     *
+     * @return
+     */
+    @ApiOperation(value = "查询某个版本下的最新检修单信息")
+    @RequestMapping(value = "/latestRecord", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public ResMaintenanceRecord latestNetElement() {
+        return maintenanceRecordService.latestRecord();
     }
 
     @ApiOperation(value = "更新", notes = "修改检修单")

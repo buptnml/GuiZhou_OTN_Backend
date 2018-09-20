@@ -98,7 +98,7 @@ class BussinessServiceImpl implements BussinessService {
         ResBussiness insertInfo = UPDATE_UTILS.createBussiness(versionId, bussinessCreateInfo);
         insertInfo.setIsValid(true);
         if (resBussinessDao.insertSelective(insertInfo) > 0) {
-            BussinessDTO obj= createBussinessDTO(resBussinessDao.selectOne(insertInfo));
+            BussinessDTO obj = createBussinessDTO(resBussinessDao.selectOne(insertInfo));
             return obj;
         }
         throw new NoneSaveException();

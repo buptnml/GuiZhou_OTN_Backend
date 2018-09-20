@@ -408,21 +408,21 @@ public class ResBussiness implements Serializable {
         }
         ResBussiness other = (ResBussiness) that;
         return (this.getBussinessId() == null ? other.getBussinessId() == null : this.getBussinessId().equals(other.getBussinessId()))
-            && (this.getBussinessName() == null ? other.getBussinessName() == null : this.getBussinessName().equals(other.getBussinessName()))
-            && (this.getBussinessRate() == null ? other.getBussinessRate() == null : this.getBussinessRate().equals(other.getBussinessRate()))
-            && (this.getCircleId() == null ? other.getCircleId() == null : this.getCircleId().equals(other.getCircleId()))
-            && (this.getMainRoute() == null ? other.getMainRoute() == null : this.getMainRoute().equals(other.getMainRoute()))
-            && (this.getMainFrequency() == null ? other.getMainFrequency() == null : this.getMainFrequency().equals(other.getMainFrequency()))
-            && (this.getMainInputPowers() == null ? other.getMainInputPowers() == null : this.getMainInputPowers().equals(other.getMainInputPowers()))
-            && (this.getMainOutputPowers() == null ? other.getMainOutputPowers() == null : this.getMainOutputPowers().equals(other.getMainOutputPowers()))
-            && (this.getSpareRoute() == null ? other.getSpareRoute() == null : this.getSpareRoute().equals(other.getSpareRoute()))
-            && (this.getSpareFrequency() == null ? other.getSpareFrequency() == null : this.getSpareFrequency().equals(other.getSpareFrequency()))
-            && (this.getSpareInputPowers() == null ? other.getSpareInputPowers() == null : this.getSpareInputPowers().equals(other.getSpareInputPowers()))
-            && (this.getSpareOutputPowers() == null ? other.getSpareOutputPowers() == null : this.getSpareOutputPowers().equals(other.getSpareOutputPowers()))
+                && (this.getBussinessName() == null ? other.getBussinessName() == null : this.getBussinessName().equals(other.getBussinessName()))
+                && (this.getBussinessRate() == null ? other.getBussinessRate() == null : this.getBussinessRate().equals(other.getBussinessRate()))
+                && (this.getCircleId() == null ? other.getCircleId() == null : this.getCircleId().equals(other.getCircleId()))
+                && (this.getMainRoute() == null ? other.getMainRoute() == null : this.getMainRoute().equals(other.getMainRoute()))
+                && (this.getMainFrequency() == null ? other.getMainFrequency() == null : this.getMainFrequency().equals(other.getMainFrequency()))
+                && (this.getMainInputPowers() == null ? other.getMainInputPowers() == null : this.getMainInputPowers().equals(other.getMainInputPowers()))
+                && (this.getMainOutputPowers() == null ? other.getMainOutputPowers() == null : this.getMainOutputPowers().equals(other.getMainOutputPowers()))
+                && (this.getSpareRoute() == null ? other.getSpareRoute() == null : this.getSpareRoute().equals(other.getSpareRoute()))
+                && (this.getSpareFrequency() == null ? other.getSpareFrequency() == null : this.getSpareFrequency().equals(other.getSpareFrequency()))
+                && (this.getSpareInputPowers() == null ? other.getSpareInputPowers() == null : this.getSpareInputPowers().equals(other.getSpareInputPowers()))
+                && (this.getSpareOutputPowers() == null ? other.getSpareOutputPowers() == null : this.getSpareOutputPowers().equals(other.getSpareOutputPowers()))
                 && (this.getIsValid() == null ? other.getIsValid() == null : this.getIsValid().equals(other.getIsValid()))
-            && (this.getVersionId() == null ? other.getVersionId() == null : this.getVersionId().equals(other.getVersionId()))
-            && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
-            && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
+                && (this.getVersionId() == null ? other.getVersionId() == null : this.getVersionId().equals(other.getVersionId()))
+                && (this.getGmtCreate() == null ? other.getGmtCreate() == null : this.getGmtCreate().equals(other.getGmtCreate()))
+                && (this.getGmtModified() == null ? other.getGmtModified() == null : this.getGmtModified().equals(other.getGmtModified()));
     }
 
     @Override

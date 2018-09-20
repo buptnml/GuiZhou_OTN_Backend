@@ -93,6 +93,21 @@ public class VersionBackUpServiceImpl implements VersionBackUpService {
         return createInfo;
     }
 
+    @Override
+    public void saveBackUpBussiness(Long versionId) {
+        //条目要先存在再保存
+        if (!checkVersionBackUpExits(versionId)) {
+            initBackUp(versionId);
+        }
+        sysVersionBackUpDao.updateByPrimaryKeySelective(backUpObjectFactory(versionId));
+    }
+
+    private SysBackUp backUpObjectBussiness(Long versionId) {
+        SysBackUp createInfo = new SysBackUp();
+        createInfo.setVersionId(versionId);
+        createInfo.setBussinessBackUp(SerializableHelper.getHelper().toByteArray(resBussinessDao.selectByExample(getExample(versionId))));
+        return createInfo;
+    }
 
     @Override
     @Transactional

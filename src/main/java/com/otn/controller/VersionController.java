@@ -98,6 +98,15 @@ public class VersionController {
         return new ResponseInfo("保存成功！");
     }
 
+    @ApiOperation(value = "保存版本当前的数据--只保存光通道数据")
+    @RequestMapping(value = "/saveBussiness/{versionId}", method = RequestMethod.PATCH)
+    @ResponseStatus(HttpStatus.CREATED)
+    @VersionCheckException
+    public ResponseInfo saveVersionBussiness(@PathVariable Long versionId) {
+        versionBackUpService.saveBackUpBussiness(versionId);
+        return new ResponseInfo("保存成功！");
+    }
+
     private class ResponseInfo {
         private String responseMessage;
 
