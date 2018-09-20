@@ -8,11 +8,13 @@ import com.otn.pojo.MaintenanceRecordQuery;
 import com.otn.service.ResMaintenanceRecordService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.logging.Logger;
 
 @RestController
 @Api(tags = "MaintenanceRecord", description = "检修单相关操作")
@@ -21,11 +23,14 @@ public class MaintenanceRecordController {
     @Resource
     private ResMaintenanceRecordService maintenanceRecordService;
 
+    private org.slf4j.Logger logger = LoggerFactory.getLogger(MaintenanceRecordController.class);
+
     @ApiOperation(value = "增加", notes = "新增检修单（不需要传isDone）")
     @RequestMapping(value = "/", method = RequestMethod.POST, consumes = "application/json;charset=utf-8")
     @ResponseStatus(HttpStatus.CREATED)
     @InputCheckException(reason = "入参允许为null，不需要检查，由函数本身保证入参安全")
     public MaintenanceRecordDTO createLinkType(@RequestBody MaintenanceRecordQuery recordDTO) {
+        logger.info(recordDTO.toString());
         return maintenanceRecordService.addRecord(recordDTO);
     }
 
