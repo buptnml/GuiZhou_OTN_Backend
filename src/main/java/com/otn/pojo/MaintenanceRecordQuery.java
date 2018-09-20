@@ -15,6 +15,13 @@ public class MaintenanceRecordQuery {
     private String linkWayMobile;
     private String isDone = "0";
 
+    @Override
+    public String toString() {
+        StringBuilder sb=new StringBuilder();
+        sb.append("id="+id+";   idNo="+idNo+";   rContent="+rContent+";   deptName="+deptName+";   deptMan="+deptMan+";   rPlace="+rPlace+";   rType="+rType+";   repairType="+repairType+";   deviceName="+deviceName+";   linkMan="+linkMan+";   mobilePhone="+mobilePhone+";   linkWayMobile="+linkWayMobile+";   ");
+        return sb.toString();
+    }
+
     public Long getId() {
         return id;
     }
