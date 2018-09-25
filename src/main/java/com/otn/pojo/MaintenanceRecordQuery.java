@@ -18,7 +18,7 @@ public class MaintenanceRecordQuery {
     @Override
     public String toString() {
         StringBuilder sb=new StringBuilder();
-        sb.append("id="+id+";   idNo="+idNo+";   rContent="+rContent+";   deptName="+deptName+";   deptMan="+deptMan+";   rPlace="+rPlace+";   rType="+rType+";   repairType="+repairType+";   deviceName="+deviceName+";   linkMan="+linkMan+";   mobilePhone="+mobilePhone+";   linkWayMobile="+linkWayMobile+";   ");
+        sb.append("id="+id+";   idNo="+idNo+";   rContent="+rContent+";   deptName="+deptName+";   deptMan="+deptMan+";   rPlace="+rPlace+";   rType="+rType+";   repairType="+repairType+";   deviceName="+deviceName+";   linkMan="+linkMan+";   mobilePhone="+mobilePhone+";   linkWayMobile="+linkWayMobile+";   isDone="+isDone);
         return sb.toString();
     }
 
