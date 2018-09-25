@@ -30,7 +30,9 @@ public class MaintenanceRecordController {
     @ResponseStatus(HttpStatus.CREATED)
     @InputCheckException(reason = "入参允许为null，不需要检查，由函数本身保证入参安全")
     public MaintenanceRecordDTO createLinkType(@RequestBody MaintenanceRecordQuery recordDTO) {
-        logger.info(recordDTO.toString());
+        logger.warn("接受天元的数据之前");
+        logger.warn(recordDTO.toString());
+        logger.warn("接受天元的数据之后");
         return maintenanceRecordService.addRecord(recordDTO);
     }
 
