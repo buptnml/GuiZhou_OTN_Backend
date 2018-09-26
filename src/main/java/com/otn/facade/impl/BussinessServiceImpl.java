@@ -42,7 +42,7 @@ class BussinessServiceImpl implements BussinessService {
 
     @Override
     public List<BussinessDTO> listBussiness(Long versionId) {//parallelStream
-        List<ResBussiness> list= resBussinessDao.selectByExample(getExample(versionId));
+        List<ResBussiness> list = resBussinessDao.selectByExample(getExample(versionId));
         //list.stream().filter(ResBussiness::getIsValid).collect(Collectors.toList());
         List<BussinessDTO> result = list.stream().sorted(Comparator
                 .comparing(ResBussiness::getGmtModified).reversed()).map(this::busFilter).map(this::createBussinessDTO).collect(Collectors.toList());
@@ -56,6 +56,14 @@ class BussinessServiceImpl implements BussinessService {
     }
 
     private ResBussiness busFilter(ResBussiness bus) {
+        if (bus.getIsValid() == null) {
+            calculateORSR(bus);
+            resBussinessDao.updateByPrimaryKey(bus);
+        }
+        return bus;
+    }
+
+    private void calculateORSR(ResBussiness bus) {
         if (bus.getIsValid() == null) {
             bus.setIsValid(true);
             double[][] mainInputPowers = BussinessPowerStringTransfer.stringTransfer(bus.getMainInputPowers());
@@ -71,9 +79,7 @@ class BussinessServiceImpl implements BussinessService {
                 e.printStackTrace();
                 bus.setIsValid(false);
             }
-            resBussinessDao.updateByPrimaryKey(bus);
         }
-        return bus;
     }
 
 
@@ -158,7 +164,11 @@ class BussinessServiceImpl implements BussinessService {
     public int batchInsert(final List<ResBussiness> batchList) throws InterruptedException {
 
         // todo  检查batchList 如果isvalid为null 要通过osnr计算判断是否是有效光通道并将计算结果存入isvalid
-
+        if(batchList!=null&&batchList.size()>0){
+            for(ResBussiness item: batchList){
+                calculateORSR(item);
+            }
+        }
         resBussinessDao.batchInsert(batchList);
         return batchList.size();
     }
