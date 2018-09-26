@@ -130,7 +130,7 @@ public class ResMaintenanceRecordServiceImpl implements ResMaintenanceRecordServ
 
     @Override
     public List<MaintenanceRecordDTO> listRecord() {
-        return recordDao.selectAll().stream().sorted(Comparator.comparing(ResMaintenanceRecord::getGmtModified)
+        return recordDao.selectAll().stream().sorted(Comparator.comparing(ResMaintenanceRecord::getGmtCreate)
                 .reversed()).map(this::createDTO).collect(Collectors.toList());
     }
 
