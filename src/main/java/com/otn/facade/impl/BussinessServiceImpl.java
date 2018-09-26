@@ -6,6 +6,7 @@ import com.otn.entity.ResBussiness;
 import com.otn.facade.BussinessService;
 import com.otn.facade.OSNRCalculator.Calculable;
 import com.otn.facade.OSNRCalculator.exceptions.OutOfInputLimitsException;
+import com.otn.facade.VersionBackUpService;
 import com.otn.facade.util.BussinessPowerStringTransfer;
 import com.otn.pojo.BussinessCreateInfo;
 import com.otn.pojo.BussinessDTO;
@@ -36,14 +37,21 @@ class BussinessServiceImpl implements BussinessService {
     private ResBussinessDao resBussinessDao;
     @Resource
     private Calculable calculator;
+    @Resource
+    private VersionBackUpService versionBackUpService;
 
     @Override
-    public List<BussinessDTO> listBussiness(Long versionId) {
-        List<BussinessDTO> result = resBussinessDao.selectByExample(getExample(versionId)).parallelStream().sorted(Comparator
+    public List<BussinessDTO> listBussiness(Long versionId) {//parallelStream
+        List<ResBussiness> list= resBussinessDao.selectByExample(getExample(versionId));
+        //list.stream().filter(ResBussiness::getIsValid).collect(Collectors.toList());
+        List<BussinessDTO> result = list.stream().sorted(Comparator
                 .comparing(ResBussiness::getGmtModified).reversed()).map(this::busFilter).map(this::createBussinessDTO).collect(Collectors.toList());
         if (result.size() == 0) {
             throw new NoneGetException("没有查询到光通道相关记录！");
         }
+
+        //保存计算的osnr值
+        versionBackUpService.saveBackUpBussiness(versionId);
         return result;
     }
 
@@ -98,7 +106,7 @@ class BussinessServiceImpl implements BussinessService {
         ResBussiness insertInfo = UPDATE_UTILS.createBussiness(versionId, bussinessCreateInfo);
         insertInfo.setIsValid(true);
         if (resBussinessDao.insertSelective(insertInfo) > 0) {
-            BussinessDTO obj= createBussinessDTO(resBussinessDao.selectOne(insertInfo));
+            BussinessDTO obj = createBussinessDTO(resBussinessDao.selectOne(insertInfo));
             return obj;
         }
         throw new NoneSaveException();

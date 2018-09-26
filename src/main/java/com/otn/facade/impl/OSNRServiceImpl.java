@@ -95,7 +95,7 @@ class OSNRServiceImpl implements OSNRService {
         StringBuilder results = new StringBuilder("");
         for (int i = 0; i < Math.min(BussinessPowerStringTransfer.stringTransfer(isMain ? bus.getMainInputPowers() : bus
                 .getSpareInputPowers()).length, nodes.length); i++) {
-            if (!details.get(i).getResult().contains("小于18dB")) {
+            if (!details.get(i).getResult().contains("小于18dB")&&!details.get(i).getResult().contains("不存在")) {
                 results.append(nodes[i]);
                 results.append("-");
             }

@@ -115,6 +115,15 @@ public class ResMaintenanceRecordServiceImpl implements ResMaintenanceRecordServ
         return createDTO(recordDao.selectByExample(getExample(record.getIdNo(), record.getrPlace())).get(0));
     }
 
+    @Override
+    public ResMaintenanceRecord latestRecord() {
+         List<ResMaintenanceRecord> list = recordDao.selectAll().stream().sorted(Comparator.comparing(ResMaintenanceRecord::getGmtCreate)
+                .reversed()).collect(Collectors.toList());
+         if(list.size() == 0)
+             return null;
+         return list.get(0);
+    }
+
     private void saveFile(ResMaintenanceRecord data, List<ResMaintenanceRecord> list) {
         String csvFilePath = System.getProperty("catalina.home") + "\\csv\\" + data.getMaintenanceRecordId() + ".csv";
         //获取类属性，用于csv的表头
