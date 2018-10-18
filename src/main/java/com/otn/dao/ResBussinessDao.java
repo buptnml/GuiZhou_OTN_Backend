@@ -28,6 +28,7 @@ public interface ResBussinessDao extends Mapper<ResBussiness> {
             "        spare_frequency,\n" +
             "        spare_input_powers,\n" +
             "        spare_output_powers,\n" +
+            "        is_valid,\n" +
             "        version_id) values\n" +
             "        <foreach collection=\"list\" item=\"item\" index=\"index\"\n" +
             "                 separator=\",\">\n" +
@@ -43,6 +44,7 @@ public interface ResBussinessDao extends Mapper<ResBussiness> {
             "            #{item.spareFrequency,jdbcType=VARCHAR},\n" +
             "            #{item.spareInputPowers,jdbcType=VARCHAR},\n" +
             "            #{item.spareOutputPowers,jdbcType=VARCHAR},\n" +
+            "            #{item.isValid,jdbcType=TINYINT},\n" +
             "            #{item.versionId}\n" +
             "            )\n" +
             "        </foreach>" +

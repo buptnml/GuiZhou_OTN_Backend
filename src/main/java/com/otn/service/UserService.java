@@ -1,7 +1,8 @@
 package com.otn.service;
 
+import com.otn.pojo.AdminUserDTO;
+import com.otn.pojo.BaseUserDTO;
 import com.otn.pojo.UserCreateInfo;
-import com.otn.pojo.UserDTO;
 import com.otn.pojo.UserQuery;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public interface UserService {
      * @param userCreateInfo
      * @return
      */
-    UserDTO saveUser(UserCreateInfo userCreateInfo);
+    AdminUserDTO saveUser(UserCreateInfo userCreateInfo);
 
     /**
      * 批量删除指定id的用户
@@ -33,7 +34,7 @@ public interface UserService {
      * @param userQuery
      * @return
      */
-    UserDTO getUserByUserQuery(UserQuery userQuery);
+    AdminUserDTO getUserByUserQuery(UserQuery userQuery);
 
 
     /**
@@ -41,14 +42,14 @@ public interface UserService {
      *
      * @return
      */
-    List<UserDTO> listUser();
+    List<AdminUserDTO> listUser();
 
     /**
      * 查询所有用户
      *
      * @return
      */
-    List<UserDTO> listUserByName(String userName);
+    List<BaseUserDTO> listUserById(Long userId);
 
 
     /**
@@ -58,7 +59,7 @@ public interface UserService {
      * @param userCreateInfo
      * @return
      */
-    UserDTO updateUser(Long userId, UserCreateInfo userCreateInfo);
+    AdminUserDTO updateUser(Long userId, UserCreateInfo userCreateInfo);
 
 
     /**
@@ -67,6 +68,12 @@ public interface UserService {
      * @return
      */
     List<String> listUserNames();
+
+
+    /**
+     * 根据ID获取用户
+     */
+    AdminUserDTO getUserById(Long userId);
 
 
 }

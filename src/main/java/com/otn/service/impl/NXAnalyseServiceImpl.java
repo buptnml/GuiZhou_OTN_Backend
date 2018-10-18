@@ -8,7 +8,6 @@ import com.otn.entity.ResLink;
 import com.otn.entity.ResNetElement;
 import com.otn.pojo.NXAnalyseItemDTO;
 import com.otn.service.NXAnalyseService;
-import com.otn.util.exception.controller.result.NoneGetException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;

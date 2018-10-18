@@ -1,6 +1,7 @@
 package com.otn.controller.util;
 
 
+import com.otn.facade.OSNRCalculator.exceptions.OutOfInputLimitsException;
 import com.otn.util.exception.controller.input.ArgumentOutOfLimitsException;
 import com.otn.util.exception.controller.input.IllegalArgumentException;
 import com.otn.util.exception.controller.input.NullArgumentException;
@@ -47,28 +48,28 @@ public class ExceptionHandlerController {
     @ExceptionHandler(NoneGetException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleNoneGetException(HttpServletRequest request, RuntimeException e) {
-        logger.error("Request: " + request.getRequestURL() + " raised:", e);
+        logger.warn("Request: " + request.getRequestURL() + " raised:", e);
         return e.getMessage();
     }
 
     @ExceptionHandler(NoneRemoveException.class)
     @ResponseStatus(HttpStatus.GONE)
     public String handleNoneRemoveException(HttpServletRequest request, RuntimeException e) {
-        logger.error("Request: " + request.getRequestURL() + " raised:", e);
+        logger.warn("Request: " + request.getRequestURL() + " raised:", e);
         return e.getMessage();
     }
 
     @ExceptionHandler(NoneSaveException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public String handleNoneSaveException(HttpServletRequest request, RuntimeException e) {
-        logger.error("Request: " + request.getRequestURL() + " raised:", e);
+        logger.warn("Request: " + request.getRequestURL() + " raised:", e);
         return e.getMessage();
     }
 
     @ExceptionHandler(NoneUpdateException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public String handleNoneUpdateException(HttpServletRequest request, RuntimeException e) {
-        logger.error("Request: " + request.getRequestURL() + " raised:", e);
+        logger.warn("Request: " + request.getRequestURL() + " raised:", e);
         return e.getMessage();
     }
 
@@ -83,21 +84,21 @@ public class ExceptionHandlerController {
     @ExceptionHandler(ArgumentOutOfLimitsException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleArgumentOutOfLimitsException(HttpServletRequest request, RuntimeException e) {
-        logger.error("Request: " + request.getRequestURL() + " raised:", e);
+        logger.warn("Request: " + request.getRequestURL() + " raised:", e);
         return e.getMessage();
     }
 
     @ExceptionHandler({NullArgumentException.class,})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleNullArgumentException(HttpServletRequest request, RuntimeException e) {
-        logger.error("Request: " + request.getRequestURL() + " raised:", e);
+        logger.warn("Request: " + request.getRequestURL() + " raised:", e);
         return e.getMessage();
     }
 
     @ExceptionHandler({IllegalArgumentException.class, java.lang.IllegalArgumentException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleIllegalArgumentException(HttpServletRequest request, RuntimeException e) {
-        logger.error("Request: " + request.getRequestURL() + " raised:", e);
+        logger.warn("Request: " + request.getRequestURL() + " raised:", e);
         return e.getMessage();
     }
 
@@ -111,7 +112,7 @@ public class ExceptionHandlerController {
     @ExceptionHandler(DuplicateKeyException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleMySQLIntegrityConstraintViolationException(HttpServletRequest request, RuntimeException e) {
-        logger.error("Request: " + request.getRequestURL() + " raised:", e);
+        logger.warn("Request: " + request.getRequestURL() + " raised:", e);
         return "输入的信息中关键内容和数据库记录重复，请重新输入。";
     }
 
@@ -120,6 +121,13 @@ public class ExceptionHandlerController {
     public String handleHttpMediaTypeNotSupportedException(HttpServletRequest request, Exception e) {
         logger.error("Request: " + request.getRequestURL() + " raised:", e);
         return "发送的body格式不正确，请检查Headers设置！";
+    }
+
+    @ExceptionHandler(OutOfInputLimitsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleOutOfInputLimitsException(HttpServletRequest request, Exception e) {
+        logger.error("Request: " + request.getRequestURL() + " raised:", e);
+        return e.getMessage();
     }
 
     @ExceptionHandler(Exception.class)

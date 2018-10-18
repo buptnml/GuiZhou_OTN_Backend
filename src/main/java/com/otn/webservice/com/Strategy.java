@@ -16,5 +16,8 @@ public interface Strategy {
 
     List<RawBussinessData> getRawBusData();
 
+
     List<RawNetElementData> getRawNetElementData();
+
+    String uploadFile(String data);
 }

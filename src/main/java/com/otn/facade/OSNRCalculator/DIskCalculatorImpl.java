@@ -7,6 +7,7 @@ import com.otn.service.AmplifierService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.text.DecimalFormat;
 
 
 /**
@@ -15,6 +16,7 @@ import javax.annotation.Resource;
  */
 @Component
 class DIskCalculatorImpl implements DiskCalculator {
+    private static DecimalFormat df = new DecimalFormat("0.00");
     private double inputPower;
     private double outputPower;
     private AmplifierDTO amplifier;
@@ -40,18 +42,21 @@ class DIskCalculatorImpl implements DiskCalculator {
           均属于设计错误
           */
         if (this.inputPower > amplifier.getMaximumInputPower()) {
-            throw new OutOfInputLimitsException("输入功率为" + this.inputPower + "，大于机盘" + disk.getDiskName
-                    () + "能支持的最大功率！");
+//            throw new OutOfInputLimitsException("输入功率为" + this.inputPower + "，大于机盘" + disk.getDiskName
+//                    () + "能支持的最大功率！");
+            this.inputPower = amplifier.getMaximumInputPower();
         }
         if (this.inputPower < amplifier.getMinimumInputPower()) {
-            throw new OutOfInputLimitsException("输入功率" + this.inputPower + ",小于机盘" + disk.getDiskName
+            throw new OutOfInputLimitsException("输入功率" + df.format(this.inputPower) + ",小于机盘" + disk.getDiskName
                     () + "能支持的最小功率！");
+//            this.inputPower = amplifier.getMinimumInputPower();
         }
         this.inputPower = amplifier.getMaximumInputPower() > inputPower ? inputPower : amplifier.getMaximumInputPower();
         /*大于放大器放大后的结果一般按照可以做到的最大输出功率输出，
           也就是说如果放大后的功率大于放大器可以支持的最大输出功率则按照放大器的最大输出功率输出*/
-        this.outputPower = this.inputPower + amplifier.getGain() > amplifier.getMaximumOutputPower() ? amplifier
-                .getMaximumOutputPower() : this.inputPower + amplifier.getGain();
+        this.outputPower = this.inputPower + amplifier.getGain();
+//                > amplifier.getMaximumOutputPower() ? amplifier
+//                .getMaximumOutputPower() : this.inputPower + amplifier.getGain();0
     }
 
     private void init(double inputPower, DiskDTO disk, long versionId) {

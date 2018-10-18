@@ -6,6 +6,7 @@ import com.otn.entity.SysVersion;
 import com.otn.facade.BussinessService;
 import com.otn.facade.VersionBackUpService;
 import com.otn.service.*;
+import com.otn.util.tools.SerializableHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -80,36 +81,51 @@ public class VersionBackUpServiceImpl implements VersionBackUpService {
     private SysBackUp backUpObjectFactory(Long versionId) {
         SysBackUp createInfo = new SysBackUp();
         createInfo.setVersionId(versionId);
-        createInfo.setBussinessBackUp(ByteTransferFactory.toByteArray(resBussinessDao.selectByExample(getExample(versionId))));
-        createInfo.setDiskBackUp(ByteTransferFactory.toByteArray(resDiskDao.selectByExample(getExample(versionId))));
-        createInfo.setLinkBackUp(ByteTransferFactory.toByteArray(resLinkDao.selectByExample(getExample(versionId))));
-        createInfo.setNetElementBackUp(ByteTransferFactory.toByteArray(resNetElementDao.selectByExample(getExample(versionId)
+        createInfo.setBussinessBackUp(SerializableHelper.getHelper().toByteArray(resBussinessDao.selectByExample(getExample(versionId))));
+        createInfo.setDiskBackUp(SerializableHelper.getHelper().toByteArray(resDiskDao.selectByExample(getExample(versionId))));
+        createInfo.setLinkBackUp(SerializableHelper.getHelper().toByteArray(resLinkDao.selectByExample(getExample(versionId))));
+        createInfo.setNetElementBackUp(SerializableHelper.getHelper().toByteArray(resNetElementDao.selectByExample(getExample(versionId)
         )));
-        createInfo.setOsnrLinkTypeBackUp(ByteTransferFactory.toByteArray(resOsnrLinkTypeDao.selectByExample
+        createInfo.setOsnrLinkTypeBackUp(SerializableHelper.getHelper().toByteArray(resOsnrLinkTypeDao.selectByExample
                 (getExample(versionId))));
-        createInfo.setOsnrAmplifierBackUp(ByteTransferFactory.toByteArray(resOsnrAmplifierDao.selectByExample
+        createInfo.setOsnrAmplifierBackUp(SerializableHelper.getHelper().toByteArray(resOsnrAmplifierDao.selectByExample
                 (getExample(versionId))));
         return createInfo;
     }
 
+    @Override
+    public void saveBackUpBussiness(Long versionId) {
+        //条目要先存在再保存
+        if (!checkVersionBackUpExits(versionId)) {
+            initBackUp(versionId);
+        }
+        sysVersionBackUpDao.updateByPrimaryKeySelective(backUpObjectFactory(versionId));
+    }
+
+    private SysBackUp backUpObjectBussiness(Long versionId) {
+        SysBackUp createInfo = new SysBackUp();
+        createInfo.setVersionId(versionId);
+        createInfo.setBussinessBackUp(SerializableHelper.getHelper().toByteArray(resBussinessDao.selectByExample(getExample(versionId))));
+        return createInfo;
+    }
 
     @Override
     @Transactional
     public void restoreBackUp(Long versionId) {
         SysBackUp backUpInfo = sysVersionBackUpDao.selectByPrimaryKey(versionId);
         ExecutorService executor = Executors.newCachedThreadPool();
-        executor.submit(() -> restoreMachine(ByteTransferFactory.toObject(backUpInfo.getBussinessBackUp()), versionId,
+        executor.submit(() -> restoreMachine(SerializableHelper.getHelper().toObject(backUpInfo.getBussinessBackUp()), versionId,
                 resBussinessDao, bussinessService));
         executor.submit(() -> {
-            restoreMachine(ByteTransferFactory.toObject(backUpInfo.getNetElementBackUp()), versionId,
+            restoreMachine(SerializableHelper.getHelper().toObject(backUpInfo.getNetElementBackUp()), versionId,
                     resNetElementDao, netElementService);
-            restoreMachine(ByteTransferFactory.toObject(backUpInfo.getDiskBackUp()), versionId, resDiskDao, diskService);
+            restoreMachine(SerializableHelper.getHelper().toObject(backUpInfo.getDiskBackUp()), versionId, resDiskDao, diskService);
         });
-        executor.submit(() -> restoreMachine(ByteTransferFactory.toObject(backUpInfo.getLinkBackUp()), versionId,
+        executor.submit(() -> restoreMachine(SerializableHelper.getHelper().toObject(backUpInfo.getLinkBackUp()), versionId,
                 resLinkDao, linkService));
-        executor.submit(() -> restoreMachine(ByteTransferFactory.toObject(backUpInfo.getOsnrLinkTypeBackUp()),
+        executor.submit(() -> restoreMachine(SerializableHelper.getHelper().toObject(backUpInfo.getOsnrLinkTypeBackUp()),
                 versionId, resOsnrLinkTypeDao, linkTypeService));
-        executor.submit(() -> restoreMachine(ByteTransferFactory.toObject(backUpInfo.getOsnrAmplifierBackUp()),
+        executor.submit(() -> restoreMachine(SerializableHelper.getHelper().toObject(backUpInfo.getOsnrAmplifierBackUp()),
                 versionId, resOsnrAmplifierDao, amplifierService));
         executor.shutdown();
         while (!executor.isTerminated()) {
@@ -176,49 +192,5 @@ public class VersionBackUpServiceImpl implements VersionBackUpService {
     }
 
 
-    private static class ByteTransferFactory {
-        private static Logger logger = LoggerFactory.getLogger(ByteTransferFactory.class);
 
-        /**
-         * 序列化List为二进制流
-         */
-        static byte[] toByteArray(Object object) {
-            if (null == object) return null;
-            byte[] bytes = null;
-            ByteArrayOutputStream bos;
-            ObjectOutputStream oos;
-            try {
-                bos = new ByteArrayOutputStream();
-                oos = new ObjectOutputStream(bos);
-                oos.writeObject(object);
-                bytes = bos.toByteArray();
-                oos.flush();
-                oos.close();
-                bos.close();
-            } catch (IOException ex) {
-                logger.error(ex.getMessage());
-            }
-            return bytes;
-        }
-
-        /**
-         * 反序列化二进制流为List
-         */
-        static <K> List<K> toObject(byte[] bytes) {
-            if (null == bytes) return null;
-            Object result = null;
-            ObjectInputStream ois;
-            ByteArrayInputStream bis;
-            try {
-                bis = new ByteArrayInputStream(bytes);
-                ois = new ObjectInputStream(bis);
-                result = ois.readObject();
-                bis.close();
-                ois.close();
-            } catch (IOException | ClassNotFoundException ex) {
-                logger.error(ex.getMessage());
-            }
-            return (List<K>) result;
-        }
-    }
 }

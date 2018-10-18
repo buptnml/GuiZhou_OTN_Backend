@@ -2,6 +2,7 @@ package com.otn.facade.OSNRCalculator;
 
 
 import com.otn.facade.OSNRCalculator.exceptions.OSNRResultOutOfLimitException;
+import com.otn.facade.OSNRCalculator.exceptions.OutOfInputLimitsException;
 
 /**
  * OSNR计算抽象类
@@ -17,7 +18,7 @@ abstract class AbstractCalculator implements Calculable {
      */
     @Override
     public synchronized final void calculate(double[][] inputPowers, double[][] outputPowers, String routeString, long
-            versionId) throws IllegalArgumentException {
+            versionId) throws OutOfInputLimitsException {
         init(inputPowers, outputPowers, routeString, versionId);
         if (!hasInputsOutputs()) {
             inputsOutputsCalculate();
@@ -26,7 +27,7 @@ abstract class AbstractCalculator implements Calculable {
     }
 
     @Override
-    public final void calculate(double inputPower, String routeString, long versionId) throws IllegalArgumentException {
+    public final void calculate(double inputPower, String routeString, long versionId) throws OutOfInputLimitsException {
         double[][] inputPowers = new double[1][1];
         inputPowers[0][0] = inputPower;
         calculate(inputPowers, null, routeString, versionId);
@@ -46,7 +47,7 @@ abstract class AbstractCalculator implements Calculable {
     /**
      * 用来计算各个网元的输入和输出
      */
-    protected abstract void inputsOutputsCalculate() throws IllegalArgumentException;
+    protected abstract void inputsOutputsCalculate() throws IllegalArgumentException, OutOfInputLimitsException;
 
     /**
      * 用来计算各个节点的OSNR值

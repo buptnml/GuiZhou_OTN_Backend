@@ -18,7 +18,7 @@ interface OSNRResultsCalculable {
      * @param outputPowers
      * @return
      */
-    List<OSNRResult> getResults(String routeString, double[][] inputPowers, double[][] outputPowers);
+    List<OSNRResult> getResults(Long versionId, String routeString, double[][] inputPowers, double[][] outputPowers);
 
     /**
      * 获取各个节点的输入输出功率增益噪声等信息

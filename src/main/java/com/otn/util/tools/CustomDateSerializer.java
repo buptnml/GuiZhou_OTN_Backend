@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 
 /**
@@ -16,8 +17,10 @@ public class CustomDateSerializer extends JsonSerializer<Date> {
     @Override
     public void serialize(Date value, JsonGenerator jgen,
                           SerializerProvider provider) throws IOException {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分ss秒");
-        String formattedDate = formatter.format(value);
+        //SimpleDateFormat df2 = new SimpleDateFormat("yyyy年MM月dd日");
+        SimpleDateFormat df2 = new SimpleDateFormat();
+        //df2.setTimeZone(TimeZone.getTimeZone("GMT"));
+        String formattedDate = df2.format(value);
         jgen.writeString(formattedDate);
     }
 

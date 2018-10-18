@@ -47,7 +47,7 @@ public class RawAmpData {
     }
 
     public Short getGain() {
-        return (short) ((minimumGain + maximumGain) / 2);
+        return maximumGain;
     }
 
     public String getAmplifierName() {
