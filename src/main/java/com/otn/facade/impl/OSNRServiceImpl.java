@@ -81,10 +81,10 @@ class OSNRServiceImpl implements OSNRService {
     public List<OSNRGeneralInfo> getRouteOSNRDetail(Long versionId, Long bussinessId) {
         ResBussiness bus = getBussiness(versionId, bussinessId);
         List<OSNRGeneralInfo> results = new ArrayList<>();
-        results.add(new OSNRGeneralInfo(bus, true, getRealRouteString(bus, true, getOSNRResult(versionId,
+        results.add(new OSNRGeneralInfo(bus, true, getRealRouteString(bus, true, getOSNRResultFunc(versionId,
                 bussinessId, true))));
         if (null != bus.getSpareRoute() && !bus.getSpareRoute().equals("")) {
-            results.add(new OSNRGeneralInfo(bus, false, getRealRouteString(bus, false, getOSNRResult(versionId,
+            results.add(new OSNRGeneralInfo(bus, false, getRealRouteString(bus, false, getOSNRResultFunc(versionId,
                     bussinessId, false))));
         }
         return results;
@@ -95,7 +95,7 @@ class OSNRServiceImpl implements OSNRService {
         StringBuilder results = new StringBuilder("");
         for (int i = 0; i < Math.min(BussinessPowerStringTransfer.stringTransfer(isMain ? bus.getMainInputPowers() : bus
                 .getSpareInputPowers()).length, nodes.length); i++) {
-            if (!details.get(i).getResult().contains("小于18dB")&&!details.get(i).getResult().contains("不存在")) {
+            if (!details.get(i).getResult().contains("小于18dB") && !details.get(i).getResult().contains("不存在")) {
                 results.append(nodes[i]);
                 results.append("-");
             }
@@ -103,8 +103,7 @@ class OSNRServiceImpl implements OSNRService {
         return results.length() == 0 ? "" : results.substring(0, results.lastIndexOf("-"));
     }
 
-    @Override
-    public List<OSNRDetailInfo> getOSNRResult(Long versionId, Long bussinessId, Boolean isMain) {
+    private List<OSNRDetailInfo> getOSNRResultFunc(Long versionId, Long bussinessId, Boolean isMain) {
         ResBussiness bus = getBussiness(versionId, bussinessId);
         double[][] inputPowers = isMain ? BussinessPowerStringTransfer.stringTransfer(bus.getMainInputPowers()) : BussinessPowerStringTransfer.stringTransfer(bus
                 .getSpareInputPowers());
@@ -117,7 +116,37 @@ class OSNRServiceImpl implements OSNRService {
         } catch (Exception e) {
             errorMessage = e.getMessage();
         }
+
         return resultGenerator(versionId, isMain, bus, routeString, errorMessage, calculator.getResult());
+    }
+
+    @Override
+    public List<OSNRDetailInfo> getOSNRResult(Long versionId, Long bussinessId, Boolean isMain) {
+        List<OSNRDetailInfo> result = getOSNRResultFunc(versionId, bussinessId, isMain);
+        List<OSNRDetailInfo> newResult = new LinkedList<OSNRDetailInfo>();
+
+        for (int i = 0; i < result.size(); i++) {
+            if (result.get(i).getAdvice().equals("")) {
+                newResult.add(result.get(i));
+            } else {
+                Collections.sort(newResult, new Comparator<OSNRDetailInfo>() {
+                    @Override
+                    public int compare(OSNRDetailInfo o1, OSNRDetailInfo o2) {
+                        return o2.getResult().compareTo(o1.getResult());
+                    }
+                });
+                newResult.add(result.get(i));
+                return newResult;
+            }
+        }
+
+        Collections.sort(newResult, new Comparator<OSNRDetailInfo>() {
+            @Override
+            public int compare(OSNRDetailInfo o1, OSNRDetailInfo o2) {
+                return o2.getResult().compareTo(o1.getResult());
+            }
+        });
+        return newResult;
     }
 
     @Override
@@ -205,7 +234,13 @@ class OSNRServiceImpl implements OSNRService {
                 else advice = "缩小" + tmp.getEndNetElementName() + "和" + calculatorResult.get(i - 1)
                         .getEndNetElementName() + "之间的链路长度或者在两者之间增加光放大器\n";
             }
-            if (null != advice) tmp.setAdvice(advice);
+            if (null != advice)
+                tmp.setAdvice(advice);
+
+//            if(tmp.getAdvice().equals("建议：增大"+tmp.getBussinessName()+"光通道的输入功率")){
+//                res.add(tmp);
+//                break;
+//            }
             res.add(tmp);
         }
         return res;
