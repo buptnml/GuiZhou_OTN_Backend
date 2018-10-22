@@ -6,10 +6,12 @@ import com.otn.entity.ResBussiness;
 import com.otn.facade.BussinessService;
 import com.otn.facade.OSNRCalculator.Calculable;
 import com.otn.facade.OSNRCalculator.exceptions.OutOfInputLimitsException;
+import com.otn.facade.OSNRService;
 import com.otn.facade.VersionBackUpService;
 import com.otn.facade.util.BussinessPowerStringTransfer;
 import com.otn.pojo.BussinessCreateInfo;
 import com.otn.pojo.BussinessDTO;
+import com.otn.pojo.OSNRGeneralInfo;
 import com.otn.util.exception.controller.result.NoneGetException;
 import com.otn.util.exception.controller.result.NoneRemoveException;
 import com.otn.util.exception.controller.result.NoneSaveException;
@@ -39,6 +41,8 @@ class BussinessServiceImpl implements BussinessService {
     private Calculable calculator;
     @Resource
     private VersionBackUpService versionBackUpService;
+    @Resource
+    private OSNRService osnrService;
 
     @Override
     public List<BussinessDTO> listBussiness(Long versionId) {//parallelStream
@@ -111,8 +115,21 @@ class BussinessServiceImpl implements BussinessService {
         }
         ResBussiness insertInfo = UPDATE_UTILS.createBussiness(versionId, bussinessCreateInfo);
         insertInfo.setIsValid(true);
+
         if (resBussinessDao.insertSelective(insertInfo) > 0) {
-            BussinessDTO obj = createBussinessDTO(resBussinessDao.selectOne(insertInfo));
+            insertInfo = resBussinessDao.selectOne(insertInfo);
+            BussinessDTO obj = createBussinessDTO(insertInfo);
+
+            List<OSNRGeneralInfo> osnrResult = osnrService.getRouteOSNRDetail(versionId, insertInfo.getBussinessId());
+            for (int i = 0; i < osnrResult.size(); i++) {
+                if (osnrResult.get(i).getIsUsable().equals("否")) {
+                    insertInfo.setIsValid(false);
+                    resBussinessDao.updateByExampleSelective(insertInfo, getExample(versionId, insertInfo.getBussinessId()));
+                    insertInfo = getBussiness(insertInfo.getVersionId(),insertInfo.getBussinessId());
+                    obj = createBussinessDTO(insertInfo);
+                    return obj;
+                }
+            }
             return obj;
         }
         throw new NoneSaveException();
@@ -164,8 +181,8 @@ class BussinessServiceImpl implements BussinessService {
     public int batchInsert(final List<ResBussiness> batchList) throws InterruptedException {
 
         // todo  检查batchList 如果isvalid为null 要通过osnr计算判断是否是有效光通道并将计算结果存入isvalid
-        if(batchList!=null&&batchList.size()>0){
-            for(ResBussiness item: batchList){
+        if (batchList != null && batchList.size() > 0) {
+            for (ResBussiness item : batchList) {
                 calculateORSR(item);
             }
         }
