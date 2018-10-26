@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import sun.misc.BASE64Encoder;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -24,6 +26,8 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 /**
  * @Auther: 李景然
@@ -77,6 +81,7 @@ public class FileHelper {
         String filePath = System.getProperty("catalina.home") + "\\csvURL\\";
         //String filePath ="d:/csvURL/";
         String fileName = getFilePath(url, filePath);
+
         //创建不同的文件夹目录
         File file = new File(filePath);
         //判断文件夹是否存在
@@ -88,8 +93,9 @@ public class FileHelper {
         HttpURLConnection conn = null;
         InputStream inputStream = null;
         try {
+            String url1=encode(url,"UTF-8");
             // 建立链接
-            URL httpUrl = new URL(url);
+            URL httpUrl = new URL(url1);
             conn = (HttpURLConnection) httpUrl.openConnection();
             //以Post方式提交表单，默认get方式
             conn.setRequestMethod("GET");
@@ -101,7 +107,9 @@ public class FileHelper {
             conn.connect();
             //获取网络输入流
             inputStream = conn.getInputStream();
+            System.out.println("inputStream"+inputStream.toString());
             BufferedInputStream bis = new BufferedInputStream(inputStream);
+            System.out.println("buffered"+bis.toString());
             //判断文件的保存路径后面是否以/结尾
             if (!filePath.endsWith("/")) {
                 filePath += "/";
@@ -148,5 +156,25 @@ public class FileHelper {
         String[] strArr = url.split("/");
         String fileName = strArr[strArr.length - 1];
         return filePath + fileName;
+    }
+
+    private static String zhPattern = "[\\u4e00-\\u9fa5]";
+    /**
+     * 替换字符串卷
+     *
+     * @param str 被替换的字符串
+     * @param charset 字符集
+     * @return 替换好的
+     * @throws UnsupportedEncodingException 不支持的字符集
+     */
+    private static String encode(String str, String charset) throws UnsupportedEncodingException {
+        Pattern p = Pattern.compile(zhPattern);
+        Matcher m = p.matcher(str);
+        StringBuffer b = new StringBuffer();
+        while (m.find()) {
+            m.appendReplacement(b, URLEncoder.encode(m.group(0), charset));
+        }
+        m.appendTail(b);
+        return b.toString();
     }
 }
