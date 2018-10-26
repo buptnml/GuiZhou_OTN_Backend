@@ -128,24 +128,17 @@ class OSNRServiceImpl implements OSNRService {
         for (int i = 0; i < result.size(); i++) {
             if (result.get(i).getAdvice().equals("")) {
                 newResult.add(result.get(i));
-            } else {
-                Collections.sort(newResult, new Comparator<OSNRDetailInfo>() {
-                    @Override
-                    public int compare(OSNRDetailInfo o1, OSNRDetailInfo o2) {
-                        return o2.getResult().compareTo(o1.getResult());
-                    }
-                });
-                newResult.add(result.get(i));
-                return newResult;
             }
         }
 
-        Collections.sort(newResult, new Comparator<OSNRDetailInfo>() {
-            @Override
-            public int compare(OSNRDetailInfo o1, OSNRDetailInfo o2) {
-                return o2.getResult().compareTo(o1.getResult());
+        newResult.sort(Comparator.comparing(odi ->  -Double.valueOf(odi.getResult())));
+
+        for (int i = 0; i < result.size(); i++) {
+            if (!result.get(i).getAdvice().equals("")) {
+                newResult.add(result.get(i));
+                break;
             }
-        });
+        }
         return newResult;
     }
 

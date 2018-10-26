@@ -37,7 +37,6 @@ public class BussinessController {
         return bussinessService.updateBussiness(versionId, bussinessId, bussinessCreateInfo);
     }
 
-
     @ApiOperation(value = "查询某个版本下的所有光通道信息")
     @RequestMapping(value = "/{versionId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
@@ -55,7 +54,6 @@ public class BussinessController {
         return bussinessService.listBussiness(versionId,circleId);
     }
 
-
     @ApiOperation(value = "创建新光通道条目")
     @RequestMapping(value = "/{versionId}", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
@@ -64,7 +62,6 @@ public class BussinessController {
         checkBussinessCreateInfo(bussinessCreateInfo);
         return bussinessService.saveBussiness(versionId, bussinessCreateInfo);
     }
-
 
     @ApiOperation(value = "批量删除某版本下指定Id的光通道条目")
     @RequestMapping(value = "/{versionId}", method = RequestMethod.DELETE)
