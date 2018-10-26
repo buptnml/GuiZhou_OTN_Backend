@@ -12,6 +12,7 @@ import com.otn.facade.util.BussinessPowerStringTransfer;
 import com.otn.pojo.BussinessCreateInfo;
 import com.otn.pojo.BussinessDTO;
 import com.otn.pojo.OSNRGeneralInfo;
+import com.otn.pojo.OSNRResult;
 import com.otn.util.exception.controller.result.NoneGetException;
 import com.otn.util.exception.controller.result.NoneRemoveException;
 import com.otn.util.exception.controller.result.NoneSaveException;
@@ -74,10 +75,22 @@ class BussinessServiceImpl implements BussinessService {
             double[][] mainOutputPowers = BussinessPowerStringTransfer.stringTransfer(bus.getMainOutputPowers());
             try {
                 calculator.calculate(mainInputPowers, mainOutputPowers, bus.getMainRoute(), bus.getVersionId());
+                for (OSNRResult item :calculator.getResult()){
+                    if(item.getResult()<18){
+                        bus.setIsValid(false);
+                        return;
+                    }
+                }
                 if (bus.getSpareRoute() != null) {
                     double[][] spareInputPower = BussinessPowerStringTransfer.stringTransfer(bus.getSpareInputPowers());
                     double[][] spareOutputPower = BussinessPowerStringTransfer.stringTransfer(bus.getSpareOutputPowers());
                     calculator.calculate(spareInputPower, spareOutputPower, bus.getSpareRoute(), bus.getVersionId());
+                    for (OSNRResult item :calculator.getResult()){
+                        if(item.getResult()<18){
+                            bus.setIsValid(false);
+                            return;
+                        }
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -114,22 +127,11 @@ class BussinessServiceImpl implements BussinessService {
             throw new DuplicateKeyException("光通道名称重复！");
         }
         ResBussiness insertInfo = UPDATE_UTILS.createBussiness(versionId, bussinessCreateInfo);
-        insertInfo.setIsValid(true);
+        calculateORSR(insertInfo);
 
         if (resBussinessDao.insertSelective(insertInfo) > 0) {
             insertInfo = resBussinessDao.selectOne(insertInfo);
             BussinessDTO obj = createBussinessDTO(insertInfo);
-
-            List<OSNRGeneralInfo> osnrResult = osnrService.getRouteOSNRDetail(versionId, insertInfo.getBussinessId());
-            for (int i = 0; i < osnrResult.size(); i++) {
-                if (osnrResult.get(i).getIsUsable().equals("否")) {
-                    insertInfo.setIsValid(false);
-                    resBussinessDao.updateByExampleSelective(insertInfo, getExample(versionId, insertInfo.getBussinessId()));
-                    insertInfo = getBussiness(insertInfo.getVersionId(),insertInfo.getBussinessId());
-                    obj = createBussinessDTO(insertInfo);
-                    return obj;
-                }
-            }
             return obj;
         }
         throw new NoneSaveException();
@@ -266,7 +268,6 @@ class BussinessServiceImpl implements BussinessService {
             bussinessInfo.setInputPower(UPDATE_UTILS.findInputPower(bussiness.getMainInputPowers(), 0));
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println(bussinessInfo.getBussinessName());
         }
         return bussinessInfo;
     }
