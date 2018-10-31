@@ -68,6 +68,7 @@ class NXAnalyseServiceImpl implements NXAnalyseService {
         return analyseElements(equips, bussiness);
     }
 
+
     /**
      * 分析所有链接
      * @param versionId
@@ -133,7 +134,25 @@ class NXAnalyseServiceImpl implements NXAnalyseService {
             nxAnalyseItem.setItemName(elements.length==2?(elements[0]+","+elements[1]): elements[0]);
             result.add(nxAnalyseItem);
         }
+        result=filterData(result);
         return result;
+    }
+
+    private List<NXAnalyseItemDTO> filterData(List<NXAnalyseItemDTO> list) {
+        if(list.size()>0){
+            for (NXAnalyseItemDTO item:list){
+                item.setAffectBussiness(item.getAffectBussiness().stream().filter(s -> s.indexOf("Client")>=0||s.indexOf("ODU")>=0).collect(Collectors.toList()));
+                item.setRecoveryBussiness(item.getRecoveryBussiness().stream().filter(s -> s.indexOf("Client")>=0||s.indexOf("ODU")>=0).collect(Collectors.toList()));
+                DecimalFormat decimalFormat = new DecimalFormat("0.00%");
+                if (item.getAffectBussiness().size() == 0)
+                    item.setRecoveryRate("100.00%");
+                else {
+                    double recoveryRate = (double) item.getRecoveryBussiness().size() / item.getAffectBussiness().size();
+                    item.setRecoveryRate(decimalFormat.format(recoveryRate));
+                }
+            }
+        }
+        return list;
     }
 
     private List<String> getTwoEles(List<String> eles1, List<String> eles2){
@@ -151,7 +170,7 @@ class NXAnalyseServiceImpl implements NXAnalyseService {
 
     private NXAnalyseItemDTO analyse(List<ResBussiness> resBussinesses,List<String> items) {
         NXAnalyseItemDTO nxAnalyseItem = new NXAnalyseItemDTO();
-        DecimalFormat decimalFormat = new DecimalFormat("0.00%");
+        //DecimalFormat decimalFormat = new DecimalFormat("0.00%");
 
         List<String> affectBusiness = new ArrayList<>();
         List<String> recoveryBusiness = new ArrayList<>();
@@ -184,12 +203,12 @@ class NXAnalyseServiceImpl implements NXAnalyseService {
             }
         }
 //        计算恢复率
-        if (affectBusiness.size() == 0)
-            nxAnalyseItem.setRecoveryRate("100.00%");
-        else {
-            double recoveryRate = (double) recoveryBusiness.size() / affectBusiness.size();
-            nxAnalyseItem.setRecoveryRate(decimalFormat.format(recoveryRate));
-        }
+//        if (affectBusiness.size() == 0)
+//            nxAnalyseItem.setRecoveryRate("100.00%");
+//        else {
+//            double recoveryRate = (double) recoveryBusiness.size() / affectBusiness.size();
+//            nxAnalyseItem.setRecoveryRate(decimalFormat.format(recoveryRate));
+//        }
         return nxAnalyseItem;
     }
 
